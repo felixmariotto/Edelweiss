@@ -1,0 +1,33 @@
+{
+  "name": "edelweiss",
+  "version": "0.0.0",
+  "description": "platformer game",
+  "main": "app.js",
+  "engines": {
+    "node": "10.x"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felixmariotto/Edelweiss.git"
+  },
+  "keywords": [
+    "platform",
+    "game",
+    "mountain",
+    "switzerland",
+    "edelweiss"
+  ],
+  "author": "felix mariotto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/felixmariotto/Edelweiss/issues"
+  },
+  "homepage": "https://github.com/felixmariotto/Edelweiss#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
