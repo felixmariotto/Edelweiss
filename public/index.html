@@ -4,9 +4,53 @@
 	<title>Edelweiss</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
+
+
+    <style>
+    
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #world {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #gui {
+            position: fixed;
+            top: 0;
+            right: 0;
+        }
+    
+    </style>
+
+
+    <script src="libs/three.js"></script>
+    <script src="libs/OrbitControls.js"></script>
+
+    <script src="libs/stats.min.js"></script>
+
+    <script src="js/main.js"></script>
+    <script src="js/init.js"></script>
+    <script src="js/loop.js"></script>
+    <script src="js/input.js"></script>
+    <script src="js/atlas.js"></script>
+
 </head>
 
 <body>
-    coucou
+
+    <canvas id="world"></canvas>
+
+    <div id="gui">
+        <label for="json-scene">load JSON</label><br>
+        <input type='file' id='json-scene' name='json-scene'>
+    </div>
+
 </body>
 </html>
