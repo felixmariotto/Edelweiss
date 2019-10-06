@@ -5,7 +5,7 @@ function init() {
     scene.background = new THREE.Color( 0x222222 );
 
     camera = new THREE.PerspectiveCamera( 40, window.innerWidth/window.innerHeight, 1, 100 );
-    camera.position.set( 0, 1, 20 );
+    camera.position.set( 1, 6, 12 );
     camera.lookAt( 0, 0, 0 );
 
     var ambientLight = new THREE.AmbientLight( 0xffffff, 0.5 );

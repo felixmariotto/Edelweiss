@@ -2,6 +2,8 @@
 function Atlas( sceneGraph ) {
 
 
+	console.log(sceneGraph)
+
 
     /////////////////////////
     ///  HELPERS VARIABLES
@@ -46,6 +48,11 @@ function Atlas( sceneGraph ) {
 		side: THREE.DoubleSide
 	});
 
+	const STARTGROUNDMAT = new THREE.MeshLambertMaterial({
+		color: 0x3dffff,
+		side: THREE.DoubleSide
+	});
+
 
 
 
@@ -60,7 +67,9 @@ function Atlas( sceneGraph ) {
 
             sceneGraph[i].forEach( (logicTile)=> {
 
-                Tile( logicTile )
+				Tile( logicTile )
+				
+				console.log(logicTile)
 
             });
 
@@ -76,28 +85,6 @@ function Atlas( sceneGraph ) {
 
 
     function Tile( logicTile ) {
-
-		// GROUND
-		if ( logicTile.points[0].y == logicTile.points[1].y ) {
-
-			logicTile.type = 'ground-basic' ;
-
-		// WALL
-		} else {
-
-			logicTile.type = 'wall-slip' ;
-			logicTile.isWall = true ;
-
-			if ( logicTile.points[0].z == logicTile.points[1].z ) {
-			
-				logicTile.isXAligned = true ;
-
-			} else {
-
-				logicTile.isXAligned = false ;
-			};
-
-		};
 
 		let meshTile = MeshTile( logicTile ) ;
 		meshTile.logicTile = logicTile ;
@@ -146,10 +133,15 @@ function Atlas( sceneGraph ) {
 
     function getMaterial( type ) {
 
+		console.log( type );
+
 		switch ( type ) {
 
 			case 'ground-basic' :
 				return BASICGROUNDMAT ;
+
+			case 'ground-start' :
+				return STARTGROUNDMAT ;
 			
 			case 'wall-limit' :
 				return LIMITWALLMAT ;
