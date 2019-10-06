@@ -1,15 +1,14 @@
 
 function Atlas( sceneGraph ) {
 
+	console.log( sceneGraph );
+
 
 	var startTile ;
 	var player ;
 
 	const PLAYERHEIGHT = 0.6 ;
 	const PLAYERWIDTH = 0.4 ;
-
-
-	console.log(sceneGraph)
 
 
     /////////////////////////
@@ -91,6 +90,7 @@ function Atlas( sceneGraph ) {
 
 	var player = Player( startTile );
 
+	controler = Controler( player );
 
 	function Player( startTile ) {
 
@@ -121,6 +121,55 @@ function Atlas( sceneGraph ) {
 
 		};
 
+		return {
+			group,
+			position
+		};
+
+	};
+
+
+
+
+
+	function collidePlayerGround() {
+
+		let isColliding = false ;
+
+		checkStage( Math.floor( player.position.y ) );
+		checkStage( Math.floor( player.position.y ) + 1 );
+
+		function checkStage( stage ) {
+
+			if ( sceneGraph[ stage ] ) {
+
+				// loop through the group of tiles at the same height as the player
+				sceneGraph[ stage ].forEach( (logicTile)=> {
+	
+					// check for Y collision
+					if ( !logicTile.isWall &&
+						 player.position.y < logicTile.points[0].y ) {
+	
+						// check for X Z collision
+						if ( !( Math.min( logicTile.points[0].x, logicTile.points[1].x ) > ( player.position.x + ( PLAYERWIDTH / 2 ) ) ||
+								Math.min( logicTile.points[0].z, logicTile.points[1].z ) > ( player.position.z + ( PLAYERWIDTH / 2 ) ) ||
+								Math.max( logicTile.points[0].x, logicTile.points[1].x ) < ( player.position.x - ( PLAYERWIDTH / 2 ) ) ||
+								Math.max( logicTile.points[0].z, logicTile.points[1].z ) < ( player.position.z - ( PLAYERWIDTH / 2 ) )  ) ) {
+
+							isColliding = true ;
+							console.log('collide')
+
+						};
+
+					};
+	
+				});
+	
+			};
+			
+		};
+
+		return isColliding
 	};
 
 
@@ -215,6 +264,11 @@ function Atlas( sceneGraph ) {
 
 	};
 
+
+
+	return {
+		collidePlayerGround
+	};
 
 
 };

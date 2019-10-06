@@ -1,6 +1,10 @@
 
 function Input() {
 
+    document.getElementById('json-scene').addEventListener('click', ()=> {
+        document.getElementById('json-scene').blur();
+    });
+
     document.getElementById('json-scene').onchange = function (evt) {
 
         var tgt = evt.target || window.event.srcElement,
@@ -21,5 +25,12 @@ function Input() {
         };
 
     };
+
+
+
+    window.addEventListener( 'keydown', ()=> {
+        controler.setJumpSpeed();
+    }, false);
+
 
 };

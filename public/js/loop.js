@@ -8,4 +8,8 @@ function loop() {
     stats.update();
     controls.update();
 
+    clockDelta = clock.getDelta();
+
+    if ( controler ) controler.update( clockDelta );
+
 };

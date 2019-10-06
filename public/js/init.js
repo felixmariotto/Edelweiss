@@ -26,7 +26,9 @@ function init() {
 
     controls = new THREE.OrbitControls( camera, renderer.domElement );
 	controls.screenSpacePanning = true ;
-	controls.keys = [];
+    controls.keys = [];
+    
+    clock = new THREE.Clock();
 
 
     input = Input();
