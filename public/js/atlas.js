@@ -2,6 +2,13 @@
 function Atlas( sceneGraph ) {
 
 
+	var startTile ;
+	var player ;
+
+	const PLAYERHEIGHT = 0.6 ;
+	const PLAYERWIDTH = 0.4 ;
+
+
 	console.log(sceneGraph)
 
 
@@ -61,21 +68,66 @@ function Atlas( sceneGraph ) {
     //////////////////////
 
 
-    if ( NEEDHELPERS ) {
+	// initialise the map
+	
+	for ( let i of Object.keys( sceneGraph ) ) {
 
-        for ( let i of Object.keys( sceneGraph ) ) {
+		sceneGraph[i].forEach( (logicTile)=> {
 
-            sceneGraph[i].forEach( (logicTile)=> {
+			if ( NEEDHELPERS ) {
+				Tile( logicTile );
+			};
 
-				Tile( logicTile )
-				
-				console.log(logicTile)
+			if ( logicTile.type == 'ground-start' ) {
+				startTile = logicTile ;
+			};
 
-            });
+		});
 
-        };
+	};
 
-    };
+	// initialise the player logic
+
+
+	var player = Player( startTile );
+
+
+	function Player( startTile ) {
+
+		let group = new THREE.Group();
+		scene.add( group );
+
+		let position = group.position ;
+
+		group.position.set(
+			(startTile.points[0].x + startTile.points[1].x) / 2,
+			(startTile.points[0].y + startTile.points[1].y) / 2,
+			(startTile.points[0].z + startTile.points[1].z) / 2
+		);
+
+		if ( NEEDHELPERS ) {
+
+			let mesh = new THREE.Mesh(
+				new THREE.BoxBufferGeometry(
+					PLAYERWIDTH,
+					PLAYERHEIGHT,
+					PLAYERWIDTH
+					),
+				new THREE.MeshNormalMaterial()
+			);
+		
+			group.add( mesh );
+			mesh.position.y = PLAYERHEIGHT / 2 ;
+
+		};
+
+	};
+
+
+
+	
+
+    
 
 
     /////////////////////////////
@@ -132,8 +184,6 @@ function Atlas( sceneGraph ) {
 
 
     function getMaterial( type ) {
-
-		console.log( type );
 
 		switch ( type ) {
 

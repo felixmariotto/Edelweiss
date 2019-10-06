@@ -1,5 +1,5 @@
 
-var scene, camera, renderer, stats, input, atlas ;
+var scene, camera, renderer, stats, input, atlas, controls ;
 
 window.addEventListener('load', ()=> {
     init();

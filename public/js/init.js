@@ -24,6 +24,10 @@ function init() {
     });
     renderer.setSize( window.innerWidth, window.innerHeight );
 
+    controls = new THREE.OrbitControls( camera, renderer.domElement );
+	controls.screenSpacePanning = true ;
+	controls.keys = [];
+
 
     input = Input();
 

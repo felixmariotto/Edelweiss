@@ -6,5 +6,6 @@ function loop() {
     renderer.render( scene, camera );
 
     stats.update();
+    controls.update();
 
 };
