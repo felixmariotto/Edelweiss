@@ -33,6 +33,11 @@ function Controler( player ) {
     var angleToApply = 0 ;
     var inertia = 0 ;
 
+    // player state
+    var state = {
+        isFlying: false
+    };
+
 
 
     function update( delta ) {
@@ -83,12 +88,18 @@ function Controler( player ) {
         // to the horizontal obstacles in the scene.
         YCollisionHeight = atlas.collidePlayerGround() ;
 
+        // There is a collision on the Y axis
         if ( YCollisionHeight || YCollisionHeight == 0 ) {
+
+            state.isFlying = false ;
 
             speedUp = 0 ;
             player.position.y = YCollisionHeight ;
 
+        // There is no collision on the Y axis
         } else {
+
+            state.isFlying = true ;
 
             speedUp -= 0.06 ;
             speedUp = Math.max( Math.min( speedUp, 1.25 ), -1.6 );
@@ -102,15 +113,23 @@ function Controler( player ) {
         ///       HORIZONTAL MOVEMENT
         ///////////////////////////////////////
 
+        // Acceleration
         if ( input.moveKeys.length > 0 ) {
 
-            // on ground
-            inertia = inertia >= 1 ? 1 : inertia + 0.1 ;
+            if ( state.isFlying ) {
+                inertia = inertia >= 1 ? 1 : inertia + 0.05 ;
+            } else { // on ground
+                inertia = inertia >= 1 ? 1 : inertia + 0.1 ;
+            };
 
-        } else {
+        // Slowdown
+        } else { 
 
-            // on ground
-            inertia = inertia / 1.6 ;
+            if ( state.isFlying ) {
+                inertia = inertia / 1.15 ;
+            } else { // on ground
+                inertia = inertia / 1.6 ;
+            };
 
         };
 

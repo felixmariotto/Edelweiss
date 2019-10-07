@@ -153,8 +153,8 @@ function Atlas( sceneGraph ) {
 								Math.max( logicTile.points[0].z, logicTile.points[1].z ) < ( player.position.z - ( PLAYERWIDTH / 2 ) )  ) ) {
 
 							// check for down collision
-							if ( player.position.y < logicTile.points[0].y &&
-								 logicTile.points[0].y < player.position.y + (PLAYERHEIGHT / 2) ) {
+							if ( player.position.y <= logicTile.points[0].y &&
+								 logicTile.points[0].y <= player.position.y + (PLAYERHEIGHT / 2) ) {
 
 								// return the position of the player on the ground
 								isColliding = logicTile.points[0].y ;
@@ -162,8 +162,8 @@ function Atlas( sceneGraph ) {
 							};
 
 							// check for up collision
-							if ( player.position.y + PLAYERHEIGHT > logicTile.points[0].y &&
-								 player.position.y + (PLAYERHEIGHT / 2) < logicTile.points[0].y ) {
+							if ( player.position.y + PLAYERHEIGHT >= logicTile.points[0].y &&
+								 player.position.y + (PLAYERHEIGHT / 2) <= logicTile.points[0].y ) {
 
 								// return the position of the player after hitting the roof
 								isColliding = logicTile.points[0].y - PLAYERHEIGHT ;
