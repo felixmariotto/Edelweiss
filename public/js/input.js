@@ -193,5 +193,8 @@ function Input() {
 
     };
 
+    return {
+        moveKeys
+    };
 
 };

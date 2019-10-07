@@ -27,10 +27,11 @@ function Controler( player ) {
     // horiz movements
     var HORIZMOVEVECT = new THREE.Vector3( 0, 0, 0.04 );
     var AXISHORIZMOVEROT = new THREE.Vector3( 0, 1, 0 );
-    var mustMove ;
+    var requestedMove ;
     var currentDirection = 0 ;
     var requestedDirection = 0 ;
     var angleToApply = 0 ;
+    var inertia = 0 ;
 
 
 
@@ -47,14 +48,20 @@ function Controler( player ) {
             // and the requested one
             angleToApply = utils.toPiRange( requestedDirection - currentDirection ) ;
 
-            // No tweening if :
-            // - angle is too small
-            // - U-turn
-            if ( ( angleToApply < 0.01 && angleToApply > -0.01 ) ||
-                 ( angleToApply > 2.8 || angleToApply < -2.8 ) ) {
+            // finish the tweening if the turn is almost finished
+            if ( angleToApply < 0.01 && angleToApply > -0.01 ) {
 
                 currentDirection = requestedDirection ;
                 HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
+
+            // No tweening in case of U-turn, + inertia reset
+            } else if ( angleToApply > 2.8 || angleToApply < -2.8 ) {
+
+                currentDirection = requestedDirection ;
+                HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
+
+                // reset inertia
+                inertia = 0 ;
 
             // Normal tweening
             } else {
@@ -95,9 +102,19 @@ function Controler( player ) {
         ///       HORIZONTAL MOVEMENT
         ///////////////////////////////////////
 
-        if ( mustMove ) {
-            player.position.add( HORIZMOVEVECT );
+        if ( input.moveKeys.length > 0 ) {
+
+            // on ground
+            inertia = inertia >= 1 ? 1 : inertia + 0.1 ;
+
+        } else {
+
+            // on ground
+            inertia = inertia / 1.6 ;
+
         };
+
+        player.position.addScaledVector( HORIZMOVEVECT, inertia );
 
     };
 
@@ -110,8 +127,8 @@ function Controler( player ) {
 
 
 
-    function setMoveAngle( requestMove, requestedDir ) { 
-        mustMove = requestMove ;
+    function setMoveAngle( requestMove, requestedDir ) {
+        requestedMove = requestMove ;
         if ( typeof requestedDir != 'undefined' ) {
             requestedDirection = requestedDir ;
         };
