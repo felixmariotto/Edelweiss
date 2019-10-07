@@ -27,11 +27,23 @@ function Controler( player ) {
             // get the difference in radians between the current orientation
             // and the requested one
             angleToApply = utils.toPiRange( requestedDirection - currentDirection ) ;
-            currentDirection = requestedDirection ;
 
-            HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
+            // No tweening if :
+            // - angle is too small
+            // - U-turn
+            if ( ( angleToApply < 0.01 && angleToApply > -0.01 ) ||
+                 ( angleToApply > 2.8 || angleToApply < -2.8 ) ) {
 
-            angleToApply = 0 ;
+                currentDirection = requestedDirection ;
+                HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
+
+            // Normal tweening
+            } else {
+
+                currentDirection = utils.toPiRange( currentDirection + (angleToApply / 4) );
+                HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply / 4 );
+
+            };
 
         };
         
@@ -52,8 +64,8 @@ function Controler( player ) {
 
         } else {
 
-            speedUp -= 0.038 ;
-            speedUp = Math.max( Math.min( speedUp, 1 ), -1 );
+            speedUp -= 0.04 ;
+            speedUp = Math.max( Math.min( speedUp, 1 ), -2 );
 
         };
 
