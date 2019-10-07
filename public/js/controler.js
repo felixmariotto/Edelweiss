@@ -102,7 +102,7 @@ function Controler( player ) {
             state.isFlying = true ;
 
             speedUp -= 0.06 ;
-            speedUp = Math.max( Math.min( speedUp, 1.25 ), -1.6 );
+            speedUp = Math.max( Math.min( speedUp, 1.25 ), -2.3 );
 
         };
 
@@ -126,7 +126,7 @@ function Controler( player ) {
         } else { 
 
             if ( state.isFlying ) {
-                inertia = inertia / 1.15 ;
+                inertia = inertia / 1.12 ;
             } else { // on ground
                 inertia = inertia / 1.6 ;
             };
