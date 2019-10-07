@@ -6,13 +6,30 @@ function Controler( player ) {
     var YCollisionHeight;
 
     // horiz movements
-    const HORIZMOVESPEED = 0.04 ;
-    var HORIZMOVEVECT = new THREE.Vector3();
+    var HORIZMOVEVECT = new THREE.Vector3( 0, 0, 0.04 );
     var AXISHORIZMOVEROT = new THREE.Vector3( 0, 1, 0 );
     var mustMove ;
+    var currentAngle = 0 ;
+    var angleToApply = 0 ;
+
 
 
     function update( delta ) {
+
+
+        ////////////////////////
+        ////   MOVEMENT ANGLE
+        ////////////////////////
+
+        if ( angleToApply != 0 ) {
+
+            HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
+
+            angleToApply = 0 ;
+
+        };
+        
+
 
         //////////////////////////////////////
         ///  GRAVITY AND GROUND COLLISION
@@ -56,11 +73,13 @@ function Controler( player ) {
 
 
 
-    function setMoveAngle( requestMove, angle ) {
+    function setMoveAngle( requestMove, requestedAngle ) { 
         mustMove = requestMove ;
-        if ( requestMove ) {
-            HORIZMOVEVECT.set( 0, 0, HORIZMOVESPEED );
-            HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angle );
+        if ( typeof requestedAngle != 'undefined' ) {
+            // get the difference in radians between the current orientation
+            // and the requested one
+            angleToApply = utils.toPiRange( requestedAngle - currentAngle ) ;
+            currentAngle = requestedAngle ;
         };
     };
 
