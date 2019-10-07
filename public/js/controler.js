@@ -1,9 +1,15 @@
 
 function Controler( player ) {
 
-
+    // vert movements
     var speedUp = 0 ;
     var YCollisionHeight;
+
+    // horiz movements
+    const HORIZMOVESPEED = 0.04 ;
+    var HORIZMOVEVECT = new THREE.Vector3();
+    var AXISHORIZMOVEROT = new THREE.Vector3( 0, 1, 0 );
+    var mustMove ;
 
 
     function update( delta ) {
@@ -23,12 +29,21 @@ function Controler( player ) {
 
         } else {
 
-            speedUp -= 0.03 ;
+            speedUp -= 0.038 ;
             speedUp = Math.max( Math.min( speedUp, 1 ), -1 );
 
         };
 
         player.position.y += ( speedUp * 0.1 ) ;
+
+
+        ///////////////////////////////////////
+        ///       HORIZONTAL MOVEMENT
+        ///////////////////////////////////////
+
+        if ( mustMove ) {
+            player.position.add( HORIZMOVEVECT );
+        };
 
     };
 
@@ -36,14 +51,25 @@ function Controler( player ) {
 
     function setJumpSpeed() {
         speedUp = 1 ;
-        player.position.y += 0.5 ;
+        player.position.y += 0.1 ;
+    };
+
+
+
+    function setMoveAngle( requestMove, angle ) {
+        mustMove = requestMove ;
+        if ( requestMove ) {
+            HORIZMOVEVECT.set( 0, 0, HORIZMOVESPEED );
+            HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angle );
+        };
     };
 
 
 
     return {
         update,
-        setJumpSpeed
+        setJumpSpeed,
+        setMoveAngle
     };
 
 };
