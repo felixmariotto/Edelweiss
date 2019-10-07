@@ -9,7 +9,8 @@ function Controler( player ) {
     var HORIZMOVEVECT = new THREE.Vector3( 0, 0, 0.04 );
     var AXISHORIZMOVEROT = new THREE.Vector3( 0, 1, 0 );
     var mustMove ;
-    var currentAngle = 0 ;
+    var currentDirection = 0 ;
+    var requestedDirection = 0 ;
     var angleToApply = 0 ;
 
 
@@ -21,7 +22,12 @@ function Controler( player ) {
         ////   MOVEMENT ANGLE
         ////////////////////////
 
-        if ( angleToApply != 0 ) {
+        if ( currentDirection != requestedDirection ) {
+
+            // get the difference in radians between the current orientation
+            // and the requested one
+            angleToApply = utils.toPiRange( requestedDirection - currentDirection ) ;
+            currentDirection = requestedDirection ;
 
             HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
 
@@ -73,13 +79,10 @@ function Controler( player ) {
 
 
 
-    function setMoveAngle( requestMove, requestedAngle ) { 
+    function setMoveAngle( requestMove, requestedDir ) { 
         mustMove = requestMove ;
-        if ( typeof requestedAngle != 'undefined' ) {
-            // get the difference in radians between the current orientation
-            // and the requested one
-            angleToApply = utils.toPiRange( requestedAngle - currentAngle ) ;
-            currentAngle = requestedAngle ;
+        if ( typeof requestedDir != 'undefined' ) {
+            requestedDirection = requestedDir ;
         };
     };
 
