@@ -1,6 +1,25 @@
 
 function Controler( player ) {
 
+
+    // TEMPORARY FEATURE CONTROL
+    datGUI.add( GUIControler, 'gliding', true ).onChange( toggleGliding );
+    datGUI.add( GUIControler, 'doubleJump', true ).onChange( toggleDoubleJump );
+    datGUI.add( GUIControler, 'dash', true ).onChange( toggleDash );
+
+    function toggleGliding( bool ) {
+        console.log( 'gliding : ' + bool );
+    };
+
+    function toggleDoubleJump( bool ) {
+        console.log( 'doubleJump : ' + bool );
+    };
+
+    function toggleDash( bool ) {
+        console.log( 'dash : ' + bool );
+    };
+
+
     // vert movements
     var speedUp = 0 ;
     var YCollisionHeight;

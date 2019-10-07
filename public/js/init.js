@@ -30,6 +30,9 @@ function init() {
     
     clock = new THREE.Clock();
 
+    // TEMP
+    datGUI = new dat.GUI();
+
 
     input = Input();
 
