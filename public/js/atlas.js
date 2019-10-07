@@ -5,7 +5,7 @@ function Atlas( sceneGraph ) {
 	var startTile ;
 	var player ;
 
-	const PLAYERHEIGHT = 0.6 ;
+	const PLAYERHEIGHT = 0.7 ;
 	const PLAYERWIDTH = 0.4 ;
 
 

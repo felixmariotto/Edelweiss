@@ -64,8 +64,8 @@ function Controler( player ) {
 
         } else {
 
-            speedUp -= 0.04 ;
-            speedUp = Math.max( Math.min( speedUp, 1 ), -2 );
+            speedUp -= 0.06 ;
+            speedUp = Math.max( Math.min( speedUp, 1.25 ), -1.6 );
 
         };
 
@@ -85,7 +85,7 @@ function Controler( player ) {
 
 
     function setJumpSpeed() {
-        speedUp = 1 ;
+        speedUp = 1.25 ;
         player.position.y += 0.1 ;
     };
 
