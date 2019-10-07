@@ -1,8 +1,6 @@
 
 function Atlas( sceneGraph ) {
 
-	console.log( sceneGraph );
-
 
 	var startTile ;
 	var player ;
@@ -134,7 +132,7 @@ function Atlas( sceneGraph ) {
 
 	function collidePlayerGround() {
 
-		let isColliding = false ;
+		let isColliding ;
 
 		checkStage( Math.floor( player.position.y ) );
 		checkStage( Math.floor( player.position.y ) + 1 );
@@ -156,8 +154,7 @@ function Atlas( sceneGraph ) {
 								Math.max( logicTile.points[0].x, logicTile.points[1].x ) < ( player.position.x - ( PLAYERWIDTH / 2 ) ) ||
 								Math.max( logicTile.points[0].z, logicTile.points[1].z ) < ( player.position.z - ( PLAYERWIDTH / 2 ) )  ) ) {
 
-							isColliding = true ;
-							console.log('collide')
+							isColliding = logicTile.points[0].z ;
 
 						};
 

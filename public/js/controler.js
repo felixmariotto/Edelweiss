@@ -3,6 +3,7 @@ function Controler( player ) {
 
 
     var speedUp = 0 ;
+    var groundCollisionHeight;
 
 
     function update( delta ) {
@@ -11,9 +12,12 @@ function Controler( player ) {
         ///  GRAVITY AND GROUND COLLISION
         //////////////////////////////////////
 
-        if ( atlas.collidePlayerGround() ) {
+        groundCollisionHeight = atlas.collidePlayerGround() ;
+
+        if ( groundCollisionHeight || groundCollisionHeight == 0 ) {
 
             speedUp = 0 ;
+            player.position.y = groundCollisionHeight ;
 
         } else {
 
