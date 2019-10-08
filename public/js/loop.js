@@ -11,6 +11,5 @@ function loop() {
     clockDelta = clock.getDelta();
 
     if ( controler ) controler.update( clockDelta );
-    if ( input ) input.update( clockDelta );
 
 };

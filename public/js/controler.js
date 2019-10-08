@@ -39,14 +39,17 @@ function Controler( player ) {
     // player state
     var state = {
         isFlying: false,
+        isGliding: false
     };
 
-    // player permssion
+    // player permission
     var permission = {
         gliding: true,
         infinityJump: true,
         dash: true
     };
+
+    const GLIDINGTIME = 350 ;
 
 
 
@@ -140,9 +143,17 @@ function Controler( player ) {
 
             state.isFlying = true ;
 
-            // Gravity
-            speedUp -= 0.06 ;
-            speedUp = Math.max( Math.min( speedUp, 1.25 ), -2.3 );
+            if ( state.isGliding ) {
+
+                // fall gradual slowdown
+
+            } else {
+
+                // Normal gravity
+                speedUp -= 0.06 ;
+                speedUp = Math.max( Math.min( speedUp, 1.25 ), -2.3 );
+
+            };
 
         };
 
@@ -164,8 +175,6 @@ function Controler( player ) {
             };
 
             if ( state.isFlying ) { // in air
-
-                console.log(inertia)
 
                 // Keep the inertia if it a running jump
                 if ( inertia > 1 ) {
@@ -218,7 +227,7 @@ function Controler( player ) {
 
 
     // Sent here by input module when the user released space bar
-    function chargedInput( charge ) {
+    function chargedInput() {
 
         // console.log(charge)
 

@@ -1,13 +1,13 @@
 
 function Input() {
 
+
     // Movement
     var moveKeys = [];
     var tempDirArray ;
 
     var params = {
-        isSpacePressed: false,
-        spaceCount: 0
+        isSpacePressed: false
     };
 
 
@@ -205,35 +205,19 @@ function Input() {
 
 
     function releaseSpace() {
-
-        controler.chargedInput( params.spaceCount );
-
+        controler.chargedInput();
         params.isSpacePressed = false ;
-
-        params.spaceCount = 0 ;
-
     };
 
 
 
 
-
-    function update( delta ) {
-
-        if ( params.isSpacePressed ) {
-
-            params.spaceCount += delta * 1000 ;
-
-        };
-
-    };
 
 
 
     return {
         params,
-        moveKeys,
-        update
+        moveKeys
     };
 
 };
