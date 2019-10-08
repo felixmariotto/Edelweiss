@@ -49,7 +49,7 @@ function Controler( player ) {
         dash: true
     };
 
-    const GLIDINGTIME = 350 ;
+    const GLIDINGTIME = 250 ;
     var glidingCount = 0 ;
 
 
@@ -57,7 +57,7 @@ function Controler( player ) {
 
 
         //////////////////////
-        ///  STATE CHANGE
+        ///  GLIDING STATE
         //////////////////////
 
         if ( state.isFlying && input.params.isSpacePressed ) {
@@ -70,7 +70,8 @@ function Controler( player ) {
 
         } else {
 
-            state.isGliding = true ;
+            glidingCount = 0 ;
+            state.isGliding = false ;
 
         };
 
@@ -165,10 +166,8 @@ function Controler( player ) {
 
             if ( state.isGliding ) {
 
-                // fall gradual slowdown
-                console.log( 'gradual fall slowdown' )
-                speedUp -= 0.06 ;
-                speedUp = Math.max( Math.min( speedUp, 1.25 ), -2.3 );
+                // fall eased slowdown
+                speedUp += ( -0.3 - speedUp ) * 0.1 ;
 
             } else {
 
@@ -249,13 +248,16 @@ function Controler( player ) {
 
 
 
+
+
+
+
     // Sent here by input module when the user released space bar
-    function chargedInput() {
+    function spaceInput() {
 
-        // console.log(charge)
-
-        if ( !permission.infinityJump && !state.isFlying || 
-             permission.infinityJump ) {
+        if ( !state.isGliding &&
+             ( !permission.infinityJump && !state.isFlying || 
+             permission.infinityJump ) ) {
 
             speedUp = 1.25 ;
 
@@ -263,6 +265,10 @@ function Controler( player ) {
 
         };
     };
+
+
+
+
 
 
 
@@ -283,7 +289,7 @@ function Controler( player ) {
 
     return {
         update,
-        chargedInput,
+        spaceInput,
         setMoveAngle
     };
 

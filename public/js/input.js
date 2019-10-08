@@ -205,7 +205,7 @@ function Input() {
 
 
     function releaseSpace() {
-        controler.chargedInput();
+        controler.spaceInput();
         params.isSpacePressed = false ;
     };
 
