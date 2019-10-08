@@ -22,6 +22,10 @@ function Controler( player ) {
     };
 
 
+
+    // climbing movements
+    var xCollision ;
+
     // vert movements
     var speedUp = 0 ;
     var yCollision;
@@ -125,7 +129,7 @@ function Controler( player ) {
 
         // atlas compute the position of the player according
         // to the horizontal obstacles in the scene.
-        yCollision = atlas.collidePlayerGround() ;
+        yCollision = atlas.collidePlayerGrounds() ;
 
         // There is a collision with the ground
         if ( yCollision.point != undefined ) {
@@ -234,6 +238,14 @@ function Controler( player ) {
         };
 
         player.position.addScaledVector( HORIZMOVEVECT, inertia );
+
+
+
+        ////////////////////////////
+        ///    CLIMBING MOVEMENT
+        ////////////////////////////
+
+        xCollision = atlas.collidePlayerWalls( currentDirection );
 
     };
 

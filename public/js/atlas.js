@@ -4,6 +4,16 @@ function Atlas( sceneGraph ) {
 
 	var startTile ;
 	var player ;
+	
+	var yCollision = {
+		point: undefined,
+		direction: undefined
+	};
+
+	var xCollision = {
+		point: undefined,
+		majorWallType: undefined
+	};
 
 	const PLAYERHEIGHT = 0.7 ;
 	const PLAYERWIDTH = 0.4 ;
@@ -133,12 +143,15 @@ function Atlas( sceneGraph ) {
 
 
 
-	function collidePlayerGround() {
+	/////////////////////////
+	///    COLLISIONS
+	/////////////////////////
 
-		let collision = {
-			point: undefined,
-			direction: undefined
-		};
+
+	function collidePlayerGrounds() {
+
+		yCollision.point = undefined ;
+		yCollision.direction = undefined ;
 
 		// We check only the tiles at the same height as the player
 		checkStage( Math.floor( player.position.y ) );
@@ -165,8 +178,8 @@ function Atlas( sceneGraph ) {
 								 logicTile.points[0].y <= player.position.y + (PLAYERHEIGHT / 2) ) {
 
 								// return the position of the player on the ground
-								collision.point = logicTile.points[0].y ;
-								collision.direction = 'down' ;
+								yCollision.point = logicTile.points[0].y ;
+								yCollision.direction = 'down' ;
 
 							};
 
@@ -175,8 +188,8 @@ function Atlas( sceneGraph ) {
 								 player.position.y + (PLAYERHEIGHT / 2) <= logicTile.points[0].y ) {
 
 								// return the position of the player after hitting the roof
-								collision.point = logicTile.points[0].y - PLAYERHEIGHT ;
-								collision.direction = 'up' ;
+								yCollision.point = logicTile.points[0].y - PLAYERHEIGHT ;
+								yCollision.direction = 'up' ;
 
 							};
 
@@ -190,7 +203,59 @@ function Atlas( sceneGraph ) {
 			
 		};
 
-		return collision;
+		return yCollision;
+	};
+
+
+
+
+
+
+	function collidePlayerWalls( direction ) {
+
+		/*
+		var xCollision = {
+			point: undefined,
+			majorWallType: undefined
+		};
+		*/
+
+		xCollision.point = undefined ;
+		xCollision.majorWallType = undefined ;
+
+		// We check only the tiles at the same height as the player
+		checkStage( Math.floor( player.position.y ) );
+		checkStage( Math.floor( player.position.y ) + 1 );
+		checkStage( Math.floor( player.position.y ) - 1 );
+		
+		function checkStage( stage ) {
+
+			if ( sceneGraph[ stage ] ) {
+
+				// loop through the group of tiles at the same height as the player
+				sceneGraph[ stage ].forEach( (logicTile, i)=> {
+
+					if ( logicTile.isWall ) {
+
+						if ( !( Math.min( logicTile.points[0].x, logicTile.points[1].x ) > ( player.position.x + ( PLAYERWIDTH / 2 ) ) ||
+								Math.min( logicTile.points[0].z, logicTile.points[1].z ) > ( player.position.z + ( PLAYERWIDTH / 2 ) ) ||
+								Math.max( logicTile.points[0].x, logicTile.points[1].x ) < ( player.position.x - ( PLAYERWIDTH / 2 ) ) ||
+								Math.max( logicTile.points[0].z, logicTile.points[1].z ) < ( player.position.z - ( PLAYERWIDTH / 2 ) )  ) ) {
+
+							console.log('collide wall')
+
+						};
+
+					};
+
+				});
+
+			};
+
+		};
+
+		return xCollision ;
+
 	};
 
 
@@ -288,7 +353,8 @@ function Atlas( sceneGraph ) {
 
 
 	return {
-		collidePlayerGround
+		collidePlayerGrounds,
+		collidePlayerWalls
 	};
 
 
