@@ -96,20 +96,11 @@ function Controler( player ) {
             // No tweening in case of U-turn, + inertia reset
             } else if ( angleToApply > 2.8 || angleToApply < -2.8 ) {
 
-                if ( state.isFlying ) {
+                currentDirection = requestedDirection ;
+                HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
 
-                    // apply no angle, only slow the player
-                    inertia = inertia * 0.8 ;
-
-                } else {
-
-                    currentDirection = requestedDirection ;
-                    HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
-
-                    // reset inertia
-                    inertia = 0 ;
-
-                };
+                // reset inertia
+                inertia = 0 ;
                 
 
             // Normal tweening
@@ -208,7 +199,7 @@ function Controler( player ) {
 
                 } else {
                     
-                    inertia = inertia >= 1 ? 1 : inertia + 0.05 ;
+                    inertia = inertia >= 1 ? 1 : inertia + 0.03 ;
 
                 };
                 
@@ -218,7 +209,7 @@ function Controler( player ) {
                 if ( runCounter > 350 ) {
                     inertia = inertia >= 1.8 ? 1.8 : inertia + 0.1 ;
                 } else {
-                    inertia = inertia >= 1 ? 1 : inertia + 0.1 ;
+                    inertia = inertia >= 1 ? 1 : inertia + 0.06 ;
                 };
 
             };
