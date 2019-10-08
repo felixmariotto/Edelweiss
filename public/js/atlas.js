@@ -140,15 +140,17 @@ function Atlas( sceneGraph ) {
 			direction: undefined
 		};
 
+		// We check only the tiles at the same height as the player
 		checkStage( Math.floor( player.position.y ) );
 		checkStage( Math.floor( player.position.y ) + 1 );
+		checkStage( Math.floor( player.position.y ) - 1 );
 
 		function checkStage( stage ) {
 
 			if ( sceneGraph[ stage ] ) {
 
 				// loop through the group of tiles at the same height as the player
-				sceneGraph[ stage ].forEach( (logicTile)=> {
+				sceneGraph[ stage ].forEach( (logicTile, i)=> {
 
 					if ( !logicTile.isWall ) {
 

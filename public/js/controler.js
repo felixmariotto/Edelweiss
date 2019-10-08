@@ -123,6 +123,8 @@ function Controler( player ) {
         // There is no collision with the ground
         } else {
 
+            console.log('isFlying')
+
             state.isFlying = true ;
 
             // Gravity
