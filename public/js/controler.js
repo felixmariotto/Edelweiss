@@ -50,10 +50,30 @@ function Controler( player ) {
     };
 
     const GLIDINGTIME = 350 ;
-
+    var glidingCount = 0 ;
 
 
     function update( delta ) {
+
+
+        //////////////////////
+        ///  STATE CHANGE
+        //////////////////////
+
+        if ( state.isFlying && input.params.isSpacePressed ) {
+
+            glidingCount += delta * 1000 ;
+
+            if ( glidingCount >= GLIDINGTIME ) {
+                state.isGliding = true ;
+            };
+
+        } else {
+
+            state.isGliding = true ;
+
+        };
+
 
 
         ////////////////////////
@@ -146,6 +166,9 @@ function Controler( player ) {
             if ( state.isGliding ) {
 
                 // fall gradual slowdown
+                console.log( 'gradual fall slowdown' )
+                speedUp -= 0.06 ;
+                speedUp = Math.max( Math.min( speedUp, 1.25 ), -2.3 );
 
             } else {
 
