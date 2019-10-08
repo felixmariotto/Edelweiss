@@ -92,6 +92,9 @@ function Atlas( sceneGraph ) {
 
 	function Player( startTile ) {
 
+		// TEMP in case there is no startTile
+		startTile = startTile || { points: [ {x:1, y:0, z:1}, {x:0, y:0, z:0} ] };
+
 		let group = new THREE.Group();
 		scene.add( group );
 
