@@ -96,7 +96,7 @@ function Input() {
 
 
     function jump() {
-        controler.setJumpSpeed();
+        controler.startJump();
     };
 
 

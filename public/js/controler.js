@@ -4,19 +4,21 @@ function Controler( player ) {
 
     // TEMPORARY FEATURE CONTROL
     datGUI.add( GUIControler, 'gliding', true ).onChange( toggleGliding );
-    datGUI.add( GUIControler, 'doubleJump', true ).onChange( toggleDoubleJump );
+    datGUI.add( GUIControler, 'infinityJump', true ).onChange( toggleInfinityJump );
     datGUI.add( GUIControler, 'dash', true ).onChange( toggleDash );
 
     function toggleGliding( bool ) {
-        console.log( 'gliding : ' + bool );
+        permission.gliding = bool ;
+
+        console.log(permission)
     };
 
-    function toggleDoubleJump( bool ) {
-        console.log( 'doubleJump : ' + bool );
+    function toggleInfinityJump( bool ) {
+        permission.infinityJump = bool ;
     };
 
     function toggleDash( bool ) {
-        console.log( 'dash : ' + bool );
+        permission.dash = bool ;
     };
 
 
@@ -35,7 +37,14 @@ function Controler( player ) {
 
     // player state
     var state = {
-        isFlying: false
+        isFlying: false,
+    };
+
+    // player permssion
+    var permission = {
+        gliding: true,
+        infinityJump: true,
+        dash: true
     };
 
 
@@ -155,9 +164,16 @@ function Controler( player ) {
 
 
 
-    function setJumpSpeed() {
-        speedUp = 1.25 ;
-        player.position.y += 0.1 ;
+    // Start a jump
+    function startJump() {
+
+        if ( !permission.infinityJump && !state.isFlying || 
+             permission.infinityJump ) {
+
+            speedUp = 1.25 ;
+            player.position.y += 0.1 ;
+
+        };
     };
 
 
@@ -173,7 +189,7 @@ function Controler( player ) {
 
     return {
         update,
-        setJumpSpeed,
+        startJump,
         setMoveAngle
     };
 

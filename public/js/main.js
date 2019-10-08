@@ -6,7 +6,7 @@ var utils = Utils();
 
 var GUIControler = {
     gliding: true,
-    doubleJump: true,
+    infinityJump: true,
     dash: true
 };
 
