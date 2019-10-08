@@ -34,6 +34,7 @@ function Controler( player ) {
     var requestedDirection = 0 ;
     var angleToApply = 0 ;
     var inertia = 0 ;
+    var runCounter = 0;
 
     // player state
     var state = {
@@ -85,6 +86,10 @@ function Controler( player ) {
 
             };
 
+        } else {
+
+            angleToApply = 0 ;
+
         };
         
 
@@ -123,8 +128,6 @@ function Controler( player ) {
         // There is no collision with the ground
         } else {
 
-            console.log('isFlying')
-
             state.isFlying = true ;
 
             // Gravity
@@ -143,19 +146,45 @@ function Controler( player ) {
         // Acceleration
         if ( input.moveKeys.length > 0 ) {
 
-            if ( state.isFlying ) {
-                inertia = inertia >= 1 ? 1 : inertia + 0.05 ;
-            } else { // on ground
-                inertia = inertia >= 1 ? 1 : inertia + 0.1 ;
+            // increment the counter allowing to run
+            if ( input.params.isSpacePressed ) {
+                runCounter += delta * 1000 ;
+            } else {
+                runCounter = 0;
             };
 
+            if ( state.isFlying ) { // in air
+
+                // test for change of direction while in the air
+                if ( angleToApply > 0.1 || angleToApply < -0.1 ) {
+                    inertia = inertia >= 1 ? inertia - 0.05 : inertia + 0.05 ;
+                };
+
+            } else { // on ground
+
+                if ( runCounter > 350 ) {
+                    inertia = inertia >= 1.8 ? 1.8 : inertia + 0.1 ;
+                } else {
+                    inertia = inertia >= 1 ? 1 : inertia + 0.1 ;
+                };
+
+            };
+
+
         // Slowdown
-        } else { 
+        } else {
+
+            // reset the counter allowing to run
+            runCounter = 0 ;
 
             if ( state.isFlying ) {
+
                 inertia = inertia / 1.12 ;
+
             } else { // on ground
+
                 inertia = inertia / 1.6 ;
+
             };
 
         };
@@ -167,12 +196,13 @@ function Controler( player ) {
 
 
     // Start a jump
-    function startJump() {
+    function chargedInput( charge ) {
 
         if ( !permission.infinityJump && !state.isFlying || 
              permission.infinityJump ) {
 
             speedUp = 1.25 ;
+
             player.position.y += 0.1 ;
 
         };
@@ -180,18 +210,24 @@ function Controler( player ) {
 
 
 
+
     function setMoveAngle( requestMove, requestedDir ) {
+
         requestedMove = requestMove ;
+
         if ( typeof requestedDir != 'undefined' ) {
+
             requestedDirection = requestedDir ;
+
         };
+
     };
 
 
 
     return {
         update,
-        startJump,
+        chargedInput,
         setMoveAngle
     };
 

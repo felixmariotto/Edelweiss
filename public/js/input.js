@@ -5,6 +5,11 @@ function Input() {
     var moveKeys = [];
     var tempDirArray ;
 
+    var params = {
+        isSpacePressed: false,
+        spaceCount: 0
+    };
+
 
     document.getElementById('json-scene').addEventListener('click', ()=> {
         document.getElementById('json-scene').blur();
@@ -44,7 +49,7 @@ function Input() {
                 break;
 
             case 'Space' :
-                jump();
+                params.isSpacePressed = true ;
                 break;
 
             case 'ArrowLeft' :
@@ -89,15 +94,17 @@ function Input() {
                 removeMoveKey( 'down' );
                 break;
 
+            case 'Space' :
+                releaseSpace();
+                break;
+
         };
 
     });
 
 
 
-    function jump() {
-        controler.startJump();
-    };
+
 
 
 
@@ -193,8 +200,40 @@ function Input() {
 
     };
 
+
+
+
+
+    function releaseSpace() {
+
+        controler.chargedInput( params.spaceCount );
+
+        params.isSpacePressed = false ;
+
+        params.spaceCount = 0 ;
+
+    };
+
+
+
+
+
+    function update( delta ) {
+
+        if ( params.isSpacePressed ) {
+
+            params.spaceCount += delta * 1000 ;
+
+        };
+
+    };
+
+
+
     return {
-        moveKeys
+        params,
+        moveKeys,
+        update
     };
 
 };
