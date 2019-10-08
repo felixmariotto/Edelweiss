@@ -22,7 +22,7 @@ function Controler( player ) {
 
     // vert movements
     var speedUp = 0 ;
-    var YCollisionHeight;
+    var yCollision;
 
     // horiz movements
     var HORIZMOVEVECT = new THREE.Vector3( 0, 0, 0.04 );
@@ -86,21 +86,37 @@ function Controler( player ) {
 
         // atlas compute the position of the player according
         // to the horizontal obstacles in the scene.
-        YCollisionHeight = atlas.collidePlayerGround() ;
+        yCollision = atlas.collidePlayerGround() ;
 
-        // There is a collision on the Y axis
-        if ( YCollisionHeight || YCollisionHeight == 0 ) {
-
-            state.isFlying = false ;
+        // There is a collision with the ground
+        if ( yCollision.point != undefined ) {
 
             speedUp = 0 ;
-            player.position.y = YCollisionHeight ;
 
-        // There is no collision on the Y axis
+            // Player stands on the ground
+            if ( yCollision.direction == 'down' ) {
+
+                state.isFlying = false ;
+                player.position.y = yCollision.point ;
+
+            } else { // Player hit a roof
+
+                // It's important to position the player slightly out
+                // of collision with the roof, or at next frame a new
+                // collision with the roof will be detected and speedUp
+                // will be set again to 0, which would stick the player
+                // to the roof
+                player.position.y = yCollision.point - 0.05 ;
+
+            };
+
+
+        // There is no collision with the ground
         } else {
 
             state.isFlying = true ;
 
+            // Gravity
             speedUp -= 0.06 ;
             speedUp = Math.max( Math.min( speedUp, 1.25 ), -2.3 );
 

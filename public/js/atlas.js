@@ -135,7 +135,10 @@ function Atlas( sceneGraph ) {
 
 	function collidePlayerGround() {
 
-		let isColliding ;
+		let collision = {
+			point: undefined,
+			direction: undefined
+		};
 
 		checkStage( Math.floor( player.position.y ) );
 		checkStage( Math.floor( player.position.y ) + 1 );
@@ -160,7 +163,8 @@ function Atlas( sceneGraph ) {
 								 logicTile.points[0].y <= player.position.y + (PLAYERHEIGHT / 2) ) {
 
 								// return the position of the player on the ground
-								isColliding = logicTile.points[0].y ;
+								collision.point = logicTile.points[0].y ;
+								collision.direction = 'down' ;
 
 							};
 
@@ -169,7 +173,8 @@ function Atlas( sceneGraph ) {
 								 player.position.y + (PLAYERHEIGHT / 2) <= logicTile.points[0].y ) {
 
 								// return the position of the player after hitting the roof
-								isColliding = logicTile.points[0].y - PLAYERHEIGHT ;
+								collision.point = logicTile.points[0].y - PLAYERHEIGHT ;
+								collision.direction = 'up' ;
 
 							};
 
@@ -183,7 +188,7 @@ function Atlas( sceneGraph ) {
 			
 		};
 
-		return isColliding
+		return collision;
 	};
 
 
