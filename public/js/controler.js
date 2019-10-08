@@ -72,11 +72,21 @@ function Controler( player ) {
             // No tweening in case of U-turn, + inertia reset
             } else if ( angleToApply > 2.8 || angleToApply < -2.8 ) {
 
-                currentDirection = requestedDirection ;
-                HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
+                if ( state.isFlying ) {
 
-                // reset inertia
-                inertia = 0 ;
+                    // apply no angle, only slow the player
+                    inertia = inertia * 0.8 ;
+
+                } else {
+
+                    currentDirection = requestedDirection ;
+                    HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
+
+                    // reset inertia
+                    inertia = 0 ;
+
+                };
+                
 
             // Normal tweening
             } else {
@@ -155,10 +165,22 @@ function Controler( player ) {
 
             if ( state.isFlying ) { // in air
 
-                // test for change of direction while in the air
-                if ( angleToApply > 0.1 || angleToApply < -0.1 ) {
-                    inertia = inertia >= 1 ? inertia - 0.05 : inertia + 0.05 ;
+                console.log(inertia)
+
+                // Keep the inertia if it a running jump
+                if ( inertia > 1 ) {
+
+                    // test for change of direction while in the air
+                    if ( angleToApply > 0.1 || angleToApply < -0.1 ) {
+                        inertia = inertia >= 1 ? inertia - 0.05 : inertia + 0.05 ;
+                    };
+
+                } else {
+                    
+                    inertia = inertia >= 1 ? 1 : inertia + 0.05 ;
+
                 };
+                
 
             } else { // on ground
 
@@ -195,8 +217,10 @@ function Controler( player ) {
 
 
 
-    // Start a jump
+    // Sent here by input module when the user released space bar
     function chargedInput( charge ) {
+
+        // console.log(charge)
 
         if ( !permission.infinityJump && !state.isFlying || 
              permission.infinityJump ) {
