@@ -155,7 +155,6 @@ function Controler( player ) {
 
                 };
                 
-
             } else { // on ground
 
                 if ( runCounter > 350 ) {
@@ -175,7 +174,16 @@ function Controler( player ) {
 
             if ( state.isFlying ) {
 
-                inertia = inertia / 1.12 ;
+                // We want a minimal speed when gliding
+                if ( state.isGliding ) {
+
+                    inertia = Math.max( inertia, 0.2 );
+
+                } else {
+
+                    inertia = inertia / 1.12 ;
+
+                };
 
             } else { // on ground
 
