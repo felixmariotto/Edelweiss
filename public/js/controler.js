@@ -194,6 +194,9 @@ function Controler( player ) {
         };
 
 
+        player.position.addScaledVector( HORIZMOVEVECT, inertia );
+
+
 
 
 
@@ -248,6 +251,9 @@ function Controler( player ) {
             };
 
         };
+
+
+        player.position.y += ( speedUp * 0.1 ) ;
 
 
 
@@ -311,7 +317,7 @@ function Controler( player ) {
                         currentDirection = utils.toPiRange( currentDirection + angleToApply );
                         HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
                         // inertia is set negative, so the player goes backward
-                        inertia = -0.5 ;
+                        inertia = -1 ;
                         speedUp = -0.15 ;
                         // player is pushed out of contact with the wall,
                         // so not the fall cannot be avoided
@@ -324,14 +330,6 @@ function Controler( player ) {
             
         };
 
-
-
-        ///////////////////
-        /// FINAL OUTPUTS
-        ///////////////////
-
-        player.position.y += ( speedUp * 0.1 ) ;
-        player.position.addScaledVector( HORIZMOVEVECT, inertia );
 
 
 
