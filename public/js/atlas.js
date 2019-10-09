@@ -248,6 +248,7 @@ function Atlas( sceneGraph ) {
 		xCollision.xPoint = undefined ;
 		xCollision.zPoint = undefined ;
 		xCollision.majorWallType = undefined;
+		xCollision.direction = checkDirection ;
 
 		// We check only the tiles at the same height as the player
 		checkStage( Math.floor( player.position.y ) );

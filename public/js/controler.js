@@ -105,7 +105,7 @@ function Controler( player ) {
 
                 // reset inertia
                 inertia = 0 ;
-                
+
 
             // Normal tweening
             } else {
@@ -185,7 +185,6 @@ function Controler( player ) {
 
         };
 
-        player.position.addScaledVector( HORIZMOVEVECT, inertia );
 
 
 
@@ -261,6 +260,8 @@ function Controler( player ) {
         };
 
         if ( xCollision.majorWallType ) {
+
+            // console.log(xCollision.majorWallType)
             
             switch (xCollision.majorWallType) {
 
@@ -271,6 +272,42 @@ function Controler( player ) {
                          player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) ) {
 
                         speedUp = -0.25 ;
+                    };
+                    break;
+
+                case 'wall-fall' :
+
+                    // make the player fall
+                    if ( player.position.y > xCollision.minHeight - (atlas.PLAYERHEIGHT / 2) &&
+                         player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) ) {
+
+                        // compute desired fall direction
+                        if ( xCollision.direction == 'left' ) {
+
+                            angleToApply = utils.toPiRange( (-Math.PI / 2) - currentDirection ) ;
+                        
+                        } else if ( xCollision.direction == 'left' ) {
+
+                            angleToApply = utils.toPiRange( (Math.PI / 2) - currentDirection ) ;
+
+                        } else if ( xCollision.direction == 'up' ) {
+
+                            angleToApply = utils.toPiRange( Math.PI - currentDirection ) ;
+
+                        } else if ( xCollision.direction == 'down' ) {
+
+                            angleToApply = - currentDirection ;
+
+                        };
+
+                        currentDirection = utils.toPiRange( currentDirection + angleToApply );
+                        HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
+                        // inertia is set negative, so the player goes backward
+                        inertia = -0.5 ;
+                        speedUp = -0.15 ;
+                        // player is pushed out of contact with the wall,
+                        // so not the fall cannot be avoided
+                        player.position.addScaledVector( HORIZMOVEVECT, -1 );
                     };
                     break;
 
@@ -286,6 +323,7 @@ function Controler( player ) {
         ///////////////////
 
         player.position.y += ( speedUp * 0.1 ) ;
+        player.position.addScaledVector( HORIZMOVEVECT, inertia );
 
 
 
