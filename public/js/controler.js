@@ -101,11 +101,10 @@ function Controler( player ) {
             // No tweening in case of U-turn, + inertia reset
             } else if ( angleToApply > 2.8 || angleToApply < -2.8 ) {
 
-                
+                // slow down before instead of U-turn if fast in the air
+                if ( state.isFlying && inertia > 0.15 ) {
 
-                if ( state.isFlying ) {
-
-                    inertia = inertia * 0.8 ;
+                    inertia = inertia * 0.7 ;
 
                 } else {
 
@@ -120,8 +119,17 @@ function Controler( player ) {
             // Normal tweening
             } else {
 
-                currentDirection = utils.toPiRange( currentDirection + (angleToApply / 4) );
-                HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply / 4 );
+                if ( state.isFlying ) {
+
+                    currentDirection = utils.toPiRange( currentDirection + (angleToApply / 20) );
+                    HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply / 20 );
+
+                } else {
+
+                    currentDirection = utils.toPiRange( currentDirection + (angleToApply / 4) );
+                    HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply / 4 );
+
+                };
 
             };
 
@@ -328,13 +336,11 @@ function Controler( player ) {
 
                         };
 
-                        console.log( xCollision.direction )
-
-                        inertia = 2 ;
-                        speedUp = -0.15 ;
+                        inertia = 1 ;
+                        speedUp = -0.35 ;
                         // player is pushed out of contact with the wall,
                         // so not the fall cannot be avoided
-                        // player.position.addScaledVector( HORIZMOVEVECT, 2 );
+                        player.position.addScaledVector( HORIZMOVEVECT, 1.5 );
                     };
                     break;
 
@@ -342,8 +348,6 @@ function Controler( player ) {
 
             
         };
-
-
 
 
 
