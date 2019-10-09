@@ -246,7 +246,14 @@ function Controler( player ) {
         ////////////////////////////
 
         xCollision = atlas.collidePlayerWalls( currentDirection );
-        // console.log(xCollision)
+
+        if ( xCollision.xPoint ) {
+            player.position.x = xCollision.xPoint ;
+        };
+
+        if ( xCollision.zPoint ) {
+            player.position.z = xCollision.zPoint ;
+        };
 
     };
 

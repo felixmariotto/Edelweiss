@@ -11,7 +11,8 @@ function Atlas( sceneGraph ) {
 	};
 
 	var xCollision = {
-		point: undefined,
+		xPoint: undefined,
+		zPoint: undefined,
 		majorWallType: undefined
 	};
 
@@ -240,14 +241,17 @@ function Atlas( sceneGraph ) {
 		};
 		*/
 
-		xCollision.point = undefined ;
-		xCollision.majorWallType = undefined ;
+		xCollision.xPoint = undefined ;
+		xCollision.zPoint = undefined ;
+		xCollision.majorWallType = undefined;
 
 		// We check only the tiles at the same height as the player
 		checkStage( Math.floor( player.position.y ) );
 		checkStage( Math.floor( player.position.y ) + 1 );
 		checkStage( Math.floor( player.position.y ) - 1 );
 		
+
+
 		function checkStage( stage ) {
 
 			if ( sceneGraph[ stage ] ) {
@@ -271,13 +275,35 @@ function Atlas( sceneGraph ) {
 								Math.max( logicTile.points[0].x, logicTile.points[1].x ) < ( player.position.x - ( PLAYERWIDTH / 2 ) ) ||
 								Math.max( logicTile.points[0].z, logicTile.points[1].z ) < ( player.position.z - ( PLAYERWIDTH / 2 ) )  ) ) {
 
-							// Second check according to player's direction
-							if ( ( ( (checkDirection == 'down') && logicTile.points[0].z > player.position.z ) ) ||
-							     ( ( (checkDirection == 'up') && logicTile.points[0].z < player.position.z ) ) ||
-							     ( ( (checkDirection == 'left') && logicTile.points[0].x < player.position.x ) ) ||
-							     ( ( (checkDirection == 'right') && logicTile.points[0].x > player.position.x ) ) ) {
-								
-								collidedWalls.push( logicTile );
+							// Add the tile to the list used to compute the major wall type
+							collidedWalls.push( logicTile );
+
+							// This part get the new user position
+
+							if ( logicTile.isXAligned ) {
+
+								if ( logicTile.points[0].z > player.position.z ) {
+
+									xCollision.zPoint = logicTile.points[0].z - (PLAYERWIDTH / 2) ;
+
+								} else {
+
+									xCollision.zPoint = logicTile.points[0].z + (PLAYERWIDTH / 2) ;
+
+								};
+
+							} else {
+
+								if ( logicTile.points[0].x > player.position.x ) {
+
+									xCollision.xPoint = logicTile.points[0].x - (PLAYERWIDTH / 2) ;
+
+								} else {
+
+									xCollision.xPoint = logicTile.points[0].x + (PLAYERWIDTH / 2) ;
+
+								};
+
 							};
 
 						};
@@ -329,12 +355,15 @@ function Atlas( sceneGraph ) {
 
 		};
 
+
 		collidedWalls = [];
 
+		/*
 		// temp
 		if ( xCollision.majorWallType ) {
-			console.log('collision')
-		}
+			console.log( xCollision );
+		};
+		*/
 
 		return xCollision ;
 
