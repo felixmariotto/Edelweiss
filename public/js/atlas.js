@@ -15,6 +15,15 @@ function Atlas( sceneGraph ) {
 		majorWallType: undefined
 	};
 
+	// used for wall collision
+	var checkDirection ;
+	var collidedWalls = [];
+	var majorWall;
+	var shiftedPlayerPos = new THREE.Vector3();
+	var tileCenter = new THREE.Vector3();
+	var wallDistance;
+
+
 	const PLAYERHEIGHT = 0.7 ;
 	const PLAYERWIDTH = 0.4 ;
 
@@ -213,6 +222,17 @@ function Atlas( sceneGraph ) {
 
 	function collidePlayerWalls( direction ) {
 
+		// Set a variable depending on the direction toward which the player is aimed
+		if ( (direction < Math.PI / 4) && (direction > -Math.PI / 4) ) {
+			checkDirection = 'down' ;
+		} else if ( (direction > Math.PI / 4) && (direction < (Math.PI / 4) *3 ) ) {
+			checkDirection = 'right' ;
+		} else if ( (direction < (-Math.PI / 4) *3 ) || (direction > (Math.PI / 4) *3 ) ) {
+			checkDirection = 'up' ;
+		} else if ( (direction < -Math.PI / 4) && (direction > (-Math.PI / 4) *3 ) ) {
+			checkDirection = 'left' ;
+		};
+
 		/*
 		var xCollision = {
 			point: undefined,
@@ -237,12 +257,20 @@ function Atlas( sceneGraph ) {
 
 					if ( logicTile.isWall ) {
 
+						// Check if any X Z collision
 						if ( !( Math.min( logicTile.points[0].x, logicTile.points[1].x ) > ( player.position.x + ( PLAYERWIDTH / 2 ) ) ||
 								Math.min( logicTile.points[0].z, logicTile.points[1].z ) > ( player.position.z + ( PLAYERWIDTH / 2 ) ) ||
 								Math.max( logicTile.points[0].x, logicTile.points[1].x ) < ( player.position.x - ( PLAYERWIDTH / 2 ) ) ||
 								Math.max( logicTile.points[0].z, logicTile.points[1].z ) < ( player.position.z - ( PLAYERWIDTH / 2 ) )  ) ) {
 
-							console.log('collide wall')
+							// Second check according to player's direction
+							if ( ( ( (checkDirection == 'down') && logicTile.points[0].z > player.position.z ) ) ||
+							     ( ( (checkDirection == 'up') && logicTile.points[0].z < player.position.z ) ) ||
+							     ( ( (checkDirection == 'left') && logicTile.points[0].x < player.position.x ) ) ||
+							     ( ( (checkDirection == 'right') && logicTile.points[0].x > player.position.x ) ) ) {
+								
+								collidedWalls.push( logicTile );
+							};
 
 						};
 
@@ -253,6 +281,49 @@ function Atlas( sceneGraph ) {
 			};
 
 		};
+
+
+
+		if ( collidedWalls.length == 1 ) {
+
+			// Set xCollision according to the only wall collided
+			xCollision.majorWallType = collidedWalls[0].type ;
+
+		} else if ( collidedWalls.length > 1 ) {
+
+			// compute shifted player position on shiftedPlayerPos
+			shiftedPlayerPos.copy( player.position );
+			shiftedPlayerPos.y += PLAYERHEIGHT / 2 ;
+
+			// get the major wall collided
+			majorWall = collidedWalls.reduce( (array, wall)=> {
+
+				// compute tile's center on tileCenter
+				tileCenter.x = (wall.points[0].x + wall.points[1].x) / 2 ;
+				tileCenter.y = (wall.points[0].y + wall.points[1].y) / 2 ;
+				tileCenter.z = (wall.points[0].z + wall.points[1].z) / 2 ;
+
+				// get distance between shiftedPlayerPos and tileCenter
+				wallDistance = shiftedPlayerPos.distanceTo( tileCenter );
+
+				// if shortest distance, put this wall in accu
+				if ( array[1] > wallDistance ) {
+
+					array[0] = wall ;
+					array[1] = wallDistance ;
+				};
+				
+				return array ;
+
+			}, [ undefined, 1000 /* var to compare distance */ ] )[0];
+
+			console.log(majorWall)
+
+			xCollision.majorWallType = majorWall.type ;
+
+		};
+
+		collidedWalls = [];
 
 		return xCollision ;
 

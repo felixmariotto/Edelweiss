@@ -246,6 +246,7 @@ function Controler( player ) {
         ////////////////////////////
 
         xCollision = atlas.collidePlayerWalls( currentDirection );
+        // console.log(xCollision)
 
     };
 
