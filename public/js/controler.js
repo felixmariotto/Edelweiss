@@ -123,58 +123,6 @@ function Controler( player ) {
         
 
 
-        //////////////////////////////////////
-        ///  GRAVITY AND GROUND COLLISION
-        //////////////////////////////////////
-
-        // atlas compute the position of the player according
-        // to the horizontal obstacles in the scene.
-        yCollision = atlas.collidePlayerGrounds() ;
-
-        // There is a collision with the ground
-        if ( yCollision.point != undefined ) {
-
-            speedUp = 0 ;
-
-            // Player stands on the ground
-            if ( yCollision.direction == 'down' ) {
-
-                state.isFlying = false ;
-                player.position.y = yCollision.point ;
-
-            } else { // Player hit a roof
-
-                // It's important to position the player slightly out
-                // of collision with the roof, or at next frame a new
-                // collision with the roof will be detected and speedUp
-                // will be set again to 0, which would stick the player
-                // to the roof
-                player.position.y = yCollision.point - 0.05 ;
-
-            };
-
-
-        // There is no collision with the ground
-        } else {
-
-            state.isFlying = true ;
-
-            if ( state.isGliding ) {
-
-                // fall eased slowdown
-                speedUp += ( -0.3 - speedUp ) * 0.1 ;
-
-            } else {
-
-                // Normal gravity
-                speedUp -= 0.06 ;
-                speedUp = Math.max( Math.min( speedUp, 1.25 ), -2.3 );
-
-            };
-
-        };
-
-        player.position.y += ( speedUp * 0.1 ) ;
 
 
         ///////////////////////////////////////
@@ -241,21 +189,102 @@ function Controler( player ) {
 
 
 
-        ////////////////////////////
-        ///    CLIMBING MOVEMENT
-        ////////////////////////////
+
+
+        //////////////////////////////////////
+        ///  GRAVITY AND GROUND COLLISION
+        //////////////////////////////////////
+
+        // atlas compute the position of the player according
+        // to the horizontal obstacles in the scene.
+        yCollision = atlas.collidePlayerGrounds() ;
+
+        // There is a collision with the ground
+        if ( yCollision.point != undefined ) {
+
+            speedUp = 0 ;
+
+            // Player stands on the ground
+            if ( yCollision.direction == 'down' ) {
+
+                state.isFlying = false ;
+                player.position.y = yCollision.point ;
+
+            } else { // Player hit a roof
+
+                // It's important to position the player slightly out
+                // of collision with the roof, or at next frame a new
+                // collision with the roof will be detected and speedUp
+                // will be set again to 0, which would stick the player
+                // to the roof
+                player.position.y = yCollision.point - 0.05 ;
+
+            };
+
+
+        // There is no collision with the ground
+        } else {
+
+            state.isFlying = true ;
+
+            if ( state.isGliding ) {
+
+                // fall eased slowdown
+                speedUp += ( -0.3 - speedUp ) * 0.1 ;
+
+            } else {
+
+                // Normal gravity
+                speedUp -= 0.06 ;
+                speedUp = Math.max( Math.min( speedUp, 1.25 ), -2.3 );
+
+            };
+
+        };
+
+
+
+
+        ///////////////////////////////////
+        ///  CLIMBING AND WALL COLLISIONS
+        ///////////////////////////////////
 
         xCollision = atlas.collidePlayerWalls( currentDirection );
 
         if ( xCollision.xPoint ) {
             player.position.x = xCollision.xPoint ;
-            console.log('position on X');
         };
 
         if ( xCollision.zPoint ) {
             player.position.z = xCollision.zPoint ;
-            console.log('position on Z')
         };
+
+        if ( xCollision.majorWallType ) {
+            
+            switch (xCollision.majorWallType) {
+
+                case 'wall-slip' :
+                    // fall eased slowdown
+                    if ( speedUp < 0 ) {
+                        speedUp = -0.25 ;
+                    };
+                    break;
+
+            };
+
+            
+        };
+
+
+
+        ///////////////////
+        /// FINAL OUTPUTS
+        ///////////////////
+
+        player.position.y += ( speedUp * 0.1 ) ;
+
+
+
 
     };
 
