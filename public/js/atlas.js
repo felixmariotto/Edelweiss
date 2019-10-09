@@ -255,7 +255,15 @@ function Atlas( sceneGraph ) {
 				// loop through the group of tiles at the same height as the player
 				sceneGraph[ stage ].forEach( (logicTile, i)=> {
 
-					if ( logicTile.isWall ) {
+					// Check that the tile is not a ground,
+					// and check that the wall is at an interacting height with the player
+					if ( logicTile.isWall &&
+						 // Is bottom limit of player intersecting with tile ?
+						 ( Math.min( logicTile.points[0].y, logicTile.points[1].y ) <= player.position.y + 0.1 && 
+						   Math.max( logicTile.points[0].y, logicTile.points[1].y ) >= player.position.y + 0.1 )  ||
+						 // Is top limit of player intersecting with tile ?
+						 ( Math.min( logicTile.points[0].y, logicTile.points[1].y ) <= player.position.y + PLAYERHEIGHT - 0.1 && 
+						   Math.max( logicTile.points[0].y, logicTile.points[1].y ) >= player.position.y + PLAYERHEIGHT - 0.1 )  ) {
 
 						// Check if any X Z collision
 						if ( !( Math.min( logicTile.points[0].x, logicTile.points[1].x ) > ( player.position.x + ( PLAYERWIDTH / 2 ) ) ||
@@ -317,13 +325,16 @@ function Atlas( sceneGraph ) {
 
 			}, [ undefined, 1000 /* var to compare distance */ ] )[0];
 
-			console.log(majorWall)
-
 			xCollision.majorWallType = majorWall.type ;
 
 		};
 
 		collidedWalls = [];
+
+		// temp
+		if ( xCollision.majorWallType ) {
+			console.log('collision')
+		}
 
 		return xCollision ;
 
