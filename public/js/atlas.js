@@ -225,30 +225,13 @@ function Atlas( sceneGraph ) {
 
 	function collidePlayerWalls( direction ) {
 
-		// Set a variable depending on the direction toward which the player is aimed
-		if ( (direction < Math.PI / 4) && (direction > -Math.PI / 4) ) {
-			checkDirection = 'down' ;
-		} else if ( (direction > Math.PI / 4) && (direction < (Math.PI / 4) *3 ) ) {
-			checkDirection = 'right' ;
-		} else if ( (direction < (-Math.PI / 4) *3 ) || (direction > (Math.PI / 4) *3 ) ) {
-			checkDirection = 'up' ;
-		} else if ( (direction < -Math.PI / 4) && (direction > (-Math.PI / 4) *3 ) ) {
-			checkDirection = 'left' ;
-		};
-
-		/*
-		var xCollision = {
-			point: undefined,
-			majorWallType: undefined
-		};
-		*/
 
 		xCollision.maxHeight = undefined ;
 		xCollision.minHeight = undefined ;
 		xCollision.xPoint = undefined ;
 		xCollision.zPoint = undefined ;
-		xCollision.majorWallType = undefined;
-		xCollision.direction = checkDirection ;
+		xCollision.majorWallType = undefined ;
+		xCollision.direction = undefined ;
 
 		// We check only the tiles at the same height as the player
 		checkStage( Math.floor( player.position.y ) );
@@ -355,6 +338,9 @@ function Atlas( sceneGraph ) {
 			// Set xCollision according to the only wall collided
 			xCollision.majorWallType = collidedWalls[0].type ;
 
+			// compute direction of the tile compared to player's position
+			computeDirection( collidedWalls[0] );
+
 		} else if ( collidedWalls.length > 1 ) {
 
 			// compute shifted player position on shiftedPlayerPos
@@ -385,10 +371,29 @@ function Atlas( sceneGraph ) {
 
 			xCollision.majorWallType = majorWall.type ;
 
+			// compute direction of the tile compared to player's position
+			computeDirection( majorWall );
+
 		};
 
 
 		collidedWalls = [];
+
+
+		function computeDirection( logicTile ) {
+
+			if ( logicTile.isXAligned ) {
+
+				xCollision.direction = logicTile.points[0].z > player.position.z ? 'down' : 'up' ;
+
+			} else {
+
+				xCollision.direction = logicTile.points[0].x > player.position.x ? 'right' : 'left' ;
+
+			};
+
+		};
+
 
 		/*
 		// temp
@@ -396,6 +401,7 @@ function Atlas( sceneGraph ) {
 			console.log( xCollision );
 		};
 		*/
+
 
 		return xCollision ;
 

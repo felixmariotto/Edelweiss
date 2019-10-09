@@ -31,7 +31,8 @@ function Controler( player ) {
     var yCollision;
 
     // horiz movements
-    var HORIZMOVEVECT = new THREE.Vector3( 0, 0, 0.04 );
+    var SPEED = 0.04 ;
+    var HORIZMOVEVECT = new THREE.Vector3( 0, 0, SPEED );
     var AXISHORIZMOVEROT = new THREE.Vector3( 0, 1, 0 );
     var requestedMove ;
     var currentDirection = 0 ;
@@ -100,11 +101,20 @@ function Controler( player ) {
             // No tweening in case of U-turn, + inertia reset
             } else if ( angleToApply > 2.8 || angleToApply < -2.8 ) {
 
-                currentDirection = requestedDirection ;
-                HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
+                
 
-                // reset inertia
-                inertia = 0 ;
+                if ( state.isFlying ) {
+
+                    inertia = inertia * 0.8 ;
+
+                } else {
+
+                    currentDirection = requestedDirection ;
+                    HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
+
+                    // reset inertia
+                    inertia = 0 ;
+                };
 
 
             // Normal tweening
@@ -298,30 +308,33 @@ function Controler( player ) {
                         // compute desired fall direction
                         if ( xCollision.direction == 'left' ) {
 
-                            angleToApply = utils.toPiRange( (-Math.PI / 2) - currentDirection ) ;
+                            currentDirection = Math.PI / 2 ;
+                            HORIZMOVEVECT.set( SPEED, 0, 0 );
                         
-                        } else if ( xCollision.direction == 'left' ) {
+                        } else if ( xCollision.direction == 'right' ) {
 
-                            angleToApply = utils.toPiRange( (Math.PI / 2) - currentDirection ) ;
+                            currentDirection = -Math.PI / 2 ;
+                            HORIZMOVEVECT.set( -SPEED, 0, 0 );
 
                         } else if ( xCollision.direction == 'up' ) {
 
-                            angleToApply = utils.toPiRange( Math.PI - currentDirection ) ;
+                            currentDirection = 0 ;
+                            HORIZMOVEVECT.set( 0, 0, SPEED );
 
                         } else if ( xCollision.direction == 'down' ) {
 
-                            angleToApply = - currentDirection ;
+                            currentDirection = Math.PI ;
+                            HORIZMOVEVECT.set( 0, 0, -SPEED );
 
                         };
 
-                        currentDirection = utils.toPiRange( currentDirection + angleToApply );
-                        HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
-                        // inertia is set negative, so the player goes backward
-                        inertia = -1 ;
+                        console.log( xCollision.direction )
+
+                        inertia = 2 ;
                         speedUp = -0.15 ;
                         // player is pushed out of contact with the wall,
                         // so not the fall cannot be avoided
-                        player.position.addScaledVector( HORIZMOVEVECT, -1 );
+                        // player.position.addScaledVector( HORIZMOVEVECT, 2 );
                     };
                     break;
 
@@ -329,6 +342,8 @@ function Controler( player ) {
 
             
         };
+
+
 
 
 
