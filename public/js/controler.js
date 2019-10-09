@@ -304,7 +304,9 @@ function Controler( player ) {
                          player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) ) {
 
                         speedUp = -0.25 ;
-                    };
+                    } else {
+                        console.log( 'fuck')
+                    }
                     break;
 
                 case 'wall-fall' :
