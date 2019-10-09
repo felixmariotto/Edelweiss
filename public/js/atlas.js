@@ -270,41 +270,42 @@ function Atlas( sceneGraph ) {
 						   Math.max( logicTile.points[0].y, logicTile.points[1].y ) >= player.position.y + PLAYERHEIGHT - 0.1 )  ) {
 
 						// Check if any X Z collision
-						if ( !( Math.min( logicTile.points[0].x, logicTile.points[1].x ) > ( player.position.x + ( PLAYERWIDTH / 2 ) ) ||
-								Math.min( logicTile.points[0].z, logicTile.points[1].z ) > ( player.position.z + ( PLAYERWIDTH / 2 ) ) ||
-								Math.max( logicTile.points[0].x, logicTile.points[1].x ) < ( player.position.x - ( PLAYERWIDTH / 2 ) ) ||
-								Math.max( logicTile.points[0].z, logicTile.points[1].z ) < ( player.position.z - ( PLAYERWIDTH / 2 ) )  ) ) {
 
-							// Add the tile to the list used to compute the major wall type
-							collidedWalls.push( logicTile );
+						if ( logicTile.isXAligned &&
+							 !( Math.min( logicTile.points[0].x, logicTile.points[1].x ) > ( player.position.x + ( PLAYERWIDTH / 2 ) - 0.05 ) ||
+							 Math.max( logicTile.points[0].x, logicTile.points[1].x ) < ( player.position.x - ( PLAYERWIDTH / 2 ) + 0.05 ) ||
+							 logicTile.points[0].z < ( player.position.z - ( PLAYERWIDTH / 2 ) ) ||
+							 logicTile.points[0].z > ( player.position.z + ( PLAYERWIDTH / 2 ) ) ) ) {
 
-							// This part get the new user position
+							if ( logicTile.points[0].z > player.position.z ) {
 
-							if ( logicTile.isXAligned ) {
-
-								if ( logicTile.points[0].z > player.position.z ) {
-
-									xCollision.zPoint = logicTile.points[0].z - (PLAYERWIDTH / 2) ;
-
-								} else {
-
-									xCollision.zPoint = logicTile.points[0].z + (PLAYERWIDTH / 2) ;
-
-								};
+								xCollision.zPoint = logicTile.points[0].z - (PLAYERWIDTH / 2) ;
 
 							} else {
 
-								if ( logicTile.points[0].x > player.position.x ) {
-
-									xCollision.xPoint = logicTile.points[0].x - (PLAYERWIDTH / 2) ;
-
-								} else {
-
-									xCollision.xPoint = logicTile.points[0].x + (PLAYERWIDTH / 2) ;
-
-								};
+								xCollision.zPoint = logicTile.points[0].z + (PLAYERWIDTH / 2) ;
 
 							};
+
+							collidedWalls.push( logicTile );
+
+						} else if ( !logicTile.isXAligned &&
+									 !( Math.min( logicTile.points[0].z, logicTile.points[1].z ) > ( player.position.z + ( PLAYERWIDTH / 2 ) - 0.05 ) ||
+									 Math.max( logicTile.points[0].z, logicTile.points[1].z ) < ( player.position.z - ( PLAYERWIDTH / 2 ) + 0.05 ) ||
+									 logicTile.points[0].x < ( player.position.x - ( PLAYERWIDTH / 2 ) ) ||
+									 logicTile.points[0].x > ( player.position.x + ( PLAYERWIDTH / 2 ) ) ) ) {
+
+							if ( logicTile.points[0].x > player.position.x ) {
+
+								xCollision.xPoint = logicTile.points[0].x - (PLAYERWIDTH / 2) ;
+
+							} else {
+
+								xCollision.xPoint = logicTile.points[0].x + (PLAYERWIDTH / 2) ;
+
+							};
+
+							collidedWalls.push( logicTile );
 
 						};
 

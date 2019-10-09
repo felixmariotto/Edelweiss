@@ -249,10 +249,12 @@ function Controler( player ) {
 
         if ( xCollision.xPoint ) {
             player.position.x = xCollision.xPoint ;
+            console.log('position on X');
         };
 
         if ( xCollision.zPoint ) {
             player.position.z = xCollision.zPoint ;
+            console.log('position on Z')
         };
 
     };
