@@ -229,8 +229,8 @@ function Controler( player ) {
 
             if ( state.isGliding ) {
 
-                // fall eased slowdown
-                speedUp += ( -0.3 - speedUp ) * 0.1 ;
+                // set gliding fall speed
+                speedUp = -0.1 ;
 
             } else {
 
