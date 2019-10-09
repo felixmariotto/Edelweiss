@@ -251,6 +251,7 @@ function Controler( player ) {
 
         xCollision = atlas.collidePlayerWalls( currentDirection );
 
+
         if ( xCollision.xPoint ) {
             player.position.x = xCollision.xPoint ;
         };
@@ -264,8 +265,11 @@ function Controler( player ) {
             switch (xCollision.majorWallType) {
 
                 case 'wall-slip' :
-                    // fall eased slowdown
-                    if ( speedUp < 0 ) {
+                    // set slipping speed
+                    if ( speedUp < 0 &&
+                         player.position.y > xCollision.minHeight - (atlas.PLAYERHEIGHT / 2) &&
+                         player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) ) {
+
                         speedUp = -0.25 ;
                     };
                     break;

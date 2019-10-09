@@ -11,6 +11,8 @@ function Atlas( sceneGraph ) {
 	};
 
 	var xCollision = {
+		maxHeight: undefined,
+		minHeight: undefined,
 		xPoint: undefined,
 		zPoint: undefined,
 		majorWallType: undefined
@@ -241,6 +243,8 @@ function Atlas( sceneGraph ) {
 		};
 		*/
 
+		xCollision.maxHeight = undefined ;
+		xCollision.minHeight = undefined ;
 		xCollision.xPoint = undefined ;
 		xCollision.zPoint = undefined ;
 		xCollision.majorWallType = undefined;
@@ -269,6 +273,32 @@ function Atlas( sceneGraph ) {
 						 ( Math.min( logicTile.points[0].y, logicTile.points[1].y ) <= player.position.y + PLAYERHEIGHT - 0.1 && 
 						   Math.max( logicTile.points[0].y, logicTile.points[1].y ) >= player.position.y + PLAYERHEIGHT - 0.1 )  ) {
 
+
+						// Save the colliding tile into the array that is used to know
+						// the major wall type, and compute the max and min wall limits
+						// min and heigh limits are used for slipping, hauling.. etc..
+						function recordCollision() {
+
+							collidedWalls.push( logicTile );
+
+							if ( xCollision.maxHeight ) {
+								if ( xCollision.maxHeight < Math.max( logicTile.points[0].y, logicTile.points[1].y ) ) {
+									xCollision.maxHeight = Math.max( logicTile.points[0].y, logicTile.points[1].y );
+								};
+							} else {
+								xCollision.maxHeight = Math.max( logicTile.points[0].y, logicTile.points[1].y );
+							};
+
+							if ( xCollision.minHeight ) {
+								if ( xCollision.minHeight > Math.min( logicTile.points[0].y, logicTile.points[1].y ) ) {
+									xCollision.minHeight = Math.min( logicTile.points[0].y, logicTile.points[1].y );
+								};
+							} else {
+								xCollision.minHeight = Math.min( logicTile.points[0].y, logicTile.points[1].y );
+							};
+
+						};
+
 						// Check if any X Z collision
 
 						if ( logicTile.isXAligned &&
@@ -287,7 +317,7 @@ function Atlas( sceneGraph ) {
 
 							};
 
-							collidedWalls.push( logicTile );
+							recordCollision();
 
 						} else if ( !logicTile.isXAligned &&
 									 !( Math.min( logicTile.points[0].z, logicTile.points[1].z ) > ( player.position.z + ( PLAYERWIDTH / 2 ) - 0.05 ) ||
@@ -305,7 +335,7 @@ function Atlas( sceneGraph ) {
 
 							};
 
-							collidedWalls.push( logicTile );
+							recordCollision();
 
 						};
 
@@ -466,7 +496,9 @@ function Atlas( sceneGraph ) {
 
 	return {
 		collidePlayerGrounds,
-		collidePlayerWalls
+		collidePlayerWalls,
+		PLAYERHEIGHT,
+		PLAYERWIDTH
 	};
 
 
