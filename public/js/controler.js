@@ -9,8 +9,6 @@ function Controler( player ) {
 
     function toggleGliding( bool ) {
         permission.gliding = bool ;
-
-        console.log(permission)
     };
 
     function toggleInfinityJump( bool ) {
@@ -299,7 +297,7 @@ function Controler( player ) {
 
 
 
-
+        
 
 
         //////////////////////////////////////
@@ -493,6 +491,7 @@ function Controler( player ) {
         };
 
 
+
     };
 
 
@@ -521,6 +520,7 @@ function Controler( player ) {
     // Sent here by input module when the user released space bar
     function spaceInput() {
 
+
         if ( !state.isGliding &&
              ( !permission.infinityJump && !state.isFlying || 
              permission.infinityJump ) ) {
@@ -529,7 +529,7 @@ function Controler( player ) {
 
             // This conditional to make sure that the player is climbing
             // or slipping along a wall
-            if (state.isFlying) {
+            if ( state.isFlying || state.isClimbing ) {
 
                 switch ( contactDirection ) {
 
@@ -571,6 +571,7 @@ function Controler( player ) {
             
 
             function setJump() {
+                state.isClimbing = false ;
                 inertia = 1.6 ;
                 speedUp = 0.95 ;
             };
