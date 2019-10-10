@@ -27,6 +27,8 @@ function Controler( player ) {
     // vert movements
     var speedUp = 0 ;
     var yCollision;
+    const SLIPSPEED = -0.21 ;
+    const MAXSLIPINERTIA = 0.15 ;
 
     // horiz movements
     var SPEED = 0.04 ;
@@ -265,7 +267,7 @@ function Controler( player ) {
                     currentDirection = requestedDirection ;
                     HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
                     player.position.addScaledVector( HORIZMOVEVECT, 0.5 );
-                    
+
                 };
 
             };
@@ -417,7 +419,9 @@ function Controler( player ) {
                          player.position.y > xCollision.minHeight - (atlas.PLAYERHEIGHT / 2) &&
                          player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) ) {
 
-                        speedUp = -0.25 ;
+                        speedUp = SLIPSPEED ;
+                        // Clamp inertia during slipping so the fall is quite straight
+                        inertia = Math.min( inertia, MAXSLIPINERTIA ) ;
                     };
                     setClimbingState( false );
                     break;

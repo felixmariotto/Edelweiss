@@ -1,6 +1,4 @@
 
-- Player cannot jump while climbing
 - Player should haul themselves when on an edge
 - Player must keep the same key-mouvement map when change face while climbing
 - Player should be able to go through a corner while climbing
-- Sliding horizontaly should be limited while slipping on a slip-wall
