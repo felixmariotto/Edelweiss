@@ -101,7 +101,7 @@ function Controler( player ) {
         // Acceleration
         if ( input.moveKeys.length > 0 ) {
 
-            
+
 
             ////////////////////////
             ////   MOVEMENT ANGLE
@@ -292,6 +292,8 @@ function Controler( player ) {
         };
 
 
+
+
         player.position.y += ( speedUp * 0.1 ) ;
 
 
@@ -420,6 +422,10 @@ function Controler( player ) {
                         setJump();
                         break;
 
+                    default :
+                        speedUp = 1.25 ;
+                        break;
+
                 };
 
             } else {
@@ -427,16 +433,17 @@ function Controler( player ) {
                 speedUp = 1.25 ;
             
             };
-
             
 
             function setJump() {
                 inertia = 1.6 ;
                 speedUp = 0.95 ;
-                player.position.addScaledVector( HORIZMOVEVECT, 1.9 );
             };
 
+
         };
+
+
     };
 
 
