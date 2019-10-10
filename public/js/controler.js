@@ -88,66 +88,7 @@ function Controler( player ) {
 
 
 
-        ////////////////////////
-        ////   MOVEMENT ANGLE
-        ////////////////////////
-
-        if ( currentDirection != requestedDirection ) {
-
-            // get the difference in radians between the current orientation
-            // and the requested one
-            angleToApply = utils.toPiRange( requestedDirection - currentDirection ) ;
-
-            // finish the tweening if the turn is almost finished
-            if ( angleToApply < 0.01 && angleToApply > -0.01 ) {
-
-                currentDirection = requestedDirection ;
-                HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
-
-            // No tweening in case of U-turn, + inertia reset
-            } else if ( angleToApply > 2.8 || angleToApply < -2.8 ) {
-
-                // console.log( state.isFlying && inertia > 0.15 )
-
-                // slow down before instead of U-turn if fast in the air
-                if ( state.isFlying && inertia > 0.15 ) {
-
-                    inertia = inertia * 0.7 ;
-
-                } else {
-
-                    currentDirection = requestedDirection ;
-                    HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
-
-                    // reset inertia
-                    inertia = 0 ;
-
-                    // console.log('coucou')
-                };
-
-
-            // Normal tweening
-            } else {
-
-                if ( state.isFlying ) {
-
-                    currentDirection = utils.toPiRange( currentDirection + (angleToApply / 20) );
-                    HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply / 20 );
-
-                } else {
-
-                    currentDirection = utils.toPiRange( currentDirection + (angleToApply / 4) );
-                    HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply / 4 );
-
-                };
-
-            };
-
-        } else {
-
-            angleToApply = 0 ;
-
-        };
+       
         
 
 
@@ -159,6 +100,76 @@ function Controler( player ) {
 
         // Acceleration
         if ( input.moveKeys.length > 0 ) {
+
+            
+
+            ////////////////////////
+            ////   MOVEMENT ANGLE
+            ////////////////////////
+
+            if ( currentDirection != requestedDirection ) {
+
+                // get the difference in radians between the current orientation
+                // and the requested one
+                angleToApply = utils.toPiRange( requestedDirection - currentDirection ) ;
+
+                // finish the tweening if the turn is almost finished
+                if ( angleToApply < 0.01 && angleToApply > -0.01 ) {
+
+                    currentDirection = requestedDirection ;
+                    HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
+
+                // No tweening in case of U-turn, + inertia reset
+                } else if ( angleToApply > 2.8 || angleToApply < -2.8 ) {
+
+                    
+                    // console.log( state.isFlying && inertia > 0.15 )
+
+                    // slow down before instead of U-turn if fast in the air
+                    if ( state.isFlying && inertia > 0.15 ) {
+
+                        inertia = inertia * 0.7 ;
+
+                    } else {
+
+                        currentDirection = requestedDirection ;
+                        HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
+
+                        // reset inertia
+                        inertia = 0 ;
+
+                        // console.log('coucou')
+                    };
+
+
+                // Normal tweening
+                } else {
+
+                    if ( state.isFlying ) {
+
+                        currentDirection = utils.toPiRange( currentDirection + (angleToApply / 20) );
+                        HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply / 20 );
+
+                    } else {
+
+                        currentDirection = utils.toPiRange( currentDirection + (angleToApply / 4) );
+                        HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply / 4 );
+
+                    };
+
+                };
+
+            } else {
+
+                angleToApply = 0 ;
+
+            };
+
+
+
+            /////////////
+            //  INERTIA
+            /////////////
 
             // increment the counter allowing to run
             if ( input.params.isSpacePressed ) {
