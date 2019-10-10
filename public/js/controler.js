@@ -42,8 +42,11 @@ function Controler( player ) {
     var runCounter = 0;
 
     // climbing movements
-    var CLIMBSPEED = 0.03 ;
-    var CLIMBVEC = new THREE.Vector3( 0, CLIMBSPEED, 0 );
+    const HARDWALLFACTOR = 0.4 ;
+    const MEDIUMWALLFACTOR = 0.65 ;
+    var climbSpeedFactor;
+    var CLIMBSPEED = 0.022 ;
+    var CLIMBVEC = new THREE.Vector3();
     var AXISX = new THREE.Vector3( 1, 0, 0 );
     var AXISZ = new THREE.Vector3( 0, 0, 1 );
 
@@ -222,38 +225,30 @@ function Controler( player ) {
             switch ( contactDirection ) {
 
                 case 'up' :
-                    climb( AXISZ, requestedDirection );
+                    climb( AXISZ, -1, requestedDirection );
                     break;
 
                 case 'down' :
-                    climb( AXISZ, requestedDirection );
+                    climb( AXISZ, -1, requestedDirection );
                     break;
 
                 case 'left' :
-                    climb( AXISX, requestedDirection );
+                    climb( AXISX, 1, utils.toPiRange( requestedDirection + (Math.PI / 2) ) );
                     break;
 
                 case 'right' :
-                    climb( AXISX, requestedDirection );
+                    climb( AXISX, -1, utils.toPiRange( (requestedDirection + (Math.PI / 2)) * -1 ) );
                     break;
 
             };
 
-            /*
-            var CLIMBSPEED = 0.03 ;
-            var CLIMBVEC = new THREE.Vector3( 0, CLIMBSPEED, 0 );
-            var AXISX = new THREE.Vector3( 1, 0, 0 );
-            var AXISZ = new THREE.Vector3( 0, 0, 1 );
-            */
 
-            function climb( axis, angle ) {
+            function climb( axis, vecInversion, angle ) {
 
-                CLIMBVEC.set( 0, -CLIMBSPEED, 0 );
+                CLIMBVEC.set( 0, CLIMBSPEED * vecInversion, 0 );
                 CLIMBVEC.applyAxisAngle( axis, angle );
 
-                console.log( CLIMBVEC );
-
-                player.position.addScaledVector( CLIMBVEC, 1 );
+                player.position.addScaledVector( CLIMBVEC, 1 * climbSpeedFactor );
 
             };
 
@@ -443,18 +438,21 @@ function Controler( player ) {
 
                 case 'wall-easy' :
                     setClimbingState( true );
+                    climbSpeedFactor = 1 ;
                     break;
 
 
 
                 case 'wall-medium' :
                     setClimbingState( true );
+                    climbSpeedFactor = MEDIUMWALLFACTOR ;
                     break;
 
 
 
                 case 'wall-hard' :
                     setClimbingState( true );
+                    climbSpeedFactor = HARDWALLFACTOR ;
                     break;
 
             };
