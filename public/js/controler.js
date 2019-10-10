@@ -338,7 +338,12 @@ function Controler( player ) {
 
             } else if ( state.isClimbing ) {
 
-                speedUp = 0 ;
+                // Here we make the player slip a little bit along
+                // a climbing wall if they were falling ( or slipping
+                // a slip-wall )
+                speedUp = speedUp > -0.01 ?
+                                0 :
+                                Math.max( speedUp, -0.3 ) * 0.85 ;
 
             } else {
 
