@@ -41,10 +41,17 @@ function Controler( player ) {
     var inertia = 0 ;
     var runCounter = 0;
 
+    // climbing movements
+    var CLIMBSPEED = 0.03 ;
+    var CLIMBVEC = new THREE.Vector3( 0, CLIMBSPEED, 0 );
+    var AXISX = new THREE.Vector3( 1, 0, 0 );
+    var AXISZ = new THREE.Vector3( 0, 0, 1 );
+
     // player state
     var state = {
         isFlying: false,
-        isGliding: false
+        isGliding: false,
+        isClimbing: false
     };
 
     // player permission
@@ -99,7 +106,7 @@ function Controler( player ) {
         ///////////////////////////////////////
 
         // Acceleration
-        if ( input.moveKeys.length > 0 ) {
+        if ( ( input.moveKeys.length > 0 ) && !state.isClimbing ) {
 
 
 
@@ -122,9 +129,6 @@ function Controler( player ) {
                 // No tweening in case of U-turn, + inertia reset
                 } else if ( angleToApply > 2.8 || angleToApply < -2.8 ) {
 
-                    
-                    // console.log( state.isFlying && inertia > 0.15 )
-
                     // slow down before instead of U-turn if fast in the air
                     if ( state.isFlying && inertia > 0.15 ) {
 
@@ -138,7 +142,6 @@ function Controler( player ) {
                         // reset inertia
                         inertia = 0 ;
 
-                        // console.log('coucou')
                     };
 
 
@@ -205,7 +208,63 @@ function Controler( player ) {
             };
 
 
-        // Slowdown
+
+
+        //////////////////////////
+        ///  CLIMBING MOVEMENTS
+        //////////////////////////
+
+        } else if ( ( input.moveKeys.length > 0 ) && state.isClimbing ) {
+
+            runCounter = 0 ;
+            inertia = 0 ;
+
+            switch ( contactDirection ) {
+
+                case 'up' :
+                    climb( AXISZ, requestedDirection );
+                    break;
+
+                case 'down' :
+                    climb( AXISZ, requestedDirection );
+                    break;
+
+                case 'left' :
+                    climb( AXISX, requestedDirection );
+                    break;
+
+                case 'right' :
+                    climb( AXISX, requestedDirection );
+                    break;
+
+            };
+
+            /*
+            var CLIMBSPEED = 0.03 ;
+            var CLIMBVEC = new THREE.Vector3( 0, CLIMBSPEED, 0 );
+            var AXISX = new THREE.Vector3( 1, 0, 0 );
+            var AXISZ = new THREE.Vector3( 0, 0, 1 );
+            */
+
+            function climb( axis, angle ) {
+
+                CLIMBVEC.set( 0, -CLIMBSPEED, 0 );
+                CLIMBVEC.applyAxisAngle( axis, angle );
+
+                console.log( CLIMBVEC );
+
+                player.position.addScaledVector( CLIMBVEC, 1 );
+
+            };
+
+            
+
+
+
+        //////////////////
+        ///  SLOWDOWN
+        //////////////////
+
         } else {
 
             // reset the counter allowing to run
@@ -213,13 +272,14 @@ function Controler( player ) {
 
             if ( state.isFlying ) {
 
-                // We want a minimal speed when gliding
+                // We set a minimal speed when gliding
                 if ( state.isGliding ) {
 
                     inertia = Math.max( inertia, 0.2 );
 
                 } else {
 
+                    // slowdown is slower in the air
                     inertia = inertia / 1.12 ;
 
                 };
@@ -281,6 +341,10 @@ function Controler( player ) {
                 // set gliding fall speed
                 speedUp = -0.1 ;
 
+            } else if ( state.isClimbing ) {
+
+                speedUp = 0 ;
+
             } else {
 
                 // Normal gravity
@@ -299,9 +363,10 @@ function Controler( player ) {
 
 
 
-        ///////////////////////////////////
-        ///  CLIMBING AND WALL COLLISIONS
-        ///////////////////////////////////
+        /////////////////////////////////////////////
+        ///  CLIMBING SETTING AND WALL COLLISIONS
+        /////////////////////////////////////////////
+
 
         xCollision = atlas.collidePlayerWalls( currentDirection );
 
@@ -318,11 +383,12 @@ function Controler( player ) {
 
         if ( xCollision.majorWallType ) {
 
-            // console.log(xCollision.majorWallType)
             
             switch (xCollision.majorWallType) {
 
+
                 case 'wall-slip' :
+
                     // set slipping speed
                     if ( speedUp < 0 &&
                          player.position.y > xCollision.minHeight - (atlas.PLAYERHEIGHT / 2) &&
@@ -330,7 +396,10 @@ function Controler( player ) {
 
                         speedUp = -0.25 ;
                     };
+                    setClimbingState( false );
                     break;
+
+
 
                 case 'wall-fall' :
 
@@ -367,11 +436,50 @@ function Controler( player ) {
                         // so not the fall cannot be avoided
                         player.position.addScaledVector( HORIZMOVEVECT, 1.5 );
                     };
+                    setClimbingState( false );
+                    break;
+
+
+
+                case 'wall-easy' :
+                    setClimbingState( true );
+                    break;
+
+
+
+                case 'wall-medium' :
+                    setClimbingState( true );
+                    break;
+
+
+
+                case 'wall-hard' :
+                    setClimbingState( true );
                     break;
 
             };
 
-            
+        } else {
+
+            setClimbingState( false );
+
+        };
+
+
+
+        function setClimbingState( isClimbing ) {
+
+            if ( isClimbing ) {
+
+                state.isClimbing = true ;
+                state.isFlying = false ;
+
+            } else {
+
+                state.isClimbing = false ;
+
+            };
+
         };
 
 
