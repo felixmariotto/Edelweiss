@@ -79,7 +79,6 @@ function Controler( player ) {
 
 
 
-
         //////////////////////
         ///  GLIDING STATE
         //////////////////////
@@ -255,6 +254,20 @@ function Controler( player ) {
 
                 player.position.addScaledVector( CLIMBVEC, 1 * climbSpeedFactor );
 
+                // This part is to allow the player to go down the wall when they
+                // touch the ground
+                if ( CLIMBVEC.y < -0.005 && (yCollision.point != undefined)) {
+
+                    state.isClimbing = false ;
+
+                    // Get the player out of the wall
+                    angleToApply = utils.toPiRange( requestedDirection - currentDirection ) ;
+                    currentDirection = requestedDirection ;
+                    HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
+                    player.position.addScaledVector( HORIZMOVEVECT, 0.5 );
+                    
+                };
+
             };
 
             
@@ -304,9 +317,11 @@ function Controler( player ) {
         ///  GRAVITY AND GROUND COLLISION
         //////////////////////////////////////
 
+        
         // atlas compute the position of the player according
         // to the horizontal obstacles in the scene.
         yCollision = atlas.collidePlayerGrounds() ;
+        
 
         // There is a collision with the ground
         if ( yCollision.point != undefined ) {
@@ -359,6 +374,9 @@ function Controler( player ) {
             };
 
         };
+
+
+
 
 
 
