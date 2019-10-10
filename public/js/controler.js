@@ -29,6 +29,8 @@ function Controler( player ) {
     var yCollision;
     const SLIPSPEED = -0.21 ;
     const MAXSLIPINERTIA = 0.15 ;
+    const HAULLIMIT = 0.8 ;
+    const FALLLIMIT = 0.3 ;
 
     // horiz movements
     var SPEED = 0.04 ;
@@ -408,7 +410,19 @@ function Controler( player ) {
 
         if ( xCollision.majorWallType ) {
 
+
+            if ( xCollision.maxHeight < player.position.y + (atlas.PLAYERHEIGHT * HAULLIMIT) ) {
+                console.log( 'haul' );
+                // return
+            };
+
+
+            if ( xCollision.minHeight > player.position.y + (atlas.PLAYERHEIGHT * FALLLIMIT) ) {
+                console.log( 'fall' );
+                // return
+            };
             
+
             switch (xCollision.majorWallType) {
 
 
