@@ -57,8 +57,14 @@ function Controler( player ) {
     const GLIDINGTIME = 250 ;
     var glidingCount = 0 ;
 
+    // hold the side on which the player contacts
+    // a wall. "left", "right", "up" or "down".
+    // undefined if no wall
+    var contactDirection; 
+
 
     function update( delta ) {
+
 
 
         //////////////////////
@@ -101,6 +107,8 @@ function Controler( player ) {
             // No tweening in case of U-turn, + inertia reset
             } else if ( angleToApply > 2.8 || angleToApply < -2.8 ) {
 
+                // console.log( state.isFlying && inertia > 0.15 )
+
                 // slow down before instead of U-turn if fast in the air
                 if ( state.isFlying && inertia > 0.15 ) {
 
@@ -113,6 +121,8 @@ function Controler( player ) {
 
                     // reset inertia
                     inertia = 0 ;
+
+                    // console.log('coucou')
                 };
 
 
@@ -282,6 +292,8 @@ function Controler( player ) {
 
         xCollision = atlas.collidePlayerWalls( currentDirection );
 
+        contactDirection = xCollision.direction ;
+
 
         if ( xCollision.xPoint ) {
             player.position.x = xCollision.xPoint ;
@@ -304,9 +316,7 @@ function Controler( player ) {
                          player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) ) {
 
                         speedUp = -0.25 ;
-                    } else {
-                        console.log( 'fuck')
-                    }
+                    };
                     break;
 
                 case 'wall-fall' :
@@ -316,22 +326,22 @@ function Controler( player ) {
                          player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) ) {
 
                         // compute desired fall direction
-                        if ( xCollision.direction == 'left' ) {
+                        if ( contactDirection == 'left' ) {
 
                             currentDirection = Math.PI / 2 ;
                             HORIZMOVEVECT.set( SPEED, 0, 0 );
                         
-                        } else if ( xCollision.direction == 'right' ) {
+                        } else if ( contactDirection == 'right' ) {
 
                             currentDirection = -Math.PI / 2 ;
                             HORIZMOVEVECT.set( -SPEED, 0, 0 );
 
-                        } else if ( xCollision.direction == 'up' ) {
+                        } else if ( contactDirection == 'up' ) {
 
                             currentDirection = 0 ;
                             HORIZMOVEVECT.set( 0, 0, SPEED );
 
-                        } else if ( xCollision.direction == 'down' ) {
+                        } else if ( contactDirection == 'down' ) {
 
                             currentDirection = Math.PI ;
                             HORIZMOVEVECT.set( 0, 0, -SPEED );
@@ -352,9 +362,6 @@ function Controler( player ) {
         };
 
 
-
-
-
     };
 
 
@@ -370,9 +377,53 @@ function Controler( player ) {
              ( !permission.infinityJump && !state.isFlying || 
              permission.infinityJump ) ) {
 
-            speedUp = 1.25 ;
-
             player.position.y += 0.1 ;
+
+            // This conditional to make sure that the player is climbing
+            // or slipping along a wall
+            if (state.isFlying) {
+
+                switch ( contactDirection ) {
+
+                    case 'right' :
+                        currentDirection = -Math.PI / 2 ;
+                        HORIZMOVEVECT.set( -SPEED, 0, 0 );
+                        setJump();
+                        break;
+
+                    case 'left' :
+                        currentDirection = Math.PI / 2 ;
+                        HORIZMOVEVECT.set( SPEED, 0, 0 );
+                        setJump();
+                        break;
+
+                    case 'up' :
+                        currentDirection = 0 ;
+                        HORIZMOVEVECT.set( 0, 0, SPEED );
+                        setJump();
+                        break;
+
+                    case 'down' :
+                        currentDirection = Math.PI ;
+                        HORIZMOVEVECT.set( 0, 0, -SPEED );
+                        setJump();
+                        break;
+
+                };
+
+            } else {
+
+                speedUp = 1.25 ;
+            
+            };
+
+            
+
+            function setJump() {
+                inertia = 1.6 ;
+                speedUp = 0.95 ;
+                player.position.addScaledVector( HORIZMOVEVECT, 1.9 );
+            };
 
         };
     };
