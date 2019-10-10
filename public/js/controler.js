@@ -64,7 +64,7 @@ function Controler( player ) {
         dash: true
     };
 
-    const GLIDINGTIME = 250 ;
+    const GLIDINGTIME = 200 ;
     var glidingCount = 0 ;
 
     // hold the side on which the player contacts
@@ -73,7 +73,12 @@ function Controler( player ) {
     var contactDirection; 
 
 
+
+
+
+
     function update( delta ) {
+
 
 
 
@@ -98,9 +103,6 @@ function Controler( player ) {
 
 
 
-       
-        
-
 
 
 
@@ -108,7 +110,7 @@ function Controler( player ) {
         ///       HORIZONTAL MOVEMENT
         ///////////////////////////////////////
 
-        // Acceleration
+
         if ( ( input.moveKeys.length > 0 ) && !state.isClimbing ) {
 
 
@@ -184,6 +186,7 @@ function Controler( player ) {
                 runCounter = 0;
             };
 
+
             if ( state.isFlying ) { // in air
 
                 // Keep the inertia if it a running jump
@@ -203,9 +206,13 @@ function Controler( player ) {
             } else { // on ground
 
                 if ( runCounter > 350 ) {
+
                     inertia = inertia >= 1.8 ? 1.8 : inertia + 0.1 ;
+
                 } else {
-                    inertia = inertia >= 1 ? 1 : inertia + 0.06 ;
+
+                    inertia = inertia >= 1 ? inertia * 0.95 : inertia + 0.06 ;
+                    
                 };
 
             };
@@ -275,7 +282,7 @@ function Controler( player ) {
                 } else {
 
                     // slowdown is slower in the air
-                    inertia = inertia / 1.12 ;
+                    inertia = inertia * 0.98 ;
 
                 };
 
@@ -487,6 +494,23 @@ function Controler( player ) {
 
 
     };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
