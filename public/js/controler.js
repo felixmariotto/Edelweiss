@@ -74,6 +74,8 @@ function Controler( player ) {
         isGliding: false,
         isClimbing: false,
         isSlipping: false,
+        isDashing: false,
+        chargingDash: false
     };
 
     // player permission
@@ -85,6 +87,11 @@ function Controler( player ) {
 
     const GLIDINGTIME = 200 ;
     var glidingCount = 0 ;
+
+    const DASHTIME = 300 ;
+    var dashCount = 0 ;
+    const DASHVECDISTANCE = 3 ;
+    var DASHVEC = new THREE.Vector3();
 
     // hold the side on which the player contacts
     // a wall. "left", "right", "up" or "down".
@@ -153,11 +160,9 @@ function Controler( player ) {
 
         };
 
-
-
-        //////////////////////
-        ///  GLIDING STATE
-        //////////////////////
+        /////////////////////////////////
+        ///  GLIDING AND DASH STATES
+        /////////////////////////////////
 
         if ( state.isFlying && input.params.isSpacePressed ) {
 
@@ -168,10 +173,18 @@ function Controler( player ) {
                 cancelSpace = true ;
             };
 
+        } else if ( state.isClimbing && input.params.isSpacePressed ) {
+
+            dashCount += delta * 1000 ;
+
+            if ( dashCount >= DASHTIME && permission.dash ) {
+                state.chargingDash = true ;
+            };
+
         } else {
 
             glidingCount = 0 ;
-            state.isGliding = false ;
+            dashCount = 0 ;
 
         };
 
@@ -187,7 +200,9 @@ function Controler( player ) {
 
         if ( ( input.moveKeys.length > 0 ) &&
             !state.isClimbing &&
-            !state.isSlipping ) {
+            !state.isSlipping &&
+            !state.isDashing &&
+            !state.chargingDash ) {
 
 
 
@@ -301,7 +316,9 @@ function Controler( player ) {
         //////////////////////////
 
         } else if ( ( input.moveKeys.length > 0 ) &&
-                    ( state.isClimbing || state.isSlipping ) ) {
+                    ( state.isClimbing || state.isSlipping ) &&
+                    !state.chargingDash &&
+                    !state.isDashing ) {
 
             runCounter = 0 ;
             inertia = 0 ;
@@ -351,6 +368,55 @@ function Controler( player ) {
             };
 
             
+
+
+
+        /////////////////////////////
+        ///  DASH DIRECTION SETTING
+        /////////////////////////////
+
+        } else if ( ( input.moveKeys.length > 0 ) &&
+                    state.chargingDash ) {
+
+
+            switch ( contactDirection ) {
+
+                case 'up' :
+                    setDashVec( AXISZ, -1, requestedDirection );
+                    break;
+
+                case 'down' :
+                    setDashVec( AXISZ, -1, requestedDirection );
+                    break;
+
+                case 'left' :
+                    setDashVec( AXISX, 1, utils.toPiRange( requestedDirection + (Math.PI / 2) ) );
+                    break;
+
+                case 'right' :
+                    setDashVec( AXISX, -1, utils.toPiRange( (requestedDirection + (Math.PI / 2)) * -1 ) );
+                    break;
+
+            };
+
+
+            function setDashVec( axis, vecInversion, angle ) {
+
+                DASHVEC.set( 0, DASHVECDISTANCE * vecInversion, 0 );
+                DASHVEC.applyAxisAngle( axis, angle );
+
+            };
+
+
+
+        ///////////////////////
+        ///  DASH MOUVEMENT
+        ///////////////////////
+
+        } else if ( state.isDashing ) {
+
+            console.log('dash mouvement')
+
 
 
 
@@ -484,6 +550,7 @@ function Controler( player ) {
 
         // There is no collision with the ground
         } else {
+            
 
             state.isFlying = true ;
 
@@ -986,10 +1053,25 @@ function Controler( player ) {
     // Sent here by input module when the user released space bar
     function spaceInput() {
 
+        
+
         if ( cancelSpace ) {
             cancelSpace = false ;
             return
         };
+
+
+
+        if ( state.chargingDash ) {
+
+            state.chargingDash = false ;
+            state.isDashing = true ;
+            console.log( 'start dash' );
+            console.log( DASHVEC )
+            return
+
+        };
+
 
 
         if ( ( !permission.infinityJump && !state.isFlying || 
