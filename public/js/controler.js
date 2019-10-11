@@ -22,7 +22,9 @@ function Controler( player ) {
 
 
     // animations
-    const HAULDURATION = 350 ;
+    const HAULDURATION = 250 ;
+    const SWITCHTILEDURATION = 250 ;
+    const PULLUNDERDURATION = 250 ;
 
     // climbing movements
     var xCollision ;
@@ -91,12 +93,15 @@ function Controler( player ) {
     var pendingAction; 
 
 
-    function startAction( duration, startVec, endVec ) {
+    function startAction( duration, endVec ) {
+
+        inertia = 0 ;
+        speedUp = 0 ;
 
         pendingAction = {
             startTime : Date.now(),
             duration,
-            startVec,
+            startVec : new THREE.Vector3().copy( player.position ),
             endVec
         };
 
@@ -488,11 +493,11 @@ function Controler( player ) {
                     };
 
                     function setPos( factor ) {
-                        player.position.set(
+                        startAction( SWITCHTILEDURATION, new THREE.Vector3(
                             xCollision.minX - ( atlas.PLAYERWIDTH / 2 ) + 0.1,
                             player.position.y,
                             player.position.z + (atlas.PLAYERWIDTH * factor)
-                        );
+                        ));
                     };
 
                     // return
@@ -511,11 +516,11 @@ function Controler( player ) {
                     };
 
                     function setPos( factor ) {
-                        player.position.set(
+                        startAction( SWITCHTILEDURATION, new THREE.Vector3(
                             xCollision.maxX + ( atlas.PLAYERWIDTH / 2 ) - 0.1,
                             player.position.y,
                             player.position.z + (atlas.PLAYERWIDTH * factor)
-                        );
+                        ));
                     };
 
                     // return
@@ -534,11 +539,11 @@ function Controler( player ) {
                     };
 
                     function setPos( factor ) {
-                        player.position.set(
+                        startAction( SWITCHTILEDURATION, new THREE.Vector3(
                             player.position.x + ( atlas.PLAYERWIDTH * factor ),
                             player.position.y,
                             xCollision.minZ - ( atlas.PLAYERWIDTH / 2 ) + 0.1
-                        );
+                        ));
                     };
 
                     // return
@@ -557,11 +562,11 @@ function Controler( player ) {
                     };
 
                     function setPos( factor ) {
-                        player.position.set(
+                        startAction( SWITCHTILEDURATION, new THREE.Vector3(
                             player.position.x + ( atlas.PLAYERWIDTH * factor ),
                             player.position.y,
                             xCollision.maxZ + ( atlas.PLAYERWIDTH / 2 ) - 0.1
-                        );
+                        ));
                     };
 
                     // return
@@ -581,35 +586,35 @@ function Controler( player ) {
                     switch (contactDirection) {
 
                         case 'up' :
-                            player.position.set(
+                            startAction( PULLUNDERDURATION, new THREE.Vector3(
                                 player.position.x,
                                 xCollision.minHeight - atlas.PLAYERHEIGHT,
                                 player.position.z - (atlas.PLAYERWIDTH / 2)
-                            );
+                            ));
                             break;
 
                         case 'down' :
-                            player.position.set(
+                            startAction( PULLUNDERDURATION, new THREE.Vector3(
                                 player.position.x,
                                 xCollision.minHeight - atlas.PLAYERHEIGHT,
                                 player.position.z + (atlas.PLAYERWIDTH / 2)
-                            );
+                            ));
                             break;
 
                         case 'left' :
-                            player.position.set(
+                            startAction( PULLUNDERDURATION, new THREE.Vector3(
                                 player.position.x - (atlas.PLAYERWIDTH / 2),
                                 xCollision.minHeight - atlas.PLAYERHEIGHT,
                                 player.position.z
-                            );
+                            ));
                             break;
 
                         case 'right' :
-                            player.position.set(
+                            startAction( PULLUNDERDURATION, new THREE.Vector3(
                                 player.position.x + (atlas.PLAYERWIDTH / 2),
                                 xCollision.minHeight - atlas.PLAYERHEIGHT,
                                 player.position.z
-                            );
+                            ));
                             break;
 
                     };
@@ -635,27 +640,14 @@ function Controler( player ) {
             function haul() {
 
 
-
-                function startHaulAction( endVec ) {
-
-                    startAction(
-                        HAULDURATION,
-                        new THREE.Vector3().copy( player.position ),
-                        endVec
-                    );
-
-                };
-
-
-
-                if ( xCollision.maxHeight > player.position.y + (0.45 * atlas.PLAYERHEIGHT) &&
-                     xCollision.maxHeight < player.position.y + (0.55 * atlas.PLAYERHEIGHT) ) {
+                if ( xCollision.maxHeight > player.position.y + (HAULLLOWLIMIT * atlas.PLAYERHEIGHT) &&
+                     xCollision.maxHeight < player.position.y + (HAULTOPLIMIT * atlas.PLAYERHEIGHT) ) {
 
                     switch (contactDirection) {
 
                         case 'up' :
 
-                            startHaulAction( new THREE.Vector3(
+                            startAction( HAULDURATION, new THREE.Vector3(
                                 player.position.x,
                                 xCollision.maxHeight,
                                 player.position.z - atlas.PLAYERWIDTH
@@ -664,27 +656,33 @@ function Controler( player ) {
                             break;
 
                         case 'down' :
-                            player.position.set(
+                            
+                            startAction( HAULDURATION, new THREE.Vector3(
                                 player.position.x,
                                 xCollision.maxHeight,
                                 player.position.z + atlas.PLAYERWIDTH
-                            );
+                            ));
+
                             break;
 
                         case 'left' :
-                            player.position.set(
+                            
+                            startAction( HAULDURATION, new THREE.Vector3(
                                 player.position.x - atlas.PLAYERWIDTH,
                                 xCollision.maxHeight,
                                 player.position.z
-                            );
+                            ));
+
                             break;
 
                         case 'right' :
-                            player.position.set(
+                            
+                            startAction( HAULDURATION, new THREE.Vector3(
                                 player.position.x + atlas.PLAYERWIDTH,
                                 xCollision.maxHeight,
                                 player.position.z
-                            );
+                            ));
+
                             break;
 
                     };
