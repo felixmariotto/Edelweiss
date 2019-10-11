@@ -1,5 +1,4 @@
 
-- Player should haul themselves when on an edge
-- Player must keep the same key-mouvement map when change face while climbing
-- Player should be able to go through a corner while climbing
+
 - Player fall when going down from climbing to slipping, whereas it should just start slipping
+- Player must haul themselves down the cliff when the approach the edge of a ground very close

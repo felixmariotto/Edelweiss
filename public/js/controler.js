@@ -25,6 +25,7 @@ function Controler( player ) {
     const HAULDURATION = 250 ;
     const SWITCHTILEDURATION = 250 ;
     const PULLUNDERDURATION = 250 ;
+    const DISTANCEINTERNALSWITCH = 0.3 ;
 
     // climbing movements
     var xCollision ;
@@ -95,9 +96,6 @@ function Controler( player ) {
 
     function startAction( duration, endVec ) {
 
-        inertia = 0 ;
-        speedUp = 0 ;
-
         pendingAction = {
             startTime : Date.now(),
             duration,
@@ -118,6 +116,14 @@ function Controler( player ) {
         );
 
         if ( ( Date.now() - pendingAction.startTime ) / pendingAction.duration > 1 ) {
+            
+            // Reset all movements value,
+            // so at the end of the action, the player will
+            // start on fresh new movements
+            inertia = 0 ;
+            speedUp = 0 ;
+            contactDirection = undefined ;
+
             pendingAction = undefined ;
         };
 
@@ -453,6 +459,66 @@ function Controler( player ) {
 
         xCollision = atlas.collidePlayerWalls( currentDirection );
 
+        if ( contactDirection &&
+             xCollision.direction &&
+             contactDirection != xCollision.direction ) {
+        
+            let x, z ;
+
+            // Set one axis from the direction of the final tile
+            switch ( xCollision.direction ) {
+
+                case 'right' :
+                    x = player.position.x ;
+                    if ( contactDirection == 'up' ) {
+                        z = player.position.z + DISTANCEINTERNALSWITCH;
+                    } else {
+                        z = player.position.z - DISTANCEINTERNALSWITCH;
+                    };
+                    break;
+
+                case 'left' :
+                    x = player.position.x ;
+                    if ( contactDirection == 'up' ) {
+                        z = player.position.z + DISTANCEINTERNALSWITCH;
+                    } else {
+                        z = player.position.z - DISTANCEINTERNALSWITCH;
+                    };
+                    break;
+
+                case 'up' :
+                    z = player.position.z ;
+                    if ( contactDirection == 'right' ) {
+                        x = player.position.x - DISTANCEINTERNALSWITCH;
+                    } else {
+                        x = player.position.x + DISTANCEINTERNALSWITCH;
+                    };
+                    break;
+
+                case 'down' :
+                    z = player.position.z ;
+                    if ( contactDirection == 'right' ) {
+                        x = player.position.x - DISTANCEINTERNALSWITCH;
+                    } else {
+                        x = player.position.x + DISTANCEINTERNALSWITCH;
+                    };
+                    break;
+
+            };
+
+
+            let endVec = new THREE.Vector3(
+                x,
+                player.position.y,
+                z
+            );
+            
+            startAction( SWITCHTILEDURATION, endVec);
+
+
+        };
+
+
         contactDirection = xCollision.direction ;
 
 
@@ -581,6 +647,7 @@ function Controler( player ) {
                 };
 
 
+                // Pull the player under the lower edge of a tile
                 if ( xCollision.minHeight > player.position.y + (atlas.PLAYERHEIGHT * FALLLIMIT) ) {
                     
                     switch (contactDirection) {
