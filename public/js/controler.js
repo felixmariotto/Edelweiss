@@ -29,8 +29,9 @@ function Controler( player ) {
     var yCollision;
     const SLIPSPEED = -0.21 ;
     const MAXSLIPINERTIA = 0.15 ;
-    const HAULLIMIT = 0.8 ;
-    const FALLLIMIT = 0.3 ;
+    const HAULTOPLIMIT = 0.55 ;
+    const HAULLLOWLIMIT = 0.45 ; // when player arrives from the top
+    const FALLLIMIT = 0.45 ;
 
     // horiz movements
     var SPEED = 0.04 ;
@@ -416,11 +417,17 @@ function Controler( player ) {
             ///////////////////////////////////////////////////////
 
 
-            if ( xCollision.majorWallType != 'wall-slip' ) {
+            // Here we detect if the player is going toward the edge
+            // of a climbable tile, so that we can trigger some special
+            // actions, like hauling to player up an edge, or
+            // switch direction
+            if ( xCollision.majorWallType != 'wall-slip' &&
+                 xCollision.majorWallType != 'wall-fall' &&
+                 xCollision.majorWallType != 'wall-limit') {
 
+
+                // switch on -X
                 if ( xCollision.minX > player.position.x ) {
-
-                    console.log( 'switch on -X' );
 
                     if ( contactDirection == 'up' ) {
                         setPos( -1 );
@@ -442,12 +449,8 @@ function Controler( player ) {
                 };
 
 
+                // switch on +X
                 if ( xCollision.maxX < player.position.x ) {
-
-                    console.log( 'switch on +X' );
-                    console.log( player.position );
-                    console.log( xCollision );
-                     debugger
 
                     if ( contactDirection == 'up' ) {
                         setPos( -1 );
@@ -469,9 +472,8 @@ function Controler( player ) {
                 };
 
 
+                // switch on -Z
                 if ( xCollision.minZ > player.position.z ) {
-
-                    console.log( 'switch on -Z' );
 
                     if ( contactDirection == 'left' ) {
                         setPos( -1 );
@@ -493,9 +495,8 @@ function Controler( player ) {
                 };
 
 
+                // switch on +Z
                 if ( xCollision.maxZ < player.position.z ) {
-
-                    console.log( 'switch on +Z' );
 
                     if ( contactDirection == 'left' ) {
                         setPos( -1 );
@@ -517,15 +518,111 @@ function Controler( player ) {
                 };
 
 
-                if ( xCollision.maxHeight < player.position.y + (atlas.PLAYERHEIGHT * HAULLIMIT) ) {
-                    console.log( 'haul' );
+                if ( xCollision.maxHeight < player.position.y + (atlas.PLAYERHEIGHT * HAULTOPLIMIT) ) {
+                    
+                    haul();
+
                     // return
                 };
 
 
                 if ( xCollision.minHeight > player.position.y + (atlas.PLAYERHEIGHT * FALLLIMIT) ) {
-                    console.log( 'fall' );
+                    
+                    switch (contactDirection) {
+
+                        case 'up' :
+                            player.position.set(
+                                player.position.x,
+                                xCollision.minHeight - atlas.PLAYERHEIGHT,
+                                player.position.z - (atlas.PLAYERWIDTH / 2)
+                            );
+                            break;
+
+                        case 'down' :
+                            player.position.set(
+                                player.position.x,
+                                xCollision.minHeight - atlas.PLAYERHEIGHT,
+                                player.position.z + (atlas.PLAYERWIDTH / 2)
+                            );
+                            break;
+
+                        case 'left' :
+                            player.position.set(
+                                player.position.x - (atlas.PLAYERWIDTH / 2),
+                                xCollision.minHeight - atlas.PLAYERHEIGHT,
+                                player.position.z
+                            );
+                            break;
+
+                        case 'right' :
+                            player.position.set(
+                                player.position.x + (atlas.PLAYERWIDTH / 2),
+                                xCollision.minHeight - atlas.PLAYERHEIGHT,
+                                player.position.z
+                            );
+                            break;
+
+                    };
+
                     // return
+                };
+            
+            
+            // Here we handle the special actions that will occur
+            // only if the tile is a slip-wall. Notably, don't want the
+            // player to be able to pull themselves underneath the edge
+            // of a slip-wall, we want them to just fall numbly
+            } else if ( xCollision.majorWallType == 'wall-slip' ) {
+
+                haul();
+
+            };
+
+
+            // This is used just a few lines higher by the functions
+            // that trigger special animations.
+            // It haul the player on top of an edge
+            function haul() {
+
+                if ( xCollision.maxHeight > player.position.y + (0.45 * atlas.PLAYERHEIGHT) &&
+                     xCollision.maxHeight < player.position.y + (0.55 * atlas.PLAYERHEIGHT) ) {
+
+                    switch (contactDirection) {
+
+                        case 'up' :
+                            player.position.set(
+                                player.position.x,
+                                xCollision.maxHeight,
+                                player.position.z - atlas.PLAYERWIDTH
+                            );
+                            break;
+
+                        case 'down' :
+                            player.position.set(
+                                player.position.x,
+                                xCollision.maxHeight,
+                                player.position.z + atlas.PLAYERWIDTH
+                            );
+                            break;
+
+                        case 'left' :
+                            player.position.set(
+                                player.position.x - atlas.PLAYERWIDTH,
+                                xCollision.maxHeight,
+                                player.position.z
+                            );
+                            break;
+
+                        case 'right' :
+                            player.position.set(
+                                player.position.x + atlas.PLAYERWIDTH,
+                                xCollision.maxHeight,
+                                player.position.z
+                            );
+                            break;
+
+                    };
+
                 };
 
             };
