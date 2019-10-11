@@ -21,6 +21,9 @@ function Controler( player ) {
 
 
 
+    // animations
+    const HAULDURATION = 350 ;
+
     // climbing movements
     var xCollision ;
 
@@ -75,12 +78,59 @@ function Controler( player ) {
     // undefined if no wall
     var contactDirection; 
 
+    /*
+    pendingAction can hold an object containing the information
+    about the action to perform :
+    {
+        startTime,
+        duration, ( t is computed from startTime and duration )
+        startVec,
+        endVec
+    }
+    */
+    var pendingAction; 
+
+
+    function startAction( duration, startVec, endVec ) {
+
+        pendingAction = {
+            startTime : Date.now(),
+            duration,
+            startVec,
+            endVec
+        };
+
+    };
+
+
+
+    function updateAction( delta ) {
+
+        player.position.lerpVectors(
+            pendingAction.startVec,
+            pendingAction.endVec,
+            ( Date.now() - pendingAction.startTime ) / pendingAction.duration
+        );
+
+        if ( ( Date.now() - pendingAction.startTime ) / pendingAction.duration > 1 ) {
+            pendingAction = undefined ;
+        };
+
+    };
 
 
 
 
 
     function update( delta ) {
+
+
+        if ( pendingAction ) {
+
+            updateAction( delta );
+            return
+
+        };
 
 
 
@@ -584,17 +634,33 @@ function Controler( player ) {
             // It haul the player on top of an edge
             function haul() {
 
+
+
+                function startHaulAction( endVec ) {
+
+                    startAction(
+                        HAULDURATION,
+                        new THREE.Vector3().copy( player.position ),
+                        endVec
+                    );
+
+                };
+
+
+
                 if ( xCollision.maxHeight > player.position.y + (0.45 * atlas.PLAYERHEIGHT) &&
                      xCollision.maxHeight < player.position.y + (0.55 * atlas.PLAYERHEIGHT) ) {
 
                     switch (contactDirection) {
 
                         case 'up' :
-                            player.position.set(
+
+                            startHaulAction( new THREE.Vector3(
                                 player.position.x,
                                 xCollision.maxHeight,
                                 player.position.z - atlas.PLAYERWIDTH
-                            );
+                            ));
+
                             break;
 
                         case 'down' :
