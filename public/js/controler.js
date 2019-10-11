@@ -416,40 +416,117 @@ function Controler( player ) {
             ///////////////////////////////////////////////////////
 
 
-            if ( xCollision.minX > player.position.x ) {
-                console.log( 'switch on -X' );
-                // return
+            if ( xCollision.majorWallType != 'wall-slip' ) {
+
+                if ( xCollision.minX > player.position.x ) {
+
+                    console.log( 'switch on -X' );
+
+                    if ( contactDirection == 'up' ) {
+                        setPos( -1 );
+                    };
+
+                    if ( contactDirection == 'down' ) {
+                        setPos( 1 );
+                    };
+
+                    function setPos( factor ) {
+                        player.position.set(
+                            xCollision.minX - ( atlas.PLAYERWIDTH / 2 ) + 0.1,
+                            player.position.y,
+                            player.position.z + (atlas.PLAYERWIDTH * factor)
+                        );
+                    };
+
+                    // return
+                };
+
+
+                if ( xCollision.maxX < player.position.x ) {
+
+                    console.log( 'switch on +X' );
+
+                    if ( contactDirection == 'up' ) {
+                        setPos( -1 );
+                    };
+
+                    if ( contactDirection == 'down' ) {
+                        setPos( 1 );
+                    };
+
+                    function setPos( factor ) {
+                        player.position.set(
+                            xCollision.maxX + ( atlas.PLAYERWIDTH / 2 ) - 0.1,
+                            player.position.y,
+                            player.position.z + (atlas.PLAYERWIDTH * factor)
+                        );
+                    };
+
+                    // return
+                };
+
+
+                if ( xCollision.minZ > player.position.z ) {
+
+                    console.log( 'switch on -Z' );
+
+                    if ( contactDirection == 'left' ) {
+                        setPos( -1 );
+                    };
+
+                    if ( contactDirection == 'right' ) {
+                        setPos( 1 );
+                    };
+
+                    function setPos( factor ) {
+                        player.position.set(
+                            player.position.x + ( atlas.PLAYERWIDTH * factor ),
+                            player.position.y,
+                            xCollision.minZ - ( atlas.PLAYERWIDTH / 2 ) + 0.1
+                        );
+                    };
+
+                    // return
+                };
+
+
+                if ( xCollision.maxZ < player.position.z ) {
+
+                    console.log( 'switch on +Z' );
+
+                    if ( contactDirection == 'left' ) {
+                        setPos( -1 );
+                    };
+
+                    if ( contactDirection == 'right' ) {
+                        setPos( 1 );
+                    };
+
+                    function setPos( factor ) {
+                        player.position.set(
+                            player.position.x + ( atlas.PLAYERWIDTH * factor ),
+                            player.position.y,
+                            xCollision.maxZ + ( atlas.PLAYERWIDTH / 2 ) - 0.1
+                        );
+                    };
+
+                    // return
+                };
+
+
+                if ( xCollision.maxHeight < player.position.y + (atlas.PLAYERHEIGHT * HAULLIMIT) ) {
+                    console.log( 'haul' );
+                    // return
+                };
+
+
+                if ( xCollision.minHeight > player.position.y + (atlas.PLAYERHEIGHT * FALLLIMIT) ) {
+                    console.log( 'fall' );
+                    // return
+                };
+
             };
-
-
-            if ( xCollision.maxX < player.position.x ) {
-                console.log( 'switch on +X' );
-                // return
-            };
-
-
-            if ( xCollision.minZ > player.position.z ) {
-                console.log( 'switch on -Z' );
-                // return
-            };
-
-
-            if ( xCollision.maxZ < player.position.z ) {
-                console.log( 'switch on +Z' );
-                // return
-            };
-
-
-            if ( xCollision.maxHeight < player.position.y + (atlas.PLAYERHEIGHT * HAULLIMIT) ) {
-                console.log( 'haul' );
-                // return
-            };
-
-
-            if ( xCollision.minHeight > player.position.y + (atlas.PLAYERHEIGHT * FALLLIMIT) ) {
-                console.log( 'fall' );
-                // return
-            };
+            
 
 
             //////////////////////////////////////////////
