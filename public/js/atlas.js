@@ -7,7 +7,11 @@ function Atlas( sceneGraph ) {
 	
 	var yCollision = {
 		point: undefined,
-		direction: undefined
+		direction: undefined,
+		maxX: undefined,
+		minX: undefined,
+		maxZ: undefined,
+		minZ: undefined
 	};
 
 	var xCollision = {
@@ -168,26 +172,36 @@ function Atlas( sceneGraph ) {
 
 		yCollision.point = undefined ;
 		yCollision.direction = undefined ;
+		yCollision.maxX = undefined ;
+		yCollision.minX = undefined ;
+		yCollision.maxZ = undefined ;
+		yCollision.minZ = undefined ;
 
 		// We check only the tiles at the same height as the player
 		checkStage( Math.floor( player.position.y ) );
 		checkStage( Math.floor( player.position.y ) + 1 );
 		checkStage( Math.floor( player.position.y ) - 1 );
 
+
 		function checkStage( stage ) {
 
+
 			if ( sceneGraph[ stage ] ) {
+
 
 				// loop through the group of tiles at the same height as the player
 				sceneGraph[ stage ].forEach( (logicTile, i)=> {
 
+
 					if ( !logicTile.isWall ) {
+
 
 						// check for X Z collision
 						if ( !( Math.min( logicTile.points[0].x, logicTile.points[1].x ) > ( player.position.x + ( PLAYERWIDTH / 2 ) - 0.12 ) ||
 								Math.min( logicTile.points[0].z, logicTile.points[1].z ) > ( player.position.z + ( PLAYERWIDTH / 2 ) - 0.12 ) ||
 								Math.max( logicTile.points[0].x, logicTile.points[1].x ) < ( player.position.x - ( PLAYERWIDTH / 2 ) + 0.12 ) ||
 								Math.max( logicTile.points[0].z, logicTile.points[1].z ) < ( player.position.z - ( PLAYERWIDTH / 2 ) + 0.12 )  ) ) {
+
 
 							// check for down collision
 							if ( player.position.y <= logicTile.points[0].y &&
@@ -197,7 +211,9 @@ function Atlas( sceneGraph ) {
 								yCollision.point = logicTile.points[0].y ;
 								yCollision.direction = 'down' ;
 
+								computeMaxMin()
 							};
+
 
 							// check for up collision
 							if ( player.position.y + PLAYERHEIGHT >= logicTile.points[0].y &&
@@ -206,6 +222,54 @@ function Atlas( sceneGraph ) {
 								// return the position of the player after hitting the roof
 								yCollision.point = logicTile.points[0].y - PLAYERHEIGHT ;
 								yCollision.direction = 'up' ;
+
+								computeMaxMin()
+							};
+
+
+							// Compute max and min values
+							function computeMaxMin() {
+
+								///////////
+								//  X DIR
+								///////////
+
+								if ( typeof yCollision.maxX != 'undefined' ) {
+									if ( yCollision.maxX < Math.max( logicTile.points[0].x, logicTile.points[1].x ) ) {
+										yCollision.maxX = Math.max( logicTile.points[0].x, logicTile.points[1].x );
+									};
+								} else {
+									yCollision.maxX = Math.max( logicTile.points[0].x, logicTile.points[1].x );
+								};
+
+								if ( typeof yCollision.minX != 'undefined' ) {
+									if ( yCollision.minX > Math.min( logicTile.points[0].x, logicTile.points[1].x ) ) {
+										yCollision.minX = Math.min( logicTile.points[0].x, logicTile.points[1].x );
+									};
+								} else {
+									yCollision.minX = Math.min( logicTile.points[0].x, logicTile.points[1].x );
+								};
+
+
+								///////////
+								//  Z DIR
+								///////////
+
+								if ( typeof yCollision.maxZ != 'undefined' ) {
+									if ( yCollision.maxZ < Math.max( logicTile.points[0].z, logicTile.points[1].z ) ) {
+										yCollision.maxZ = Math.max( logicTile.points[0].z, logicTile.points[1].z );
+									};
+								} else {
+									yCollision.maxZ = Math.max( logicTile.points[0].z, logicTile.points[1].z );
+								};
+
+								if ( typeof yCollision.minZ != 'undefined' ) {
+									if ( yCollision.minZ > Math.min( logicTile.points[0].z, logicTile.points[1].z ) ) {
+										yCollision.minZ = Math.min( logicTile.points[0].z, logicTile.points[1].z );
+									};
+								} else {
+									yCollision.minZ = Math.min( logicTile.points[0].z, logicTile.points[1].z );
+								};
 
 							};
 

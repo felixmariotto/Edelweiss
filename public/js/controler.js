@@ -25,7 +25,11 @@ function Controler( player ) {
     const HAULDURATION = 250 ;
     const SWITCHTILEDURATION = 250 ;
     const PULLUNDERDURATION = 250 ;
+    const HAULDOWNDURATION = 250 ;
+
     const DISTANCEINTERNALSWITCH = 0.3 ;
+    const HAULDOWNLIMIT = -0.02 ;
+    const PERCENTHEIGHTHAULDOWN = 0.7 ;
 
     // climbing movements
     var xCollision ;
@@ -387,7 +391,7 @@ function Controler( player ) {
         // atlas compute the position of the player according
         // to the horizontal obstacles in the scene.
         yCollision = atlas.collidePlayerGrounds() ;
-        
+
 
         // There is a collision with the ground
         if ( yCollision.point != undefined ) {
@@ -397,8 +401,55 @@ function Controler( player ) {
             // Player stands on the ground
             if ( yCollision.direction == 'down' ) {
 
+
                 state.isFlying = false ;
                 player.position.y = yCollision.point ;
+
+
+                /////////////////////////
+                ///  HAUL DOWN ACTION
+                /////////////////////////
+
+                if ( yCollision.maxX < player.position.x + HAULDOWNLIMIT ) {
+
+                    startAction( HAULDOWNDURATION, new THREE.Vector3(
+                        yCollision.maxX + ( atlas.PLAYERWIDTH / 2 ) - 0.1,
+                        player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
+                        player.position.z
+                    ));
+                };
+
+
+                if ( yCollision.minX > player.position.x - HAULDOWNLIMIT ) {
+
+                    startAction( HAULDOWNDURATION, new THREE.Vector3(
+                        yCollision.minX - ( atlas.PLAYERWIDTH / 2 ) + 0.1,
+                        player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
+                        player.position.z
+                    ));
+                };
+
+
+                if ( yCollision.minZ > player.position.z - HAULDOWNLIMIT ) {
+
+                    startAction( HAULDOWNDURATION, new THREE.Vector3(
+                        player.position.x,
+                        player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
+                        yCollision.minZ - ( atlas.PLAYERWIDTH / 2 ) + 0.1
+                    ));
+                };
+
+
+                if ( yCollision.maxZ < player.position.z + HAULDOWNLIMIT ) {
+
+                    startAction( HAULDOWNDURATION, new THREE.Vector3(
+                        player.position.x,
+                        player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
+                        yCollision.maxZ + ( atlas.PLAYERWIDTH / 2 ) - 0.1
+                    ));
+                };
+
+
 
             } else { // Player hit a roof
 
@@ -512,7 +563,7 @@ function Controler( player ) {
                 player.position.y,
                 z
             );
-            
+
             startAction( SWITCHTILEDURATION, endVec);
 
 
