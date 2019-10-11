@@ -984,7 +984,8 @@ function Controler( player ) {
 
 
         if ( ( !permission.infinityJump && !state.isFlying || 
-             permission.infinityJump ) ) {
+             permission.infinityJump ) ||
+             state.isSlipping ) {
 
             player.position.y += 0.1 ;
 

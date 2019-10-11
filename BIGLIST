@@ -1,4 +1,3 @@
 
-
-- Player should be able to jump from a wall even when infinityJump is not allowed
+- should not be possible to make corner animation on limit-wall
 - Climbing upward + jump currently doesn't jump out of the wall, it should
