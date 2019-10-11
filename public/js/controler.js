@@ -445,6 +445,9 @@ function Controler( player ) {
                 if ( xCollision.maxX < player.position.x ) {
 
                     console.log( 'switch on +X' );
+                    console.log( player.position );
+                    console.log( xCollision );
+                     debugger
 
                     if ( contactDirection == 'up' ) {
                         setPos( -1 );

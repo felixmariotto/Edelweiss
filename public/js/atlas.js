@@ -280,7 +280,7 @@ function Atlas( sceneGraph ) {
 							//  Y DIR
 							////////////
 
-							if ( xCollision.maxHeight ) {
+							if ( typeof xCollision.maxHeight != 'undefined' ) {
 								if ( xCollision.maxHeight < Math.max( logicTile.points[0].y, logicTile.points[1].y ) ) {
 									xCollision.maxHeight = Math.max( logicTile.points[0].y, logicTile.points[1].y );
 								};
@@ -288,7 +288,7 @@ function Atlas( sceneGraph ) {
 								xCollision.maxHeight = Math.max( logicTile.points[0].y, logicTile.points[1].y );
 							};
 
-							if ( xCollision.minHeight ) {
+							if ( typeof xCollision.minHeight != 'undefined' ) {
 								if ( xCollision.minHeight > Math.min( logicTile.points[0].y, logicTile.points[1].y ) ) {
 									xCollision.minHeight = Math.min( logicTile.points[0].y, logicTile.points[1].y );
 								};
@@ -303,7 +303,7 @@ function Atlas( sceneGraph ) {
 
 							if ( direction == 'x' ) {
 
-								if ( xCollision.maxX ) {
+								if ( typeof xCollision.maxX != 'undefined' ) {
 									if ( xCollision.maxX < Math.max( logicTile.points[0].x, logicTile.points[1].x ) ) {
 										xCollision.maxX = Math.max( logicTile.points[0].x, logicTile.points[1].x );
 									};
@@ -311,7 +311,7 @@ function Atlas( sceneGraph ) {
 									xCollision.maxX = Math.max( logicTile.points[0].x, logicTile.points[1].x );
 								};
 
-								if ( xCollision.minX ) {
+								if ( typeof xCollision.minX != 'undefined' ) {
 									if ( xCollision.minX > Math.min( logicTile.points[0].x, logicTile.points[1].x ) ) {
 										xCollision.minX = Math.min( logicTile.points[0].x, logicTile.points[1].x );
 									};
@@ -328,7 +328,7 @@ function Atlas( sceneGraph ) {
 
 							if ( direction == 'z' ) {
 
-								if ( xCollision.maxZ ) {
+								if ( typeof xCollision.maxZ != 'undefined' ) {
 									if ( xCollision.maxZ < Math.max( logicTile.points[0].z, logicTile.points[1].z ) ) {
 										xCollision.maxZ = Math.max( logicTile.points[0].z, logicTile.points[1].z );
 									};
@@ -336,7 +336,7 @@ function Atlas( sceneGraph ) {
 									xCollision.maxZ = Math.max( logicTile.points[0].z, logicTile.points[1].z );
 								};
 
-								if ( xCollision.minZ ) {
+								if ( typeof xCollision.minZ != 'undefined' ) {
 									if ( xCollision.minZ > Math.min( logicTile.points[0].z, logicTile.points[1].z ) ) {
 										xCollision.minZ = Math.min( logicTile.points[0].z, logicTile.points[1].z );
 									};
