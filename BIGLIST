@@ -1,4 +1,3 @@
 
 
 - Player fall when going down from climbing to slipping, whereas it should just start slipping
-- Player must haul themselves down the cliff when the approach the edge of a ground very close

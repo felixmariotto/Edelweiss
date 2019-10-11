@@ -20,6 +20,7 @@ function Controler( player ) {
     };
 
 
+    var cancelSpace = false ;
 
     // animations
     const HAULDURATION = 250 ;
@@ -159,6 +160,7 @@ function Controler( player ) {
 
             if ( glidingCount >= GLIDINGTIME ) {
                 state.isGliding = true ;
+                cancelSpace = true ;
             };
 
         } else {
@@ -410,43 +412,50 @@ function Controler( player ) {
                 ///  HAUL DOWN ACTION
                 /////////////////////////
 
-                if ( yCollision.maxX < player.position.x + HAULDOWNLIMIT ) {
+                // Check for speed so that if the player walk fast or run
+                // toward the edge, they won't be hauled down. To be hauled down,
+                // one must approach the edge slowly.
+                if ( inertia < 0.85 ) {
 
-                    startAction( HAULDOWNDURATION, new THREE.Vector3(
-                        yCollision.maxX + ( atlas.PLAYERWIDTH / 2 ) - 0.1,
-                        player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
-                        player.position.z
-                    ));
-                };
+                    if ( yCollision.maxX < player.position.x + HAULDOWNLIMIT ) {
 
-
-                if ( yCollision.minX > player.position.x - HAULDOWNLIMIT ) {
-
-                    startAction( HAULDOWNDURATION, new THREE.Vector3(
-                        yCollision.minX - ( atlas.PLAYERWIDTH / 2 ) + 0.1,
-                        player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
-                        player.position.z
-                    ));
-                };
+                        startAction( HAULDOWNDURATION, new THREE.Vector3(
+                            yCollision.maxX + ( atlas.PLAYERWIDTH / 2 ) - 0.1,
+                            player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
+                            player.position.z
+                        ));
+                    };
 
 
-                if ( yCollision.minZ > player.position.z - HAULDOWNLIMIT ) {
+                    if ( yCollision.minX > player.position.x - HAULDOWNLIMIT ) {
 
-                    startAction( HAULDOWNDURATION, new THREE.Vector3(
-                        player.position.x,
-                        player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
-                        yCollision.minZ - ( atlas.PLAYERWIDTH / 2 ) + 0.1
-                    ));
-                };
+                        startAction( HAULDOWNDURATION, new THREE.Vector3(
+                            yCollision.minX - ( atlas.PLAYERWIDTH / 2 ) + 0.1,
+                            player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
+                            player.position.z
+                        ));
+                    };
 
 
-                if ( yCollision.maxZ < player.position.z + HAULDOWNLIMIT ) {
+                    if ( yCollision.minZ > player.position.z - HAULDOWNLIMIT ) {
 
-                    startAction( HAULDOWNDURATION, new THREE.Vector3(
-                        player.position.x,
-                        player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
-                        yCollision.maxZ + ( atlas.PLAYERWIDTH / 2 ) - 0.1
-                    ));
+                        startAction( HAULDOWNDURATION, new THREE.Vector3(
+                            player.position.x,
+                            player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
+                            yCollision.minZ - ( atlas.PLAYERWIDTH / 2 ) + 0.1
+                        ));
+                    };
+
+
+                    if ( yCollision.maxZ < player.position.z + HAULDOWNLIMIT ) {
+
+                        startAction( HAULDOWNDURATION, new THREE.Vector3(
+                            player.position.x,
+                            player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
+                            yCollision.maxZ + ( atlas.PLAYERWIDTH / 2 ) - 0.1
+                        ));
+                    };
+
                 };
 
 
@@ -949,9 +958,13 @@ function Controler( player ) {
     // Sent here by input module when the user released space bar
     function spaceInput() {
 
+        if ( cancelSpace ) {
+            cancelSpace = false ;
+            return
+        };
 
-        if ( !state.isGliding &&
-             ( !permission.infinityJump && !state.isFlying || 
+
+        if ( ( !permission.infinityJump && !state.isFlying || 
              permission.infinityJump ) ) {
 
             player.position.y += 0.1 ;
