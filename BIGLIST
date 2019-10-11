@@ -1,3 +1,4 @@
 
 
-- Player fall when going down from climbing to slipping, whereas it should just start slipping
+- Player should be able to jump from a wall even when infinityJump is not allowed
+- Climbing upward + jump currently doesn't jump out of the wall, it should

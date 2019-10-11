@@ -30,10 +30,7 @@ function Controler( player ) {
 
     const DISTANCEINTERNALSWITCH = 0.3 ;
     const HAULDOWNLIMIT = -0.02 ;
-    const PERCENTHEIGHTHAULDOWN = 0.7 ;
-
-    // climbing movements
-    var xCollision ;
+    const PERCENTHEIGHTHAULDOWN = 0.7 ; // in percent
 
     // vert movements
     var speedUp = 0 ;
@@ -56,6 +53,9 @@ function Controler( player ) {
     var runCounter = 0;
 
     // climbing movements
+    var xCollision ;
+    var SLIPWALLFACTOR = 0.35 ;
+    const EASYWALLFACTOR = 1 ;
     const HARDWALLFACTOR = 0.4 ;
     const MEDIUMWALLFACTOR = 0.65 ;
     var climbSpeedFactor;
@@ -68,7 +68,8 @@ function Controler( player ) {
     var state = {
         isFlying: false,
         isGliding: false,
-        isClimbing: false
+        isClimbing: false,
+        isSlipping: false,
     };
 
     // player permission
@@ -158,7 +159,7 @@ function Controler( player ) {
 
             glidingCount += delta * 1000 ;
 
-            if ( glidingCount >= GLIDINGTIME ) {
+            if ( glidingCount >= GLIDINGTIME && permission.gliding ) {
                 state.isGliding = true ;
                 cancelSpace = true ;
             };
@@ -180,7 +181,9 @@ function Controler( player ) {
         ///////////////////////////////////////
 
 
-        if ( ( input.moveKeys.length > 0 ) && !state.isClimbing ) {
+        if ( ( input.moveKeys.length > 0 ) &&
+            !state.isClimbing &&
+            !state.isSlipping ) {
 
 
 
@@ -293,7 +296,8 @@ function Controler( player ) {
         ///  CLIMBING MOVEMENTS
         //////////////////////////
 
-        } else if ( ( input.moveKeys.length > 0 ) && state.isClimbing ) {
+        } else if ( ( input.moveKeys.length > 0 ) &&
+                    ( state.isClimbing || state.isSlipping ) ) {
 
             runCounter = 0 ;
             inertia = 0 ;
@@ -324,7 +328,7 @@ function Controler( player ) {
                 CLIMBVEC.set( 0, CLIMBSPEED * vecInversion, 0 );
                 CLIMBVEC.applyAxisAngle( axis, angle );
 
-                player.position.addScaledVector( CLIMBVEC, 1 * climbSpeedFactor );
+                player.position.addScaledVector( CLIMBVEC, climbSpeedFactor );
 
                 // This part is to allow the player to go down the wall when they
                 // touch the ground
@@ -398,6 +402,8 @@ function Controler( player ) {
         // There is a collision with the ground
         if ( yCollision.point != undefined ) {
 
+            // We don't want any Y movement when standing
+            // on the ground
             speedUp = 0 ;
 
             // Player stands on the ground
@@ -824,6 +830,7 @@ function Controler( player ) {
             ///  BEHAVIOR SETUP DEPENDING ON WALL TYPE
             //////////////////////////////////////////////
             
+            state.isSlipping = false ;
 
             switch (xCollision.majorWallType) {
 
@@ -839,7 +846,18 @@ function Controler( player ) {
                         // Clamp inertia during slipping so the fall is quite straight
                         inertia = Math.min( inertia, MAXSLIPINERTIA ) ;
                     };
+
                     setClimbingState( false );
+                    climbSpeedFactor = SLIPWALLFACTOR ;
+
+                    // If player touches the ground, we don't want them
+                    // to be considered slipping
+                    if ( typeof yCollision.point != 'undefined' ) {
+                        state.isSlipping = false ;
+                    } else {
+                        state.isSlipping = true ;
+                    };
+
                     break;
 
 
@@ -886,7 +904,7 @@ function Controler( player ) {
 
                 case 'wall-easy' :
                     setClimbingState( true );
-                    climbSpeedFactor = 1 ;
+                    climbSpeedFactor = EASYWALLFACTOR ;
                     break;
 
 
@@ -908,6 +926,7 @@ function Controler( player ) {
         } else {
 
             setClimbingState( false );
+            state.isSlipping = false ;
 
         };
 
