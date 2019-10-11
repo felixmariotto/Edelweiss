@@ -64,6 +64,10 @@ function Controler( player ) {
     var AXISX = new THREE.Vector3( 1, 0, 0 );
     var AXISZ = new THREE.Vector3( 0, 0, 1 );
 
+    // wall-jump
+    const WALLJUMPINERTIA = 1.8 ;
+    const WALLJUMPSPEEDUP = 0.95 ;
+
     // player state
     var state = {
         isFlying: false,
@@ -996,7 +1000,7 @@ function Controler( player ) {
 
             // This conditional to make sure that the player is climbing
             // or slipping along a wall
-            if ( state.isFlying || state.isClimbing ) {
+            if ( state.isSlipping || state.isClimbing ) {
 
                 switch ( contactDirection ) {
 
@@ -1038,9 +1042,13 @@ function Controler( player ) {
             
 
             function setJump() {
+
                 state.isClimbing = false ;
-                inertia = 1.6 ;
-                speedUp = 0.95 ;
+                state.isSlipping = false ;
+                state.isFlying = true ;
+                inertia = WALLJUMPINERTIA ;
+                speedUp = WALLJUMPSPEEDUP ;
+
             };
 
 
