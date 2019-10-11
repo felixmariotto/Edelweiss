@@ -185,8 +185,13 @@ function Controler( player ) {
 
             glidingCount = 0 ;
             dashCount = 0 ;
+            state.isGliding = false ;
 
         };
+
+
+
+
 
 
 
