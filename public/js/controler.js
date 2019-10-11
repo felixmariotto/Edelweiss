@@ -522,10 +522,15 @@ function Controler( player ) {
         ///  CLIMBING SETTING AND WALL COLLISIONS
         /////////////////////////////////////////////
 
-
+        // COLLISIONS FROM ATLAS MODULE
         xCollision = atlas.collidePlayerWalls( currentDirection );
 
-        if ( contactDirection &&
+
+        // INWARD ANGLE SWITCH ACTION
+        if ( xCollision.majorWallType != 'wall-slip' &&
+             xCollision.majorWallType != 'wall-fall' &&
+             xCollision.majorWallType != 'wall-limit' &&
+             contactDirection &&
              xCollision.direction &&
              contactDirection != xCollision.direction ) {
         
@@ -894,7 +899,7 @@ function Controler( player ) {
                         inertia = 1 ;
                         speedUp = -0.35 ;
                         // player is pushed out of contact with the wall,
-                        // so not the fall cannot be avoided
+                        // so the fall cannot be avoided
                         player.position.addScaledVector( HORIZMOVEVECT, 1.5 );
                     };
                     setClimbingState( false );
