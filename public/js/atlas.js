@@ -13,6 +13,10 @@ function Atlas( sceneGraph ) {
 	var xCollision = {
 		maxHeight: undefined,
 		minHeight: undefined,
+		maxX: undefined,
+		minX: undefined,
+		maxZ: undefined,
+		minZ: undefined,
 		xPoint: undefined,
 		zPoint: undefined,
 		majorWallType: undefined
@@ -228,6 +232,10 @@ function Atlas( sceneGraph ) {
 
 		xCollision.maxHeight = undefined ;
 		xCollision.minHeight = undefined ;
+		xCollision.maxX = undefined ;
+		xCollision.minX = undefined ;
+		xCollision.maxZ = undefined ;
+		xCollision.minZ = undefined ;
 		xCollision.xPoint = undefined ;
 		xCollision.zPoint = undefined ;
 		xCollision.majorWallType = undefined ;
@@ -258,12 +266,19 @@ function Atlas( sceneGraph ) {
 						   Math.max( logicTile.points[0].y, logicTile.points[1].y ) >= player.position.y + PLAYERHEIGHT - 0.1 )  ) {
 
 
+
+
 						// Save the colliding tile into the array that is used to know
 						// the major wall type, and compute the max and min wall limits
-						// min and heigh limits are used for slipping, hauling.. etc..
-						function recordCollision() {
+						// min and high limits are used for slipping, hauling.. etc..
+						function recordCollision( direction ) {
 
 							collidedWalls.push( logicTile );
+
+
+							////////////
+							//  Y DIR
+							////////////
 
 							if ( xCollision.maxHeight ) {
 								if ( xCollision.maxHeight < Math.max( logicTile.points[0].y, logicTile.points[1].y ) ) {
@@ -281,7 +296,59 @@ function Atlas( sceneGraph ) {
 								xCollision.minHeight = Math.min( logicTile.points[0].y, logicTile.points[1].y );
 							};
 
+
+							///////////
+							//  X DIR
+							//////////
+
+							if ( direction == 'x' ) {
+
+								if ( xCollision.maxX ) {
+									if ( xCollision.maxX < Math.max( logicTile.points[0].x, logicTile.points[1].x ) ) {
+										xCollision.maxX = Math.max( logicTile.points[0].x, logicTile.points[1].x );
+									};
+								} else {
+									xCollision.maxX = Math.max( logicTile.points[0].x, logicTile.points[1].x );
+								};
+
+								if ( xCollision.minX ) {
+									if ( xCollision.minX > Math.min( logicTile.points[0].x, logicTile.points[1].x ) ) {
+										xCollision.minX = Math.min( logicTile.points[0].x, logicTile.points[1].x );
+									};
+								} else {
+									xCollision.minX = Math.min( logicTile.points[0].x, logicTile.points[1].x );
+								};
+
+							};
+
+
+							///////////
+							//  Z DIR
+							//////////
+
+							if ( direction == 'z' ) {
+
+								if ( xCollision.maxZ ) {
+									if ( xCollision.maxZ < Math.max( logicTile.points[0].z, logicTile.points[1].z ) ) {
+										xCollision.maxZ = Math.max( logicTile.points[0].z, logicTile.points[1].z );
+									};
+								} else {
+									xCollision.maxZ = Math.max( logicTile.points[0].z, logicTile.points[1].z );
+								};
+
+								if ( xCollision.minZ ) {
+									if ( xCollision.minZ > Math.min( logicTile.points[0].z, logicTile.points[1].z ) ) {
+										xCollision.minZ = Math.min( logicTile.points[0].z, logicTile.points[1].z );
+									};
+								} else {
+									xCollision.minZ = Math.min( logicTile.points[0].z, logicTile.points[1].z );
+								};
+
+							};
+
 						};
+
+
 
 						// Check if any X Z collision
 
@@ -301,7 +368,7 @@ function Atlas( sceneGraph ) {
 
 							};
 
-							recordCollision();
+							recordCollision( 'x' );
 
 						} else if ( !logicTile.isXAligned &&
 									 !( Math.min( logicTile.points[0].z, logicTile.points[1].z ) > ( player.position.z + ( PLAYERWIDTH / 2 ) - 0.05 ) ||
@@ -319,7 +386,7 @@ function Atlas( sceneGraph ) {
 
 							};
 
-							recordCollision();
+							recordCollision( 'z' );
 
 						};
 

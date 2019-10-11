@@ -411,6 +411,35 @@ function Controler( player ) {
         if ( xCollision.majorWallType ) {
 
 
+            ///////////////////////////////////////////////////////
+            ///  SPECIAL ANIMATIONS (HAUL, SWITCH DIRECTION...)
+            ///////////////////////////////////////////////////////
+
+
+            if ( xCollision.minX > player.position.x ) {
+                console.log( 'switch on -X' );
+                // return
+            };
+
+
+            if ( xCollision.maxX < player.position.x ) {
+                console.log( 'switch on +X' );
+                // return
+            };
+
+
+            if ( xCollision.minZ > player.position.z ) {
+                console.log( 'switch on -Z' );
+                // return
+            };
+
+
+            if ( xCollision.maxZ < player.position.z ) {
+                console.log( 'switch on +Z' );
+                // return
+            };
+
+
             if ( xCollision.maxHeight < player.position.y + (atlas.PLAYERHEIGHT * HAULLIMIT) ) {
                 console.log( 'haul' );
                 // return
@@ -421,6 +450,11 @@ function Controler( player ) {
                 console.log( 'fall' );
                 // return
             };
+
+
+            //////////////////////////////////////////////
+            ///  BEHAVIOR SETUP DEPENDING ON WALL TYPE
+            //////////////////////////////////////////////
             
 
             switch (xCollision.majorWallType) {
