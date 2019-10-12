@@ -30,6 +30,7 @@ function Controler( player ) {
 
     const DISTANCEINTERNALSWITCH = 0.3 ;
     const HAULDOWNLIMIT = -0.02 ;
+    const HAULDOWNMAXSPEED = 0.95 ;
     const PERCENTHEIGHTHAULDOWN = 0.7 ; // in percent
 
     // vert movements
@@ -518,7 +519,7 @@ function Controler( player ) {
                 // Check for speed so that if the player walk fast or run
                 // toward the edge, they won't be hauled down. To be hauled down,
                 // one must approach the edge slowly.
-                if ( inertia < 0.85 ) {
+                if ( inertia <= HAULDOWNMAXSPEED ) {
 
                     if ( yCollision.maxX < player.position.x + HAULDOWNLIMIT ) {
 
