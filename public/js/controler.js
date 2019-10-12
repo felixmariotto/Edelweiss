@@ -421,7 +421,7 @@ function Controler( player ) {
 
 
         ///////////////////////
-        ///  DASH MOUVEMENT
+        ///  DASH MOVEMENT
         ///////////////////////
 
         } else if ( state.isDashing ) {
@@ -624,7 +624,8 @@ function Controler( player ) {
 
 
         // INWARD ANGLE SWITCH ACTION
-        if ( xCollision.majorWallType != 'wall-slip' &&
+        if ( !state.isDashing && 
+             xCollision.majorWallType != 'wall-slip' &&
              xCollision.majorWallType != 'wall-fall' &&
              xCollision.majorWallType != 'wall-limit' &&
              contactDirection &&
@@ -705,8 +706,6 @@ function Controler( player ) {
               xCollision.direction == dashWallDirection ) ) {
 
 
-            console.log( dashWallDirection )
-
 
             // Save the direction of the wall while charging dash,
             // for collision detection while dashing
@@ -724,7 +723,8 @@ function Controler( player ) {
             // of a climbable tile, so that we can trigger some special
             // actions, like hauling to player up an edge, or
             // switch direction
-            if ( xCollision.majorWallType != 'wall-slip' &&
+            if ( !state.isDashing &&
+                 xCollision.majorWallType != 'wall-slip' &&
                  xCollision.majorWallType != 'wall-fall' &&
                  xCollision.majorWallType != 'wall-limit') {
 
@@ -1042,9 +1042,46 @@ function Controler( player ) {
 
             };
 
-        } else if ( xCollision.direction != dashWallDirection ) {
+        // Handle the case when a player hit a wall while dashing
+        } else if ( xCollision.majorWallType &&
+                    xCollision.direction != dashWallDirection ) {
 
-            console.log( 'stop dash' )
+            state.isDashing = false ;
+            dashTime = undefined ;
+
+            // Reposition the player on the wall they collided while dashing
+
+            if ( xCollision.xPoint ) {
+                player.position.x = xCollision.xPoint ;
+            };
+            
+            if ( xCollision.zPoint ) {
+                player.position.z = xCollision.zPoint ;
+            };
+
+            // Offset a little bit the player on the wall they collided,
+            // So that inward switching occur from the previous wall
+            // to the collided one.
+
+            switch (dashWallDirection) {
+
+                case 'up' :
+                    player.position.z += 0.05 ;
+                    break ;
+
+                case 'down' :
+                    player.position.z -= 0.05 ;
+                    break;
+
+                case 'left' :
+                    player.position.x += 0.05 ;
+                    break;
+
+                case 'right' :
+                    player.position.x -= 0.05 ;
+                    break;
+
+            };
 
         } else {
 
@@ -1063,12 +1100,14 @@ function Controler( player ) {
                 state.isFlying = false ;
 
             } else {
-
                 state.isClimbing = false ;
 
             };
 
         };
+
+
+
 
 
 
@@ -1093,7 +1132,9 @@ function Controler( player ) {
 
 
 
-
+    ////////////////////////////////////
+    ///////    GENERAL FUNCTIONS
+    ////////////////////////////////////
 
 
 
@@ -1115,7 +1156,6 @@ function Controler( player ) {
             state.isDashing = true ;
             state.isClimbing = false ;
             state.isSlipping = false ;
-            console.log( 'start dash' );
             return
 
         };
