@@ -94,6 +94,7 @@ function Controler( player ) {
     var dashCount = 0 ;
     var dashVec = new THREE.Vector3();
     var dashTime;
+    var dashWallDirection;
     const DASHTGRAVITY = 0.5 ; // t from which the dash get gravity
 
     // hold the side on which the player contacts
@@ -605,7 +606,7 @@ function Controler( player ) {
 
 
 
-
+        /////////////  APPLY GRAVITY  ////////////////
         player.position.y += ( speedUp * 0.1 ) ;
 
 
@@ -619,6 +620,9 @@ function Controler( player ) {
         xCollision = atlas.collidePlayerWalls( currentDirection );
 
 
+        
+
+
         // INWARD ANGLE SWITCH ACTION
         if ( xCollision.majorWallType != 'wall-slip' &&
              xCollision.majorWallType != 'wall-fall' &&
@@ -626,8 +630,10 @@ function Controler( player ) {
              contactDirection &&
              xCollision.direction &&
              contactDirection != xCollision.direction ) {
-        
+    
+
             let x, z ;
+            
 
             // Set one axis from the direction of the final tile
             switch ( xCollision.direction ) {
@@ -694,7 +700,19 @@ function Controler( player ) {
             player.position.z = xCollision.zPoint ;
         };
 
-        if ( xCollision.majorWallType && !state.isDashing ) {
+        if ( xCollision.majorWallType &&
+            ( !state.isDashing ||
+              xCollision.direction == dashWallDirection ) ) {
+
+
+            console.log( dashWallDirection )
+
+
+            // Save the direction of the wall while charging dash,
+            // for collision detection while dashing
+            if ( state.chargingDash ) {
+                dashWallDirection = xCollision.direction ;
+            };
 
 
             ///////////////////////////////////////////////////////
@@ -924,6 +942,9 @@ function Controler( player ) {
             
 
 
+            
+
+
             //////////////////////////////////////////////
             ///  BEHAVIOR SETUP DEPENDING ON WALL TYPE
             //////////////////////////////////////////////
@@ -1020,6 +1041,10 @@ function Controler( player ) {
                     break;
 
             };
+
+        } else if ( xCollision.direction != dashWallDirection ) {
+
+            console.log( 'stop dash' )
 
         } else {
 
