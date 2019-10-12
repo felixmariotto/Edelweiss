@@ -26,15 +26,25 @@ function Utils() {
 
 
 
-
+    // This is a linear interpolation able to interpolate two Euler angles,
+    // which values loop from -PI to PI.
     function lerpAngles( vStart, vEnd, t ) {
 
-        console.log( 'new angle lerp')
-        console.log( 'vStart = ' + vStart )
-        console.log( 'vEnd = ' + vEnd )
-
+        // Check if there is a problem of lerp going above PI or bellow -PI
         if ( Math.abs( vStart - vEnd ) > Math.PI / 2 ) {
-            console.log('problem')
+            
+            // The smallest value is added 2 * PI to to do the lerp,
+            // then reduced to PI range.
+            if ( vStart < vEnd ) {
+
+                return toPiRange( lerp( vStart + (Math.PI * 2), vEnd, t ) );
+
+            } else {
+
+                return toPiRange( lerp( vStart, vEnd + (Math.PI * 2), t ) );
+
+            };
+        
         };
 
         return lerp( vStart, vEnd, t );

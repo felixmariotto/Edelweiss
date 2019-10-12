@@ -548,7 +548,9 @@ function Controler( player ) {
                                 yCollision.maxX + ( atlas.PLAYERWIDTH / 2 ) - 0.1,
                                 player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
                                 player.position.z
-                            )
+                            ),
+                            charaAnim.group.rotation.y,
+                            utils.toPiRange( charaAnim.group.rotation.y + 3.1 )
                         );
                     };
 
@@ -561,28 +563,40 @@ function Controler( player ) {
                                 yCollision.minX - ( atlas.PLAYERWIDTH / 2 ) + 0.1,
                                 player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
                                 player.position.z
-                            )
+                            ),
+                            charaAnim.group.rotation.y,
+                            utils.toPiRange( charaAnim.group.rotation.y + 3.1 )
                         );
                     };
 
 
                     if ( yCollision.minZ > player.position.z - HAULDOWNLIMIT ) {
 
-                        startAction( HAULDOWNDURATION, new THREE.Vector3(
-                            player.position.x,
-                            player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
-                            yCollision.minZ - ( atlas.PLAYERWIDTH / 2 ) + 0.1
-                        ));
+                        startAction(
+                            HAULDOWNDURATION,
+                            new THREE.Vector3(
+                                player.position.x,
+                                player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
+                                yCollision.minZ - ( atlas.PLAYERWIDTH / 2 ) + 0.1
+                            ),
+                            charaAnim.group.rotation.y,
+                            utils.toPiRange( charaAnim.group.rotation.y + 3.1 )
+                        );
                     };
 
 
                     if ( yCollision.maxZ < player.position.z + HAULDOWNLIMIT ) {
 
-                        startAction( HAULDOWNDURATION, new THREE.Vector3(
-                            player.position.x,
-                            player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
-                            yCollision.maxZ + ( atlas.PLAYERWIDTH / 2 ) - 0.1
-                        ));
+                        startAction(
+                            HAULDOWNDURATION,
+                            new THREE.Vector3(
+                                player.position.x,
+                                player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
+                                yCollision.maxZ + ( atlas.PLAYERWIDTH / 2 ) - 0.1
+                            ),
+                            charaAnim.group.rotation.y,
+                            utils.toPiRange( charaAnim.group.rotation.y + 3.1 )
+                        );
                     };
 
                 };
@@ -781,11 +795,16 @@ function Controler( player ) {
                     };
 
                     function setPos( factor ) {
-                        startAction( SWITCHTILEDURATION, new THREE.Vector3(
-                            xCollision.minX - ( atlas.PLAYERWIDTH / 2 ) + 0.1,
-                            player.position.y,
-                            player.position.z + (atlas.PLAYERWIDTH * factor)
-                        ));
+                        startAction( 
+                            SWITCHTILEDURATION,
+                            new THREE.Vector3(
+                                xCollision.minX - ( atlas.PLAYERWIDTH / 2 ) + 0.1,
+                                player.position.y,
+                                player.position.z + (atlas.PLAYERWIDTH * factor)
+                            ),
+                            charaAnim.group.rotation.y,
+                            Math.PI / 2
+                        );
                     };
 
                     // return
@@ -804,11 +823,16 @@ function Controler( player ) {
                     };
 
                     function setPos( factor ) {
-                        startAction( SWITCHTILEDURATION, new THREE.Vector3(
-                            xCollision.maxX + ( atlas.PLAYERWIDTH / 2 ) - 0.1,
-                            player.position.y,
-                            player.position.z + (atlas.PLAYERWIDTH * factor)
-                        ));
+                        startAction(
+                            SWITCHTILEDURATION,
+                            new THREE.Vector3(
+                                xCollision.maxX + ( atlas.PLAYERWIDTH / 2 ) - 0.1,
+                                player.position.y,
+                                player.position.z + (atlas.PLAYERWIDTH * factor)
+                            ),
+                            charaAnim.group.rotation.y,
+                            -Math.PI / 2
+                        );
                     };
 
                     // return
@@ -826,12 +850,19 @@ function Controler( player ) {
                         setPos( 1 );
                     };
 
+                    console.log('coucou')
+
                     function setPos( factor ) {
-                        startAction( SWITCHTILEDURATION, new THREE.Vector3(
-                            player.position.x + ( atlas.PLAYERWIDTH * factor ),
-                            player.position.y,
-                            xCollision.minZ - ( atlas.PLAYERWIDTH / 2 ) + 0.1
-                        ));
+                        startAction(
+                            SWITCHTILEDURATION,
+                            new THREE.Vector3(
+                                player.position.x + ( atlas.PLAYERWIDTH * factor ),
+                                player.position.y,
+                                xCollision.minZ - ( atlas.PLAYERWIDTH / 2 ) + 0.1
+                            ),
+                            charaAnim.group.rotation.y,
+                            0
+                        );
                     };
 
                     // return
@@ -850,11 +881,16 @@ function Controler( player ) {
                     };
 
                     function setPos( factor ) {
-                        startAction( SWITCHTILEDURATION, new THREE.Vector3(
-                            player.position.x + ( atlas.PLAYERWIDTH * factor ),
-                            player.position.y,
-                            xCollision.maxZ + ( atlas.PLAYERWIDTH / 2 ) - 0.1
-                        ));
+                        startAction(
+                            SWITCHTILEDURATION,
+                            new THREE.Vector3(
+                                player.position.x + ( atlas.PLAYERWIDTH * factor ),
+                                player.position.y,
+                                xCollision.maxZ + ( atlas.PLAYERWIDTH / 2 ) - 0.1
+                            ),
+                            charaAnim.group.rotation.y,
+                            Math.PI
+                        );
                     };
 
                     // return
@@ -875,35 +911,55 @@ function Controler( player ) {
                     switch (contactDirection) {
 
                         case 'up' :
-                            startAction( PULLUNDERDURATION, new THREE.Vector3(
-                                player.position.x,
-                                xCollision.minHeight - atlas.PLAYERHEIGHT,
-                                player.position.z - (atlas.PLAYERWIDTH / 2)
-                            ));
+                            startAction(
+                                PULLUNDERDURATION,
+                                new THREE.Vector3(
+                                    player.position.x,
+                                    xCollision.minHeight - atlas.PLAYERHEIGHT,
+                                    player.position.z - (atlas.PLAYERWIDTH / 2)
+                                ),
+                                charaAnim.group.rotation.y,
+                                charaAnim.group.rotation.y
+                            );
                             break;
 
                         case 'down' :
-                            startAction( PULLUNDERDURATION, new THREE.Vector3(
-                                player.position.x,
-                                xCollision.minHeight - atlas.PLAYERHEIGHT,
-                                player.position.z + (atlas.PLAYERWIDTH / 2)
-                            ));
+                            startAction(
+                                PULLUNDERDURATION,
+                                new THREE.Vector3(
+                                    player.position.x,
+                                    xCollision.minHeight - atlas.PLAYERHEIGHT,
+                                    player.position.z + (atlas.PLAYERWIDTH / 2)
+                                ),
+                                charaAnim.group.rotation.y,
+                                charaAnim.group.rotation.y
+                            );
                             break;
 
                         case 'left' :
-                            startAction( PULLUNDERDURATION, new THREE.Vector3(
-                                player.position.x - (atlas.PLAYERWIDTH / 2),
-                                xCollision.minHeight - atlas.PLAYERHEIGHT,
-                                player.position.z
-                            ));
+                            startAction(
+                                PULLUNDERDURATION,
+                                new THREE.Vector3(
+                                    player.position.x - (atlas.PLAYERWIDTH / 2),
+                                    xCollision.minHeight - atlas.PLAYERHEIGHT,
+                                    player.position.z
+                                ),
+                                charaAnim.group.rotation.y,
+                                charaAnim.group.rotation.y
+                            );
                             break;
 
                         case 'right' :
-                            startAction( PULLUNDERDURATION, new THREE.Vector3(
-                                player.position.x + (atlas.PLAYERWIDTH / 2),
-                                xCollision.minHeight - atlas.PLAYERHEIGHT,
-                                player.position.z
-                            ));
+                            startAction(
+                                PULLUNDERDURATION,
+                                new THREE.Vector3(
+                                    player.position.x + (atlas.PLAYERWIDTH / 2),
+                                    xCollision.minHeight - atlas.PLAYERHEIGHT,
+                                    player.position.z
+                                ),
+                                charaAnim.group.rotation.y,
+                                charaAnim.group.rotation.y
+                            );
                             break;
 
                     };
@@ -941,41 +997,61 @@ function Controler( player ) {
 
                         case 'up' :
 
-                            startAction( HAULDURATION, new THREE.Vector3(
-                                player.position.x,
-                                xCollision.maxHeight,
-                                player.position.z - atlas.PLAYERWIDTH
-                            ));
+                            startAction(
+                                HAULDURATION,
+                                new THREE.Vector3(
+                                    player.position.x,
+                                    xCollision.maxHeight,
+                                    player.position.z - atlas.PLAYERWIDTH
+                                ),
+                                charaAnim.group.rotation.y,
+                                charaAnim.group.rotation.y
+                            );
 
                             break;
 
                         case 'down' :
                             
-                            startAction( HAULDURATION, new THREE.Vector3(
-                                player.position.x,
-                                xCollision.maxHeight,
-                                player.position.z + atlas.PLAYERWIDTH
-                            ));
+                            startAction(
+                                HAULDURATION,
+                                new THREE.Vector3(
+                                    player.position.x,
+                                    xCollision.maxHeight,
+                                    player.position.z + atlas.PLAYERWIDTH
+                                ),
+                                charaAnim.group.rotation.y,
+                                charaAnim.group.rotation.y
+                            );
 
                             break;
 
                         case 'left' :
                             
-                            startAction( HAULDURATION, new THREE.Vector3(
-                                player.position.x - atlas.PLAYERWIDTH,
-                                xCollision.maxHeight,
-                                player.position.z
-                            ));
+                            startAction(
+                                HAULDURATION,
+                                new THREE.Vector3(
+                                    player.position.x - atlas.PLAYERWIDTH,
+                                    xCollision.maxHeight,
+                                    player.position.z
+                                ),
+                                charaAnim.group.rotation.y,
+                                charaAnim.group.rotation.y
+                            );
 
                             break;
 
                         case 'right' :
                             
-                            startAction( HAULDURATION, new THREE.Vector3(
-                                player.position.x + atlas.PLAYERWIDTH,
-                                xCollision.maxHeight,
-                                player.position.z
-                            ));
+                            startAction(
+                                HAULDURATION,
+                                new THREE.Vector3(
+                                    player.position.x + atlas.PLAYERWIDTH,
+                                    xCollision.maxHeight,
+                                    player.position.z
+                                ),
+                                charaAnim.group.rotation.y,
+                                charaAnim.group.rotation.y
+                            );
 
                             break;
 
