@@ -1,3 +1,2 @@
 
-- player can stick on a wall with nothing bellow 30% of them (occur after a jump)
 - action hold-down-edge should not occur when the player jumps from the bottom, because it keep them from climbing on the tile

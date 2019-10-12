@@ -96,6 +96,8 @@ function Controler( player ) {
     var dashTime;
     var dashWallDirection;
     const DASHTGRAVITY = 0.5 ; // t from which the dash get gravity
+    var initialX, initialZ ; // Used in case the player dash to an no-wall area,
+                             // so we can push the player toward the ground
 
     // hold the side on which the player contacts
     // a wall. "left", "right", "up" or "down".
@@ -496,6 +498,7 @@ function Controler( player ) {
         // There is a collision with the ground
         if ( yCollision.point != undefined ) {
 
+
             // We don't want any Y movement when standing
             // on the ground
             speedUp = 0 ;
@@ -598,6 +601,7 @@ function Controler( player ) {
                 speedUp = Math.max( Math.min( speedUp, 1.25 ), -2.3 );
 
             };
+
 
         };
 
@@ -714,6 +718,7 @@ function Controler( player ) {
             };
 
 
+
             ///////////////////////////////////////////////////////
             ///  SPECIAL ANIMATIONS (HAUL, SWITCH DIRECTION...)
             ///////////////////////////////////////////////////////
@@ -822,7 +827,7 @@ function Controler( player ) {
 
 
                 if ( xCollision.maxHeight < player.position.y + (atlas.PLAYERHEIGHT * HAULTOPLIMIT) ) {
-                    
+
                     haul();
 
                     // return
@@ -883,14 +888,19 @@ function Controler( player ) {
             };
 
 
+
+
             // This is used just a few lines higher by the functions
             // that trigger special animations.
             // It haul the player on top of an edge
             function haul() {
 
+                // This first conditional discarded cases when the player was well above
+                // the edge of the tile. It was useful before to add a haul down function,
+                // but now it's useless and leaded to some issues with dash.
+                if ( /* xCollision.maxHeight > player.position.y + (HAULLLOWLIMIT * atlas.PLAYERHEIGHT) &&
+                     */ xCollision.maxHeight < player.position.y + (HAULTOPLIMIT * atlas.PLAYERHEIGHT) ) {
 
-                if ( xCollision.maxHeight > player.position.y + (HAULLLOWLIMIT * atlas.PLAYERHEIGHT) &&
-                     xCollision.maxHeight < player.position.y + (HAULTOPLIMIT * atlas.PLAYERHEIGHT) ) {
 
                     switch (contactDirection) {
 
@@ -1156,6 +1166,7 @@ function Controler( player ) {
             state.isDashing = true ;
             state.isClimbing = false ;
             state.isSlipping = false ;
+
             return
 
         };
