@@ -2,6 +2,8 @@
 
 function CharaAnim( player ) {
 
+    const group = player.charaGroup ;
+
 
     function setCharaRot( angle ) {
 
@@ -11,7 +13,8 @@ function CharaAnim( player ) {
 
 
     return {
-        setCharaRot
+        setCharaRot,
+        group
     };
 
 };

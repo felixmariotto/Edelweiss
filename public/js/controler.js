@@ -21,6 +21,7 @@ function Controler( player ) {
 
 
     var cancelSpace = false ;
+    var actionTime;
 
     // animations
     const HAULDURATION = 250 ;
@@ -118,11 +119,14 @@ function Controler( player ) {
     var pendingAction; 
 
 
-    function startAction( duration, endVec ) {
+    function startAction( duration, endVec, startAngle, endAngle ) {
+
 
         pendingAction = {
             startTime : Date.now(),
             duration,
+            startAngle,
+            endAngle,
             startVec : new THREE.Vector3().copy( player.position ),
             endVec
         };
@@ -133,13 +137,21 @@ function Controler( player ) {
 
     function updateAction( delta ) {
 
+        actionTime = ( Date.now() - pendingAction.startTime ) / pendingAction.duration ;
+
         player.position.lerpVectors(
             pendingAction.startVec,
             pendingAction.endVec,
-            ( Date.now() - pendingAction.startTime ) / pendingAction.duration
+            actionTime
         );
 
-        if ( ( Date.now() - pendingAction.startTime ) / pendingAction.duration > 1 ) {
+        charaAnim.setCharaRot( utils.lerpAngles(
+            pendingAction.startAngle,
+            pendingAction.endAngle,
+            actionTime
+        ));
+
+        if ( actionTime > 1 ) {
             
             // Reset all movements value,
             // so at the end of the action, the player will
@@ -530,21 +542,27 @@ function Controler( player ) {
 
                     if ( yCollision.maxX < player.position.x + HAULDOWNLIMIT ) {
 
-                        startAction( HAULDOWNDURATION, new THREE.Vector3(
-                            yCollision.maxX + ( atlas.PLAYERWIDTH / 2 ) - 0.1,
-                            player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
-                            player.position.z
-                        ));
+                        startAction(
+                            HAULDOWNDURATION,
+                            new THREE.Vector3(
+                                yCollision.maxX + ( atlas.PLAYERWIDTH / 2 ) - 0.1,
+                                player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
+                                player.position.z
+                            )
+                        );
                     };
 
 
                     if ( yCollision.minX > player.position.x - HAULDOWNLIMIT ) {
 
-                        startAction( HAULDOWNDURATION, new THREE.Vector3(
-                            yCollision.minX - ( atlas.PLAYERWIDTH / 2 ) + 0.1,
-                            player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
-                            player.position.z
-                        ));
+                        startAction(
+                            HAULDOWNDURATION,
+                            new THREE.Vector3(
+                                yCollision.minX - ( atlas.PLAYERWIDTH / 2 ) + 0.1,
+                                player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
+                                player.position.z
+                            )
+                        );
                     };
 
 
@@ -653,6 +671,7 @@ function Controler( player ) {
 
                 case 'right' :
                     x = player.position.x ;
+                    finalAnimationAngle = Math.PI / 2 ;
                     if ( contactDirection == 'up' ) {
                         z = player.position.z + DISTANCEINTERNALSWITCH;
                     } else {
@@ -662,6 +681,7 @@ function Controler( player ) {
 
                 case 'left' :
                     x = player.position.x ;
+                    finalAnimationAngle = -Math.PI / 2 ;
                     if ( contactDirection == 'up' ) {
                         z = player.position.z + DISTANCEINTERNALSWITCH;
                     } else {
@@ -671,6 +691,7 @@ function Controler( player ) {
 
                 case 'up' :
                     z = player.position.z ;
+                    finalAnimationAngle = Math.PI ;
                     if ( contactDirection == 'right' ) {
                         x = player.position.x - DISTANCEINTERNALSWITCH;
                     } else {
@@ -680,6 +701,7 @@ function Controler( player ) {
 
                 case 'down' :
                     z = player.position.z ;
+                    finalAnimationAngle = 0 ;
                     if ( contactDirection == 'right' ) {
                         x = player.position.x - DISTANCEINTERNALSWITCH;
                     } else {
@@ -696,7 +718,12 @@ function Controler( player ) {
                 z
             );
 
-            startAction( SWITCHTILEDURATION, endVec);
+            startAction( 
+                SWITCHTILEDURATION,
+                endVec,
+                charaAnim.group.rotation.y,
+                finalAnimationAngle
+            );
 
 
         };
