@@ -89,9 +89,12 @@ function Controler( player ) {
     var glidingCount = 0 ;
 
     const DASHTIME = 300 ;
+    const DASHTIMEINCREMENT = 0.04 ;
     var dashCount = 0 ;
     const DASHVECDISTANCE = 3 ;
-    var DASHVEC = new THREE.Vector3();
+    var dashEndVec = new THREE.Vector3();
+    var dashStartVec = new THREE.Vector3();
+    var dashTime;
 
     // hold the side on which the player contacts
     // a wall. "left", "right", "up" or "down".
@@ -211,6 +214,7 @@ function Controler( player ) {
 
 
 
+
             ////////////////////////
             ////   MOVEMENT ANGLE
             ////////////////////////
@@ -325,6 +329,7 @@ function Controler( player ) {
                     !state.chargingDash &&
                     !state.isDashing ) {
 
+
             runCounter = 0 ;
             inertia = 0 ;
 
@@ -407,8 +412,11 @@ function Controler( player ) {
 
             function setDashVec( axis, vecInversion, angle ) {
 
-                DASHVEC.set( 0, DASHVECDISTANCE * vecInversion, 0 );
-                DASHVEC.applyAxisAngle( axis, angle );
+                dashEndVec.set( 0, DASHVECDISTANCE * vecInversion, 0 );
+                dashEndVec.applyAxisAngle( axis, angle );
+                dashEndVec.add( player.position );
+
+                dashStartVec.copy( player.position )
 
             };
 
@@ -420,7 +428,23 @@ function Controler( player ) {
 
         } else if ( state.isDashing ) {
 
-            console.log('dash mouvement')
+
+            // dashTime = 1 - ( player.position.distanceTo( dashEndVec ) / DASHVECDISTANCE ) ;
+            dashTime = ( dashTime + DASHTIMEINCREMENT ) || 0 ;
+
+            // console.log( dashTime )
+
+            player.position.lerpVectors(
+                dashStartVec,
+                dashEndVec,
+                dashTime + ( ( 1 - dashTime ) * 0.15 )
+            );
+
+            if ( dashTime > 0.95 ) {
+                state.isDashing = false ;
+                dashTime = undefined ;
+                debugger
+            };
 
 
 
@@ -554,9 +578,8 @@ function Controler( player ) {
 
 
         // There is no collision with the ground
-        } else {
+        } else if ( !state.isDashing || dashTime > 0.7 ) {
             
-
             state.isFlying = true ;
 
             if ( state.isGliding ) {
@@ -574,6 +597,8 @@ function Controler( player ) {
                                 Math.max( speedUp, -0.3 ) * 0.85 ;
 
             } else {
+
+                if ( dashTime ) console.log( dashTime )
 
                 // Normal gravity
                 speedUp -= 0.06 ;
@@ -677,7 +702,7 @@ function Controler( player ) {
             player.position.z = xCollision.zPoint ;
         };
 
-        if ( xCollision.majorWallType ) {
+        if ( xCollision.majorWallType && !state.isDashing ) {
 
 
             ///////////////////////////////////////////////////////
@@ -1071,8 +1096,9 @@ function Controler( player ) {
 
             state.chargingDash = false ;
             state.isDashing = true ;
+            state.isClimbing = false ;
+            state.isSlipping = false ;
             console.log( 'start dash' );
-            console.log( DASHVEC )
             return
 
         };
