@@ -88,13 +88,13 @@ function Controler( player ) {
     const GLIDINGTIME = 200 ;
     var glidingCount = 0 ;
 
-    const DASHTIME = 300 ;
-    const DASHTIMEINCREMENT = 0.04 ;
+    const DASHTIME = 300 ; // ms necessary to charge a dash
+    const DASHTIMEINCREMENT = 0.05 ; // dash speed
+    const DASHDISTANCE = 0.28 ;
     var dashCount = 0 ;
-    const DASHVECDISTANCE = 3 ;
-    var dashEndVec = new THREE.Vector3();
-    var dashStartVec = new THREE.Vector3();
+    var dashVec = new THREE.Vector3();
     var dashTime;
+    const DASHTGRAVITY = 0.5 ; // t from which the dash get gravity
 
     // hold the side on which the player contacts
     // a wall. "left", "right", "up" or "down".
@@ -412,11 +412,8 @@ function Controler( player ) {
 
             function setDashVec( axis, vecInversion, angle ) {
 
-                dashEndVec.set( 0, DASHVECDISTANCE * vecInversion, 0 );
-                dashEndVec.applyAxisAngle( axis, angle );
-                dashEndVec.add( player.position );
-
-                dashStartVec.copy( player.position )
+                dashVec.set( 0, vecInversion, 0 );
+                dashVec.applyAxisAngle( axis, angle );
 
             };
 
@@ -428,22 +425,20 @@ function Controler( player ) {
 
         } else if ( state.isDashing ) {
 
+            inertia = 0 ;
 
-            // dashTime = 1 - ( player.position.distanceTo( dashEndVec ) / DASHVECDISTANCE ) ;
-            dashTime = ( dashTime + DASHTIMEINCREMENT ) || 0 ;
+            dashTime = dashTime + DASHTIMEINCREMENT || 0.01 ;
 
-            // console.log( dashTime )
+            let factor = 1 - dashTime ;
 
-            player.position.lerpVectors(
-                dashStartVec,
-                dashEndVec,
-                dashTime + ( ( 1 - dashTime ) * 0.15 )
+            player.position.addScaledVector(
+                dashVec,
+                DASHDISTANCE * factor
             );
 
-            if ( dashTime > 0.95 ) {
+            if ( dashTime > 0.98 ) {
                 state.isDashing = false ;
                 dashTime = undefined ;
-                debugger
             };
 
 
@@ -481,9 +476,8 @@ function Controler( player ) {
         };
 
 
+        ////////////  PLAYER X Z TRANSLATION ///////////////////////
         player.position.addScaledVector( HORIZMOVEVECT, inertia );
-
-
 
         
 
@@ -578,7 +572,7 @@ function Controler( player ) {
 
 
         // There is no collision with the ground
-        } else if ( !state.isDashing || dashTime > 0.7 ) {
+        } else if ( !state.isDashing || dashTime > DASHTGRAVITY ) {
             
             state.isFlying = true ;
 
@@ -597,8 +591,6 @@ function Controler( player ) {
                                 Math.max( speedUp, -0.3 ) * 0.85 ;
 
             } else {
-
-                if ( dashTime ) console.log( dashTime )
 
                 // Normal gravity
                 speedUp -= 0.06 ;
