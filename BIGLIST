@@ -1,2 +1,2 @@
 
-- action hold-down-edge should not occur when the player jumps from the bottom, because it keep them from climbing on the tile
+- Sometimes controls freeze when climbing directly after gliding (relatied to dash charging)

@@ -157,7 +157,9 @@ function Controler( player ) {
 
 
 
+
     function update( delta ) {
+
 
 
         if ( pendingAction ) {
@@ -217,6 +219,7 @@ function Controler( player ) {
             !state.chargingDash ) {
 
 
+            charaAnim.setCharaRot( currentDirection );
 
 
             ////////////////////////
@@ -341,18 +344,22 @@ function Controler( player ) {
 
                 case 'up' :
                     climb( AXISZ, -1, requestedDirection );
+                    charaAnim.setCharaRot( Math.PI );
                     break;
 
                 case 'down' :
                     climb( AXISZ, -1, requestedDirection );
+                    charaAnim.setCharaRot( 0 );
                     break;
 
                 case 'left' :
                     climb( AXISX, 1, utils.toPiRange( requestedDirection + (Math.PI / 2) ) );
+                    charaAnim.setCharaRot( -Math.PI / 2 );
                     break;
 
                 case 'right' :
                     climb( AXISX, -1, utils.toPiRange( (requestedDirection + (Math.PI / 2)) * -1 ) );
+                    charaAnim.setCharaRot( Math.PI / 2 );
                     break;
 
             };

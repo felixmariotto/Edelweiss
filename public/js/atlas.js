@@ -120,6 +120,10 @@ function Atlas( sceneGraph ) {
 
 	controler = Controler( player );
 
+	charaAnim = CharaAnim( player );
+
+
+
 	function Player( startTile ) {
 
 		// TEMP in case there is no startTile
@@ -136,6 +140,9 @@ function Atlas( sceneGraph ) {
 			(startTile.points[0].z + startTile.points[1].z) / 2
 		);
 
+			
+		/// HELPER
+
 		if ( NEEDHELPERS ) {
 
 			let mesh = new THREE.Mesh(
@@ -144,7 +151,10 @@ function Atlas( sceneGraph ) {
 					PLAYERHEIGHT,
 					PLAYERWIDTH
 					),
-				new THREE.MeshNormalMaterial()
+				new THREE.MeshLambertMaterial({
+					transparent: true,
+					opacity: 0.5
+				})
 			);
 		
 			group.add( mesh );
@@ -152,8 +162,29 @@ function Atlas( sceneGraph ) {
 
 		};
 
+
+		/// CHARACTER
+
+		let charaGroup = new THREE.Group();
+		group.add( charaGroup );
+
+		if ( NEEDHELPERS ) {
+
+			let mesh = new THREE.Mesh(
+				new THREE.ConeBufferGeometry( 0.2, 0.4, 10 ),
+				new THREE.MeshNormalMaterial()
+			);
+
+			charaGroup.add( mesh );
+			mesh.rotation.x = Math.PI / 2 ;
+			mesh.position.y = PLAYERHEIGHT / 2 ;
+
+		};
+
+
 		return {
 			group,
+			charaGroup,
 			position
 		};
 
