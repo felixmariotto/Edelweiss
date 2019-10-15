@@ -173,13 +173,17 @@ function Controler( player ) {
     function update( delta ) {
 
 
-
+        // an alternate update function is called if
+        // an action is pending
         if ( pendingAction ) {
 
             updateAction( delta );
             return
 
         };
+
+
+
 
         /////////////////////////////////
         ///  GLIDING AND DASH STATES
@@ -472,6 +476,7 @@ function Controler( player ) {
         //////////////////
 
         } else {
+
 
             // reset the counter allowing to run
             runCounter = 0 ;
@@ -849,8 +854,6 @@ function Controler( player ) {
                     if ( contactDirection == 'right' ) {
                         setPos( 1 );
                     };
-
-                    console.log('coucou')
 
                     function setPos( factor ) {
                         startAction(
