@@ -1285,96 +1285,65 @@ function Controler( player ) {
         //////////////////////////////
 
 
+        if ( state.chargingDash == false &&
+            state.isClimbing == false &&
+            state.isDashing == false &&
+            state.isFlying == false &&
+            state.isGliding == false &&
+            state.isSlipping == false ) {
 
-        if ( input.moveKeys.length > 0 ) { // Moving
-
-
-            if ( state.chargingDash == false &&
-                 state.isClimbing == false &&
-                 state.isDashing == false &&
-                 state.isFlying == false &&
-                 state.isGliding == false &&
-                 state.isSlipping == false ) { // running
+            if ( input.moveKeys.length > 0 ) {
 
                 if ( inertia > 1.1 ) { // running fast
 
                     charaAnim.runFast();
-
+    
                 } else { // running slow
-
+    
                     charaAnim.runSlow();
-
+    
                 };
 
-            } else if ( state.isDashing ) {
-
-                charaAnim.dash();
-
-            } else if ( state.chargingDash ) {
-
-                charaAnim.chargeDash();
-
-            } else if ( state.isClimbing ) {
-
-                charaAnim.climbUp();
-
-            } else if ( state.isGliding ) {
-
-                charaAnim.glide();
-
-            } else if ( state.isSlipping ) {
-
-                charaAnim.slip();
-
-            } else if ( state.isFlying && speedUp < 0 ) {
-
-                charaAnim.fall();
-
-            };
-
-
-
-        } else { // idle or gliding
-
-
-            if ( state.chargingDash == false &&
-                 state.isClimbing == false &&
-                 state.isDashing == false &&
-                 state.isFlying == false &&
-                 state.isGliding == false &&
-                 state.isSlipping == false ) { // idle on ground
+            } else {
 
                 charaAnim.idleGround();
 
-            } else if ( state.isDashing ) {
+            };
 
-                charaAnim.dash();
+        } else if ( state.isDashing ) {
 
-            } else if ( state.chargingDash ) {
+            charaAnim.dash();
 
-                charaAnim.chargeDash();
+        } else if ( state.chargingDash ) {
 
-            } else if ( state.isClimbing ) { // idle while climbing
+            charaAnim.chargeDash();
 
-                // TEMP
-                // MAKE SEPARATE MOVE CALLS FOR LEFT RIGHT DOWN
+        } else if ( state.isClimbing ) {
+
+            if ( input.moveKeys.length > 0 ) {
+
+                charaAnim.climbUp();
+
+            } else {
+
                 charaAnim.idleClimb();
-
-            } else if ( state.isGliding ) {
-
-                charaAnim.glide();
-
-            } else if ( state.isSlipping ) {
-
-                charaAnim.slip();
-
-            } else if ( state.isFlying && speedUp < 0 ) {
-
-                charaAnim.fall();
 
             };
 
+        } else if ( state.isGliding ) {
+
+            charaAnim.glide();
+
+        } else if ( state.isSlipping ) {
+
+            charaAnim.slip();
+
+        } else if ( state.isFlying && speedUp < 0 ) {
+
+            charaAnim.fall();
+
         };
+
 
 
 
