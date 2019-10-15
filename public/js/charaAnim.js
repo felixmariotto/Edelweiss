@@ -5,6 +5,16 @@ function CharaAnim( player ) {
 
     const group = player.charaGroup ;
 
+    // This object stores the weight factor of each
+    // climbing animation. It is updated when the user moves
+    // while climbing by the function setClimbBalance.
+    var climbDirectionPowers = {
+        up: 0,
+        down: 0,
+        left: 0,
+        right: 0
+    };
+
     var state = 'idleGround' ;
     /*
 
@@ -14,7 +24,7 @@ function CharaAnim( player ) {
     runningSlow
 	runningFast
 
-    climbingUp
+    climbing
     slipping
     
     gliding
@@ -59,9 +69,76 @@ function CharaAnim( player ) {
 
 
 
+
+    // Here we need to compute the climbing direction from the
+    // arguments, to balance climbing-up, climbing-right etc..
+    function setClimbBalance( faceDirection, moveDirection ) {
+
+        switch ( faceDirection ) {
+
+            case 'up' :
+                setClimbDirection( 'up', Math.PI );
+                setClimbDirection( 'down', 0 );
+                setClimbDirection( 'left', -Math.PI / 2 );
+                setClimbDirection( 'right', Math.PI / 2 );
+                break;
+
+            case 'down' :
+                setClimbDirection( 'up', Math.PI );
+                setClimbDirection( 'down', 0 );
+                setClimbDirection( 'left', Math.PI / 2 );
+                setClimbDirection( 'right', -Math.PI / 2 );
+                break;
+
+            case 'left' : 
+                setClimbDirection( 'up', -Math.PI / 2 );
+                setClimbDirection( 'down', Math.PI / 2 );
+                setClimbDirection( 'left', 0 );
+                setClimbDirection( 'right', Math.PI );
+                break;
+
+            case 'right' :
+                setClimbDirection( 'up', Math.PI / 2 );
+                setClimbDirection( 'down', -Math.PI / 2 );
+                setClimbDirection( 'left', Math.PI );
+                setClimbDirection( 'right', 0 );
+                break;
+
+        };
+
+        console.log( climbDirectionPowers );
+
+
+        // Attribute a value between 0 and 1 to a climbing animation according
+        // to the difference between the requested angle and the target angle
+        // that would make this action 100% played
+        function setClimbDirection( directionName, target ) {
+
+            climbDirectionPowers[ directionName ] = Math.max(
+                    ( 1 -
+                    ( Math.abs( utils.minDiffRadians( target, moveDirection ) ) /
+                    (Math.PI / 2) )
+                    )
+            , 0 );
+
+        };
+
+    };
+
+
+
+
+
     ///////////////////////////
     ///  ACTIONS SETTING
     ///////////////////////////
+
+
+    
+    function climb( faceDirection, moveDirection ) {
+        setClimbBalance( faceDirection, moveDirection );
+    	setState( 'climbing' );
+    };
 
 
     function runSlow() {
@@ -81,11 +158,6 @@ function CharaAnim( player ) {
 
     function idleGround() {
     	setState( 'idleGround' );
-    };
-
-
-    function climbUp() {
-    	setState( 'climbingUp' );
     };
 
 
@@ -153,8 +225,8 @@ function CharaAnim( player ) {
         runSlow,
         runFast,
         idleClimb,
+        climb,
         idleGround,
-        climbUp,
         glide,
         dash,
         chargeDash,

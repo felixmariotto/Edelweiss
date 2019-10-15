@@ -4,7 +4,6 @@ function Utils() {
 
 
 
-
     // This function takes any number, and given that it's an
     // Euler angle, returns a angle value in the range -PI to PI.
     function toPiRange( rad ) {
@@ -33,7 +32,7 @@ function Utils() {
         // Check if there is a problem of lerp going above PI or bellow -PI
         if ( Math.abs( vStart - vEnd ) > Math.PI / 2 ) {
             
-            // The smallest value is added 2 * PI to to do the lerp,
+            // The smallest value is added 2 * PI to do the lerp,
             // then reduced to PI range.
             if ( vStart < vEnd ) {
 
@@ -66,11 +65,20 @@ function Utils() {
 
 
 
+    // Get the minimal difference between two radians
+    // ex : -2.5 <--> 2.5 ? => 1.28
+    function minDiffRadians( rad1, rad2 ) {
+        return Math.atan2( Math.sin( rad1 - rad2), Math.cos( rad1 - rad2) );
+    };
+
+
+
 
 
     return {
         toPiRange,
-        lerpAngles
+        lerpAngles,
+        minDiffRadians
     };
 
 

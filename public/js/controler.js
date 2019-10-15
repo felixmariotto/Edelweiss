@@ -384,6 +384,11 @@ function Controler( player ) {
             runCounter = 0 ;
             inertia = 0 ;
 
+            // Animation will be computed according to climbing direction
+            if ( !state.isSlipping ) {
+                charaAnim.climb( contactDirection, requestedDirection );
+            };
+
             switch ( contactDirection ) {
 
                 case 'up' :
@@ -1285,6 +1290,7 @@ function Controler( player ) {
         //////////////////////////////
 
 
+        // Here we check states and call animations accordingly
         if ( state.chargingDash == false &&
             state.isClimbing == false &&
             state.isDashing == false &&
@@ -1294,11 +1300,11 @@ function Controler( player ) {
 
             if ( input.moveKeys.length > 0 ) {
 
-                if ( inertia > 1.1 ) { // running fast
+                if ( inertia > 1.1 ) {
 
                     charaAnim.runFast();
     
-                } else { // running slow
+                } else {
     
                     charaAnim.runSlow();
     
@@ -1320,15 +1326,14 @@ function Controler( player ) {
 
         } else if ( state.isClimbing ) {
 
-            if ( input.moveKeys.length > 0 ) {
-
-                charaAnim.climbUp();
-
-            } else {
+            if ( input.moveKeys.length == 0 ) {
 
                 charaAnim.idleClimb();
 
             };
+
+            // climbing animation is called higher, to pass
+            // direction as argument
 
         } else if ( state.isGliding ) {
 
