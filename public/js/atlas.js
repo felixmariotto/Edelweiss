@@ -199,7 +199,7 @@ function Atlas( sceneGraph ) {
 				actions[ animClip.name ] = mixer.clipAction( animClip );
 			});
 
-			actions.run.play();
+			actions.idle.play();
 
 		});
 

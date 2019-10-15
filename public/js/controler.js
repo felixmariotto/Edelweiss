@@ -377,6 +377,7 @@ function Controler( player ) {
             };
 
 
+            // Move the player while on the wall
             function climb( axis, vecInversion, angle ) {
 
                 CLIMBVEC.set( 0, CLIMBSPEED * vecInversion, 0 );
@@ -1228,6 +1229,62 @@ function Controler( player ) {
         };
 
 
+
+
+
+        //////////////////////////////
+        ///  CALLS FOR ANIMATIONS
+        //////////////////////////////
+
+
+
+        if ( input.moveKeys.length > 0 ) { // Moving
+
+
+            if ( state.chargingDash == false &&
+                 state.isClimbing == false &&
+                 state.isDashing == false &&
+                 state.isFlying == false &&
+                 state.isGliding == false &&
+                 state.isSlipping == false ) { // running
+
+                if ( inertia > 1.1 ) { // running fast
+
+                    charaAnim.runFast();
+
+                } else { // running slow
+
+                    charaAnim.runSlow();
+
+                };
+
+            } else if ( state.isClimbing ) {
+
+                charaAnim.climbUp();
+
+            };
+
+
+
+        } else { // idle or gliding
+
+
+            if ( state.chargingDash == false &&
+                 state.isClimbing == false &&
+                 state.isDashing == false &&
+                 state.isFlying == false &&
+                 state.isGliding == false &&
+                 state.isSlipping == false ) { // idle on ground
+
+                charaAnim.idleGround();
+
+            } else if ( state.isClimbing ) { // idle while climbing
+
+                charaAnim.idleClimb();
+
+            };
+
+        };
 
 
 
