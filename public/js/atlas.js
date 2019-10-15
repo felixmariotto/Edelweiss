@@ -38,12 +38,16 @@ function Atlas( sceneGraph ) {
 	const PLAYERHEIGHT = 0.7 ;
 	const PLAYERWIDTH = 0.4 ;
 
+	const NEEDHELPERS = true ;
+    const NEEDARROW = false ;
+
+    const SCALECHARA = 0.09 ;
+
 
     /////////////////////////
     ///  HELPERS VARIABLES
     /////////////////////////
 
-    const NEEDHELPERS = true ;
 
     // WALLS MATERIALS
 	const SLIPWALLMAT = new THREE.MeshLambertMaterial({
@@ -168,7 +172,8 @@ function Atlas( sceneGraph ) {
 		let charaGroup = new THREE.Group();
 		group.add( charaGroup );
 
-		if ( NEEDHELPERS ) {
+
+		if ( NEEDARROW ) {
 
 			let mesh = new THREE.Mesh(
 				new THREE.ConeBufferGeometry( 0.2, 0.4, 10 ),
@@ -180,6 +185,24 @@ function Atlas( sceneGraph ) {
 			mesh.position.y = PLAYERHEIGHT / 2 ;
 
 		};
+
+
+		gltfLoader.load('https://edelweiss-game.s3.eu-west-3.amazonaws.com/hero.glb', (glb)=> {
+
+			let model = glb.scene ;
+			model.scale.set( SCALECHARA, SCALECHARA, SCALECHARA );
+			charaGroup.add( model );
+
+			mixer = new THREE.AnimationMixer( glb.scene );
+
+			glb.animations.forEach( (animClip)=> {
+				actions[ animClip.name ] = mixer.clipAction( animClip );
+			});
+
+			actions.run.play();
+
+		});
+
 
 
 		return {

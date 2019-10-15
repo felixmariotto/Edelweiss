@@ -29,6 +29,8 @@ function init() {
     controls.keys = [];
     
     clock = new THREE.Clock();
+    gltfLoader = new THREE.GLTFLoader();
+    mixer = new THREE.AnimationMixer();
 
     // TEMP
     datGUI = new dat.GUI();
