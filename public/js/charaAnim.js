@@ -14,7 +14,21 @@ function CharaAnim( player ) {
     runningSlow
 	runningFast
 
-	climbUp
+    climbingUp
+    slipping
+    
+    gliding
+    jumping
+    falling
+
+    dashing
+    chargingDash
+
+    haulingDown
+    haulingUp
+    switchInward
+    switchOutward
+    pullingUnder
 
     */
 
@@ -71,8 +85,66 @@ function CharaAnim( player ) {
 
 
     function climbUp() {
-    	setState( 'climbUp' );
+    	setState( 'climbingUp' );
     };
+
+
+    function glide() {
+        setState('gliding');
+    };
+
+
+    function dash() {
+        setState('dashing');
+    };
+
+
+    function chargeDash() {
+        setState('chargingDash');
+    };
+
+
+    function jump() {
+        setState('jumping');
+    };
+
+
+    function fall() {
+        setState('falling');
+    };
+
+
+    function slip() {
+        setState('slipping');
+    };
+
+
+    function haulDown() {
+        setState('haulingDown');
+    };
+
+
+    function haulUp() {
+        setState('haulingUp');
+    };
+
+
+    function switchOutward() {
+        setState('switchingOutward');
+    };
+
+
+    function switchInward() {
+        setState('switchingInward');
+    };
+
+
+    function pullUnder() {
+        setState('pullingUnder');
+    };
+
+
+    
 
 
     return {
@@ -82,7 +154,18 @@ function CharaAnim( player ) {
         runFast,
         idleClimb,
         idleGround,
-        climbUp
+        climbUp,
+        glide,
+        dash,
+        chargeDash,
+        jump,
+        fall,
+        slip,
+        haulDown,
+        haulUp,
+        switchOutward,
+        switchInward,
+        pullUnder
     };
 
 };

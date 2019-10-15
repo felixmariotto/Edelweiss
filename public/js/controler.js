@@ -119,10 +119,10 @@ function Controler( player ) {
     var pendingAction; 
 
 
-    function startAction( duration, endVec, startAngle, endAngle ) {
-
+    function startAction( name, duration, endVec, startAngle, endAngle ) {
 
         pendingAction = {
+            name,
             startTime : Date.now(),
             duration,
             startAngle,
@@ -137,7 +137,35 @@ function Controler( player ) {
 
     function updateAction( delta ) {
 
+        // Play the animation
+        switch ( pendingAction.name ) {
+
+            case 'haulDown' :
+                charaAnim.haulDown();
+                break;
+
+            case 'switchInward' :
+                charaAnim.switchInward();
+                break;
+
+            case 'switchOutward' :
+                charaAnim.switchOutward();
+                break;
+
+            case 'pullUnder' :
+                charaAnim.pullUnder();
+                break;
+
+            case 'haulUp' :
+                charaAnim.haulUp();
+                break;
+
+        };
+
+        // update timer
         actionTime = ( Date.now() - pendingAction.startTime ) / pendingAction.duration ;
+
+        // move and rotate
 
         player.position.lerpVectors(
             pendingAction.startVec,
@@ -549,6 +577,7 @@ function Controler( player ) {
                     if ( yCollision.maxX < player.position.x + HAULDOWNLIMIT ) {
 
                         startAction(
+                            'haulDown',
                             HAULDOWNDURATION,
                             new THREE.Vector3(
                                 yCollision.maxX + ( atlas.PLAYERWIDTH / 2 ) - 0.1,
@@ -564,6 +593,7 @@ function Controler( player ) {
                     if ( yCollision.minX > player.position.x - HAULDOWNLIMIT ) {
 
                         startAction(
+                            'haulDown',
                             HAULDOWNDURATION,
                             new THREE.Vector3(
                                 yCollision.minX - ( atlas.PLAYERWIDTH / 2 ) + 0.1,
@@ -579,6 +609,7 @@ function Controler( player ) {
                     if ( yCollision.minZ > player.position.z - HAULDOWNLIMIT ) {
 
                         startAction(
+                            'haulDown',
                             HAULDOWNDURATION,
                             new THREE.Vector3(
                                 player.position.x,
@@ -594,6 +625,7 @@ function Controler( player ) {
                     if ( yCollision.maxZ < player.position.z + HAULDOWNLIMIT ) {
 
                         startAction(
+                            'haulDown',
                             HAULDOWNDURATION,
                             new THREE.Vector3(
                                 player.position.x,
@@ -738,7 +770,8 @@ function Controler( player ) {
                 z
             );
 
-            startAction( 
+            startAction(
+                'switchInward',
                 SWITCHTILEDURATION,
                 endVec,
                 charaAnim.group.rotation.y,
@@ -801,7 +834,8 @@ function Controler( player ) {
                     };
 
                     function setPos( factor ) {
-                        startAction( 
+                        startAction(
+                            'switchOutward',
                             SWITCHTILEDURATION,
                             new THREE.Vector3(
                                 xCollision.minX - ( atlas.PLAYERWIDTH / 2 ) + 0.1,
@@ -830,6 +864,7 @@ function Controler( player ) {
 
                     function setPos( factor ) {
                         startAction(
+                            'switchOutward',
                             SWITCHTILEDURATION,
                             new THREE.Vector3(
                                 xCollision.maxX + ( atlas.PLAYERWIDTH / 2 ) - 0.1,
@@ -858,6 +893,7 @@ function Controler( player ) {
 
                     function setPos( factor ) {
                         startAction(
+                            'switchOutward',
                             SWITCHTILEDURATION,
                             new THREE.Vector3(
                                 player.position.x + ( atlas.PLAYERWIDTH * factor ),
@@ -886,6 +922,7 @@ function Controler( player ) {
 
                     function setPos( factor ) {
                         startAction(
+                            'switchOutward',
                             SWITCHTILEDURATION,
                             new THREE.Vector3(
                                 player.position.x + ( atlas.PLAYERWIDTH * factor ),
@@ -916,6 +953,7 @@ function Controler( player ) {
 
                         case 'up' :
                             startAction(
+                                'pullUnder',
                                 PULLUNDERDURATION,
                                 new THREE.Vector3(
                                     player.position.x,
@@ -929,6 +967,7 @@ function Controler( player ) {
 
                         case 'down' :
                             startAction(
+                                'pullUnder',
                                 PULLUNDERDURATION,
                                 new THREE.Vector3(
                                     player.position.x,
@@ -942,6 +981,7 @@ function Controler( player ) {
 
                         case 'left' :
                             startAction(
+                                'pullUnder',
                                 PULLUNDERDURATION,
                                 new THREE.Vector3(
                                     player.position.x - (atlas.PLAYERWIDTH / 2),
@@ -955,6 +995,7 @@ function Controler( player ) {
 
                         case 'right' :
                             startAction(
+                                'pullUnder',
                                 PULLUNDERDURATION,
                                 new THREE.Vector3(
                                     player.position.x + (atlas.PLAYERWIDTH / 2),
@@ -1002,6 +1043,7 @@ function Controler( player ) {
                         case 'up' :
 
                             startAction(
+                                'haulUp',
                                 HAULDURATION,
                                 new THREE.Vector3(
                                     player.position.x,
@@ -1017,6 +1059,7 @@ function Controler( player ) {
                         case 'down' :
                             
                             startAction(
+                                'haulUp',
                                 HAULDURATION,
                                 new THREE.Vector3(
                                     player.position.x,
@@ -1032,6 +1075,7 @@ function Controler( player ) {
                         case 'left' :
                             
                             startAction(
+                                'haulUp',
                                 HAULDURATION,
                                 new THREE.Vector3(
                                     player.position.x - atlas.PLAYERWIDTH,
@@ -1047,6 +1091,7 @@ function Controler( player ) {
                         case 'right' :
                             
                             startAction(
+                                'haulUp',
                                 HAULDURATION,
                                 new THREE.Vector3(
                                     player.position.x + atlas.PLAYERWIDTH,
@@ -1261,9 +1306,29 @@ function Controler( player ) {
 
                 };
 
+            } else if ( state.isDashing ) {
+
+                charaAnim.dash();
+
+            } else if ( state.chargingDash ) {
+
+                charaAnim.chargeDash();
+
             } else if ( state.isClimbing ) {
 
                 charaAnim.climbUp();
+
+            } else if ( state.isGliding ) {
+
+                charaAnim.glide();
+
+            } else if ( state.isSlipping ) {
+
+                charaAnim.slip();
+
+            } else if ( state.isFlying && speedUp < 0 ) {
+
+                charaAnim.fall();
 
             };
 
@@ -1281,9 +1346,31 @@ function Controler( player ) {
 
                 charaAnim.idleGround();
 
+            } else if ( state.isDashing ) {
+
+                charaAnim.dash();
+
+            } else if ( state.chargingDash ) {
+
+                charaAnim.chargeDash();
+
             } else if ( state.isClimbing ) { // idle while climbing
 
+                // TEMP
+                // MAKE SEPARATE MOVE CALLS FOR LEFT RIGHT DOWN
                 charaAnim.idleClimb();
+
+            } else if ( state.isGliding ) {
+
+                charaAnim.glide();
+
+            } else if ( state.isSlipping ) {
+
+                charaAnim.slip();
+
+            } else if ( state.isFlying && speedUp < 0 ) {
+
+                charaAnim.fall();
 
             };
 
@@ -1344,9 +1431,12 @@ function Controler( player ) {
 
 
 
+        // jump
         if ( ( !permission.infinityJump && !state.isFlying || 
              permission.infinityJump ) ||
              state.isSlipping ) {
+
+            charaAnim.jump();
 
             player.position.y += 0.1 ;
 
