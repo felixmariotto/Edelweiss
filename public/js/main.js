@@ -1,6 +1,9 @@
 
 var scene, camera, renderer, stats, input, atlas,
-    controls, controler, clock, datGUI, charaAnim ;
+    controls, controler, clock, datGUI, charaAnim,
+    gltfLoader, mixer ;
+
+var actions = [];
 
 var utils = Utils();
 
