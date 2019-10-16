@@ -199,7 +199,13 @@ function Atlas( sceneGraph ) {
 				actions[ animClip.name ] = mixer.clipAction( animClip );
 			});
 
-			actions.idle.play();
+			// start all the actions but set their weight to 0
+			for ( let i of Object.keys( actions ) ) {
+				actions[ i ].play() ;
+				actions[ i ].setEffectiveWeight( 0 );
+			};
+			// set start action to 1 ;
+			actions.idle.setEffectiveWeight( 1 );
 
 		});
 

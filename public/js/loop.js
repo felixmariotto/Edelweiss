@@ -12,5 +12,6 @@ function loop() {
 
     if ( controler ) controler.update( clockDelta );
     if ( mixer ) mixer.update( clockDelta );
+    if ( charaAnim ) charaAnim.update( clockDelta );
 
 };

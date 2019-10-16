@@ -15,7 +15,7 @@ function CharaAnim( player ) {
         right: 0
     };
 
-    var state = 'idleGround' ;
+    var currentState = 'idleGround' ;
     /*
 
     idleGround
@@ -44,6 +44,78 @@ function CharaAnim( player ) {
 
 
 
+    
+    /*
+    actionToFadeIn and actionToFadeOut stores
+    objects like this :
+	{
+	actionName,
+	targetWeight,
+	fadeSpeed (between 0 and 1)
+	}
+	This is used in the update function to tween the
+	weight of actions
+    */
+    var actionToFadeIn, actionToFadeOut ;
+
+
+
+
+
+    function update( delta ) {
+
+    	if ( actionToFadeIn ) {
+
+    		actions[ actionToFadeIn.actionName ].setEffectiveWeight( 1 );
+
+    		if ( actions[ actionToFadeIn.actionName ].weight ==
+    			 actionToFadeIn.targetWeight ) {
+
+    			actionToFadeIn = undefined ;
+    		};
+
+    	};
+
+    	if ( actionToFadeOut ) {
+
+    		actions[ actionToFadeOut.actionName ].setEffectiveWeight( 0 );
+
+    		if ( actions[ actionToFadeOut.actionName ].weight <= 0 ) {
+
+    			actionToFadeOut = undefined ;
+    		};
+
+    	};
+
+    };
+
+
+
+
+    function setFadeIn( actionName, targetWeight, fadeSpeed ) {
+
+    	actionToFadeIn = {
+			actionName,
+			targetWeight,
+			fadeSpeed
+		};
+
+    };
+
+
+
+    function setFadeOut( actionName, targetWeight, fadeSpeed ) {
+
+    	actionToFadeOut = {
+			actionName,
+			fadeSpeed
+		};
+
+    };
+
+
+
+
 
 
     function setCharaRot( angle ) {
@@ -54,14 +126,80 @@ function CharaAnim( player ) {
 
 
 
-    function setState( stateName ) {
 
-    	if ( state != stateName ) {
 
-    		state = stateName ;
 
-    		console.log( stateName );
-    		// actions.run.play();
+
+    function setState( newState ) {
+
+
+    	if ( currentState != newState ) {
+
+
+    		// set fade-in
+    		switch ( newState ) {
+
+    			case 'runningSlow' :
+    				setFadeIn( 'run', 1, 1 );
+    				break;
+
+    			case 'idleGround' :
+    				setFadeIn( 'idle', 1, 1 );
+    				break;
+
+    			case 'idleClimb' :
+    				setFadeIn( 'climbIdle', 1, 1 );
+    				break;
+
+    			case 'jumping' :
+    				setFadeIn( 'jumbRise', 1, 1 );
+    				break;
+
+    			case 'falling' :
+    				setFadeIn( 'fall', 1, 1 );
+    				break;
+
+    			case 'climbing' :
+    				setFadeIn( 'climbUp', 1, 1 );
+    				break;
+
+    		};
+
+
+
+
+    		// set fade-out
+    		switch ( currentState ) {
+
+    			case 'idleGround' :
+    				setFadeOut( 'idle', 1 );
+    				break;
+
+    			case 'idleClimb' :
+    				setFadeOut( 'climbIdle', 1 );
+    				break;
+
+    			case 'runningSlow' :
+    				setFadeOut( 'run', 1 );
+    				break;
+
+    			case 'jumping' :
+    				setFadeOut( 'jumbRise', 1 );
+    				break;
+
+    			case 'falling' :
+    				setFadeOut( 'fall', 1 );
+    				break;
+
+    			case 'climbing' :
+    				setFadeOut( 'climbUp', 1 );
+    				break;
+
+    		};
+
+
+
+    		currentState = newState ;
 
     	};
 
@@ -74,39 +212,43 @@ function CharaAnim( player ) {
     // arguments, to balance climbing-up, climbing-right etc..
     function setClimbBalance( faceDirection, moveDirection ) {
 
-        switch ( faceDirection ) {
+        if ( currentState == 'climbing' ) {
 
-            case 'up' :
-                setClimbDirection( 'up', Math.PI );
-                setClimbDirection( 'down', 0 );
-                setClimbDirection( 'left', -Math.PI / 2 );
-                setClimbDirection( 'right', Math.PI / 2 );
-                break;
+        	switch ( faceDirection ) {
 
-            case 'down' :
-                setClimbDirection( 'up', Math.PI );
-                setClimbDirection( 'down', 0 );
-                setClimbDirection( 'left', Math.PI / 2 );
-                setClimbDirection( 'right', -Math.PI / 2 );
-                break;
+	            case 'up' :
+	                setClimbDirection( 'up', Math.PI );
+	                setClimbDirection( 'down', 0 );
+	                setClimbDirection( 'left', -Math.PI / 2 );
+	                setClimbDirection( 'right', Math.PI / 2 );
+	                break;
 
-            case 'left' : 
-                setClimbDirection( 'up', -Math.PI / 2 );
-                setClimbDirection( 'down', Math.PI / 2 );
-                setClimbDirection( 'left', 0 );
-                setClimbDirection( 'right', Math.PI );
-                break;
+	            case 'down' :
+	                setClimbDirection( 'up', Math.PI );
+	                setClimbDirection( 'down', 0 );
+	                setClimbDirection( 'left', Math.PI / 2 );
+	                setClimbDirection( 'right', -Math.PI / 2 );
+	                break;
 
-            case 'right' :
-                setClimbDirection( 'up', Math.PI / 2 );
-                setClimbDirection( 'down', -Math.PI / 2 );
-                setClimbDirection( 'left', Math.PI );
-                setClimbDirection( 'right', 0 );
-                break;
+	            case 'left' : 
+	                setClimbDirection( 'up', -Math.PI / 2 );
+	                setClimbDirection( 'down', Math.PI / 2 );
+	                setClimbDirection( 'left', 0 );
+	                setClimbDirection( 'right', Math.PI );
+	                break;
+
+	            case 'right' :
+	                setClimbDirection( 'up', Math.PI / 2 );
+	                setClimbDirection( 'down', -Math.PI / 2 );
+	                setClimbDirection( 'left', Math.PI );
+	                setClimbDirection( 'right', 0 );
+	                break;
+
+	        };
 
         };
 
-        console.log( climbDirectionPowers );
+        // console.log( climbDirectionPowers );
 
 
         // Attribute a value between 0 and 1 to a climbing animation according
@@ -136,8 +278,8 @@ function CharaAnim( player ) {
 
     
     function climb( faceDirection, moveDirection ) {
-        setClimbBalance( faceDirection, moveDirection );
     	setState( 'climbing' );
+        setClimbBalance( faceDirection, moveDirection );
     };
 
 
@@ -220,6 +362,7 @@ function CharaAnim( player ) {
 
 
     return {
+    	update,
         setCharaRot,
         group,
         runSlow,
