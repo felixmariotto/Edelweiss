@@ -61,7 +61,7 @@ function CharaAnim( player ) {
 
     
     /*
-    actionToFadeIn and actionToFadeOut stores
+    actionsToFadeIn and actionsToFadeOut store
     objects like this :
 	{
 	actionName,
@@ -71,7 +71,8 @@ function CharaAnim( player ) {
 	This is used in the update function to tween the
 	weight of actions
     */
-    var actionToFadeIn, actionToFadeOut ;
+    var actionsToFadeIn = [];
+    var actionsToFadeOut = [];
 
 
 
@@ -79,26 +80,48 @@ function CharaAnim( player ) {
 
     function update( delta ) {
 
-    	if ( actionToFadeIn ) {
+    	if ( actionsToFadeIn.length > 0 ) {
 
-    		actions[ actionToFadeIn.actionName ].setEffectiveWeight( 1 );
+    		// console.log(actionsToFadeIn)
 
-    		if ( actions[ actionToFadeIn.actionName ].weight ==
-    			 actionToFadeIn.targetWeight ) {
+    		actionsToFadeIn.forEach( (action)=> {
 
-    			actionToFadeIn = undefined ;
-    		};
+    			actions[ action.actionName ].setEffectiveWeight(
+	    			actions[ action.actionName ].weight + action.fadeSpeed
+	    		);
+
+	    		if ( actions[ action.actionName ].weight >=
+	    			 action.targetWeight ) {
+
+	    			actions[ action.actionName ].setEffectiveWeight( action.targetWeight );
+
+	    			actionsToFadeIn.splice( actionsToFadeIn.indexOf( action ), 1 );
+	    		};
+
+    		});
 
     	};
 
-    	if ( actionToFadeOut ) {
+    	if ( actionsToFadeOut.length > 0 ) {
 
-    		actions[ actionToFadeOut.actionName ].setEffectiveWeight( 0 );
+    		// console.log(actionsToFadeOut)
 
-    		if ( actions[ actionToFadeOut.actionName ].weight <= 0 ) {
+    		actionsToFadeOut.forEach( (action)=> {
 
-    			actionToFadeOut = undefined ;
-    		};
+    			actions[ action.actionName ].setEffectiveWeight(
+	    			actions[ action.actionName ].weight - action.fadeSpeed
+	    		);
+
+	    		if ( actions[ action.actionName ].weight <= 0 ) {
+
+	    			actions[ action.actionName ].setEffectiveWeight( 0 );
+
+	    			let prout = actionsToFadeOut.splice( actionsToFadeOut.indexOf( action ), 1 );
+	    		
+	    			// console.log( 'stopped ' + prout[0].actionName )
+	    		};
+
+    		});
 
     	};
 
@@ -109,22 +132,42 @@ function CharaAnim( player ) {
 
     function setFadeIn( actionName, targetWeight, fadeSpeed ) {
 
-    	actionToFadeIn = {
+    	actionsToFadeIn.push({
 			actionName,
 			targetWeight,
 			fadeSpeed
-		};
+		});
+
+    	// Delete the starting action from the fadeOut list,
+    	// or it would fadein and fadeout at the same time.
+		actionsToFadeOut.forEach( (action, i)=> {
+
+			if ( action.actionName == actionName ) {
+				actionsToFadeOut.splice( i, 1 );
+			};
+
+		});
 
     };
 
 
 
-    function setFadeOut( actionName, targetWeight, fadeSpeed ) {
+    function setFadeOut( actionName, fadeSpeed ) {
 
-    	actionToFadeOut = {
+    	actionsToFadeOut.push({
 			actionName,
 			fadeSpeed
-		};
+		});
+
+		// Delete the starting action from the fadeIn list,
+    	// or it would fadein and fadeout at the same time.
+		actionsToFadeIn.forEach( (action, i)=> {
+
+			if ( action.actionName == actionName ) {
+				actionsToFadeIn.splice( i, 1 );
+			};
+
+		});
 
     };
 
@@ -148,6 +191,7 @@ function CharaAnim( player ) {
     function setState( newState ) {
 
 
+
     	if ( currentState != newState ) {
 
 
@@ -155,11 +199,11 @@ function CharaAnim( player ) {
     		switch ( newState ) {
 
     			case 'runningSlow' :
-    				setFadeIn( 'run', 1, 1 );
+    				setFadeIn( 'run', 1, 0.1 );
     				break;
 
     			case 'idleGround' :
-    				setFadeIn( 'idle', 1, 1 );
+    				setFadeIn( 'idle', 1, 0.1 );
     				break;
 
     			case 'idleClimb' :
@@ -171,7 +215,7 @@ function CharaAnim( player ) {
     				break;
 
     			case 'falling' :
-    				setFadeIn( 'fall', 1, 1 );
+    				setFadeIn( 'fall', 1, 0.1 );
     				break;
 
     			case 'gliding' :
@@ -192,7 +236,8 @@ function CharaAnim( player ) {
     		switch ( currentState ) {
 
     			case 'idleGround' :
-    				setFadeOut( 'idle', 1 );
+    				actions.idle.time = 0 ;
+    				setFadeOut( 'idle', 0.1 );
     				break;
 
     			case 'idleClimb' :
@@ -200,11 +245,11 @@ function CharaAnim( player ) {
     				break;
 
     			case 'runningSlow' :
-    				setFadeOut( 'run', 1 );
+    				setFadeOut( 'run', 0.1 );
     				break;
 
     			case 'jumping' :
-    				setFadeOut( 'jumbRise', 1 );
+    				setFadeOut( 'jumbRise', 0.2 );
     				break;
 
     			case 'falling' :
@@ -218,6 +263,13 @@ function CharaAnim( player ) {
 
     			case 'chargingDash' :
     				setFadeOut( 'chargeDash', 1 );
+    				break;
+
+    			case 'climbing' :
+    				setFadeOut( 'climbUp', 0.1 );
+    				setFadeOut( 'climbDown', 0.1 );
+    				setFadeOut( 'climbLeft', 0.1 );
+    				setFadeOut( 'climbRight', 0.1 );
     				break;
 
     		};
@@ -273,7 +325,6 @@ function CharaAnim( player ) {
 
         };
 
-        console.log( climbDirectionPowers );
 
         actions.climbUp.setEffectiveWeight( climbDirectionPowers.up );
         actions.climbDown.setEffectiveWeight( climbDirectionPowers.down );
