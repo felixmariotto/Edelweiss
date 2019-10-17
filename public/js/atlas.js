@@ -219,7 +219,7 @@ function Atlas( sceneGraph ) {
 			actions.gliderAction.setEffectiveWeight( 1 );
 
 			// Set the speed of all the actions
-			charaAnim.setTimeScales();
+			charaAnim.initActions();
 
 		});
 

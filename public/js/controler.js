@@ -486,6 +486,8 @@ function Controler( player ) {
 
         } else if ( state.isDashing ) {
 
+            charaAnim.dash( contactDirection, requestedDirection );
+
             inertia = 0 ;
 
             dashTime = dashTime + DASHTIMEINCREMENT || 0.01 ;
@@ -556,6 +558,15 @@ function Controler( player ) {
 
         // There is a collision with the ground
         if ( yCollision.point != undefined ) {
+
+
+            if ( state.isFlying &&
+                 !state.isClimbing &&
+                 !state.isSlipping &&
+                 !state.isGliding ) {
+
+                charaAnim.hitGround( Math.max( - speedUp, 0 ) / 2.3 );
+            };
 
 
             // We don't want any Y movement when standing

@@ -8,16 +8,49 @@ function CharaAnim( player ) {
     const group = player.charaGroup ;
 
 
+    // this variable stock the state waiting to be played
+    // after ground hitting
+    var waitingState ;
+
+
+
     // This is called when atlas finished loading all the assets.
-    // It configures the speed of every action
-    function setTimeScales() {
+    // It configures every action.
+    function initActions() {
+
+    	/// TIMESCALE
+
 	    actions.gliderAction.setEffectiveTimeScale( 3 );
 	    actions.run.setEffectiveTimeScale( 3 );
 	    actions.climbUp.setEffectiveTimeScale( 3 );
         actions.climbDown.setEffectiveTimeScale( 3 );
         actions.climbLeft.setEffectiveTimeScale( 3 );
         actions.climbRight.setEffectiveTimeScale( 3 );
+        actions.hitGround.setEffectiveTimeScale( 3 );
+
+
+        /// CLAMP WHEN FINISHED
+
+        setLoopOnce( actions.jumbRise );
+        setLoopOnce( actions.hitGround );
+
+        setLoopOnce( actions.dashUp );
+        setLoopOnce( actions.dashDown );
+        setLoopOnce( actions.dashLeft );
+        setLoopOnce( actions.dashRight );
+        setLoopOnce( actions.dashDownLeft );
+        setLoopOnce( actions.dashDownRight );
+
     };
+
+
+    function setLoopOnce( action ) {
+    	action.clampWhenFinished = true ;
+    	action.loop = THREE.LoopOnce ;
+    };
+
+
+
 
 
     // This object stores the weight factor of each
@@ -29,6 +62,15 @@ function CharaAnim( player ) {
         left: 0,
         right: 0
     };
+
+
+    var dashDirectionPowers = {
+        up: 0,
+        down: 0,
+        left: 0,
+        right: 0
+    };
+
 
     var currentState = 'idleGround' ;
     /*
@@ -45,6 +87,7 @@ function CharaAnim( player ) {
     gliding
     jumping
     falling
+    hittingGround
 
     dashing
     chargingDash
@@ -80,6 +123,21 @@ function CharaAnim( player ) {
 
     function update( delta ) {
 
+
+
+    	// handle the hittingGround action, that make averything
+    	// standby until it's played
+    	if ( currentState == 'hittingGround' &&
+    		 actions.hitGround.time > 0.7 ) {
+
+    		if ( waitingState ) {
+    			setState( waitingState );
+    		};
+
+    	};
+
+
+
     	if ( actionsToFadeIn.length > 0 ) {
 
     		// console.log(actionsToFadeIn)
@@ -96,11 +154,13 @@ function CharaAnim( player ) {
 	    			actions[ action.actionName ].setEffectiveWeight( action.targetWeight );
 
 	    			actionsToFadeIn.splice( actionsToFadeIn.indexOf( action ), 1 );
+	    		
 	    		};
 
     		});
 
     	};
+
 
     	if ( actionsToFadeOut.length > 0 ) {
 
@@ -116,9 +176,8 @@ function CharaAnim( player ) {
 
 	    			actions[ action.actionName ].setEffectiveWeight( 0 );
 
-	    			let prout = actionsToFadeOut.splice( actionsToFadeOut.indexOf( action ), 1 );
-	    		
-	    			// console.log( 'stopped ' + prout[0].actionName )
+	    			actionsToFadeOut.splice( actionsToFadeOut.indexOf( action ), 1 );
+
 	    		};
 
     		});
@@ -191,6 +250,14 @@ function CharaAnim( player ) {
     function setState( newState ) {
 
 
+    	if ( currentState == 'hittingGround' &&
+    		 actions.hitGround.time <= 0.7 ) {
+
+    		waitingState = newState ;
+
+    		return
+    	};
+
 
     	if ( currentState != newState ) {
 
@@ -227,6 +294,11 @@ function CharaAnim( player ) {
     				setFadeIn( 'chargeDash', 1, 1 );
     				break;
 
+    			case 'hittingGround' :
+    				actions.hitGround.reset();
+    				setFadeIn( 'hitGround', 1, 0.1 );
+    				break;
+
     		};
 
 
@@ -236,7 +308,7 @@ function CharaAnim( player ) {
     		switch ( currentState ) {
 
     			case 'idleGround' :
-    				actions.idle.time = 0 ;
+    				actions.idle.reset();
     				setFadeOut( 'idle', 0.1 );
     				break;
 
@@ -262,7 +334,7 @@ function CharaAnim( player ) {
     				break;
 
     			case 'chargingDash' :
-    				setFadeOut( 'chargeDash', 1 );
+    				setFadeOut( 'chargeDash', 0.2 );
     				break;
 
     			case 'climbing' :
@@ -270,6 +342,19 @@ function CharaAnim( player ) {
     				setFadeOut( 'climbDown', 0.1 );
     				setFadeOut( 'climbLeft', 0.1 );
     				setFadeOut( 'climbRight', 0.1 );
+    				break;
+
+    			case 'dashing' :
+    				setFadeOut( 'dashUp', 0.1 );
+    				setFadeOut( 'dashDown', 0.1 );
+    				setFadeOut( 'dashLeft', 0.1 );
+    				setFadeOut( 'dashRight', 0.1 );
+    				setFadeOut( 'dashDownLeft', 0.1 );
+    				setFadeOut( 'dashDownRight', 0.1 );
+    				break;
+
+    			case 'hittingGround' :
+    				setFadeOut( 'hitGround', 0.1 );
     				break;
 
     		};
@@ -285,51 +370,65 @@ function CharaAnim( player ) {
 
 
 
+    // This function combute the direction, to call a passed
+    // value attribution funcion with the right arguments.
+    function callWithDirection( fn, faceDirection ) {
+
+
+    	switch ( faceDirection ) {
+
+            case 'up' :
+                fn( 'up', Math.PI );
+                fn( 'down', 0 );
+                fn( 'left', -Math.PI / 2 );
+                fn( 'right', Math.PI / 2 );
+                break;
+
+            case 'down' :
+                fn( 'up', Math.PI );
+                fn( 'down', 0 );
+                fn( 'left', Math.PI / 2 );
+                fn( 'right', -Math.PI / 2 );
+                break;
+
+            case 'left' : 
+                fn( 'up', -Math.PI / 2 );
+                fn( 'down', Math.PI / 2 );
+                fn( 'left', 0 );
+                fn( 'right', Math.PI );
+                break;
+
+            case 'right' :
+                fn( 'up', Math.PI / 2 );
+                fn( 'down', -Math.PI / 2 );
+                fn( 'left', Math.PI );
+                fn( 'right', 0 );
+                break;
+
+        };
+
+    };
+
+
+
+
+
+
     // Here we need to compute the climbing direction from the
     // arguments, to balance climbing-up, climbing-right etc..
     function setClimbBalance( faceDirection, moveDirection ) {
 
+
         if ( currentState == 'climbing' ) {
 
-        	switch ( faceDirection ) {
+        	callWithDirection( setClimbDirection, faceDirection );
 
-	            case 'up' :
-	                setClimbDirection( 'up', Math.PI );
-	                setClimbDirection( 'down', 0 );
-	                setClimbDirection( 'left', -Math.PI / 2 );
-	                setClimbDirection( 'right', Math.PI / 2 );
-	                break;
-
-	            case 'down' :
-	                setClimbDirection( 'up', Math.PI );
-	                setClimbDirection( 'down', 0 );
-	                setClimbDirection( 'left', Math.PI / 2 );
-	                setClimbDirection( 'right', -Math.PI / 2 );
-	                break;
-
-	            case 'left' : 
-	                setClimbDirection( 'up', -Math.PI / 2 );
-	                setClimbDirection( 'down', Math.PI / 2 );
-	                setClimbDirection( 'left', 0 );
-	                setClimbDirection( 'right', Math.PI );
-	                break;
-
-	            case 'right' :
-	                setClimbDirection( 'up', Math.PI / 2 );
-	                setClimbDirection( 'down', -Math.PI / 2 );
-	                setClimbDirection( 'left', Math.PI );
-	                setClimbDirection( 'right', 0 );
-	                break;
-
-	        };
+        	actions.climbUp.setEffectiveWeight( climbDirectionPowers.up );
+	        actions.climbDown.setEffectiveWeight( climbDirectionPowers.down );
+	        actions.climbLeft.setEffectiveWeight( climbDirectionPowers.left );
+	        actions.climbRight.setEffectiveWeight( climbDirectionPowers.right );
 
         };
-
-
-        actions.climbUp.setEffectiveWeight( climbDirectionPowers.up );
-        actions.climbDown.setEffectiveWeight( climbDirectionPowers.down );
-        actions.climbLeft.setEffectiveWeight( climbDirectionPowers.left );
-        actions.climbRight.setEffectiveWeight( climbDirectionPowers.right );
 
 
         // Attribute a value between 0 and 1 to a climbing animation according
@@ -350,6 +449,63 @@ function CharaAnim( player ) {
 
 
 
+
+
+    function setDashBalance( faceDirection, moveDirection ) {
+
+    	if ( currentState != 'dashing' ) {
+
+        	callWithDirection( setDashDirection, faceDirection );
+
+        	// This part plays the set of upper dash animations
+        	if ( dashDirectionPowers.up >= 0 ) {
+
+        		actions.dashUp.reset();
+		        actions.dashLeft.reset();
+		        actions.dashRight.reset();
+
+        		actions.dashUp.setEffectiveWeight( dashDirectionPowers.up );
+		        actions.dashLeft.setEffectiveWeight( dashDirectionPowers.left );
+		        actions.dashRight.setEffectiveWeight( dashDirectionPowers.right );
+
+        	// This part plays the bottom dash animations
+        	} else {
+
+        		actions.dashUp.reset();
+		        actions.dashDownLeft.reset();
+		        actions.dashDownRight.reset();
+
+        		actions.dashUp.setEffectiveWeight( dashDirectionPowers.up );
+		        actions.dashDownLeft.setEffectiveWeight( dashDirectionPowers.left );
+		        actions.dashDownRight.setEffectiveWeight( dashDirectionPowers.right );
+
+        	};
+
+        	
+
+        };
+
+
+        function setDashDirection( directionName, target ) {
+
+        	dashDirectionPowers[ directionName ] = Math.max(
+                    ( 1 -
+                    ( Math.abs( utils.minDiffRadians( target, moveDirection ) ) /
+                    (Math.PI / 2) )
+                    )
+            , 0 );
+
+        };
+
+    };
+
+
+
+
+
+
+
+
     function setGlider( gliderMesh ) {
     	glider = gliderMesh ;
     	glider.visible = false ;
@@ -366,6 +522,15 @@ function CharaAnim( player ) {
     function climb( faceDirection, moveDirection ) {
     	setState( 'climbing' );
         setClimbBalance( faceDirection, moveDirection );
+    };
+
+
+    function dash( faceDirection, moveDirection ) {
+        setDashBalance( faceDirection, moveDirection );
+        // We set the dashing state after, because we want
+        // the dash balance to be set only when the dashing
+        // animation is not played
+        setState( 'dashing' );
     };
 
 
@@ -391,11 +556,6 @@ function CharaAnim( player ) {
 
     function glide() {
         setState('gliding');
-    };
-
-
-    function dash() {
-        setState('dashing');
     };
 
 
@@ -444,15 +604,28 @@ function CharaAnim( player ) {
     };
 
 
+    function hitGround( power ) {
+    	
+    	if ( power < 1 ) {
+    		groundHit = false ;
+    		setState('hittingGround');
+    	} else {
+    		console.log('play death')
+    	};
+
+    };
+
+
     
 
 
     return {
     	setGlider,
-    	setTimeScales,
+    	initActions,
     	update,
         setCharaRot,
         group,
+        hitGround,
         runSlow,
         runFast,
         idleClimb,
