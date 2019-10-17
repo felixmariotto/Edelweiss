@@ -193,6 +193,12 @@ function Atlas( sceneGraph ) {
 			model.scale.set( SCALECHARA, SCALECHARA, SCALECHARA );
 			charaGroup.add( model );
 
+			// get the glider object, and give it to the animation
+			// module, the hide it from the scene.
+			charaAnim.setGlider( model.getObjectByName('glider') );
+
+			/// ANIMATIONS
+
 			mixer = new THREE.AnimationMixer( glb.scene );
 
 			glb.animations.forEach( (animClip)=> {
@@ -204,8 +210,16 @@ function Atlas( sceneGraph ) {
 				actions[ i ].play() ;
 				actions[ i ].setEffectiveWeight( 0 );
 			};
+
 			// set start action to 1 ;
 			actions.idle.setEffectiveWeight( 1 );
+
+			// activate the glider animation, because anyway
+			// the glider is not visible when not in use
+			actions.gliderAction.setEffectiveWeight( 1 );
+
+			// Set the speed of all the actions
+			charaAnim.setTimeScales();
 
 		});
 

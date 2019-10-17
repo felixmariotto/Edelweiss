@@ -3,7 +3,22 @@
 function CharaAnim( player ) {
 
 
+	var glider;
+
     const group = player.charaGroup ;
+
+
+    // This is called when atlas finished loading all the assets.
+    // It configures the speed of every action
+    function setTimeScales() {
+	    actions.gliderAction.setEffectiveTimeScale( 3 );
+	    actions.run.setEffectiveTimeScale( 3 );
+	    actions.climbUp.setEffectiveTimeScale( 3 );
+        actions.climbDown.setEffectiveTimeScale( 3 );
+        actions.climbLeft.setEffectiveTimeScale( 3 );
+        actions.climbRight.setEffectiveTimeScale( 3 );
+    };
+
 
     // This object stores the weight factor of each
     // climbing animation. It is updated when the user moves
@@ -159,8 +174,13 @@ function CharaAnim( player ) {
     				setFadeIn( 'fall', 1, 1 );
     				break;
 
-    			case 'climbing' :
-    				setFadeIn( 'climbUp', 1, 1 );
+    			case 'gliding' :
+    				glider.visible = true ;
+    				setFadeIn( 'glide', 1, 1 );
+    				break;
+
+    			case 'chargingDash' :
+    				setFadeIn( 'chargeDash', 1, 1 );
     				break;
 
     		};
@@ -191,8 +211,13 @@ function CharaAnim( player ) {
     				setFadeOut( 'fall', 1 );
     				break;
 
-    			case 'climbing' :
-    				setFadeOut( 'climbUp', 1 );
+    			case 'gliding' :
+    				glider.visible = false ;
+    				setFadeOut( 'glide', 1 );
+    				break;
+
+    			case 'chargingDash' :
+    				setFadeOut( 'chargeDash', 1 );
     				break;
 
     		};
@@ -248,7 +273,12 @@ function CharaAnim( player ) {
 
         };
 
-        // console.log( climbDirectionPowers );
+        console.log( climbDirectionPowers );
+
+        actions.climbUp.setEffectiveWeight( climbDirectionPowers.up );
+        actions.climbDown.setEffectiveWeight( climbDirectionPowers.down );
+        actions.climbLeft.setEffectiveWeight( climbDirectionPowers.left );
+        actions.climbRight.setEffectiveWeight( climbDirectionPowers.right );
 
 
         // Attribute a value between 0 and 1 to a climbing animation according
@@ -268,6 +298,11 @@ function CharaAnim( player ) {
     };
 
 
+
+    function setGlider( gliderMesh ) {
+    	glider = gliderMesh ;
+    	glider.visible = false ;
+    };
 
 
 
@@ -362,6 +397,8 @@ function CharaAnim( player ) {
 
 
     return {
+    	setGlider,
+    	setTimeScales,
     	update,
         setCharaRot,
         group,
