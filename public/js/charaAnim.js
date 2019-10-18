@@ -89,7 +89,6 @@ function CharaAnim( player ) {
     idleClimb
 
     runningSlow
-	runningFast
 
     climbing
     slipping
@@ -274,7 +273,7 @@ function CharaAnim( player ) {
     		// set fade-in
     		switch ( newState ) {
 
-    			case 'runningSlow' :
+    			case 'running' :
     				setFadeIn( 'run', 1, 0.1 );
     				break;
 
@@ -352,7 +351,7 @@ function CharaAnim( player ) {
     				setFadeOut( 'climbIdle', 0.1 );
     				break;
 
-    			case 'runningSlow' :
+    			case 'running' :
     				setFadeOut( 'run', 0.1 );
     				break;
 
@@ -591,12 +590,14 @@ function CharaAnim( player ) {
 
 
     function runSlow() {
-    	setState( 'runningSlow' ); // could use inertia value to apply weight ?
+    	actions.run.setEffectiveTimeScale( 1 );
+    	setState( 'running' );
     };
 
 
     function runFast() {
-    	setState( 'runningFast' );
+    	actions.run.setEffectiveTimeScale( 1.5 );
+    	setState( 'running' );
     };
 
 
