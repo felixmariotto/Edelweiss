@@ -229,7 +229,9 @@ function Controler( player ) {
                 cancelSpace = true ;
             };
 
-        } else if ( state.isClimbing && input.params.isSpacePressed ) {
+        } else if ( !cancelSpace &&
+                    state.isClimbing &&
+                    input.params.isSpacePressed ) {
 
             dashCount += delta * 1000 ;
 
