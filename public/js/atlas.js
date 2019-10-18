@@ -6,7 +6,7 @@ function Atlas( sceneGraph ) {
 	const PLAYERWIDTH = 0.3 ;
 
 	const NEEDHELPERS = true ;
-	const NEEDPLAYERBOX = false ; // specifically allow player box helper
+	const NEEDPLAYERBOX = true ; // specifically allow player box helper
     const NEEDARROW = false ;
 
     const SCALECHARA = 0.083 ;
@@ -126,6 +126,8 @@ function Atlas( sceneGraph ) {
 	controler = Controler( player );
 
 	charaAnim = CharaAnim( player );
+
+	cameraControl = CameraControl( player, camera );
 
 
 

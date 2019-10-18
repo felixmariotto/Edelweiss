@@ -28,7 +28,7 @@ function Controler( player ) {
     const SWITCHTILEDURATION = 250 ;
     const PULLUNDERDURATION = 250 ;
     const HAULDOWNDURATION = 250 ;
-    const LANDWALLDURATION = 200 ;
+    const LANDWALLDURATION = 250 ;
 
     const DISTANCEINTERNALSWITCH = 0.3 ;
     const HAULDOWNLIMIT = -0.02 ;
@@ -161,10 +161,6 @@ function Controler( player ) {
 
             case 'haulUp' :
                 charaAnim.haulUp();
-                break;
-
-            case 'landOnWall' :
-                charaAnim.landOnWall();
                 break;
 
         };
@@ -1290,19 +1286,6 @@ function Controler( player ) {
 
             if ( isClimbing ) {
 
-                // 
-                if ( !state.isClimbing &&
-                     Math.abs( speedUp ) > 0.06 ) {
-                
-                    startAction(
-                        'landOnWall',
-                        LANDWALLDURATION,
-                        player.position,
-                        charaAnim.group.rotation.y,
-                        charaAnim.group.rotation.y
-                    );
-                };
-
                 state.isClimbing = true ;
                 state.isFlying = false ;
 
@@ -1383,6 +1366,9 @@ function Controler( player ) {
         };
 
 
+
+        /// UPDATE CAMERA
+        cameraControl.update();
 
 
 

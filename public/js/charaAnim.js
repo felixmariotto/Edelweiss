@@ -31,7 +31,9 @@ function CharaAnim( player ) {
 
         actions.gliderAction.setEffectiveTimeScale( 2 );
         actions.haulDown.setEffectiveTimeScale( 2 );
+        actions.haulUp.setEffectiveTimeScale( 2 );
         actions.pullUnder.setEffectiveTimeScale( 2 );
+        actions.landOnWall.setEffectiveTimeScale( 1 );
 
 
         /// CLAMP WHEN FINISHED
@@ -39,7 +41,9 @@ function CharaAnim( player ) {
         setLoopOnce( actions.gliderDeploy );
 
         setLoopOnce( actions.haulDown );
+        setLoopOnce( actions.haulUp );
         setLoopOnce( actions.pullUnder );
+        setLoopOnce( actions.landOnWall );
 
         setLoopOnce( actions.jumbRise );
         setLoopOnce( actions.hitGround );
@@ -293,6 +297,11 @@ function CharaAnim( player ) {
     				setFadeIn( 'haulDown', 1, 0.1 );
     				break;
 
+    			case 'haulingUp' :
+    				actions.haulUp.reset();
+    				setFadeIn( 'haulUp', 1, 0.1 );
+    				break;
+
     			case 'pullingUnder' :
     				actions.pullUnder.reset();
     				setFadeIn( 'pullUnder', 1, 0.1 );
@@ -353,11 +362,18 @@ function CharaAnim( player ) {
     				break;
 
     			case 'jumping' :
-    				setFadeOut( 'jumbRise', 0.1 );
+    				setFadeOut(
+    					'jumbRise',
+    					newState == 'landingOnWall' ? 0.5 : 0.1
+    				);
     				break;
 
     			case 'haulingDown' :
     				setFadeOut( 'haulDown', 0.1 );
+    				break;
+
+    			case 'haulingUp' :
+    				setFadeOut( 'haulUp', 0.1 );
     				break;
 
     			case 'pullingUnder' :
@@ -369,7 +385,10 @@ function CharaAnim( player ) {
     				break;
 
     			case 'falling' :
-    				setFadeOut( 'fall', 0.1 );
+    				setFadeOut(
+    					'fall',
+    					newState == 'landingOnWall' ? 0.5 : 0.1
+    				);
     				break;
 
     			case 'switchingInward' :
@@ -382,7 +401,10 @@ function CharaAnim( player ) {
 
     			case 'gliding' :
     				glider.visible = false ;
-    				setFadeOut( 'glide', 0.1 );
+    				setFadeOut(
+    					'glide',
+    					newState == 'landingOnWall' ? 0.5 : 0.1
+    				);
     				break;
 
     			case 'chargingDash' :
@@ -658,10 +680,6 @@ function CharaAnim( player ) {
     };
 
 
-    function landOnWall() {
-    	setState('landingOnWall');
-    };
-
 
     function hitGround( power ) {
     	
@@ -685,7 +703,6 @@ function CharaAnim( player ) {
         setCharaRot,
         group,
         hitGround,
-        landOnWall,
         runSlow,
         runFast,
         idleClimb,

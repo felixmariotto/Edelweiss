@@ -6,7 +6,7 @@ function loop() {
     renderer.render( scene, camera );
 
     stats.update();
-    controls.update();
+    if ( orbitControls ) orbitControls.update();
 
     clockDelta = clock.getDelta();
 
