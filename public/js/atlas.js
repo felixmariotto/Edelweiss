@@ -6,6 +6,7 @@ function Atlas( sceneGraph ) {
 	const PLAYERWIDTH = 0.3 ;
 
 	const NEEDHELPERS = true ;
+	const NEEDPLAYERBOX = false ; // specifically allow player box helper
     const NEEDARROW = false ;
 
     const SCALECHARA = 0.083 ;
@@ -147,7 +148,7 @@ function Atlas( sceneGraph ) {
 			
 		/// HELPER
 
-		if ( NEEDHELPERS ) {
+		if ( NEEDHELPERS && NEEDPLAYERBOX ) {
 
 			let mesh = new THREE.Mesh(
 				new THREE.BoxBufferGeometry(

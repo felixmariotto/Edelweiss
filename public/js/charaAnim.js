@@ -92,6 +92,7 @@ function CharaAnim( player ) {
 
     climbing
     slipping
+    landingOnWall
     
     gliding
     jumping
@@ -148,8 +149,6 @@ function CharaAnim( player ) {
 
     	if ( actionsToFadeIn.length > 0 ) {
 
-    		// console.log(actionsToFadeIn)
-
     		actionsToFadeIn.forEach( (action)=> {
 
     			actions[ action.actionName ].setEffectiveWeight(
@@ -171,8 +170,6 @@ function CharaAnim( player ) {
 
 
     	if ( actionsToFadeOut.length > 0 ) {
-
-    		// console.log(actionsToFadeOut)
 
     		actionsToFadeOut.forEach( (action)=> {
 
@@ -661,6 +658,11 @@ function CharaAnim( player ) {
     };
 
 
+    function landOnWall() {
+    	setState('landingOnWall');
+    };
+
+
     function hitGround( power ) {
     	
     	if ( power > 0.2 && power < 1 ) {
@@ -683,6 +685,7 @@ function CharaAnim( player ) {
         setCharaRot,
         group,
         hitGround,
+        landOnWall,
         runSlow,
         runFast,
         idleClimb,

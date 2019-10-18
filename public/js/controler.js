@@ -28,6 +28,7 @@ function Controler( player ) {
     const SWITCHTILEDURATION = 250 ;
     const PULLUNDERDURATION = 250 ;
     const HAULDOWNDURATION = 250 ;
+    const LANDWALLDURATION = 200 ;
 
     const DISTANCEINTERNALSWITCH = 0.3 ;
     const HAULDOWNLIMIT = -0.02 ;
@@ -138,6 +139,8 @@ function Controler( player ) {
     function updateAction( delta ) {
 
         // Play the animation
+        // We must put this in the loop to recompute
+        // climbing animations balance
         switch ( pendingAction.name ) {
 
             case 'haulDown' :
@@ -158,6 +161,10 @@ function Controler( player ) {
 
             case 'haulUp' :
                 charaAnim.haulUp();
+                break;
+
+            case 'landOnWall' :
+                charaAnim.landOnWall();
                 break;
 
         };
@@ -1283,10 +1290,24 @@ function Controler( player ) {
 
             if ( isClimbing ) {
 
+                // 
+                if ( !state.isClimbing &&
+                     Math.abs( speedUp ) > 0.06 ) {
+                
+                    startAction(
+                        'landOnWall',
+                        LANDWALLDURATION,
+                        player.position,
+                        charaAnim.group.rotation.y,
+                        charaAnim.group.rotation.y
+                    );
+                };
+
                 state.isClimbing = true ;
                 state.isFlying = false ;
 
             } else {
+
                 state.isClimbing = false ;
 
             };
