@@ -20,6 +20,7 @@ function CharaAnim( player ) {
 
     	/// TIMESCALE
 
+    	/*
 	    actions.gliderAction.setEffectiveTimeScale( 3 );
 	    actions.run.setEffectiveTimeScale( 3 );
 	    actions.climbUp.setEffectiveTimeScale( 3 );
@@ -27,6 +28,7 @@ function CharaAnim( player ) {
         actions.climbLeft.setEffectiveTimeScale( 3 );
         actions.climbRight.setEffectiveTimeScale( 3 );
         actions.hitGround.setEffectiveTimeScale( 3 );
+        */
 
 
         /// CLAMP WHEN FINISHED
@@ -124,11 +126,10 @@ function CharaAnim( player ) {
     function update( delta ) {
 
 
-
     	// handle the hittingGround action, that make averything
     	// standby until it's played
     	if ( currentState == 'hittingGround' &&
-    		 actions.hitGround.time > 0.7 ) {
+    		 actions.hitGround.time > ( actions.hitGround._clip.duration * 0.7 ) ) {
 
     		if ( waitingState ) {
     			setState( waitingState );
@@ -251,7 +252,7 @@ function CharaAnim( player ) {
 
 
     	if ( currentState == 'hittingGround' &&
-    		 actions.hitGround.time <= 0.7 ) {
+    		 actions.hitGround.time <= ( actions.hitGround._clip.duration * 0.7 ) ) {
 
     		waitingState = newState ;
 
