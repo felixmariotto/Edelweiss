@@ -704,6 +704,7 @@ function Controler( player ) {
 
 
 
+
         /////////////  APPLY GRAVITY  ////////////////
         player.position.y += ( speedUp * 0.1 ) ;
 

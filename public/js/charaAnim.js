@@ -21,7 +21,6 @@ function CharaAnim( player ) {
     	/// TIMESCALE
 
     	/*
-	    actions.gliderAction.setEffectiveTimeScale( 3 );
 	    actions.run.setEffectiveTimeScale( 3 );
 	    actions.climbUp.setEffectiveTimeScale( 3 );
         actions.climbDown.setEffectiveTimeScale( 3 );
@@ -30,8 +29,17 @@ function CharaAnim( player ) {
         actions.hitGround.setEffectiveTimeScale( 3 );
         */
 
+        actions.gliderAction.setEffectiveTimeScale( 2 );
+        actions.haulDown.setEffectiveTimeScale( 2 );
+        actions.pullUnder.setEffectiveTimeScale( 2 );
+
 
         /// CLAMP WHEN FINISHED
+
+        setLoopOnce( actions.gliderDeploy );
+
+        setLoopOnce( actions.haulDown );
+        setLoopOnce( actions.pullUnder );
 
         setLoopOnce( actions.jumbRise );
         setLoopOnce( actions.hitGround );
@@ -271,28 +279,56 @@ function CharaAnim( player ) {
     				break;
 
     			case 'idleGround' :
+    				actions.idle.reset();
     				setFadeIn( 'idle', 1, 0.1 );
     				break;
 
     			case 'idleClimb' :
-    				setFadeIn( 'climbIdle', 1, 1 );
+    				actions.climbIdle.reset();
+    				setFadeIn( 'climbIdle', 1, 0.1 );
     				break;
 
     			case 'jumping' :
-    				setFadeIn( 'jumbRise', 1, 1 );
+    				setFadeIn( 'jumbRise', 1, 0.1 );
+    				break;
+
+    			case 'haulingDown' :
+    				actions.haulDown.reset();
+    				setFadeIn( 'haulDown', 1, 0.1 );
+    				break;
+
+    			case 'pullingUnder' :
+    				actions.pullUnder.reset();
+    				setFadeIn( 'pullUnder', 1, 0.1 );
     				break;
 
     			case 'falling' :
     				setFadeIn( 'fall', 1, 0.1 );
     				break;
 
+    			case 'slipping' :
+    				setFadeIn( 'slip', 1, 0.1 );
+    				break;
+
     			case 'gliding' :
     				glider.visible = true ;
-    				setFadeIn( 'glide', 1, 1 );
+    				actions.gliderDeploy.reset();
+    				actions.gliderAction.setEffectiveWeight( 0 );
+    				setFadeIn( 'gliderDeploy', 1, 1 );
+    				setFadeIn( 'gliderAction', 1, 0.1 );
+    				setFadeIn( 'glide', 1, 0.2 );
     				break;
 
     			case 'chargingDash' :
-    				setFadeIn( 'chargeDash', 1, 1 );
+    				setFadeIn( 'chargeDash', 1, 0.1 );
+    				break;
+
+    			case 'switchingInward' :
+    				setFadeIn( 'switchDirection', 1, 0.1 );
+    				break;
+
+    			case 'switchingOutward' :
+    				setFadeIn( 'switchDirection', 1, 0.1 );
     				break;
 
     			case 'hittingGround' :
@@ -309,12 +345,11 @@ function CharaAnim( player ) {
     		switch ( currentState ) {
 
     			case 'idleGround' :
-    				actions.idle.reset();
     				setFadeOut( 'idle', 0.1 );
     				break;
 
     			case 'idleClimb' :
-    				setFadeOut( 'climbIdle', 1 );
+    				setFadeOut( 'climbIdle', 0.1 );
     				break;
 
     			case 'runningSlow' :
@@ -322,20 +357,40 @@ function CharaAnim( player ) {
     				break;
 
     			case 'jumping' :
-    				setFadeOut( 'jumbRise', 0.2 );
+    				setFadeOut( 'jumbRise', 0.1 );
+    				break;
+
+    			case 'haulingDown' :
+    				setFadeOut( 'haulDown', 0.1 );
+    				break;
+
+    			case 'pullingUnder' :
+    				setFadeOut( 'pullUnder', 0.1 );
+    				break;
+
+    			case 'slipping' :
+    				setFadeOut( 'slip', 0.1 );
     				break;
 
     			case 'falling' :
-    				setFadeOut( 'fall', 1 );
+    				setFadeOut( 'fall', 0.1 );
+    				break;
+
+    			case 'switchingInward' :
+    				setFadeOut( 'switchDirection', 0.1 );
+    				break;
+
+    			case 'switchingOutward' :
+    				setFadeOut( 'switchDirection', 0.1 );
     				break;
 
     			case 'gliding' :
     				glider.visible = false ;
-    				setFadeOut( 'glide', 1 );
+    				setFadeOut( 'glide', 0.1 );
     				break;
 
     			case 'chargingDash' :
-    				setFadeOut( 'chargeDash', 0.2 );
+    				setFadeOut( 'chargeDash', 0.1 );
     				break;
 
     			case 'climbing' :
@@ -607,10 +662,10 @@ function CharaAnim( player ) {
 
     function hitGround( power ) {
     	
-    	if ( power < 1 ) {
+    	if ( power > 0.2 && power < 1 ) {
     		groundHit = false ;
     		setState('hittingGround');
-    	} else {
+    	} else if ( power == 1 ) {
     		console.log('play death')
     	};
 
