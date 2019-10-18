@@ -1455,24 +1455,28 @@ function Controler( player ) {
 
                     case 'right' :
                         currentDirection = -Math.PI / 2 ;
+                        charaAnim.setCharaRot( -Math.PI / 2 );
                         HORIZMOVEVECT.set( -SPEED, 0, 0 );
                         setJump();
                         break;
 
                     case 'left' :
                         currentDirection = Math.PI / 2 ;
+                        charaAnim.setCharaRot( Math.PI / 2 );
                         HORIZMOVEVECT.set( SPEED, 0, 0 );
                         setJump();
                         break;
 
                     case 'up' :
                         currentDirection = 0 ;
+                        charaAnim.setCharaRot( 0 );
                         HORIZMOVEVECT.set( 0, 0, SPEED );
                         setJump();
                         break;
 
                     case 'down' :
                         currentDirection = Math.PI ;
+                        charaAnim.setCharaRot( Math.PI );
                         HORIZMOVEVECT.set( 0, 0, -SPEED );
                         setJump();
                         break;
