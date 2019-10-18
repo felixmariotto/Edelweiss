@@ -1238,6 +1238,33 @@ function Controler( player ) {
         } else if ( xCollision.majorWallType &&
                     xCollision.direction != dashWallDirection ) {
 
+
+            // if dashing, rotate the character according to the hitting wall
+            if ( state.isDashing ) {
+
+                switch( xCollision.direction ) {
+
+                    case 'up' :
+                        charaAnim.setCharaRot( Math.PI );
+                        break;
+
+                    case 'down' :
+                        charaAnim.setCharaRot( 0 );
+                        break;
+
+                    case 'right' :
+                        charaAnim.setCharaRot( Math.PI / 2 );
+                        break;
+
+                    case 'left' :
+                        charaAnim.setCharaRot( -Math.PI / 2 );
+                        break;
+
+                };
+
+            };
+
+
             state.isDashing = false ;
             dashTime = undefined ;
 
