@@ -1357,7 +1357,11 @@ function Controler( player ) {
 
         } else if ( state.isSlipping ) {
 
-            charaAnim.slip();
+            // We want to play the slipping animation
+            // only if the player is slipping down
+            if ( speedUp < 0 ) {
+                charaAnim.slip();
+            };
 
         } else if ( state.isFlying && speedUp < 0 ) {
 
