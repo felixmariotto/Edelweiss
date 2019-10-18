@@ -33,16 +33,16 @@ function Controler( player ) {
     const DISTANCEINTERNALSWITCH = 0.3 ;
     const HAULDOWNLIMIT = -0.02 ;
     const HAULDOWNMAXSPEED = 0.95 ;
-    const PERCENTHEIGHTHAULDOWN = 0.7 ; // in percent
+    const PERCENTHEIGHTHAULDOWN = 0.9 ; // height of final position
 
     // vert movements
     var speedUp = 0 ;
     var yCollision;
     const SLIPSPEED = -0.21 ;
     const MAXSLIPINERTIA = 0.15 ;
-    const HAULTOPLIMIT = 0.55 ;
+    const HAULTOPLIMIT = 0.75 ;
     const HAULLLOWLIMIT = 0.45 ; // when player arrives from the top
-    const FALLLIMIT = 0.45 ;
+    const PULLUNDERLIMIT = 0.3 ;
 
     // horiz movements
     var SPEED = 0.035 ;
@@ -967,7 +967,7 @@ function Controler( player ) {
 
 
                 // Pull the player under the lower edge of a tile
-                if ( xCollision.minHeight > player.position.y + (atlas.PLAYERHEIGHT * FALLLIMIT) ) {
+                if ( xCollision.minHeight > player.position.y + (atlas.PLAYERHEIGHT * PULLUNDERLIMIT) ) {
                     
                     switch (contactDirection) {
 
