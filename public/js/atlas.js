@@ -2,6 +2,15 @@
 function Atlas( sceneGraph ) {
 
 
+	const PLAYERHEIGHT = 0.7 ;
+	const PLAYERWIDTH = 0.3 ;
+
+	const NEEDHELPERS = true ;
+    const NEEDARROW = false ;
+
+    const SCALECHARA = 0.083 ;
+
+
 	var startTile ;
 	var player ;
 	
@@ -33,15 +42,6 @@ function Atlas( sceneGraph ) {
 	var shiftedPlayerPos = new THREE.Vector3();
 	var tileCenter = new THREE.Vector3();
 	var wallDistance;
-
-
-	const PLAYERHEIGHT = 0.7 ;
-	const PLAYERWIDTH = 0.4 ;
-
-	const NEEDHELPERS = true ;
-    const NEEDARROW = false ;
-
-    const SCALECHARA = 0.09 ;
 
 
     /////////////////////////

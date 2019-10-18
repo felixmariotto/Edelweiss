@@ -44,7 +44,7 @@ function Controler( player ) {
     const FALLLIMIT = 0.45 ;
 
     // horiz movements
-    var SPEED = 0.04 ;
+    var SPEED = 0.035 ;
     var HORIZMOVEVECT = new THREE.Vector3( 0, 0, SPEED );
     var AXISHORIZMOVEROT = new THREE.Vector3( 0, 1, 0 );
     var requestedMove ;
