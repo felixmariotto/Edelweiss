@@ -29,7 +29,7 @@ function CharaAnim( player ) {
         actions.hitGround.setEffectiveTimeScale( 3 );
         */
 
-        actions.gliderAction.setEffectiveTimeScale( 2 );
+        actions.gliderAction.setEffectiveTimeScale( 1.5 );
         actions.haulDown.setEffectiveTimeScale( 2 );
         actions.haulUp.setEffectiveTimeScale( 2 );
         actions.pullUnder.setEffectiveTimeScale( 2 );
@@ -46,7 +46,7 @@ function CharaAnim( player ) {
         setLoopOnce( actions.landOnWall );
 
         setLoopOnce( actions.jumbRise );
-        setLoopOnce( actions.hitGround );
+		setLoopOnce( actions.hitGround );
 
         setLoopOnce( actions.dashUp );
         setLoopOnce( actions.dashDown );
@@ -191,7 +191,8 @@ function CharaAnim( player ) {
 
     		});
 
-    	};
+		};
+		
 
     };
 
@@ -415,7 +416,11 @@ function CharaAnim( player ) {
     				setFadeOut( 'climbUp', 0.1 );
     				setFadeOut( 'climbDown', 0.1 );
     				setFadeOut( 'climbLeft', 0.1 );
-    				setFadeOut( 'climbRight', 0.1 );
+					setFadeOut( 'climbRight', 0.1 );
+					setFadeOut( 'climbLeftUp', 0.1 );
+					setFadeOut( 'climbRightUp', 0.1 );
+					setFadeOut( 'climbLeftDown', 0.1 );
+    				setFadeOut( 'climbRightDown', 0.1 );
     				break;
 
     			case 'dashing' :
@@ -497,10 +502,59 @@ function CharaAnim( player ) {
 
         	callWithDirection( setClimbDirection, faceDirection );
 
-        	actions.climbUp.setEffectiveWeight( climbDirectionPowers.up );
-	        actions.climbDown.setEffectiveWeight( climbDirectionPowers.down );
-	        actions.climbLeft.setEffectiveWeight( climbDirectionPowers.left );
-	        actions.climbRight.setEffectiveWeight( climbDirectionPowers.right );
+
+        	actions.climbUp.setEffectiveWeight( 0 );
+	        actions.climbDown.setEffectiveWeight( 0 );
+	        actions.climbLeft.setEffectiveWeight( 0 );
+			actions.climbRight.setEffectiveWeight( 0 );
+			actions.climbLeftUp.setEffectiveWeight( 0 );
+			actions.climbRightUp.setEffectiveWeight( 0 );
+			actions.climbLeftDown.setEffectiveWeight( 0 );
+			actions.climbRightDown.setEffectiveWeight( 0 );
+
+
+			if ( climbDirectionPowers.up > 0.65 ) {
+
+				actions.climbUp.setEffectiveWeight( 1 );
+
+			} else if ( climbDirectionPowers.down > 0.65 ) {
+
+				actions.climbDown.setEffectiveWeight( 1 );
+
+			} else if ( climbDirectionPowers.left > 0.65 ) {
+
+				actions.climbLeft.setEffectiveWeight( 1 );
+
+			} else if ( climbDirectionPowers.right > 0.65 ) {
+
+				actions.climbRight.setEffectiveWeight( 1 );
+
+			} else if ( climbDirectionPowers.up > 0 ) {
+
+				if ( climbDirectionPowers.right > 0 ) {
+
+					actions.climbRightUp.setEffectiveWeight( 1 );
+
+				} else {
+
+					actions.climbLeftUp.setEffectiveWeight( 1 );
+
+				};
+
+			} else {
+
+				if ( climbDirectionPowers.right > 0 ) {
+
+					actions.climbRightDown.setEffectiveWeight( 1 );
+
+				} else {
+
+					actions.climbLeftDown.setEffectiveWeight( 1 );
+
+				};
+
+			};
+
 
         };
 
