@@ -217,6 +217,8 @@ function Atlas( sceneGraph ) {
 			// set start action to 1 ;
 			actions.idle.setEffectiveWeight( 1 );
 
+			console.log(actions)
+
 			// activate the glider animation, because anyway
 			// the glider is not visible when not in use
 			actions.gliderAction.setEffectiveWeight( 1 );

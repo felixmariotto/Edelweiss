@@ -47,6 +47,7 @@ function CharaAnim( player ) {
 
         setLoopOnce( actions.jumbRise );
 		setLoopOnce( actions.hitGround );
+		setLoopOnce( actions.die );
 
         setLoopOnce( actions.dashUp );
         setLoopOnce( actions.dashDown );
@@ -101,7 +102,8 @@ function CharaAnim( player ) {
     gliding
     jumping
     falling
-    hittingGround
+	hittingGround
+	dying
 
     dashing
     chargingDash
@@ -266,7 +268,12 @@ function CharaAnim( player ) {
     		waitingState = newState ;
 
     		return
-    	};
+		};
+		
+
+		if ( currentState == "dying" ) {
+			return
+		};
 
 
     	if ( currentState != newState ) {
@@ -310,7 +317,11 @@ function CharaAnim( player ) {
 
     			case 'falling' :
     				setFadeIn( 'fall', 1, 0.1 );
-    				break;
+					break;
+					
+				case 'dying' :
+					setFadeIn( 'die', 1, 1 );
+					break;
 
     			case 'slipping' :
     				setFadeIn( 'slip', 1, 0.1 );
@@ -383,7 +394,11 @@ function CharaAnim( player ) {
 
     			case 'slipping' :
     				setFadeOut( 'slip', 0.1 );
-    				break;
+					break;
+					
+				case 'dying' :
+					setFadeOut( 'die', 1 );
+					break;
 
     			case 'falling' :
     				setFadeOut(
@@ -738,10 +753,14 @@ function CharaAnim( player ) {
     function hitGround( power ) {
     	
     	if ( power > 0.2 && power < 1 ) {
-    		groundHit = false ;
-    		setState('hittingGround');
+			groundHit = false ;
+			
+			setState('hittingGround');
+			
     	} else if ( power == 1 ) {
-    		console.log('play death')
+
+			setState('dying');
+			
     	};
 
     };
