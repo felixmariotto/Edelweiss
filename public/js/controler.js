@@ -1176,7 +1176,7 @@ function Controler( player ) {
                     if ( typeof yCollision.point == 'undefined' ) {
 
                         // set slipping speed
-                        if ( speedUp < -0.1 &&
+                        if ( speedUp <= 0 &&
                              player.position.y > xCollision.minHeight ) {
 
                             speedUp = SLIPSPEED ;
@@ -1399,7 +1399,7 @@ function Controler( player ) {
                 state.isFlying = false ;
 
                 if ( state.isSlipping ) {
-                    slipRecovering = SLIPRECOVERTIME
+                    slipRecovering = SLIPRECOVERTIME ;
                 };
 
             } else {
