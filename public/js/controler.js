@@ -1081,7 +1081,8 @@ function Controler( player ) {
                 // the edge of the tile. It was useful before to add a haul down function,
                 // but now it's useless and leaded to some issues with dash.
                 if ( /* xCollision.maxHeight > player.position.y + (HAULLLOWLIMIT * atlas.PLAYERHEIGHT) &&
-                     */ xCollision.maxHeight < player.position.y + (HAULTOPLIMIT * atlas.PLAYERHEIGHT) ) {
+                     */ xCollision.maxHeight < player.position.y + (HAULTOPLIMIT * atlas.PLAYERHEIGHT) &&
+                        speedUp < 0.5 ) {
 
 
                     switch (contactDirection) {
