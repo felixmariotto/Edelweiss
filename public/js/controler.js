@@ -58,9 +58,9 @@ function Controler( player ) {
     // climbing movements
     var xCollision ;
     var SLIPWALLFACTOR = 0.35 ;
-    const EASYWALLFACTOR = 1 ;
-    const HARDWALLFACTOR = 0.4 ;
-    const MEDIUMWALLFACTOR = 0.65 ;
+    const EASYWALLFACTOR = 0.8 ; // speed
+    const MEDIUMWALLFACTOR = 0.6 ; // speed
+    const HARDWALLFACTOR = 0.4 ; // speed
     var climbSpeedFactor;
     var CLIMBSPEED = 0.022 ;
     var CLIMBVEC = new THREE.Vector3();
@@ -414,7 +414,11 @@ function Controler( player ) {
 
             // Animation will be computed according to climbing direction
             if ( !state.isSlipping ) {
-                charaAnim.climb( contactDirection, requestedDirection );
+                charaAnim.climb(
+                    contactDirection,
+                    requestedDirection,
+                    climbSpeedFactor
+                );
             };
 
             switch ( contactDirection ) {

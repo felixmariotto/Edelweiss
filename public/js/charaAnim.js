@@ -12,11 +12,23 @@ function CharaAnim( player ) {
     // after ground hitting
     var waitingState ;
 
+    var climbingActions; // this will be an array containing the climbing actions
 
 
     // This is called when atlas finished loading all the assets.
     // It configures every action.
     function initActions() {
+
+    	climbingActions = [
+    		actions.climbUp,
+    		actions.climbDown,
+    		actions.climbLeft,
+    		actions.climbRight,
+    		actions.climbLeftUp,
+    		actions.climbLeftDown,
+    		actions.climbRightUp,
+    		actions.climbRightDown
+    	];
 
     	/// TIMESCALE
 
@@ -510,22 +522,20 @@ function CharaAnim( player ) {
 
     // Here we need to compute the climbing direction from the
     // arguments, to balance climbing-up, climbing-right etc..
-    function setClimbBalance( faceDirection, moveDirection ) {
+    function setClimbBalance( faceDirection, moveDirection, speed ) {
 
 
         if ( currentState == 'climbing' ) {
 
         	callWithDirection( setClimbDirection, faceDirection );
 
+			climbingActions.forEach( (action)=> {
+				action.setEffectiveWeight( 0 );
+				action.setEffectiveTimeScale( speed + 0.7 );
+			});
 
-        	actions.climbUp.setEffectiveWeight( 0 );
-	        actions.climbDown.setEffectiveWeight( 0 );
-	        actions.climbLeft.setEffectiveWeight( 0 );
-			actions.climbRight.setEffectiveWeight( 0 );
-			actions.climbLeftUp.setEffectiveWeight( 0 );
-			actions.climbRightUp.setEffectiveWeight( 0 );
-			actions.climbLeftDown.setEffectiveWeight( 0 );
-			actions.climbRightDown.setEffectiveWeight( 0 );
+			actions.climbUp.setEffectiveTimeScale( speed + 0.18 );
+			actions.climbDown.setEffectiveTimeScale( speed + 0.18 );
 
 
 			if ( climbDirectionPowers.up > 0.65 ) {
@@ -662,9 +672,9 @@ function CharaAnim( player ) {
 
 
     
-    function climb( faceDirection, moveDirection ) {
+    function climb( faceDirection, moveDirection, speed ) {
     	setState( 'climbing' );
-        setClimbBalance( faceDirection, moveDirection );
+        setClimbBalance( faceDirection, moveDirection, speed );
     };
 
 
