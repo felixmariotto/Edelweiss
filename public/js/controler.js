@@ -1190,9 +1190,6 @@ function Controler( player ) {
                          player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) &&
                          !state.isDashing ) {
 
-                        console.log( yCollision.point == undefined )
-                        debugger
-
                         // compute desired fall direction
                         if ( contactDirection == 'left' ) {
 
@@ -1320,6 +1317,30 @@ function Controler( player ) {
 
             setClimbingState( false );
             state.isSlipping = false ;
+
+            if ( state.isDashing ) {
+                
+                switch ( dashWallDirection ) {
+
+                    case 'up' :
+                        player.position.z -= 0.02 ;
+                        break;
+
+                    case 'down' :
+                        player.position.z += 0.02 ;
+                        break;
+
+                    case 'left' :
+                        player.position.x -= 0.02 ;
+                        break;
+
+                    case 'right' :
+                        player.position.x += 0.02 ;
+                        break;
+
+                };
+
+            };
 
         };
 
