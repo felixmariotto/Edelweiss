@@ -30,7 +30,7 @@ function Controler( player ) {
     const HAULDOWNDURATION = 250 ;
     const LANDWALLDURATION = 250 ;
 
-    const DISTANCEINTERNALSWITCH = 0.3 ;
+    const DISTANCEINTERNALSWITCH = 0.15 ;
     const HAULDOWNLIMIT = -0.02 ;
     const HAULDOWNMAXSPEED = 0.95 ;
     const PERCENTHEIGHTHAULDOWN = 0.9 ; // height of final position
@@ -58,14 +58,25 @@ function Controler( player ) {
     // climbing movements
     var xCollision ;
     var SLIPWALLFACTOR = 0.35 ;
-    const EASYWALLFACTOR = 1 ;
-    const HARDWALLFACTOR = 0.4 ;
-    const MEDIUMWALLFACTOR = 0.65 ;
+    const EASYWALLFACTOR = 0.8 ; // speed
+    const MEDIUMWALLFACTOR = 0.6 ; // speed
+    const HARDWALLFACTOR = 0.4 ; // speed
     var climbSpeedFactor;
     var CLIMBSPEED = 0.022 ;
     var CLIMBVEC = new THREE.Vector3();
     var AXISX = new THREE.Vector3( 1, 0, 0 );
     var AXISZ = new THREE.Vector3( 0, 0, 1 );
+
+    // fall wall
+    const FALLINITGRAVITY = -0.1 ;
+    const FALLINITINERTIA = 0.9 ;
+    const FALLINITPUSHPOWER = 1.1 ;
+
+    // slipping
+    var slipRecovering = 0;
+    const SLIPRECOVERTIME = 500 ; // time in ms during which
+                                  // the user keep slipping after
+                                  // they get to a climbable wall
 
     // wall-jump
     const WALLJUMPINERTIA = 1.8 ;
@@ -210,6 +221,17 @@ function Controler( player ) {
 
             updateAction( delta );
             return
+
+        };
+
+
+
+        // slipRecovering get set to around 500 when the player access
+        // a climbable wall after slipping, this way they continue slipping
+        // a little bit until slipRecovering <= 0
+        if ( slipRecovering > 0 ) {
+
+            slipRecovering -= delta * 1000 ;
 
         };
 
@@ -383,7 +405,8 @@ function Controler( player ) {
         } else if ( ( input.moveKeys.length > 0 ) &&
                     ( state.isClimbing || state.isSlipping ) &&
                     !state.chargingDash &&
-                    !state.isDashing ) {
+                    !state.isDashing &&
+                    slipRecovering <= 0 ) {
 
 
             runCounter = 0 ;
@@ -391,7 +414,11 @@ function Controler( player ) {
 
             // Animation will be computed according to climbing direction
             if ( !state.isSlipping ) {
-                charaAnim.climb( contactDirection, requestedDirection );
+                charaAnim.climb(
+                    contactDirection,
+                    requestedDirection,
+                    climbSpeedFactor
+                );
             };
 
             switch ( contactDirection ) {
@@ -501,7 +528,7 @@ function Controler( player ) {
 
             player.position.addScaledVector(
                 dashVec,
-                DASHDISTANCE * factor
+                Math.min( DASHDISTANCE * factor, 0.14 )
             );
 
             if ( dashTime > 0.98 ) {
@@ -595,6 +622,7 @@ function Controler( player ) {
                 // one must approach the edge slowly.
                 if ( inertia <= HAULDOWNMAXSPEED ) {
 
+                    // ledge on the right
                     if ( yCollision.maxX < player.position.x + HAULDOWNLIMIT ) {
 
                         startAction(
@@ -605,12 +633,12 @@ function Controler( player ) {
                                 player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
                                 player.position.z
                             ),
-                            charaAnim.group.rotation.y,
-                            utils.toPiRange( charaAnim.group.rotation.y + 3.1 )
+                            Math.PI / 2,
+                            -Math.PI / 2
                         );
                     };
 
-
+                    // ledge on the left
                     if ( yCollision.minX > player.position.x - HAULDOWNLIMIT ) {
 
                         startAction(
@@ -621,12 +649,12 @@ function Controler( player ) {
                                 player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
                                 player.position.z
                             ),
-                            charaAnim.group.rotation.y,
-                            utils.toPiRange( charaAnim.group.rotation.y + 3.1 )
+                            -Math.PI / 2,
+                            Math.PI / 2
                         );
                     };
 
-
+                    // ledge on the front
                     if ( yCollision.minZ > player.position.z - HAULDOWNLIMIT ) {
 
                         startAction(
@@ -637,12 +665,12 @@ function Controler( player ) {
                                 player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
                                 yCollision.minZ - ( atlas.PLAYERWIDTH / 2 ) + 0.1
                             ),
-                            charaAnim.group.rotation.y,
-                            utils.toPiRange( charaAnim.group.rotation.y + 3.1 )
+                            Math.PI,
+                            0
                         );
                     };
 
-
+                    // ledge on the back
                     if ( yCollision.maxZ < player.position.z + HAULDOWNLIMIT ) {
 
                         startAction(
@@ -653,8 +681,8 @@ function Controler( player ) {
                                 player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
                                 yCollision.maxZ + ( atlas.PLAYERWIDTH / 2 ) - 0.1
                             ),
-                            charaAnim.group.rotation.y,
-                            utils.toPiRange( charaAnim.group.rotation.y + 3.1 )
+                            0,
+                            Math.PI
                         );
                     };
 
@@ -724,17 +752,13 @@ function Controler( player ) {
         xCollision = atlas.collidePlayerWalls( currentDirection );
 
 
-        
-
 
         // INWARD ANGLE SWITCH ACTION
-        if ( !state.isDashing && 
-             xCollision.majorWallType != 'wall-slip' &&
-             xCollision.majorWallType != 'wall-fall' &&
-             xCollision.majorWallType != 'wall-limit' &&
+        if ( !state.isDashing &&
              contactDirection &&
              xCollision.direction &&
-             contactDirection != xCollision.direction ) {
+             contactDirection != xCollision.direction &&
+             player.position.y > xCollision.minHeight ) {
     
 
             let x, z ;
@@ -1057,7 +1081,8 @@ function Controler( player ) {
                 // the edge of the tile. It was useful before to add a haul down function,
                 // but now it's useless and leaded to some issues with dash.
                 if ( /* xCollision.maxHeight > player.position.y + (HAULLLOWLIMIT * atlas.PLAYERHEIGHT) &&
-                     */ xCollision.maxHeight < player.position.y + (HAULTOPLIMIT * atlas.PLAYERHEIGHT) ) {
+                     */ xCollision.maxHeight < player.position.y + (HAULTOPLIMIT * atlas.PLAYERHEIGHT) &&
+                        speedUp < 0.5 ) {
 
 
                     switch (contactDirection) {
@@ -1072,8 +1097,8 @@ function Controler( player ) {
                                     xCollision.maxHeight,
                                     player.position.z - atlas.PLAYERWIDTH
                                 ),
-                                charaAnim.group.rotation.y,
-                                charaAnim.group.rotation.y
+                                Math.PI,
+                                Math.PI
                             );
 
                             break;
@@ -1088,8 +1113,8 @@ function Controler( player ) {
                                     xCollision.maxHeight,
                                     player.position.z + atlas.PLAYERWIDTH
                                 ),
-                                charaAnim.group.rotation.y,
-                                charaAnim.group.rotation.y
+                                0,
+                                0
                             );
 
                             break;
@@ -1104,8 +1129,8 @@ function Controler( player ) {
                                     xCollision.maxHeight,
                                     player.position.z
                                 ),
-                                charaAnim.group.rotation.y,
-                                charaAnim.group.rotation.y
+                                -Math.PI / 2,
+                                -Math.PI / 2
                             );
 
                             break;
@@ -1120,8 +1145,8 @@ function Controler( player ) {
                                     xCollision.maxHeight,
                                     player.position.z
                                 ),
-                                charaAnim.group.rotation.y,
-                                charaAnim.group.rotation.y
+                                Math.PI / 2,
+                                Math.PI / 2
                             );
 
                             break;
@@ -1141,32 +1166,36 @@ function Controler( player ) {
             ///  BEHAVIOR SETUP DEPENDING ON WALL TYPE
             //////////////////////////////////////////////
             
-            state.isSlipping = false ;
 
             switch (xCollision.majorWallType) {
 
 
                 case 'wall-slip' :
 
-                    // set slipping speed
-                    if ( speedUp < 0 &&
-                         player.position.y > xCollision.minHeight - (atlas.PLAYERHEIGHT / 2) &&
-                         player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) ) {
-
-                        speedUp = SLIPSPEED ;
-                        // Clamp inertia during slipping so the fall is quite straight
-                        inertia = Math.min( inertia, MAXSLIPINERTIA ) ;
-                    };
-
-                    setClimbingState( false );
-                    climbSpeedFactor = SLIPWALLFACTOR ;
-
                     // If player touches the ground, we don't want them
                     // to be considered slipping
-                    if ( typeof yCollision.point != 'undefined' ) {
-                        state.isSlipping = false ;
-                    } else {
-                        state.isSlipping = true ;
+                    if ( typeof yCollision.point == 'undefined' ) {
+
+                        // set slipping speed
+                        if ( speedUp <= 0 &&
+                             player.position.y > xCollision.minHeight ) {
+
+                            speedUp = SLIPSPEED ;
+                            // Clamp inertia during slipping so the fall is quite straight
+                            inertia = Math.min( inertia, MAXSLIPINERTIA ) ;
+
+                            climbSpeedFactor = SLIPWALLFACTOR ;
+
+                            state.isSlipping = true ;
+
+                        } else {
+
+                            state.isSlipping = false ;
+
+                        };
+
+                        setClimbingState( false );
+
                     };
 
                     break;
@@ -1177,7 +1206,8 @@ function Controler( player ) {
 
                     // make the player fall
                     if ( player.position.y > xCollision.minHeight - (atlas.PLAYERHEIGHT / 2) &&
-                         player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) ) {
+                         player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) &&
+                         !state.isDashing ) {
 
                         // compute desired fall direction
                         if ( contactDirection == 'left' ) {
@@ -1202,34 +1232,59 @@ function Controler( player ) {
 
                         };
 
-                        inertia = 1 ;
-                        speedUp = -0.35 ;
+                        inertia = FALLINITINERTIA ;
+                        speedUp = FALLINITGRAVITY ;
                         // player is pushed out of contact with the wall,
                         // so the fall cannot be avoided
-                        player.position.addScaledVector( HORIZMOVEVECT, 1.5 );
+                        player.position.addScaledVector( HORIZMOVEVECT, FALLINITPUSHPOWER );
                     };
+
                     setClimbingState( false );
+
+                    state.isSlipping = false ;
+
                     break;
 
 
 
                 case 'wall-easy' :
+
                     setClimbingState( true );
+
                     climbSpeedFactor = EASYWALLFACTOR ;
+
+                    state.isSlipping = false ;
+
                     break;
 
 
 
                 case 'wall-medium' :
+
                     setClimbingState( true );
+
                     climbSpeedFactor = MEDIUMWALLFACTOR ;
+
+                    state.isSlipping = false ;
+
                     break;
 
 
 
                 case 'wall-hard' :
+
                     setClimbingState( true );
+
                     climbSpeedFactor = HARDWALLFACTOR ;
+
+                    state.isSlipping = false ;
+
+                    break;
+
+                default :
+
+                    state.isSlipping = false ;
+
                     break;
 
             };
@@ -1302,10 +1357,39 @@ function Controler( player ) {
 
             };
 
+        // No x or z collision
         } else {
 
             setClimbingState( false );
             state.isSlipping = false ;
+
+            // Push the player toward the top of the ledge,
+            // so they do not land on the wall again
+            if ( state.isDashing &&
+                 /* This targets the dash on the Y direction */
+                 dashVec.y.toFixed(2) != 0 ) {
+
+                switch ( dashWallDirection ) {
+
+                    case 'up' :
+                        player.position.z -= 0.02 ;
+                        break;
+
+                    case 'down' :
+                        player.position.z += 0.02 ;
+                        break;
+
+                    case 'left' :
+                        player.position.x -= 0.02 ;
+                        break;
+
+                    case 'right' :
+                        player.position.x += 0.02 ;
+                        break;
+
+                };
+
+            };
 
         };
 
@@ -1317,6 +1401,10 @@ function Controler( player ) {
 
                 state.isClimbing = true ;
                 state.isFlying = false ;
+
+                if ( state.isSlipping ) {
+                    slipRecovering = SLIPRECOVERTIME ;
+                };
 
             } else {
 
@@ -1336,12 +1424,12 @@ function Controler( player ) {
 
 
         // Here we check states and call animations accordingly
-        if ( state.chargingDash == false &&
-            state.isClimbing == false &&
-            state.isDashing == false &&
-            state.isFlying == false &&
-            state.isGliding == false &&
-            state.isSlipping == false ) {
+        if ( !state.chargingDash &&
+             !state.isClimbing &&
+             !state.isDashing &&
+             !state.isFlying &&
+             !state.isGliding &&
+             !state.isSlipping ) {
 
             if ( input.moveKeys.length > 0 ) {
 
