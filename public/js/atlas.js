@@ -6,7 +6,7 @@ function Atlas( sceneGraph ) {
 	const PLAYERWIDTH = 0.3 ;
 
 	const NEEDHELPERS = true ;
-	const NEEDPLAYERBOX = true ; // specifically allow player box helper
+	const NEEDPLAYERBOX = false ; // specifically allow player box helper
     const NEEDARROW = false ;
 
     const SCALECHARA = 0.083 ;
