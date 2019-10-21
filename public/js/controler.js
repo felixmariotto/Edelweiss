@@ -504,7 +504,15 @@ function Controler( player ) {
                 Math.min( DASHDISTANCE * factor, 0.14 )
             );
 
-            console.log( Math.min( DASHDISTANCE * factor, 0.14 ) );            
+            
+            switch ( contactDirection ) {
+
+                case 'up' :
+                    player.position.z -= 0.05 ;
+                    break;
+
+            };
+
 
             if ( dashTime > 0.98 ) {
                 state.isDashing = false ;
@@ -1179,7 +1187,11 @@ function Controler( player ) {
 
                     // make the player fall
                     if ( player.position.y > xCollision.minHeight - (atlas.PLAYERHEIGHT / 2) &&
-                         player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) ) {
+                         player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) &&
+                         !state.isDashing ) {
+
+                        console.log( yCollision.point == undefined )
+                        debugger
 
                         // compute desired fall direction
                         if ( contactDirection == 'left' ) {
