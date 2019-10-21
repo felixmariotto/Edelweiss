@@ -1357,6 +1357,7 @@ function Controler( player ) {
 
             };
 
+        // No x or z collision
         } else {
 
             setClimbingState( false );
@@ -1364,8 +1365,10 @@ function Controler( player ) {
 
             // Push the player toward the top of the ledge,
             // so they do not land on the wall again
-            if ( state.isDashing ) {
-                
+            if ( state.isDashing &&
+                 /* This targets the dash on the Y direction */
+                 dashVec.y.toFixed(2) != 0 ) {
+
                 switch ( dashWallDirection ) {
 
                     case 'up' :
