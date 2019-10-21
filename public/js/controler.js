@@ -1176,9 +1176,8 @@ function Controler( player ) {
                     if ( typeof yCollision.point == 'undefined' ) {
 
                         // set slipping speed
-                        if ( speedUp < 0 &&
-                             player.position.y > xCollision.minHeight - (atlas.PLAYERHEIGHT / 2) &&
-                             player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) ) {
+                        if ( speedUp < -0.1 &&
+                             player.position.y > xCollision.minHeight ) {
 
                             speedUp = SLIPSPEED ;
                             // Clamp inertia during slipping so the fall is quite straight
@@ -1187,6 +1186,10 @@ function Controler( player ) {
                             climbSpeedFactor = SLIPWALLFACTOR ;
 
                             state.isSlipping = true ;
+
+                        } else {
+
+                            state.isSlipping = false ;
 
                         };
 
@@ -1417,12 +1420,12 @@ function Controler( player ) {
 
 
         // Here we check states and call animations accordingly
-        if ( state.chargingDash == false &&
-            state.isClimbing == false &&
-            state.isDashing == false &&
-            state.isFlying == false &&
-            state.isGliding == false &&
-            state.isSlipping == false ) {
+        if ( !state.chargingDash &&
+             !state.isClimbing &&
+             !state.isDashing &&
+             !state.isFlying &&
+             !state.isGliding &&
+             !state.isSlipping ) {
 
             if ( input.moveKeys.length > 0 ) {
 
