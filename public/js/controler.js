@@ -67,6 +67,11 @@ function Controler( player ) {
     var AXISX = new THREE.Vector3( 1, 0, 0 );
     var AXISZ = new THREE.Vector3( 0, 0, 1 );
 
+    // fall wall
+    const FALLINITGRAVITY = -0.1 ;
+    const FALLINITINERTIA = 0.9 ;
+    const FALLINITPUSHPOWER = 1.1 ;
+
     // wall-jump
     const WALLJUMPINERTIA = 1.8 ;
     const WALLJUMPSPEEDUP = 0.95 ;
@@ -595,6 +600,7 @@ function Controler( player ) {
                 // one must approach the edge slowly.
                 if ( inertia <= HAULDOWNMAXSPEED ) {
 
+                    // ledge on the right
                     if ( yCollision.maxX < player.position.x + HAULDOWNLIMIT ) {
 
                         startAction(
@@ -605,12 +611,12 @@ function Controler( player ) {
                                 player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
                                 player.position.z
                             ),
-                            charaAnim.group.rotation.y,
-                            utils.toPiRange( charaAnim.group.rotation.y + 3.1 )
+                            Math.PI / 2,
+                            -Math.PI / 2
                         );
                     };
 
-
+                    // ledge on the left
                     if ( yCollision.minX > player.position.x - HAULDOWNLIMIT ) {
 
                         startAction(
@@ -621,12 +627,12 @@ function Controler( player ) {
                                 player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
                                 player.position.z
                             ),
-                            charaAnim.group.rotation.y,
-                            utils.toPiRange( charaAnim.group.rotation.y + 3.1 )
+                            -Math.PI / 2,
+                            Math.PI / 2
                         );
                     };
 
-
+                    // ledge on the front
                     if ( yCollision.minZ > player.position.z - HAULDOWNLIMIT ) {
 
                         startAction(
@@ -637,12 +643,12 @@ function Controler( player ) {
                                 player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
                                 yCollision.minZ - ( atlas.PLAYERWIDTH / 2 ) + 0.1
                             ),
-                            charaAnim.group.rotation.y,
-                            utils.toPiRange( charaAnim.group.rotation.y + 3.1 )
+                            Math.PI,
+                            0
                         );
                     };
 
-
+                    // ledge on the back
                     if ( yCollision.maxZ < player.position.z + HAULDOWNLIMIT ) {
 
                         startAction(
@@ -653,8 +659,8 @@ function Controler( player ) {
                                 player.position.y - (atlas.PLAYERHEIGHT * PERCENTHEIGHTHAULDOWN),
                                 yCollision.maxZ + ( atlas.PLAYERWIDTH / 2 ) - 0.1
                             ),
-                            charaAnim.group.rotation.y,
-                            utils.toPiRange( charaAnim.group.rotation.y + 3.1 )
+                            0,
+                            Math.PI
                         );
                     };
 
@@ -1072,8 +1078,8 @@ function Controler( player ) {
                                     xCollision.maxHeight,
                                     player.position.z - atlas.PLAYERWIDTH
                                 ),
-                                charaAnim.group.rotation.y,
-                                charaAnim.group.rotation.y
+                                Math.PI,
+                                Math.PI
                             );
 
                             break;
@@ -1088,8 +1094,8 @@ function Controler( player ) {
                                     xCollision.maxHeight,
                                     player.position.z + atlas.PLAYERWIDTH
                                 ),
-                                charaAnim.group.rotation.y,
-                                charaAnim.group.rotation.y
+                                0,
+                                0
                             );
 
                             break;
@@ -1104,8 +1110,8 @@ function Controler( player ) {
                                     xCollision.maxHeight,
                                     player.position.z
                                 ),
-                                charaAnim.group.rotation.y,
-                                charaAnim.group.rotation.y
+                                -Math.PI / 2,
+                                -Math.PI / 2
                             );
 
                             break;
@@ -1120,8 +1126,8 @@ function Controler( player ) {
                                     xCollision.maxHeight,
                                     player.position.z
                                 ),
-                                charaAnim.group.rotation.y,
-                                charaAnim.group.rotation.y
+                                Math.PI / 2,
+                                Math.PI / 2
                             );
 
                             break;
@@ -1203,11 +1209,11 @@ function Controler( player ) {
 
                         };
 
-                        inertia = 1 ;
-                        speedUp = -0.35 ;
+                        inertia = FALLINITINERTIA ;
+                        speedUp = FALLINITGRAVITY ;
                         // player is pushed out of contact with the wall,
                         // so the fall cannot be avoided
-                        player.position.addScaledVector( HORIZMOVEVECT, 1.5 );
+                        player.position.addScaledVector( HORIZMOVEVECT, FALLINITPUSHPOWER );
                     };
                     setClimbingState( false );
                     break;
