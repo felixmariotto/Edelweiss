@@ -30,7 +30,7 @@ function Controler( player ) {
     const HAULDOWNDURATION = 250 ;
     const LANDWALLDURATION = 250 ;
 
-    const DISTANCEINTERNALSWITCH = 0.3 ;
+    const DISTANCEINTERNALSWITCH = 0.15 ;
     const HAULDOWNLIMIT = -0.02 ;
     const HAULDOWNMAXSPEED = 0.95 ;
     const PERCENTHEIGHTHAULDOWN = 0.9 ; // height of final position
@@ -752,17 +752,13 @@ function Controler( player ) {
         xCollision = atlas.collidePlayerWalls( currentDirection );
 
 
-        
-
 
         // INWARD ANGLE SWITCH ACTION
-        if ( !state.isDashing && 
-             xCollision.majorWallType != 'wall-slip' &&
-             xCollision.majorWallType != 'wall-fall' &&
-             xCollision.majorWallType != 'wall-limit' &&
+        if ( !state.isDashing &&
              contactDirection &&
              xCollision.direction &&
-             contactDirection != xCollision.direction ) {
+             contactDirection != xCollision.direction &&
+             player.position.y > xCollision.minHeight ) {
     
 
             let x, z ;
