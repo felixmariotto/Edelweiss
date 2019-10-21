@@ -3,7 +3,7 @@
 function CameraControl( player, camera ) {
 
 
-	const ORBITCONTROLS = true ;
+	const ORBITCONTROLS = false ;
 
 	var group = new THREE.Group();
 
