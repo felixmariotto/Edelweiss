@@ -501,8 +501,10 @@ function Controler( player ) {
 
             player.position.addScaledVector(
                 dashVec,
-                DASHDISTANCE * factor
+                Math.min( DASHDISTANCE * factor, 0.14 )
             );
+
+            console.log( Math.min( DASHDISTANCE * factor, 0.14 ) );            
 
             if ( dashTime > 0.98 ) {
                 state.isDashing = false ;
