@@ -504,16 +504,6 @@ function Controler( player ) {
                 Math.min( DASHDISTANCE * factor, 0.14 )
             );
 
-            
-            switch ( contactDirection ) {
-
-                case 'up' :
-                    player.position.z -= 0.05 ;
-                    break;
-
-            };
-
-
             if ( dashTime > 0.98 ) {
                 state.isDashing = false ;
                 dashTime = undefined ;
@@ -1318,6 +1308,8 @@ function Controler( player ) {
             setClimbingState( false );
             state.isSlipping = false ;
 
+            // Push the player toward the top of the ledge,
+            // so they do not land on the wall again
             if ( state.isDashing ) {
                 
                 switch ( dashWallDirection ) {
