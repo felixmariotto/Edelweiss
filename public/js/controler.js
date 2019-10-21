@@ -72,6 +72,12 @@ function Controler( player ) {
     const FALLINITINERTIA = 0.9 ;
     const FALLINITPUSHPOWER = 1.1 ;
 
+    // slipping
+    var slipRecovering = 0;
+    const SLIPRECOVERTIME = 500 ; // time in ms during which
+                                  // the user keep slipping after
+                                  // they get to a climbable wall
+
     // wall-jump
     const WALLJUMPINERTIA = 1.8 ;
     const WALLJUMPSPEEDUP = 0.95 ;
@@ -215,6 +221,17 @@ function Controler( player ) {
 
             updateAction( delta );
             return
+
+        };
+
+
+
+        // slipRecovering get set to around 500 when the player access
+        // a climbable wall after slipping, this way they continue slipping
+        // a little bit until slipRecovering <= 0
+        if ( slipRecovering > 0 ) {
+
+            slipRecovering -= delta * 1000 ;
 
         };
 
@@ -388,7 +405,8 @@ function Controler( player ) {
         } else if ( ( input.moveKeys.length > 0 ) &&
                     ( state.isClimbing || state.isSlipping ) &&
                     !state.chargingDash &&
-                    !state.isDashing ) {
+                    !state.isDashing &&
+                    slipRecovering <= 0 ) {
 
 
             runCounter = 0 ;
@@ -1147,32 +1165,33 @@ function Controler( player ) {
             ///  BEHAVIOR SETUP DEPENDING ON WALL TYPE
             //////////////////////////////////////////////
             
-            state.isSlipping = false ;
 
             switch (xCollision.majorWallType) {
 
 
                 case 'wall-slip' :
 
-                    // set slipping speed
-                    if ( speedUp < 0 &&
-                         player.position.y > xCollision.minHeight - (atlas.PLAYERHEIGHT / 2) &&
-                         player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) ) {
-
-                        speedUp = SLIPSPEED ;
-                        // Clamp inertia during slipping so the fall is quite straight
-                        inertia = Math.min( inertia, MAXSLIPINERTIA ) ;
-                    };
-
-                    setClimbingState( false );
-                    climbSpeedFactor = SLIPWALLFACTOR ;
-
                     // If player touches the ground, we don't want them
                     // to be considered slipping
-                    if ( typeof yCollision.point != 'undefined' ) {
-                        state.isSlipping = false ;
-                    } else {
-                        state.isSlipping = true ;
+                    if ( typeof yCollision.point == 'undefined' ) {
+
+                        // set slipping speed
+                        if ( speedUp < 0 &&
+                             player.position.y > xCollision.minHeight - (atlas.PLAYERHEIGHT / 2) &&
+                             player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) ) {
+
+                            speedUp = SLIPSPEED ;
+                            // Clamp inertia during slipping so the fall is quite straight
+                            inertia = Math.min( inertia, MAXSLIPINERTIA ) ;
+
+                            climbSpeedFactor = SLIPWALLFACTOR ;
+
+                            state.isSlipping = true ;
+
+                        };
+
+                        setClimbingState( false );
+
                     };
 
                     break;
@@ -1215,28 +1234,53 @@ function Controler( player ) {
                         // so the fall cannot be avoided
                         player.position.addScaledVector( HORIZMOVEVECT, FALLINITPUSHPOWER );
                     };
+
                     setClimbingState( false );
+
+                    state.isSlipping = false ;
+
                     break;
 
 
 
                 case 'wall-easy' :
+
                     setClimbingState( true );
+
                     climbSpeedFactor = EASYWALLFACTOR ;
+
+                    state.isSlipping = false ;
+
                     break;
 
 
 
                 case 'wall-medium' :
+
                     setClimbingState( true );
+
                     climbSpeedFactor = MEDIUMWALLFACTOR ;
+
+                    state.isSlipping = false ;
+
                     break;
 
 
 
                 case 'wall-hard' :
+
                     setClimbingState( true );
+
                     climbSpeedFactor = HARDWALLFACTOR ;
+
+                    state.isSlipping = false ;
+
+                    break;
+
+                default :
+
+                    state.isSlipping = false ;
+
                     break;
 
             };
@@ -1350,6 +1394,10 @@ function Controler( player ) {
 
                 state.isClimbing = true ;
                 state.isFlying = false ;
+
+                if ( state.isSlipping ) {
+                    slipRecovering = SLIPRECOVERTIME
+                };
 
             } else {
 
