@@ -13,7 +13,7 @@ function CharaAnim( player ) {
     var waitingState ;
 
     var climbingActions; // this will be an array containing the climbing actions
-
+    var currentClimbAction;
 
     // This is called when atlas finished loading all the assets.
     // It configures every action.
@@ -448,6 +448,7 @@ function CharaAnim( player ) {
 					setFadeOut( 'climbRightUp', 0.1 );
 					setFadeOut( 'climbLeftDown', 0.1 );
     				setFadeOut( 'climbRightDown', 0.1 );
+    				currentClimbAction = undefined ;
     				break;
 
     			case 'dashing' :
@@ -530,7 +531,6 @@ function CharaAnim( player ) {
         	callWithDirection( setClimbDirection, faceDirection );
 
 			climbingActions.forEach( (action)=> {
-				action.setEffectiveWeight( 0 );
 				action.setEffectiveTimeScale( speed + 0.7 );
 			});
 
@@ -538,31 +538,50 @@ function CharaAnim( player ) {
 			actions.climbDown.setEffectiveTimeScale( speed + 0.18 );
 
 
+			function switchClimbAction( newAction ) {
+
+				if ( newAction != currentClimbAction ) {
+
+					if ( currentClimbAction ) {
+
+						setFadeOut( currentClimbAction._clip.name, 0.1 );
+
+					};
+
+					setFadeIn( newAction._clip.name, 1, 0.1 );
+
+					currentClimbAction = newAction ;
+
+				};
+
+			};
+
+
 			if ( climbDirectionPowers.up > 0.65 ) {
 
-				actions.climbUp.setEffectiveWeight( 1 );
+				switchClimbAction( actions.climbUp );
 
 			} else if ( climbDirectionPowers.down > 0.65 ) {
 
-				actions.climbDown.setEffectiveWeight( 1 );
+				switchClimbAction( actions.climbDown );
 
 			} else if ( climbDirectionPowers.left > 0.65 ) {
 
-				actions.climbLeft.setEffectiveWeight( 1 );
+				switchClimbAction( actions.climbLeft );
 
 			} else if ( climbDirectionPowers.right > 0.65 ) {
 
-				actions.climbRight.setEffectiveWeight( 1 );
+				switchClimbAction( actions.climbRight );
 
 			} else if ( climbDirectionPowers.up > 0 ) {
 
 				if ( climbDirectionPowers.right > 0 ) {
 
-					actions.climbRightUp.setEffectiveWeight( 1 );
+					switchClimbAction( actions.climbRightUp );
 
 				} else {
 
-					actions.climbLeftUp.setEffectiveWeight( 1 );
+					switchClimbAction( actions.climbLeftUp );
 
 				};
 
@@ -570,11 +589,11 @@ function CharaAnim( player ) {
 
 				if ( climbDirectionPowers.right > 0 ) {
 
-					actions.climbRightDown.setEffectiveWeight( 1 );
+					switchClimbAction( actions.climbRightDown );
 
 				} else {
 
-					actions.climbLeftDown.setEffectiveWeight( 1 );
+					switchClimbAction( actions.climbLeftDown );
 
 				};
 

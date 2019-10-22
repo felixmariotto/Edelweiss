@@ -1,3 +1,3 @@
 
 - Freeze while slipping
-- Keeping pressing same direction as dash keep dash animation from fading out
+- Sometimes when one approach a ledge to haulDown, haulUp occurs instead

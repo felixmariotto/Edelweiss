@@ -4,6 +4,9 @@ function init() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color( 0x222222 );
 
+    // temp
+    // scene.overrideMaterial = new THREE.MeshNormalMaterial();
+
     camera = new THREE.PerspectiveCamera( 40, window.innerWidth/window.innerHeight, 1, 100 );
 
     var ambientLight = new THREE.AmbientLight( 0xffffff, 0.5 );
