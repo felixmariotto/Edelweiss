@@ -23,11 +23,13 @@ function CameraControl( player, camera ) {
 	// camera end vectors depending on ray intersection
 	const BOTTOMLEFTENDVEC = new THREE.Vector3( -1, 3, 6 );
 	const BOTTOMRIGHTENDVEC = new THREE.Vector3( 1, 3, 6 );
-	const TOPLEFTENDVEC = new THREE.Vector3( 1, 7, 6 );
-	const TOPRIGHTENDVEC = new THREE.Vector3( -1, 7, 6 );
+	const TOPLEFTENDVEC = new THREE.Vector3( 0.3, 5, 4 );
+	const TOPRIGHTENDVEC = new THREE.Vector3( -0.3, 5, 4 );
 	const DEFAULTENDVEC = new THREE.Vector3( 0, 5, 5 );
 
-	var cameraPosTarget = BOTTOMRIGHTENDVEC ;
+	var t = 1 ;
+	var cameraStartVec = new THREE.Vector3().copy( BOTTOMRIGHTENDVEC );
+	var cameraEndVec = BOTTOMRIGHTENDVEC ;
 
 
 
@@ -120,21 +122,21 @@ function CameraControl( player, camera ) {
 					// positioning the camera on top of the player, so we check
 					// both top rays to know on which side.
 
-					if ( atlas.intersectRay( testRays.top[ lastValidRayDir ], false ) ) {
+					if ( atlas.intersectRay( testRays.top[ lastValidRayDir ], true ) ) {
 
 						// The top ray of the same side as the last valid ray
 						// is not free, so we perform a last check to know if we can
 						// just position it on the other side (still top of the player)
 
-						if ( atlas.intersectRay( testRays.top[ lastInvalidRayDir ], false ) ) {
+						if ( atlas.intersectRay( testRays.top[ lastInvalidRayDir ], true ) ) {
 
-							cameraPosTarget = DEFAULTENDVEC ;
+							updateCameraTarget( DEFAULTENDVEC ) ;
 
 						} else {
 
 							// The opposite top ray is free
 
-							cameraPosTarget = testRays.top[ lastValidRayDir ].cameraEndVec ;
+							updateCameraTarget( testRays.top[ lastValidRayDir ].cameraEndVec );
 
 							// we toggle values of valid direction, for the next frame
 							[ lastValidRayDir, lastInvalidRayDir ] = [ lastInvalidRayDir, lastValidRayDir ];
@@ -146,7 +148,7 @@ function CameraControl( player, camera ) {
 						// The top ray of the same side as the last valid ray
 						// is free
 
-						cameraPosTarget = testRays.top[ lastInvalidRayDir ].cameraEndVec ;
+						updateCameraTarget( testRays.top[ lastInvalidRayDir ].cameraEndVec );
 
 					};
 
@@ -154,7 +156,7 @@ function CameraControl( player, camera ) {
 
 					// The opposite bottom ray is free
 
-					cameraPosTarget = testRays.bottom[ lastInvalidRayDir ].cameraEndVec ;
+					updateCameraTarget( testRays.bottom[ lastInvalidRayDir ].cameraEndVec );
 
 					// we toggle values of valid direction, for the next frame
 					[ lastValidRayDir, lastInvalidRayDir ] = [ lastInvalidRayDir, lastValidRayDir ];
@@ -165,7 +167,20 @@ function CameraControl( player, camera ) {
 
 				// the bottom valid ray is free
 
-				cameraPosTarget = testRays.bottom[ lastValidRayDir ].cameraEndVec ;
+				updateCameraTarget( testRays.bottom[ lastValidRayDir ].cameraEndVec );
+
+			};
+
+		};
+
+
+		function updateCameraTarget( targetVec ) {
+			
+			if ( cameraEndVec != targetVec ) {
+
+				t = 0 ;
+				cameraStartVec.copy( camera.position );
+				cameraEndVec = targetVec ;
 
 			};
 
@@ -175,7 +190,16 @@ function CameraControl( player, camera ) {
 
 		//// CAMERA UPDATE
 
-		camera.position.copy( cameraPosTarget );
+		t += 0.013 ;
+		if ( t > 1 ) t = 1 ;
+
+		camera.position.lerpVectors(
+			cameraStartVec,
+			cameraEndVec,
+			easing.easeInOutQuart( t )
+		);
+
+		// camera.position.copy( cameraEndVec );
     	camera.lookAt( player.position );
 
 	};
