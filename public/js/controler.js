@@ -1546,8 +1546,11 @@ function Controler( player ) {
 
 
         // jump
+        // Here we check that the player can jump because they are on the floor, OR
+        // because they have infinity jump but the are not going up in the air, OR
+        // they are on a wall
         if ( ( !permission.infinityJump && !state.isFlying || 
-             permission.infinityJump ) ||
+             permission.infinityJump && speedUp <= 0 ) ||
              state.isSlipping ) {
 
             charaAnim.jump();
