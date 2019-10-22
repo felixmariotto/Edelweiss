@@ -36,6 +36,11 @@ function Atlas( sceneGraph ) {
 		majorWallType: undefined
 	};
 
+	var rayCollisionVec = new THREE.Vector3();
+	var tempTriVec1 = new THREE.Vector3();
+	var tempTriVec2 = new THREE.Vector3();
+	var rayCollision; // This is waht is returned after ray collision
+
 	// used for wall collision
 	var checkDirection ;
 	var collidedWalls = [];
@@ -240,6 +245,14 @@ function Atlas( sceneGraph ) {
 
 
 
+
+
+
+
+
+
+
+
 	/////////////////////////
 	///    COLLISIONS
 	/////////////////////////
@@ -368,6 +381,13 @@ function Atlas( sceneGraph ) {
 
 
 
+
+
+
+
+
+
+
 	function collidePlayerWalls( direction ) {
 
 
@@ -405,8 +425,6 @@ function Atlas( sceneGraph ) {
 						 // Is top limit of player intersecting with tile ?
 						 ( Math.min( logicTile.points[0].y, logicTile.points[1].y ) <= player.position.y + PLAYERHEIGHT - 0.1 && 
 						   Math.max( logicTile.points[0].y, logicTile.points[1].y ) >= player.position.y + PLAYERHEIGHT - 0.1 )  ) {
-
-
 
 
 						// Save the colliding tile into the array that is used to know
@@ -622,6 +640,79 @@ function Atlas( sceneGraph ) {
     
 
 
+
+
+
+
+	function intersectRay( ray, mustTestGrounds ) {
+
+
+		checkStage( Math.floor( player.position.y ) );
+		checkStage( Math.floor( player.position.y ) + 1 );
+		checkStage( Math.floor( player.position.y ) + 2 );
+		checkStage( Math.floor( player.position.y ) + 3 );
+
+
+		function checkStage( stage ) {
+
+			if ( sceneGraph[ stage ] ) {
+
+				sceneGraph[ stage ].forEach( (logicTile, i)=> {
+
+					// does not test grounds if not asked for in argument
+					if ( !mustTestGrounds && logicTile.isWall ||
+						 mustTestGrounds ) {
+
+						if ( logicTile.isWall ) {
+
+							tempTriVec1.set( logicTile.points[0].x, logicTile.points[1].y, logicTile.points[0].z );
+							tempTriVec2.set( logicTile.points[1].x, logicTile.points[0].y, logicTile.points[0].z );
+
+							let prout = ray.intersectTriangle(
+								tempTriVec1,
+								tempTriVec2,
+								logicTile.points[0],
+								false, // must try backface culling later
+								rayCollisionVec
+							);
+
+							if ( prout ) {
+
+								console.log( rayCollisionVec );
+
+								debugger
+
+							};
+
+						} else {
+
+						};
+
+					};
+
+				});
+
+			};
+
+		};
+
+
+		return rayCollision ;
+
+	};
+
+
+
+
+
+
+
+
+
+
+
+
+
     /////////////////////////////
     ///     HELPERS PART
     ////////////////////////////
@@ -712,6 +803,7 @@ function Atlas( sceneGraph ) {
 	return {
 		collidePlayerGrounds,
 		collidePlayerWalls,
+		intersectRay,
 		PLAYERHEIGHT,
 		PLAYERWIDTH
 	};
