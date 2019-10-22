@@ -1,4 +1,4 @@
 
-- Sometimes when one approach a ledge to haulDown, haulUp occurs instead
+
 - Set timeout when land on ground to keep from re-jumping right after landing (save after landing after gliding)
 - Player stick on the wall when start gliding while slipping

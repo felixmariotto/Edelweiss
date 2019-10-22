@@ -41,7 +41,7 @@ function Controler( player ) {
     const SLIPSPEED = -0.21 ;
     const MAXSLIPINERTIA = 0.15 ;
     const HAULTOPLIMIT = 0.75 ;
-    const HAULLLOWLIMIT = 0.45 ; // when player arrives from the top
+    const HAULLLOWLIMIT = 0.55 ; // when player arrives from the top
     const PULLUNDERLIMIT = 0.3 ;
 
     // horiz movements
@@ -991,12 +991,7 @@ function Controler( player ) {
                 };
 
 
-                if ( xCollision.maxHeight < player.position.y + (atlas.PLAYERHEIGHT * HAULTOPLIMIT) ) {
-
-                    haul();
-
-                    // return
-                };
+                haul();
 
 
                 // Pull the player under the lower edge of a tile
@@ -1084,12 +1079,10 @@ function Controler( player ) {
             // It haul the player on top of an edge
             function haul() {
 
-                // This first conditional discarded cases when the player was well above
-                // the edge of the tile. It was useful before to add a haul down function,
-                // but now it's useless and leaded to some issues with dash.
-                if ( /* xCollision.maxHeight > player.position.y + (HAULLLOWLIMIT * atlas.PLAYERHEIGHT) &&
-                     */ xCollision.maxHeight < player.position.y + (HAULTOPLIMIT * atlas.PLAYERHEIGHT) &&
-                        speedUp < 0.5 ) {
+
+                if ( xCollision.maxHeight > player.position.y + (HAULLLOWLIMIT * atlas.PLAYERHEIGHT) &&
+                     xCollision.maxHeight < player.position.y + (HAULTOPLIMIT * atlas.PLAYERHEIGHT) &&
+                     speedUp < 0.4 ) {
 
 
                     switch (contactDirection) {
