@@ -1,6 +1,4 @@
 
 
-- Set timeout when land on ground to keep from re-jumping right after landing (save after landing after gliding)
-
 	// Not urgent
 - it should not be possible to switch tile from a slipping wall

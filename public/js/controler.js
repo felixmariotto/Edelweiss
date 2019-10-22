@@ -72,6 +72,10 @@ function Controler( player ) {
     const FALLINITINERTIA = 0.9 ;
     const FALLINITPUSHPOWER = 1.1 ;
 
+    // hit ground
+    var hitGroundRecovering = 0 ;
+    const HITGROUNDRECOVERYTIME = 150 ;
+
     // slipping
     var slipRecovering = 0;
     const SLIPRECOVERTIME = 500 ; // time in ms during which
@@ -232,6 +236,14 @@ function Controler( player ) {
         if ( slipRecovering > 0 ) {
 
             slipRecovering -= delta * 1000 ;
+
+        };
+
+        // Same for hit ground recovery time, so the player cannot
+        // re-jump right after hitting the ground strongly
+        if ( hitGroundRecovering > 0 ) {
+
+            hitGroundRecovering -= delta * 1000 ;
 
         };
 
@@ -602,9 +614,11 @@ function Controler( player ) {
             if ( state.isFlying &&
                  !state.isClimbing &&
                  !state.isSlipping &&
-                 !state.isGliding ) {
+                 !state.isGliding &&
+                 speedUp < -0.8 ) {
 
                 charaAnim.hitGround( Math.max( - speedUp, 0 ) / 2.3 );
+                hitGroundRecovering = HITGROUNDRECOVERYTIME ;
             };
 
 
@@ -1561,9 +1575,11 @@ function Controler( player ) {
         // Here we check that the player can jump because they are on the floor, OR
         // because they have infinity jump but the are not going up in the air, OR
         // they are on a wall
-        if ( ( !permission.infinityJump && !state.isFlying || 
-             permission.infinityJump && speedUp <= 0 ) ||
-             state.isSlipping ) {
+        if ( ( ( !permission.infinityJump && !state.isFlying || 
+                permission.infinityJump && speedUp <= 0 ) ||
+                state.isSlipping )
+              && hitGroundRecovering <= 0 ) {
+
 
             charaAnim.jump();
 
