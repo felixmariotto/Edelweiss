@@ -1514,8 +1514,6 @@ function Controler( player ) {
 
 
 
-        /// UPDATE CAMERA
-        cameraControl.update();
 
 
 

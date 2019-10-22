@@ -1,5 +1,10 @@
 
+
+var loopCount = 0 ;
+
 function loop() {
+
+	loopCount += 1 ;
 
     requestAnimationFrame( loop );
 
@@ -13,5 +18,7 @@ function loop() {
     if ( controler ) controler.update( clockDelta );
     if ( mixer ) mixer.update( clockDelta );
     if ( charaAnim ) charaAnim.update( clockDelta );
+
+    if ( cameraControl ) cameraControl.update( loopCount % 10 == 0 );
 
 };

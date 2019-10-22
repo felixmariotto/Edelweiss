@@ -39,7 +39,8 @@ function Atlas( sceneGraph ) {
 	var rayCollisionVec = new THREE.Vector3();
 	var tempTriVec1 = new THREE.Vector3();
 	var tempTriVec2 = new THREE.Vector3();
-	var rayCollision; // This is waht is returned after ray collision
+	var tempRayCollision ;
+	var rayCollision; // This is what is returned after ray collision
 
 	// used for wall collision
 	var checkDirection ;
@@ -646,11 +647,14 @@ function Atlas( sceneGraph ) {
 
 	function intersectRay( ray, mustTestGrounds ) {
 
+		rayCollision = undefined ;
 
 		checkStage( Math.floor( player.position.y ) );
 		checkStage( Math.floor( player.position.y ) + 1 );
 		checkStage( Math.floor( player.position.y ) + 2 );
 		checkStage( Math.floor( player.position.y ) + 3 );
+
+		return rayCollision ;
 
 
 		function checkStage( stage ) {
@@ -663,12 +667,36 @@ function Atlas( sceneGraph ) {
 					if ( !mustTestGrounds && logicTile.isWall ||
 						 mustTestGrounds ) {
 
+
+						// Depending on the tile's direction, we create temporary vectors
+						// for the ray intersection with a triangle
 						if ( logicTile.isWall ) {
 
-							tempTriVec1.set( logicTile.points[0].x, logicTile.points[1].y, logicTile.points[0].z );
+							if ( logicTile.isXAligned ) {
+
+								tempTriVec1.set( logicTile.points[0].x, logicTile.points[1].y, logicTile.points[0].z );
+								tempTriVec2.set( logicTile.points[1].x, logicTile.points[0].y, logicTile.points[0].z );
+								
+							} else {
+
+								tempTriVec1.set( logicTile.points[0].x, logicTile.points[1].y, logicTile.points[0].z );
+								tempTriVec2.set( logicTile.points[0].x, logicTile.points[0].y, logicTile.points[1].z );
+
+							};
+
+						} else {
+
+							tempTriVec1.set( logicTile.points[0].x, logicTile.points[0].y, logicTile.points[1].z );
 							tempTriVec2.set( logicTile.points[1].x, logicTile.points[0].y, logicTile.points[0].z );
 
-							let prout = ray.intersectTriangle(
+						};
+
+
+						// Intersection check with the two triangles formed by the tile
+
+						logicTile.points.forEach( (baseVec)=> {
+
+							tempRayCollision = ray.intersectTriangle(
 								tempTriVec1,
 								tempTriVec2,
 								logicTile.points[0],
@@ -676,17 +704,13 @@ function Atlas( sceneGraph ) {
 								rayCollisionVec
 							);
 
-							if ( prout ) {
-
-								console.log( rayCollisionVec );
-
-								debugger
-
+							if ( tempRayCollision ) {
+								// Here it may be useful to make a length check
+								rayCollision = tempRayCollision ;
 							};
 
-						} else {
+						});
 
-						};
 
 					};
 
@@ -695,9 +719,6 @@ function Atlas( sceneGraph ) {
 			};
 
 		};
-
-
-		return rayCollision ;
 
 	};
 
