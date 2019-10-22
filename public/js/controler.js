@@ -1179,31 +1179,26 @@ function Controler( player ) {
 
                 case 'wall-slip' :
 
-                    // If player touches the ground, we don't want them
-                    // to be considered slipping
-                    if ( typeof yCollision.point == 'undefined' ) {
+                    // set slipping speed
+                    if ( speedUp <= 0 &&
+                         typeof yCollision.point == 'undefined' ) {
 
-                        // set slipping speed
-                        if ( speedUp <= 0 &&
-                             player.position.y > xCollision.minHeight ) {
+                        speedUp = SLIPSPEED ;
 
-                            speedUp = SLIPSPEED ;
-                            // Clamp inertia during slipping so the fall is quite straight
-                            inertia = Math.min( inertia, MAXSLIPINERTIA ) ;
+                        // Clamp inertia during slipping so the fall is quite straight
+                        inertia = Math.min( inertia, MAXSLIPINERTIA ) ;
 
-                            climbSpeedFactor = SLIPWALLFACTOR ;
+                        climbSpeedFactor = SLIPWALLFACTOR ;
 
-                            state.isSlipping = true ;
+                        state.isSlipping = true ;
 
-                        } else {
+                    } else {
 
-                            state.isSlipping = false ;
-
-                        };
-
-                        setClimbingState( false );
+                        state.isSlipping = false ;
 
                     };
+
+                    setClimbingState( false );
 
                     break;
 
@@ -1481,11 +1476,27 @@ function Controler( player ) {
 
         } else if ( state.isSlipping ) {
 
-            // We want to play the slipping animation
-            // only if the player is slipping down
-            if ( speedUp < 0 ) {
-                charaAnim.slip();
+            switch ( contactDirection ) {
+
+                case 'right' :
+                    charaAnim.setCharaRot( Math.PI / 2 );
+                    break;
+
+                case 'left' :
+                    charaAnim.setCharaRot( -Math.PI / 2 );
+                    break;
+
+                case 'up' :
+                    charaAnim.setCharaRot( Math.PI );
+                    break;
+
+                case 'down' :
+                    charaAnim.setCharaRot( 0 );
+                    break;
+
             };
+
+            charaAnim.slip();
 
         } else if ( state.isFlying && speedUp < 0 ) {
 

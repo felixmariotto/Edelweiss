@@ -291,7 +291,7 @@ function CharaAnim( player ) {
     	if ( currentState != newState ) {
 
 
-    		// set fade-in
+    		// FADE IN
     		switch ( newState ) {
 
     			case 'running' :
@@ -370,7 +370,7 @@ function CharaAnim( player ) {
 
 
 
-    		// set fade-out
+    		// FADE OUT
     		switch ( currentState ) {
 
     			case 'idleGround' :
