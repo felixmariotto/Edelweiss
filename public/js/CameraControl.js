@@ -25,7 +25,7 @@ function CameraControl( player, camera ) {
 	const BOTTOMRIGHTENDVEC = new THREE.Vector3( 1, 3, 6 );
 	const TOPLEFTENDVEC = new THREE.Vector3( 0.3, 5, 4 );
 	const TOPRIGHTENDVEC = new THREE.Vector3( -0.3, 5, 4 );
-	const DEFAULTENDVEC = new THREE.Vector3( 0, 5, 5 );
+	const DEFAULTENDVEC = new THREE.Vector3( 0, 4, 6 );
 
 	var t = 1 ;
 	var cameraStartVec = new THREE.Vector3().copy( BOTTOMRIGHTENDVEC );
