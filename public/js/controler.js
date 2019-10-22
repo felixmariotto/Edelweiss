@@ -367,7 +367,7 @@ function Controler( player ) {
 
             if ( state.isFlying ) { // in air
 
-                // Keep the inertia if it a running jump
+                // Keep the inertia if it is a running jump
                 if ( inertia > 1 ) {
 
                     // test for change of direction while in the air
@@ -378,6 +378,13 @@ function Controler( player ) {
                 } else {
                     
                     inertia = inertia >= 1 ? 1 : inertia + 0.03 ;
+
+                };
+
+                // Set a max speed while gliding, even after a run jump
+                if ( state.isGliding ) {
+
+                    inertia = Math.min( inertia, 1 );
 
                 };
                 
@@ -554,7 +561,7 @@ function Controler( player ) {
                 // We set a minimal speed when gliding
                 if ( state.isGliding ) {
 
-                    inertia = Math.max( inertia, 0.2 );
+                    inertia = Math.max( inertia, 0.2 ) ;
 
                 } else {
 
