@@ -1174,7 +1174,8 @@ function Controler( player ) {
 
                     // set slipping speed
                     if ( speedUp <= 0 &&
-                         typeof yCollision.point == 'undefined' ) {
+                         typeof yCollision.point == 'undefined' &&
+                         !state.isGliding ) {
 
                         speedUp = SLIPSPEED ;
 
