@@ -11,6 +11,50 @@ function Input() {
     };
 
 
+
+
+    /////////////////////
+    ///   IMPORT JSON
+    /////////////////////
+
+
+    var hashTable = {
+        true: '$t',
+        false: '$f',
+        position: '$p',
+        type: '$k',
+        points: '$v',
+        isWall: '$w',
+        isXAligned: '$i',
+        'ground-basic': '$g',
+        'ground-start': '$s',
+        'wall-limit': '$l',
+        'wall-easy': '$e',
+        'wall-medium' : '$m',
+        'wall-hard': '$h',
+        'wall-fall': '$a',
+        'wall-slip': '$c',
+        'cube-inert': '$r',
+        'cube-interactive': '$q',
+        'cube-trigger': '$o'
+    };
+
+
+    function unhashJSON( data ) {
+
+        for ( let valueToReplace of Object.keys( hashTable ) ) {
+
+            text = hashTable[ valueToReplace ]
+            text = text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+
+            data = data.replace( new RegExp( text , 'g' ), valueToReplace );
+
+        };
+
+        return JSON.parse( data ) ;
+    };
+
+
     document.getElementById('json-scene').addEventListener('click', ()=> {
         document.getElementById('json-scene').blur();
     });
@@ -27,7 +71,12 @@ function Input() {
 
             fr.onload = function () {
 
-                atlas = Atlas( JSON.parse( fr.result ) );
+                let data = lzjs.decompress( fr.result );
+
+                let sceneGraph = unhashJSON( data );
+
+                // Initialize atlas with the scene graph
+                atlas = Atlas( sceneGraph );
             };
 
             fr.readAsText(files[0]);

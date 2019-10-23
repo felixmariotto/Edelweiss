@@ -108,9 +108,9 @@ function Atlas( sceneGraph ) {
 
 	// initialise the map
 	
-	for ( let i of Object.keys( sceneGraph ) ) {
+	for ( let i of Object.keys( sceneGraph.tilesGraph ) ) {
 
-		sceneGraph[i].forEach( (logicTile)=> {
+		sceneGraph.tilesGraph[i].forEach( (logicTile)=> {
 
 			if ( NEEDHELPERS ) {
 				Tile( logicTile );
@@ -121,6 +121,21 @@ function Atlas( sceneGraph ) {
 			};
 
 		});
+
+	};
+
+
+	for ( let i of Object.keys( sceneGraph.cubesGraph ) ) {
+
+		if ( sceneGraph.cubesGraph[i] ) {
+
+			sceneGraph.cubesGraph[i].forEach( (logicCube)=> {
+
+				console.log( logicCube );
+
+			});
+
+		};
 
 	};
 
@@ -277,11 +292,11 @@ function Atlas( sceneGraph ) {
 		function checkStage( stage ) {
 
 
-			if ( sceneGraph[ stage ] ) {
+			if ( sceneGraph.tilesGraph[ stage ] ) {
 
 
 				// loop through the group of tiles at the same height as the player
-				sceneGraph[ stage ].forEach( (logicTile, i)=> {
+				sceneGraph.tilesGraph[ stage ].forEach( (logicTile, i)=> {
 
 
 					if ( !logicTile.isWall ) {
@@ -412,10 +427,10 @@ function Atlas( sceneGraph ) {
 
 		function checkStage( stage ) {
 
-			if ( sceneGraph[ stage ] ) {
+			if ( sceneGraph.tilesGraph[ stage ] ) {
 
 				// loop through the group of tiles at the same height as the player
-				sceneGraph[ stage ].forEach( (logicTile, i)=> {
+				sceneGraph.tilesGraph[ stage ].forEach( (logicTile, i)=> {
 
 					// Check that the tile is not a ground,
 					// and check that the wall is at an interacting height with the player
@@ -659,9 +674,9 @@ function Atlas( sceneGraph ) {
 
 		function checkStage( stage ) {
 
-			if ( sceneGraph[ stage ] ) {
+			if ( sceneGraph.tilesGraph[ stage ] ) {
 
-				sceneGraph[ stage ].forEach( (logicTile, i)=> {
+				sceneGraph.tilesGraph[ stage ].forEach( (logicTile, i)=> {
 
 					// does not test grounds if not asked for in argument
 					if ( !mustTestGrounds && logicTile.isWall ||
