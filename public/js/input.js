@@ -40,7 +40,7 @@ function Input() {
     };
 
 
-    function unhashJSON( data ) {
+    function parseJSON( data ) {
 
         for ( let valueToReplace of Object.keys( hashTable ) ) {
 
@@ -73,7 +73,7 @@ function Input() {
 
                 let data = lzjs.decompress( fr.result );
 
-                let sceneGraph = unhashJSON( data );
+                let sceneGraph = parseJSON( data );
 
                 // Initialize atlas with the scene graph
                 atlas = Atlas( sceneGraph );

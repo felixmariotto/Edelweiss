@@ -5,6 +5,8 @@ function Atlas( sceneGraph ) {
 	const PLAYERHEIGHT = 0.65 ;
 	const PLAYERWIDTH = 0.3 ;
 
+	const CUBEWIDTH = 0.4 ;
+
 	const NEEDHELPERS = true ;
 	const NEEDPLAYERBOX = false ; // specifically allow player box helper
     const NEEDARROW = false ;
@@ -53,7 +55,24 @@ function Atlas( sceneGraph ) {
 
     /////////////////////////
     ///  HELPERS VARIABLES
-    /////////////////////////
+	/////////////////////////
+	
+
+
+	// CUBES MATERIALS
+	const INERTCUBEMAT = new THREE.MeshLambertMaterial({
+		color: 0x9d9d9e
+	});
+
+	const INTERACTIVECUBEMAT = new THREE.MeshLambertMaterial({
+		color: 0xffdebd
+	});
+
+	const TRIGGERCUBEMAT = new THREE.MeshLambertMaterial({
+		color: 0x276b00
+	});
+
+
 
 
     // WALLS MATERIALS
@@ -131,7 +150,9 @@ function Atlas( sceneGraph ) {
 
 			sceneGraph.cubesGraph[i].forEach( (logicCube)=> {
 
-				console.log( logicCube );
+				if ( NEEDHELPERS ) {
+					newCube( logicCube );
+				};
 
 			});
 
@@ -799,10 +820,47 @@ function Atlas( sceneGraph ) {
 		return mesh ;
 
     };
-    
+	
+	
 
 
-    function getMaterial( type ) {
+
+    function newCube( logicCube ) {
+
+		let meshCube = MeshCube( logicCube );
+		meshCube.logicCube = logicCube ;
+		scene.add( meshCube );
+
+		return meshCube ;
+
+	};
+
+
+
+
+	function MeshCube( logicCube ) {
+
+		let material = getMaterial( logicCube.type );
+		let geometry = new THREE.BoxBufferGeometry(
+			CUBEWIDTH,
+			CUBEWIDTH,
+			CUBEWIDTH
+		);
+		let mesh = new THREE.Mesh( geometry, material );
+
+		mesh.position.copy( logicCube.position );
+
+		return mesh ;
+
+	};
+
+
+
+
+
+
+
+	function getMaterial( type ) {
 
 		switch ( type ) {
 
@@ -829,6 +887,19 @@ function Atlas( sceneGraph ) {
 
 			case 'wall-slip' :
 				return SLIPWALLMAT ;
+
+			case 'cube-inert' :
+				return INERTCUBEMAT ;
+
+			case 'cube-interactive' :
+				return INTERACTIVECUBEMAT ;
+
+			case 'cube-trigger' :
+				return TRIGGERCUBEMAT ;
+
+			default :
+				console.error('cannot get material');
+				break;
 
 		};
 
