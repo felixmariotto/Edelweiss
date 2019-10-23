@@ -35,6 +35,7 @@ function init() {
 
 
     input = Input();
+    stamina = Stamina();
 
 
     loop();
