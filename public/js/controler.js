@@ -293,7 +293,7 @@ function Controler( player ) {
 
                 state.isGliding = true ;
                 cancelSpace = true ;
-                
+
             };
 
         } else if ( !cancelSpace &&
@@ -464,14 +464,24 @@ function Controler( player ) {
             runCounter = 0 ;
             inertia = 0 ;
 
+
             // Animation will be computed according to climbing direction
-            if ( !state.isSlipping ) {
+            if ( !state.isSlipping &&
+                 stamina.params.stamina > 0 ) {
+
                 charaAnim.climb(
                     contactDirection,
                     requestedDirection,
                     climbSpeedFactor
                 );
+
+            } else if ( stamina.params.stamina <= 0 ) {
+
+                charaAnim.idleClimb();
+
             };
+
+
 
             switch ( contactDirection ) {
 
@@ -500,6 +510,8 @@ function Controler( player ) {
 
             // Move the player while on the wall
             function climb( axis, vecInversion, angle ) {
+
+                if ( stamina.params.stamina <= 0 ) return
 
                 stamina.reduceStamina( CLIMBPRICE );
 
