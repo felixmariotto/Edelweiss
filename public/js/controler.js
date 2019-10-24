@@ -511,26 +511,28 @@ function Controler( player ) {
             // Move the player while on the wall
             function climb( axis, vecInversion, angle ) {
 
-                if ( stamina.params.stamina <= 0 ) return
+                if ( stamina.params.stamina > 0 ) {
 
-                stamina.reduceStamina( CLIMBPRICE );
+                    stamina.reduceStamina( CLIMBPRICE );
 
-                CLIMBVEC.set( 0, CLIMBSPEED * vecInversion, 0 );
-                CLIMBVEC.applyAxisAngle( axis, angle );
+                    CLIMBVEC.set( 0, CLIMBSPEED * vecInversion, 0 );
+                    CLIMBVEC.applyAxisAngle( axis, angle );
 
-                player.position.addScaledVector( CLIMBVEC, climbSpeedFactor );
+                    player.position.addScaledVector( CLIMBVEC, climbSpeedFactor );
 
-                // This part is to allow the player to go down the wall when they
-                // touch the ground
-                if ( CLIMBVEC.y < -0.005 && (yCollision.point != undefined)) {
+                    // This part is to allow the player to go down the wall when they
+                    // touch the ground
+                    if ( CLIMBVEC.y < -0.005 && (yCollision.point != undefined)) {
 
-                    state.isClimbing = false ;
+                        state.isClimbing = false ;
 
-                    // Get the player out of the wall
-                    angleToApply = utils.toPiRange( requestedDirection - currentDirection ) ;
-                    currentDirection = requestedDirection ;
-                    HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
-                    player.position.addScaledVector( HORIZMOVEVECT, 0.5 );
+                        // Get the player out of the wall
+                        angleToApply = utils.toPiRange( requestedDirection - currentDirection ) ;
+                        currentDirection = requestedDirection ;
+                        HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply );
+                        player.position.addScaledVector( HORIZMOVEVECT, 0.5 );
+
+                    };
 
                 };
 
@@ -1621,7 +1623,8 @@ function Controler( player ) {
 
             return
 
-        } else if ( input.moveKeys.length == 0 ||
+        } else if ( state.chargingDash &&
+                    input.moveKeys.length == 0 ||
                     stamina.params.stamina <= 0 ) {
 
             state.chargingDash = false ;
@@ -1641,6 +1644,8 @@ function Controler( player ) {
                 permission.infinityJump && speedUp <= 0 ) ||
                 state.isSlipping )
               && hitGroundRecovering <= 0 ) {
+
+            console.log('jump')
 
             // Animate the jump
             charaAnim.jump();
