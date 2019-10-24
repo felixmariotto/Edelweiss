@@ -226,7 +226,7 @@ function Controler( player ) {
 
 
         // Handle the gliding action on the stamina level,
-        // and stop gliding of the stamina is ran out
+        // and stop gliding of the stamina is over
         if ( state.isGliding ) {
 
             if ( stamina.params.stamina <= 0 ) {
@@ -1595,7 +1595,9 @@ function Controler( player ) {
 
 
 
-        if ( state.chargingDash ) {
+        if ( state.chargingDash &&
+             input.moveKeys.length > 0 &&
+             stamina.params.stamina > 0 ) {
 
             state.chargingDash = false ;
             state.isDashing = true ;
@@ -1604,6 +1606,14 @@ function Controler( player ) {
 
             // Take dash price to the stamina level
             stamina.reduceStamina( DASHPRICE, true );
+
+            return
+
+        } else if ( input.moveKeys.length == 0 ||
+                    stamina.params.stamina <= 0 ) {
+
+            state.chargingDash = false ;
+            state.isClimbing = true ;
 
             return
 
