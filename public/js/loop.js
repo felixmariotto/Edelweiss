@@ -20,5 +20,6 @@ function loop() {
     if ( charaAnim ) charaAnim.update( clockDelta );
 
     if ( cameraControl ) cameraControl.update( loopCount % 10 == 0 );
+    if ( stamina ) stamina.update( loopCount % 10 == 0 );
 
 };

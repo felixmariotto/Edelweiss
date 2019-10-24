@@ -250,6 +250,23 @@ function Controler( player ) {
 
 
 
+        ///////////////////////
+        ///  STAMINA SPENDING
+        ///////////////////////
+
+        if ( state.isClimbing ) {
+
+            stamina.reduceStamina( 0.01 );
+
+        } else {
+
+            stamina.resetStamina();
+
+        };
+
+
+
+
         /////////////////////////////////
         ///  GLIDING AND DASH STATES
         /////////////////////////////////
