@@ -23,6 +23,29 @@ function Controler( player ) {
     var cancelSpace = false ;
     var actionTime;
 
+    /// STAMINA PRICE
+
+    /*
+
+        if ( state.isClimbing ) {
+
+            stamina.reduceStamina( 0.01 );
+
+        } else {
+
+            stamina.resetStamina();
+
+        };
+
+        */
+
+    const CLIMBPRICE = 0.01 ;
+    const GLIDINGPRICE = 0.01 ;
+    const JUMPPRICE = 0.75 ;
+    const DASHPRICE = 0.5 ;
+
+
+
     // animations
     const HAULDURATION = 250 ;
     const SWITCHTILEDURATION = 250 ;
@@ -219,6 +242,11 @@ function Controler( player ) {
     function update( delta ) {
 
 
+        if ( state.isGliding ) {
+            stamina.reduceStamina( GLIDINGPRICE );
+        };
+
+
         // an alternate update function is called if
         // an action is pending
         if ( pendingAction ) {
@@ -250,19 +278,6 @@ function Controler( player ) {
 
 
 
-        ///////////////////////
-        ///  STAMINA SPENDING
-        ///////////////////////
-
-        if ( state.isClimbing ) {
-
-            stamina.reduceStamina( 0.01 );
-
-        } else {
-
-            stamina.resetStamina();
-
-        };
 
 
 
@@ -485,6 +500,8 @@ function Controler( player ) {
             // Move the player while on the wall
             function climb( axis, vecInversion, angle ) {
 
+                stamina.reduceStamina( CLIMBPRICE );
+
                 CLIMBVEC.set( 0, CLIMBSPEED * vecInversion, 0 );
                 CLIMBVEC.applyAxisAngle( axis, angle );
 
@@ -626,6 +643,10 @@ function Controler( player ) {
 
         // There is a collision with the ground
         if ( yCollision.point != undefined ) {
+
+
+            // The player can recover all their stamina
+            stamina.resetStamina();
 
 
             if ( state.isFlying &&
@@ -1580,6 +1601,9 @@ function Controler( player ) {
             state.isClimbing = false ;
             state.isSlipping = false ;
 
+            // Take dash price to the stamina level
+            stamina.reduceStamina( DASHPRICE, true );
+
             return
 
         };
@@ -1595,8 +1619,11 @@ function Controler( player ) {
                 state.isSlipping )
               && hitGroundRecovering <= 0 ) {
 
-
+            // Animate the jump
             charaAnim.jump();
+
+            // Take the price in stamina
+            stamina.reduceStamina( JUMPPRICE, true );
 
             player.position.y += 0.1 ;
 

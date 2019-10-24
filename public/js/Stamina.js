@@ -52,21 +52,7 @@ function Stamina() {
 
         if ( mustUpdateDom ) {
 
-            ///////////////////////////
-            // DOM STAMINA BAR UPDATE
-            ///////////////////////////
-
-            // console.log( params.stamina );
-
-            gauges.forEach( ( domGauge, i )=> {
-
-                let a = params.stamina - i // for 2.5 => 2.5, 1.5, 0.5
-
-                let b = Math.max( Math.min( a, 1 ), 0 );
-
-                domGauge.style.height = `${ b * 100 }%` ;
-
-            });
+            updateDom();
 
         };
 
@@ -77,13 +63,48 @@ function Stamina() {
 
 
 
+    ///////////////////////////
+    // DOM STAMINA BAR UPDATE
+    ///////////////////////////
+
+    function updateDom() {
+
+        gauges.forEach( ( domGauge, i )=> {
+
+            /*
+            let a = params.stamina - i
+            let b = Math.max( Math.min( a, 1 ), 0 );
+            domGauge.style.height = `${ b * 100 }%` ;
+            */
+
+            domGauge.style.height = `${ Math.max( Math.min( params.stamina - i, 1 ), 0 ) * 100 }%` ;
+
+        });
+
+    };
+
+
+
+
+
+
+
+    /////////////////////////////////
+    ///  STAMINA LEVEL OPERATIONS
+    /////////////////////////////////
+
+
     // Called by the controler module when player make movements
-    function reduceStamina( factor ) {
+    function reduceStamina( factor, update ) {
 
         params.stamina -= factor ;
 
         if ( params.stamina < 0 ) {
             params.stamina = 0 ;
+        };
+
+        if ( update ) {
+            updateDom();
         };
 
     };
