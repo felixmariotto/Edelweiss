@@ -6,6 +6,7 @@ function Atlas( sceneGraph ) {
 	const PLAYERWIDTH = 0.3 ;
 
 	const CUBEWIDTH = 0.4 ;
+	const INTERACTIVECUBERANGE = 0.85 ; // radius
 
 	const NEEDHELPERS = true ;
 	const NEEDPLAYERBOX = false ; // specifically allow player box helper
@@ -22,7 +23,9 @@ function Atlas( sceneGraph ) {
 	var cubeColSortArr = [ 'x', 'y', 'z' ];
 
 	var cubeCollision = {
-		point: undefined
+		point: undefined,
+		inRange: undefined,
+		tag: undefined
 	};
 
 	
@@ -311,6 +314,7 @@ function Atlas( sceneGraph ) {
 	function collidePlayerCubes() {
 
 		cubeCollision.point = undefined ;
+		cubeCollision.inRange = undefined ;
 
 		checkStage( Math.floor( player.position.y ) );
 		checkStage( Math.floor( player.position.y ) + 1 );
@@ -322,6 +326,24 @@ function Atlas( sceneGraph ) {
 
 				// loop through the group of tiles at the same height as the player
 				sceneGraph.cubesGraph[ stage ].forEach( (logicCube, i)=> {
+
+
+					///////////////////////////////
+					///  INTERACTIVE CUBE RANGE
+					///////////////////////////////
+
+					if ( logicCube.type == 'cube-interactive' ) {
+						
+						if ( utils.distanceVecs( logicCube.position, player.position ) < INTERACTIVECUBERANGE ) {
+
+							cubeCollision.inRange = true ;
+							cubeCollision.tag = logicCube.tag ;
+
+						};
+
+					};
+
+
 
 					/////////////////////////
 					//	GENERAL COLLISION
@@ -337,6 +359,7 @@ function Atlas( sceneGraph ) {
 
 						///////////////////////////////////////////////////////
 						// Set cubeCollision.point from the cube coordinates
+						///////////////////////////////////////////
 
 						cubeCollision.point = {};
 
@@ -361,6 +384,10 @@ function Atlas( sceneGraph ) {
 							cubeCollision.point.y = Math.max( player.position.y, logicCube.position.y + (CUBEWIDTH / 2) );
 						};
 
+
+						/// All this mess is to get cubeCollision.point value which
+						// is the closest from player.position values, then clamp
+						// the other two to player.position values.
 
 						cubeColSortArr.sort( (a, b)=> {
 

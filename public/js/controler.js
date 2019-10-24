@@ -23,7 +23,9 @@ function Controler( player ) {
     var cancelSpace = false ;
     var actionTime;
 
+    // CUBES
     var cubeCollision;
+    var interactiveTag; // will be undefined if no interactive cube in range
 
     /// STAMINA PRICE
     const CLIMBPRICE = 0.01 ;
@@ -225,6 +227,7 @@ function Controler( player ) {
 
 
     function update( delta ) {
+
 
 
         // Handle the gliding action on the stamina level,
@@ -1462,6 +1465,7 @@ function Controler( player ) {
 
         cubeCollision = atlas.collidePlayerCubes();
 
+
         if ( cubeCollision.point ) {
 
             if ( player.position.y != cubeCollision.point.y ) {
@@ -1473,6 +1477,17 @@ function Controler( player ) {
                 cubeCollision.point.y,
                 cubeCollision.point.z
             );
+
+        };
+
+
+        if ( cubeCollision.inRange ) {
+
+            interactiveTag = cubeCollision.tag ;
+
+        } else {
+
+            interactiveTag = undefined ;
 
         };
 
@@ -1643,10 +1658,17 @@ function Controler( player ) {
     // Sent here by input module when the user released space bar
     function spaceInput() {
 
-        
+
 
         if ( cancelSpace ) {
             cancelSpace = false ;
+            return
+        };
+
+
+
+        if ( interactiveTag ) {
+            interaction.interactWith( interactiveTag );
             return
         };
 

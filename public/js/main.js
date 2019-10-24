@@ -1,7 +1,7 @@
 
 var scene, camera, renderer, stats, input, atlas,
     orbitControls, controler, clock, datGUI, charaAnim,
-    gltfLoader, mixer, cameraControl, stamina ;
+    gltfLoader, mixer, cameraControl, stamina, interaction ;
 
 var actions = [];
 
