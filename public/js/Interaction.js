@@ -1,10 +1,11 @@
 
 
+
 function Interaction() {
 
 
 	const domTalkContainer = document.getElementById('talk-container');
-	var isTalkContainerVisible = false ;
+	var isInAnim = false ;
 
 	const domCharName = document.getElementById('talker-name-container');
 
@@ -12,52 +13,25 @@ function Interaction() {
 
 	const domOverlay = document.getElementById('overlay');
 
+	var currentDialogue ;
+	var currentLine ;
+	var lastDialogueDate = Date.now();
 
-	function interactWith( agentName ) {
+	const DIALOGUEBREAKTIME = 1000 ; // time in ms to wait between dialogues
 
-		// HIDE THE TALK UI
-		if ( isTalkContainerVisible ) {
 
-			domChar.classList.remove( 'show-char' );
-			domChar.classList.add( 'hide-char' );
 
-			// Hide the talk container after hiding the characters
-			setTimeout( ()=> {
-
-				domOverlay.style.display = 'none' ;
-
-				domTalkContainer.classList.remove( 'show-talk' );
-				domTalkContainer.classList.add( 'hide-talk' );
-
-				domCharName.classList.remove( 'show-talker-name' );
-				domCharName.classList.add( 'hide-talker-name' );
-
-			}, 300);
-
-		// SHOW THE TALK UI
-		} else {
-
-			domOverlay.style.display = 'inherit' ;
-
-			domTalkContainer.classList.remove( 'hide-talk' );
-			domTalkContainer.classList.add( 'show-talk' );
-
-			domCharName.classList.remove( 'hide-talker-name' );
-			domCharName.classList.add( 'show-talker-name' );
-
-			// show the characters after showing the talk container
-			setTimeout( ()=> {
-
-				domChar.classList.remove( 'hide-char' );
-				domChar.classList.add( 'show-char' );
-
-			}, 200);
-
-		};
-
-		isTalkContainerVisible = !isTalkContainerVisible ;
-
+	function isInDialogue() {
+		return currentDialogue ? true : false ;
 	};
+
+
+
+
+
+	///////////////////////////////
+	///	   TRIGGERS  (BONUS, ETC..)
+	///////////////////////////////
 
 
 	function trigger( agentName ) {
@@ -66,9 +40,262 @@ function Interaction() {
 	};
 
 
+
+
+
+
+
+
+
+
+	///////////////////////
+	///    DIALOGUE UI
+	///////////////////////
+
+
+
+
+	// HIDE THE TALK UI
+	function hideDialogueUI() {
+
+		if ( isInAnim ) return
+
+		isInAnim = true ;
+
+		domChar.classList.remove( 'show-char' );
+		domChar.classList.add( 'hide-char' );
+
+		// Hide the talk container after hiding the characters
+		setTimeout( ()=> {
+
+			domOverlay.style.display = 'none' ;
+
+			domTalkContainer.classList.remove( 'show-talk' );
+			domTalkContainer.classList.add( 'hide-talk' );
+
+			domCharName.classList.remove( 'show-talker-name' );
+			domCharName.classList.add( 'hide-talker-name' );
+
+			isInAnim = false ;
+
+		}, 300);
+
+	};
+
+
+
+
+	// SHOW THE TALK UI
+	function showDialogueUI() {
+
+		if ( isInAnim ) return
+
+		isInAnim = true ;
+
+		domOverlay.style.display = 'inherit' ;
+
+		domTalkContainer.classList.remove( 'hide-talk' );
+		domTalkContainer.classList.add( 'show-talk' );
+
+		domCharName.classList.remove( 'hide-talker-name' );
+		domCharName.classList.add( 'show-talker-name' );
+
+		// show the characters after showing the talk container
+		setTimeout( ()=> {
+
+			domChar.classList.remove( 'hide-char' );
+			domChar.classList.add( 'show-char' );
+
+			isInAnim = false ;
+
+		}, 200);
+
+	};
+
+
+
+
+
+
+
+
+
+
+
+
+
+	///////////////////////////
+	///     INTERACTIONS
+	///////////////////////////
+
+
+	function interactWith( agentName ) {
+
+		switch ( agentName ) {
+
+			case 'char-dad' :
+				startDialogue( 'hello-dad' );
+				break;
+
+		};
+
+	};
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+	//////////////////////
+	///    DIALOGUES
+	//////////////////////
+
+
+	function startDialogue( dialogueName ) {
+
+		if ( lastDialogueDate < Date.now() - DIALOGUEBREAKTIME ) {
+
+			showDialogueUI();
+
+			currentDialogue = dialogueName ;
+			currentLine = 0 ;
+
+			executeDialogue();
+
+		};
+
+	};
+
+
+
+
+	function endDialogue() {
+
+		hideDialogueUI();
+
+		let lines = document.getElementsByClassName( 'dialogue-line' );
+
+		for ( let i = lines.length ; i != 0 ; i-- ) {
+			lines[ i -1 ].remove();
+		};
+
+		currentDialogue = undefined ;
+		currentLine = undefined ;
+
+		lastDialogueDate = Date.now();
+
+	};
+
+
+
+
+	function requestNextLine() {
+
+		currentLine ++ ;
+
+		if ( currentLine >= dialogues[ currentDialogue ].story.length ) {
+
+			endDialogue();
+
+		} else {
+
+			executeDialogue();
+
+		};
+
+	};
+
+
+
+
+	function executeDialogue() {
+
+		if ( currentDialogue && currentLine != undefined ) {
+
+			let line = dialogues[ currentDialogue ].story[ currentLine ] ;
+
+			if ( line.m ) {
+
+				printMessage( line.m );
+
+			} else if ( line.question ) {
+
+				printQuestion( line );
+
+			};
+
+		};
+
+	};
+
+
+
+	function printMessage( string ) {
+
+		let p = document.createElement( 'P' );
+		p.classList.add( 'dialogue-line' )
+		p.innerHTML = string
+
+		domTalkContainer.prepend( p );
+
+	};
+
+
+
+	function printQuestion( line ) {
+
+		printMessage( line.question );
+
+	};
+
+
+
+
+
+	var dialogues = {
+
+		'hello-dad' : {
+			char: 'Dad',
+			story: [
+				{ m: 'Hi !' },
+				{ m: 'How are you today ?' },
+				{ question: 'Can you help me ?', answers: [
+					{ m: 'Yes', next: 'help_yes' },
+					{ m: 'No', next: 'help_no' }
+				]},
+				{ label: 'help_yes', m: 'Bring me an apple' },
+				{ label: 'help_no', m: 'I never liked you' },
+				{ m: 'Goodbye' }
+			]
+		}
+
+	}
+
+
+
+	
+
+
+
+
+
+
+
+
 	return {
 		interactWith,
-		trigger
+		trigger,
+		isInDialogue,
+		requestNextLine
 	};
 
 };

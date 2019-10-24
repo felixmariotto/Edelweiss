@@ -254,7 +254,17 @@ function Input() {
 
 
     function releaseSpace() {
-        controler.spaceInput();
+
+        if ( interaction.isInDialogue() ) {
+
+            interaction.requestNextLine();
+
+        } else {
+
+            controler.spaceInput();
+
+        };
+        
         params.isSpacePressed = false ;
     };
 
