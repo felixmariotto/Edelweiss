@@ -63,12 +63,19 @@
 
 
 
-        #talk-container {
+        #overlay {
             position: fixed;
-            bottom: -210px;
-            left: 0px;
-            width: calc( 100vw - 10px );
-            height: 200px;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba( 0, 0, 0, 0.5 );
+            display: none;
+        }
+
+
+
+
+
+        .dialogue-box {
             background-color: white;
             border-radius: 10px;
             border-color: black;
@@ -76,12 +83,21 @@
             border-style: solid;
         }
 
+
+        #talk-container {
+            position: fixed;
+            bottom: -210px;
+            left: 10px;
+            width: calc( 100vw - 10px - 20px );
+            height: 200px;
+        }
+
             .show-talk {
-                animation: show_talk 0.2s ease-in-out 1 forwards;
+                animation: show_talk 0.25s ease-out 1 forwards;
             }
 
             .hide-talk {
-                animation: hide_talk 0.2s ease-in-out 1 forwards;
+                animation: hide_talk 0.15s ease-in 1 forwards;
             }
 
             @keyframes show_talk {
@@ -89,13 +105,13 @@
                     bottom: -210px;
                 }
                 100% {
-                    bottom: 0px;
+                    bottom: 10px;
                 }
             }
 
             @keyframes hide_talk {
                 0% {
-                    bottom: 0px;
+                    bottom: 10px;
                 }
                 100% {
                     bottom: -210px;
@@ -105,58 +121,61 @@
 
 
 
+        #talker-name-container {
+            position: fixed;
+            padding: 10px 20px 10px 20px;
+            bottom: -50px;
+            right: 50px;
+        }
 
-        .char-picture-container {
+            .show-talker-name {
+                animation: show_talker_name 0.6s ease-out 1 forwards;
+            }
+
+            .hide-talker-name {
+                animation: hide_talker_name 0.25s ease-in 1 forwards;
+            }
+
+            @keyframes show_talker_name {
+                0% {
+                    bottom: -50px;
+                }
+                100% {
+                    bottom: 192px;
+                }
+            }
+
+            @keyframes hide_talker_name {
+                0% {
+                    bottom: 192px;
+                }
+                100% {
+                    bottom: -50px;
+                }
+            }
+
+
+
+
+
+        #char-container {
             background-color: blue;
             position: fixed;
-            height: calc( 100vh - 200px );
-            width: 250px;
-            bottom: 200px;
+            height: 100vh;
+            width: 300px;
+            bottom: 0px;
+            right: -305px;
         }
 
-        #left-char {
-            left: -250px;
-        }
-
-            .show-left-char {
-                animation: show_left_char 0.3s ease-in-out 1 forwards;
+            .show-char {
+                animation: show_char 0.3s ease-out 1 forwards;
             }
 
-            .hide-left-char {
-                animation: hide_left_char 0.3s ease-in-out 1 forwards;
+            .hide-char {
+                animation: hide_char 0.3s ease-in 1 forwards;
             }
 
-            @keyframes show_left_char {
-                0% {
-                    left: -250px;
-                }
-                100% {
-                    left: 0px;
-                }
-            }
-
-            @keyframes hide_left_char {
-                0% {
-                    left: 0px;
-                }
-                100% {
-                    left: -250px;
-                }
-            }
-
-        #right-char {
-            right: -250px;
-        }
-
-            .show-right-char {
-                animation: show_right_char 0.3s ease-in-out 1 forwards;
-            }
-
-            .hide-right-char {
-                animation: hide_right_char 0.3s ease-in-out 1 forwards;
-            }
-
-            @keyframes show_right_char {
+            @keyframes show_char {
                 0% {
                     right: -250px;
                 }
@@ -165,12 +184,12 @@
                 }
             }
 
-            @keyframes hide_right_char {
+            @keyframes hide_char {
                 0% {
                     right: 0px;
                 }
                 100% {
-                    right: -250px;
+                    right: -305px;
                 }
             }
 
@@ -212,9 +231,11 @@
 
     <div id="stamina-bar"></div>
 
-    <div id="left-char" class="char-picture-container"></div>
-    <div id="right-char" class="char-picture-container"></div>
-    <div id="talk-container"></div>
+    <div id="overlay"></div>
+
+    <div id="char-container"></div>
+    <div id="talk-container" class='dialogue-box'></div>
+    <div id="talker-name-container" class='dialogue-box'>Name</div>
 
 
     <!-- TEMPORARY -->
