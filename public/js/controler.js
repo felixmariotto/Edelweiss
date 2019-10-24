@@ -23,6 +23,8 @@ function Controler( player ) {
     var cancelSpace = false ;
     var actionTime;
 
+    var cubeCollision;
+
     /// STAMINA PRICE
     const CLIMBPRICE = 0.01 ;
     const GLIDINGPRICE = 0.01 ;
@@ -1454,6 +1456,30 @@ function Controler( player ) {
 
 
 
+        ////////////////////////////
+        ///   CUBES COLLISION
+        ////////////////////////////
+
+        cubeCollision = atlas.collidePlayerCubes();
+
+        if ( cubeCollision.point ) {
+
+            if ( player.position.y != cubeCollision.point.y ) {
+                speedUp = 0 ;
+            };
+
+            player.position.set(
+                cubeCollision.point.x,
+                cubeCollision.point.y,
+                cubeCollision.point.z
+            );
+
+        };
+
+
+
+
+
         //////////////////////////////
         ///  CALLS FOR ANIMATIONS
         //////////////////////////////
@@ -1736,7 +1762,7 @@ function Controler( player ) {
                     stamina.params.stamina <= 0 ) {
 
             fall();
-            
+
         };
 
 

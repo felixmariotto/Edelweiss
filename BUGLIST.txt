@@ -1,4 +1,29 @@
 
+////////////////////////////////////
+///		SCHEDULE
+////////////////////////////////////
+
+- Make collision system with cubes
+- Make Interaction module :
+	-> initialised with Atlas
+	-> everytime Atlas init through a element with tag,
+	   it gives it to Interaction
+	-> When Atlas collide player and cubes, it can trigger
+	   a function( tag ) in the Interaction module,
+	   which handle the action to take accordingly
+	-> conversation system
+	-> bonus repartition
+
+
+
+
+
+
+
+
+/////////////////////////////////
+///		BUG  &  FIXES
+//////////////////////////////////
 
 - player can climb far atop an upper ledge if they arrive at this position after a jump
 

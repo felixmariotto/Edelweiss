@@ -16,6 +16,15 @@ function Atlas( sceneGraph ) {
 
 	var startTile ;
 	var player ;
+
+	// This is used in cube collision to know which
+	// direction is the one with less collision
+	var cubeColSortArr = [ 'x', 'y', 'z' ];
+
+	var cubeCollision = {
+		point: undefined
+	};
+
 	
 	var yCollision = {
 		point: undefined,
@@ -25,6 +34,8 @@ function Atlas( sceneGraph ) {
 		maxZ: undefined,
 		minZ: undefined
 	};
+
+
 
 	var xCollision = {
 		maxHeight: undefined,
@@ -37,6 +48,8 @@ function Atlas( sceneGraph ) {
 		zPoint: undefined,
 		majorWallType: undefined
 	};
+
+
 
 	var rayCollisionVec = new THREE.Vector3();
 	var tempTriVec1 = new THREE.Vector3();
@@ -293,6 +306,93 @@ function Atlas( sceneGraph ) {
 	/////////////////////////
 	///    COLLISIONS
 	/////////////////////////
+
+
+	function collidePlayerCubes() {
+
+		cubeCollision.point = undefined ;
+
+		checkStage( Math.floor( player.position.y ) );
+		checkStage( Math.floor( player.position.y ) + 1 );
+		checkStage( Math.floor( player.position.y ) - 1 );
+
+		function checkStage( stage ) {
+
+			if ( sceneGraph.cubesGraph[ stage ] ) {
+
+				// loop through the group of tiles at the same height as the player
+				sceneGraph.cubesGraph[ stage ].forEach( (logicCube, i)=> {
+
+					/////////////////////////
+					//	GENERAL COLLISION
+					/////////////////////////
+
+					// check for X Z collision
+					if ( !( logicCube.position.x - (CUBEWIDTH / 2) > ( player.position.x + ( PLAYERWIDTH / 2 ) ) ||
+							logicCube.position.z - (CUBEWIDTH / 2) > ( player.position.z + ( PLAYERWIDTH / 2 ) ) ||
+							logicCube.position.x + (CUBEWIDTH / 2) < ( player.position.x - ( PLAYERWIDTH / 2 ) ) ||
+							logicCube.position.z + (CUBEWIDTH / 2) < ( player.position.z - ( PLAYERWIDTH / 2 ) ) ||
+							logicCube.position.y - (CUBEWIDTH / 2) > ( player.position.y + PLAYERHEIGHT ) ||
+							logicCube.position.y + (CUBEWIDTH / 2) < player.position.y ) ) {
+
+						///////////////////////////////////////////////////////
+						// Set cubeCollision.point from the cube coordinates
+
+						cubeCollision.point = {};
+
+						// X DIR
+						if ( logicCube.position.x > player.position.x ) {
+							cubeCollision.point.x = Math.min( player.position.x, logicCube.position.x - (CUBEWIDTH / 2) - (PLAYERWIDTH / 2) );
+						} else {
+							cubeCollision.point.x = Math.max( player.position.x, logicCube.position.x + (CUBEWIDTH / 2) + (PLAYERWIDTH / 2) );
+						};
+
+						// Z DIR
+						if ( logicCube.position.z > player.position.z ) {
+							cubeCollision.point.z = Math.min( player.position.z, logicCube.position.z - (CUBEWIDTH / 2) - (PLAYERWIDTH / 2) );
+						} else {
+							cubeCollision.point.z = Math.max( player.position.z, logicCube.position.z + (CUBEWIDTH / 2) + (PLAYERWIDTH / 2) );
+						};
+
+						// Y DIR
+						if ( logicCube.position.y > player.position.y + ( PLAYERHEIGHT / 2 ) ) {
+							cubeCollision.point.y = Math.min( player.position.y, logicCube.position.y - (CUBEWIDTH / 2) - PLAYERHEIGHT );
+						} else {
+							cubeCollision.point.y = Math.max( player.position.y, logicCube.position.y + (CUBEWIDTH / 2) );
+						};
+
+
+						cubeColSortArr.sort( (a, b)=> {
+
+							return Math.abs( cubeCollision.point[a] - player.position[a] ) -
+								   Math.abs( cubeCollision.point[b] - player.position[b] )
+
+						});
+
+						cubeCollision.point[ cubeColSortArr[1] ] = player.position[ cubeColSortArr[1] ] ;
+						cubeCollision.point[ cubeColSortArr[2] ] = player.position[ cubeColSortArr[2] ] ;
+
+					};
+
+				});
+
+			};
+
+		};
+
+		return cubeCollision
+
+	};
+
+
+
+
+
+
+
+
+
+
 
 
 	function collidePlayerGrounds() {
@@ -910,6 +1010,7 @@ function Atlas( sceneGraph ) {
 	return {
 		collidePlayerGrounds,
 		collidePlayerWalls,
+		collidePlayerCubes,
 		intersectRay,
 		PLAYERHEIGHT,
 		PLAYERWIDTH
