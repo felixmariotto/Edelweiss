@@ -1272,34 +1272,7 @@ function Controler( player ) {
                          player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) &&
                          !state.isDashing ) {
 
-                        // compute desired fall direction
-                        if ( contactDirection == 'left' ) {
-
-                            currentDirection = Math.PI / 2 ;
-                            HORIZMOVEVECT.set( SPEED, 0, 0 );
-                        
-                        } else if ( contactDirection == 'right' ) {
-
-                            currentDirection = -Math.PI / 2 ;
-                            HORIZMOVEVECT.set( -SPEED, 0, 0 );
-
-                        } else if ( contactDirection == 'up' ) {
-
-                            currentDirection = 0 ;
-                            HORIZMOVEVECT.set( 0, 0, SPEED );
-
-                        } else if ( contactDirection == 'down' ) {
-
-                            currentDirection = Math.PI ;
-                            HORIZMOVEVECT.set( 0, 0, -SPEED );
-
-                        };
-
-                        inertia = FALLINITINERTIA ;
-                        speedUp = FALLINITGRAVITY ;
-                        // player is pushed out of contact with the wall,
-                        // so the fall cannot be avoided
-                        player.position.addScaledVector( HORIZMOVEVECT, FALLINITPUSHPOWER );
+                        fall();
                     };
 
                     setClimbingState( false );
@@ -1597,6 +1570,50 @@ function Controler( player ) {
 
 
 
+
+
+
+    function fall() {
+
+        // compute desired fall direction
+        if ( contactDirection == 'left' ) {
+
+            currentDirection = Math.PI / 2 ;
+            HORIZMOVEVECT.set( SPEED, 0, 0 );
+        
+        } else if ( contactDirection == 'right' ) {
+
+            currentDirection = -Math.PI / 2 ;
+            HORIZMOVEVECT.set( -SPEED, 0, 0 );
+
+        } else if ( contactDirection == 'up' ) {
+
+            currentDirection = 0 ;
+            HORIZMOVEVECT.set( 0, 0, SPEED );
+
+        } else if ( contactDirection == 'down' ) {
+
+            currentDirection = Math.PI ;
+            HORIZMOVEVECT.set( 0, 0, -SPEED );
+
+        };
+
+        inertia = FALLINITINERTIA ;
+        speedUp = FALLINITGRAVITY ;
+        // player is pushed out of contact with the wall,
+        // so the fall cannot be avoided
+        player.position.addScaledVector( HORIZMOVEVECT, FALLINITPUSHPOWER );
+
+    };
+
+
+
+
+
+
+
+
+
     // Sent here by input module when the user released space bar
     function spaceInput() {
 
@@ -1624,8 +1641,8 @@ function Controler( player ) {
             return
 
         } else if ( state.chargingDash &&
-                    input.moveKeys.length == 0 ||
-                    stamina.params.stamina <= 0 ) {
+                    ( input.moveKeys.length == 0 ||
+                      stamina.params.stamina <= 0 ) ) {
 
             state.chargingDash = false ;
             state.isClimbing = true ;
@@ -1636,16 +1653,17 @@ function Controler( player ) {
 
 
 
+
+
         // jump
         // Here we check that the player can jump because they are on the floor, OR
         // because they have infinity jump but the are not going up in the air, OR
         // they are on a wall
         if ( ( ( !permission.infinityJump && !state.isFlying || 
                 permission.infinityJump && speedUp <= 0 ) ||
-                state.isSlipping )
-              && hitGroundRecovering <= 0 ) {
-
-            console.log('jump')
+                state.isSlipping ) &&
+              hitGroundRecovering <= 0 &&
+              stamina.params.stamina > 0 ) {
 
             // Animate the jump
             charaAnim.jump();
@@ -1713,6 +1731,12 @@ function Controler( player ) {
             };
 
 
+        // FALL FROM THE WALL BECAUSE OF LACK OF STAMINA
+        } else if ( state.isClimbing &&
+                    stamina.params.stamina <= 0 ) {
+
+            fall();
+            
         };
 
 
