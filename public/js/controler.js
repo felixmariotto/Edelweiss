@@ -24,27 +24,10 @@ function Controler( player ) {
     var actionTime;
 
     /// STAMINA PRICE
-
-    /*
-
-        if ( state.isClimbing ) {
-
-            stamina.reduceStamina( 0.01 );
-
-        } else {
-
-            stamina.resetStamina();
-
-        };
-
-        */
-
     const CLIMBPRICE = 0.01 ;
     const GLIDINGPRICE = 0.01 ;
     const JUMPPRICE = 0.75 ;
     const DASHPRICE = 0.5 ;
-
-
 
     // animations
     const HAULDURATION = 250 ;
@@ -242,9 +225,23 @@ function Controler( player ) {
     function update( delta ) {
 
 
+        // Handle the gliding action on the stamina level,
+        // and stop gliding of the stamina is ran out
         if ( state.isGliding ) {
-            stamina.reduceStamina( GLIDINGPRICE );
+
+            if ( stamina.params.stamina <= 0 ) {
+
+                glidingCount = 0 ;
+                state.isGliding = false ;
+
+            } else {
+
+                stamina.reduceStamina( GLIDINGPRICE );
+
+            };
+            
         };
+
 
 
         // an alternate update function is called if
@@ -290,9 +287,13 @@ function Controler( player ) {
 
             glidingCount += delta * 1000 ;
 
-            if ( glidingCount >= GLIDINGTIME && permission.gliding ) {
+            if ( glidingCount >= GLIDINGTIME &&
+                permission.gliding &&
+                stamina.params.stamina > 0) {
+
                 state.isGliding = true ;
                 cancelSpace = true ;
+                
             };
 
         } else if ( !cancelSpace &&
