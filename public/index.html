@@ -61,6 +61,121 @@
                     background-image: url( 'assets/stamina-backgorund.png' );
                 }
 
+
+
+        #talk-container {
+            position: fixed;
+            bottom: -210px;
+            left: 0px;
+            width: calc( 100vw - 10px );
+            height: 200px;
+            background-color: white;
+            border-radius: 10px;
+            border-color: black;
+            border-width: 5px;
+            border-style: solid;
+        }
+
+            .show-talk {
+                animation: show_talk 0.2s ease-in-out 1 forwards;
+            }
+
+            .hide-talk {
+                animation: hide_talk 0.2s ease-in-out 1 forwards;
+            }
+
+            @keyframes show_talk {
+                0% {
+                    bottom: -210px;
+                }
+                100% {
+                    bottom: 0px;
+                }
+            }
+
+            @keyframes hide_talk {
+                0% {
+                    bottom: 0px;
+                }
+                100% {
+                    bottom: -210px;
+                }
+            }
+
+
+
+
+
+        .char-picture-container {
+            background-color: blue;
+            position: fixed;
+            height: calc( 100vh - 200px );
+            width: 250px;
+            bottom: 200px;
+        }
+
+        #left-char {
+            left: -250px;
+        }
+
+            .show-left-char {
+                animation: show_left_char 0.3s ease-in-out 1 forwards;
+            }
+
+            .hide-left-char {
+                animation: hide_left_char 0.3s ease-in-out 1 forwards;
+            }
+
+            @keyframes show_left_char {
+                0% {
+                    left: -250px;
+                }
+                100% {
+                    left: 0px;
+                }
+            }
+
+            @keyframes hide_left_char {
+                0% {
+                    left: 0px;
+                }
+                100% {
+                    left: -250px;
+                }
+            }
+
+        #right-char {
+            right: -250px;
+        }
+
+            .show-right-char {
+                animation: show_right_char 0.3s ease-in-out 1 forwards;
+            }
+
+            .hide-right-char {
+                animation: hide_right_char 0.3s ease-in-out 1 forwards;
+            }
+
+            @keyframes show_right_char {
+                0% {
+                    right: -250px;
+                }
+                100% {
+                    right: 0px;
+                }
+            }
+
+            @keyframes hide_right_char {
+                0% {
+                    right: 0px;
+                }
+                100% {
+                    right: -250px;
+                }
+            }
+
+
+
     
     </style>
 
@@ -96,6 +211,11 @@
     <canvas id="world"></canvas>
 
     <div id="stamina-bar"></div>
+
+    <div id="left-char" class="char-picture-container"></div>
+    <div id="right-char" class="char-picture-container"></div>
+    <div id="talk-container"></div>
+
 
     <!-- TEMPORARY -->
 

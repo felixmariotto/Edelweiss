@@ -357,47 +357,55 @@ function Atlas( sceneGraph ) {
 							logicCube.position.y - (CUBEWIDTH / 2) > ( player.position.y + PLAYERHEIGHT ) ||
 							logicCube.position.y + (CUBEWIDTH / 2) < player.position.y ) ) {
 
-						///////////////////////////////////////////////////////
-						// Set cubeCollision.point from the cube coordinates
-						///////////////////////////////////////////
+						if ( logicCube.type != 'cube-trigger' ) {
 
-						cubeCollision.point = {};
+							///////////////////////////////////////////////////////
+							// Set cubeCollision.point from the cube coordinates
+							///////////////////////////////////////////
 
-						// X DIR
-						if ( logicCube.position.x > player.position.x ) {
-							cubeCollision.point.x = Math.min( player.position.x, logicCube.position.x - (CUBEWIDTH / 2) - (PLAYERWIDTH / 2) );
+							cubeCollision.point = {};
+
+							// X DIR
+							if ( logicCube.position.x > player.position.x ) {
+								cubeCollision.point.x = Math.min( player.position.x, logicCube.position.x - (CUBEWIDTH / 2) - (PLAYERWIDTH / 2) );
+							} else {
+								cubeCollision.point.x = Math.max( player.position.x, logicCube.position.x + (CUBEWIDTH / 2) + (PLAYERWIDTH / 2) );
+							};
+
+							// Z DIR
+							if ( logicCube.position.z > player.position.z ) {
+								cubeCollision.point.z = Math.min( player.position.z, logicCube.position.z - (CUBEWIDTH / 2) - (PLAYERWIDTH / 2) );
+							} else {
+								cubeCollision.point.z = Math.max( player.position.z, logicCube.position.z + (CUBEWIDTH / 2) + (PLAYERWIDTH / 2) );
+							};
+
+							// Y DIR
+							if ( logicCube.position.y > player.position.y + ( PLAYERHEIGHT / 2 ) ) {
+								cubeCollision.point.y = Math.min( player.position.y, logicCube.position.y - (CUBEWIDTH / 2) - PLAYERHEIGHT );
+							} else {
+								cubeCollision.point.y = Math.max( player.position.y, logicCube.position.y + (CUBEWIDTH / 2) );
+							};
+
+
+							/// All this mess is to get cubeCollision.point value which
+							// is the closest from player.position values, then clamp
+							// the other two to player.position values.
+
+							cubeColSortArr.sort( (a, b)=> {
+
+								return Math.abs( cubeCollision.point[a] - player.position[a] ) -
+									   Math.abs( cubeCollision.point[b] - player.position[b] )
+
+							});
+
+							cubeCollision.point[ cubeColSortArr[1] ] = player.position[ cubeColSortArr[1] ] ;
+							cubeCollision.point[ cubeColSortArr[2] ] = player.position[ cubeColSortArr[2] ] ;
+
 						} else {
-							cubeCollision.point.x = Math.max( player.position.x, logicCube.position.x + (CUBEWIDTH / 2) + (PLAYERWIDTH / 2) );
+
+							interaction.trigger( logicCube.tag );
+
 						};
-
-						// Z DIR
-						if ( logicCube.position.z > player.position.z ) {
-							cubeCollision.point.z = Math.min( player.position.z, logicCube.position.z - (CUBEWIDTH / 2) - (PLAYERWIDTH / 2) );
-						} else {
-							cubeCollision.point.z = Math.max( player.position.z, logicCube.position.z + (CUBEWIDTH / 2) + (PLAYERWIDTH / 2) );
-						};
-
-						// Y DIR
-						if ( logicCube.position.y > player.position.y + ( PLAYERHEIGHT / 2 ) ) {
-							cubeCollision.point.y = Math.min( player.position.y, logicCube.position.y - (CUBEWIDTH / 2) - PLAYERHEIGHT );
-						} else {
-							cubeCollision.point.y = Math.max( player.position.y, logicCube.position.y + (CUBEWIDTH / 2) );
-						};
-
-
-						/// All this mess is to get cubeCollision.point value which
-						// is the closest from player.position values, then clamp
-						// the other two to player.position values.
-
-						cubeColSortArr.sort( (a, b)=> {
-
-							return Math.abs( cubeCollision.point[a] - player.position[a] ) -
-								   Math.abs( cubeCollision.point[b] - player.position[b] )
-
-						});
-
-						cubeCollision.point[ cubeColSortArr[1] ] = player.position[ cubeColSortArr[1] ] ;
-						cubeCollision.point[ cubeColSortArr[2] ] = player.position[ cubeColSortArr[2] ] ;
 
 					};
 
