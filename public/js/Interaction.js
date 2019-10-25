@@ -7,6 +7,8 @@ function Interaction() {
 	const domTalkContainer = document.getElementById('talk-container');
 	var isInAnim = false ;
 
+	const domTextContainer = document.getElementById( 'text-container' );
+
 	const domCharName = document.getElementById('talker-name-container');
 
 	const domChar = document.getElementById('char-container');
@@ -182,11 +184,7 @@ function Interaction() {
 
 		hideDialogueUI();
 
-		let lines = document.getElementsByClassName( 'dialogue-line' );
-
-		for ( let i = lines.length ; i != 0 ; i-- ) {
-			lines[ i -1 ].remove();
-		};
+		clearLines();
 
 		currentDialogue = undefined ;
 		currentLine = undefined ;
@@ -223,6 +221,8 @@ function Interaction() {
 
 			let line = dialogues[ currentDialogue ].story[ currentLine ] ;
 
+			clearLines();
+
 			if ( line.m ) {
 
 				printMessage( line.m );
@@ -239,22 +239,20 @@ function Interaction() {
 
 
 
+	function clearLines() {
+		domTextContainer.innerHTML = '';
+	};
+
+
+
 	function printMessage( string ) {
-
-		let p = document.createElement( 'P' );
-		p.classList.add( 'dialogue-line' )
-		p.innerHTML = string
-
-		domTalkContainer.prepend( p );
-
+		domTextContainer.innerHTML = string ;
 	};
 
 
 
 	function printQuestion( line ) {
-
 		printMessage( line.question );
-
 	};
 
 
