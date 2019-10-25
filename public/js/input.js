@@ -166,10 +166,18 @@ function Input() {
 
 
     function addMoveKey( keyString ) {
-        if ( moveKeys.indexOf( keyString ) < 0 ) {
+
+        if ( interaction.isInDialogue() ) {
+
+            interaction.chooseAnswer( keyString );
+
+        } else if ( moveKeys.indexOf( keyString ) < 0 ) {
+
             moveKeys.unshift( keyString );
             sendMoveDirection();
+
         };
+        
     };
 
 
