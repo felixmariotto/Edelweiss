@@ -176,8 +176,10 @@ function Atlas( sceneGraph ) {
 
 	};
 
-	// initialise the player logic
 
+
+
+	// PLAYER LOGIC
 
 	var player = Player( startTile );
 
@@ -905,6 +907,11 @@ function Atlas( sceneGraph ) {
 
 
 
+
+
+
+
+
     /////////////////////////////
     ///     HELPERS PART
     ////////////////////////////
@@ -1048,7 +1055,8 @@ function Atlas( sceneGraph ) {
 		collidePlayerCubes,
 		intersectRay,
 		PLAYERHEIGHT,
-		PLAYERWIDTH
+		PLAYERWIDTH,
+		sceneGraph
 	};
 
 

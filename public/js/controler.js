@@ -1483,9 +1483,17 @@ function Controler( player ) {
 
         if ( cubeCollision.inRange ) {
 
+            if ( interactiveTag != cubeCollision.tag ) {
+                dynamicItems.showInteractionSign( cubeCollision.tag );
+            };
+
             interactiveTag = cubeCollision.tag ;
 
         } else {
+
+            if ( interactiveTag ) {
+                dynamicItems.clearInteractionSign();
+            };
 
             interactiveTag = undefined ;
 

@@ -37,6 +37,7 @@ function init() {
     input = Input();
     stamina = Stamina();
     interaction = Interaction();
+    dynamicItems = DynamicItems();
 
 
     loop();
