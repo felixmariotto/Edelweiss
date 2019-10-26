@@ -28,6 +28,7 @@ function init() {
     
     clock = new THREE.Clock();
     gltfLoader = new THREE.GLTFLoader();
+    textureLoader = new THREE.TextureLoader();
     
 
     // TEMP

@@ -2,7 +2,7 @@
 var scene, camera, renderer, stats, input, atlas,
     orbitControls, controler, clock, datGUI, charaAnim,
     gltfLoader, mixer, cameraControl, stamina, interaction,
-    dynamicItems ;
+    dynamicItems, textureLoader ;
 
 var actions = [];
 

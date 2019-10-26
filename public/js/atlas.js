@@ -972,6 +972,7 @@ function Atlas( sceneGraph ) {
 		let meshCube = MeshCube( logicCube );
 		meshCube.logicCube = logicCube ;
 		scene.add( meshCube );
+		dynamicItems.addCube( meshCube );
 
 		return meshCube ;
 
