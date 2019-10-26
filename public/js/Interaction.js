@@ -14,6 +14,7 @@ function Interaction() {
 	const domCharName = document.getElementById('talker-name-container');
 
 	const domChar = document.getElementById('char-container');
+	const domCharImg = document.getElementById('char-img');
 
 	const domOverlay = document.getElementById('overlay');
 
@@ -98,13 +99,18 @@ function Interaction() {
 
 
 	// SHOW THE TALK UI
-	function showDialogueUI() {
+	function showDialogueUI( dialogueName ) {
+
+		let dialogueChar = dialogues[ dialogueName ].char ;
 
 		if ( isInAnim ) return
 
 		isInAnim = true ;
 
 		domOverlay.style.display = 'inherit' ;
+
+		domCharName.innerHTML = dialogueChar.name ;
+		domCharImg.src = dialogueChar.url ;
 
 		domTalkContainer.classList.remove( 'hide-talk' );
 		domTalkContainer.classList.add( 'show-talk' );
@@ -178,7 +184,7 @@ function Interaction() {
 
 		if ( lastDialogueDate < Date.now() - DIALOGUEBREAKTIME ) {
 
-			showDialogueUI();
+			showDialogueUI( dialogueName );
 
 			currentDialogue = dialogueName ;
 			currentLine = 0 ;
@@ -469,6 +475,33 @@ function Interaction() {
 
 
 
+	///////////////////////////////
+	///		DIALOGUES CHARACTERS
+	///////////////////////////////
+
+	var dialogueChars = {
+
+		dad : {
+			name: 'Dad',
+			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-dad.png'
+		}
+
+	};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	///////////////////////////
 	///    DIALOGUES TREES
 	///////////////////////////
@@ -478,7 +511,7 @@ function Interaction() {
 	var dialogues = {
 
 		'hello-dad' : {
-			char: 'Dad',
+			char: dialogueChars.dad,
 			story: [
 				{ m: 'Hi !' },
 				{ m: 'How are you today ?' },
@@ -495,6 +528,11 @@ function Interaction() {
 		}
 
 	};
+
+
+
+
+	
 
 
 
