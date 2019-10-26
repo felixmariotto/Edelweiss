@@ -68,6 +68,38 @@ function Interaction() {
 
 
 
+	///////////////////////////
+	///     INTERACTIONS
+	///////////////////////////
+
+
+	function interactWith( agentName ) {
+
+		switch ( agentName ) {
+
+			case 'char-dad' :
+				startDialogue( 'hello-dad' );
+				break;
+
+			case 'char-papy' :
+				console.log('interact with papy');
+				break;
+
+			case 'char-village-guardian' :
+				console.log('interact with village guardian');
+				break;
+
+		};
+
+	};
+
+
+
+
+
+
+
+
 
 	/////////////////////////////
 	///    BONUSES MANAGEMENT
@@ -210,29 +242,7 @@ function Interaction() {
 
 
 
-
-
-
-
-
-
-
-	///////////////////////////
-	///     INTERACTIONS
-	///////////////////////////
-
-
-	function interactWith( agentName ) {
-
-		switch ( agentName ) {
-
-			case 'char-dad' :
-				startDialogue( 'hello-dad' );
-				break;
-
-		};
-
-	};
+	
 
 
 

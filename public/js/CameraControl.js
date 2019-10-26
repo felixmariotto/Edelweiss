@@ -5,6 +5,8 @@ function CameraControl( player, camera ) {
 
 	const ORBITCONTROLS = false ;
 
+	const NEEDARROWS = false ;
+
 	var group = new THREE.Group();
 
 	var testRays;
@@ -74,17 +76,21 @@ function CameraControl( player, camera ) {
 		testRays.top.right.cameraEndVec = TOPRIGHTENDVEC ;
 
 
-		for ( let level of Object.keys( testRays ) ) {
+		if ( NEEDARROWS ) {
 
-			for ( let ray of Object.keys( testRays[ level ] ) ) {
+			for ( let level of Object.keys( testRays ) ) {
 
-				let arrowHelper = new THREE.ArrowHelper(
-					testRays[ level ][ ray ].direction,
-					testRays[ level ][ ray ].origin,
-					4
-				);
+				for ( let ray of Object.keys( testRays[ level ] ) ) {
 
-				scene.add( arrowHelper );
+					let arrowHelper = new THREE.ArrowHelper(
+						testRays[ level ][ ray ].direction,
+						testRays[ level ][ ray ].origin,
+						4
+					);
+
+					scene.add( arrowHelper );
+
+				};
 
 			};
 

@@ -27,7 +27,13 @@ function init() {
 
     
     clock = new THREE.Clock();
+
     gltfLoader = new THREE.GLTFLoader();
+    var dracoLoader = new THREE.DRACOLoader();
+
+    dracoLoader.setDecoderPath( 'libs/draco/' )
+    gltfLoader.setDRACOLoader( dracoLoader );
+
     textureLoader = new THREE.TextureLoader();
     
 
@@ -39,6 +45,7 @@ function init() {
     stamina = Stamina();
     interaction = Interaction();
     dynamicItems = DynamicItems();
+    mapManager = MapManager();
 
 
     loop();

@@ -9,8 +9,10 @@ function Atlas( sceneGraph ) {
 	const INTERACTIVECUBERANGE = 0.85 ; // radius
 
 	const NEEDHELPERS = true ;
+
 	const NEEDPLAYERBOX = false ; // specifically allow player box helper
-    const NEEDARROW = false ;
+    const NEEDARROW = false ; // arrows showing player direction
+    const NEEDTILES = false ; // add the tiles helpers
 
     const SCALECHARA = 0.083 ;
 
@@ -147,7 +149,7 @@ function Atlas( sceneGraph ) {
 
 		sceneGraph.tilesGraph[i].forEach( (logicTile)=> {
 
-			if ( NEEDHELPERS ) {
+			if ( NEEDHELPERS && NEEDTILES ) {
 				Tile( logicTile );
 			};
 
@@ -322,6 +324,7 @@ function Atlas( sceneGraph ) {
 		checkStage( Math.floor( player.position.y ) + 1 );
 		checkStage( Math.floor( player.position.y ) - 1 );
 
+
 		function checkStage( stage ) {
 
 			if ( sceneGraph.cubesGraph[ stage ] ) {
@@ -344,7 +347,6 @@ function Atlas( sceneGraph ) {
 						};
 
 					};
-
 
 
 					/////////////////////////
@@ -1057,7 +1059,8 @@ function Atlas( sceneGraph ) {
 		intersectRay,
 		PLAYERHEIGHT,
 		PLAYERWIDTH,
-		sceneGraph
+		sceneGraph,
+		player
 	};
 
 
