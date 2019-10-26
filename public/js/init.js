@@ -35,7 +35,8 @@ function init() {
     gltfLoader.setDRACOLoader( dracoLoader );
 
     textureLoader = new THREE.TextureLoader();
-    
+    fileLoader = new THREE.FileLoader()
+
 
     // TEMP
     datGUI = new dat.GUI();

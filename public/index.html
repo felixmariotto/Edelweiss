@@ -34,6 +34,22 @@
 
 
 
+        #start-menu {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate( -50%, -50% );
+            padding: 30px;
+            background-color: green;
+        }
+
+            #start-menu > button {
+                font-size: 3em;
+            }
+
+
+
+
         #world {
             position: fixed;
             top: 0;
@@ -301,9 +317,17 @@
 
 
 
+
+
+
 <body>
 
+
     <script src="js/main.js"></script>
+
+
+
+    <!-- General Game UI -->
 
     <canvas id="world"></canvas>
 
@@ -335,6 +359,16 @@
     </div>
 
     <div id="talker-name-container" class='dialogue-box'>Name</div>
+
+
+
+
+    <!-- Menus -->
+
+    <div id="start-menu">
+        <button onclick='input.startGame()'>Start</button>
+    </div>
+
 
 
     <!-- TEMPORARY -->
