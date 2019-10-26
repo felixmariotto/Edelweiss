@@ -54,10 +54,48 @@ function Interaction() {
 		switch ( agentName ) {
 
 			case 'bonus-stamina-1' :
-				showMessage( 'You found an edelWeiss !<br>+ 1 Stamina' );
+				getBonus( 'stamina-1' );
 				break;
 
 		};
+
+	};
+
+
+
+
+
+
+
+
+
+	/////////////////////////////
+	///    BONUSES MANAGEMENT
+	/////////////////////////////
+
+
+	function getBonus( bonusName ) {
+
+		if ( !bonuses[ bonusName ].isFound ) {
+
+			bonuses[ bonusName ].onGet();
+			showMessage( bonuses[ bonusName ].message );
+			bonuses[ bonusName ].isFound = true ;
+
+		};
+
+	};
+
+
+
+
+	var bonuses = {
+
+		'stamina-1' : {
+			isFound: false,
+			onGet : stamina.incrementMaxStamina,
+			message : 'You found an edelWeiss !<br>+ 1 Stamina'
+		}
 
 	};
 

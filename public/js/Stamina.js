@@ -131,6 +131,7 @@ function Stamina() {
         params,
         reduceStamina,
         resetStamina,
+        incrementMaxStamina,
         update
     };
 
