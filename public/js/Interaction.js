@@ -18,6 +18,8 @@ function Interaction() {
 
 	const domOverlay = document.getElementById('overlay');
 
+	const domMessage = document.getElementById('message-box');
+
 	var currentDialogue ;
 	var currentLine ;
 	var lastDialogueDate = Date.now();
@@ -49,7 +51,42 @@ function Interaction() {
 
 	function trigger( agentName ) {
 
-		console.log( agentName );
+		switch ( agentName ) {
+
+			case 'bonus-stamina-1' :
+				showMessage( 'You found an edelWeiss !<br>+ 1 Stamina' );
+				break;
+
+		};
+
+	};
+
+
+
+
+
+
+
+
+
+
+	///////////////////////////
+	///	   MESSAGES UI
+	///////////////////////////
+
+
+	function showMessage( message ) {
+
+		domMessage.style.display = 'inherit';
+		domMessage.innerHTML = message ;
+
+	};
+
+
+	function hideMessage() {
+
+		domMessage.style.display = 'none';
+
 	};
 
 
@@ -174,7 +211,7 @@ function Interaction() {
 
 
 	///////////////////////////
-	///    DIALGUE FUNCTIONS
+	///    DIALOGUE FUNCTIONS
 	///////////////////////////
 
 
@@ -549,6 +586,7 @@ function Interaction() {
 		interactWith,
 		trigger,
 		isInDialogue,
+		hideMessage,
 		requestNextLine,
 		chooseAnswer
 	};

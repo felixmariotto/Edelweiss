@@ -263,6 +263,8 @@ function Input() {
 
     function releaseSpace() {
 
+        interaction.hideMessage();
+
         if ( interaction.isInDialogue() ) {
 
             interaction.requestNextLine();
