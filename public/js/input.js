@@ -1,9 +1,16 @@
 
+
+
+
+
+
+
 function Input() {
 
 
 
     const domStartMenu = document.getElementById('start-menu');
+    const domJSONLoader = document.getElementById('json-loader');
 
 
     // Movement
@@ -13,6 +20,22 @@ function Input() {
     var params = {
         isSpacePressed: false
     };
+
+    var touches = {};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -44,6 +67,9 @@ function Input() {
     };
 
 
+
+
+
     function parseJSON( data ) {
 
         for ( let valueToReplace of Object.keys( hashTable ) ) {
@@ -59,14 +85,18 @@ function Input() {
     };
 
 
-    document.getElementById('json-scene').addEventListener('click', ()=> {
-        document.getElementById('json-scene').blur();
+
+
+
+    domJSONLoader.addEventListener('click', ()=> {
+        domJSONLoader.blur();
     });
 
-    document.getElementById('json-scene').onchange = function (evt) {
+
+    domJSONLoader.onchange = function (evt) {
 
         var tgt = evt.target || window.event.srcElement,
-            files = tgt.files;
+        files = tgt.files;
     
         // FileReader support
         if (FileReader && files && files.length) {
@@ -85,6 +115,83 @@ function Input() {
 
     };
 
+
+
+
+
+    function startGame() {
+
+        domStartMenu.style.display = 'none' ;
+
+        fileLoader.load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/sceneGraph.json', ( file )=> {
+
+            startFromSceneGraph( file );
+
+        });
+
+    };
+
+
+
+
+    function startFromSceneGraph( file ) {
+
+        let data = lzjs.decompress( file );
+
+        let sceneGraph = parseJSON( data );
+
+        // Initialize atlas with the scene graph
+        atlas = Atlas( sceneGraph );
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ////////////////////
+    ///// GAME KEYS
+    ////////////////////
+
+
+
+    /////// TOUCHSCREEN
+
+
+    window.addEventListener( 'touchmove', (e)=> {
+
+        // if ( e.touches[0].clientX < window.innerWidth / 2 ) {};
+
+        if ( e.touches[0].identifier ) {
+
+            alert( e.touches[0].identifier );
+
+        };
+
+    });
+
+
+
+    
+
+
+    /////// KEYBOARD
 
 
     window.addEventListener( 'keydown', (e)=> {
@@ -123,6 +230,9 @@ function Input() {
 
 
 
+
+
+
     window.addEventListener( 'keyup', (e)=> {
 
         switch( e.code ) {
@@ -150,39 +260,6 @@ function Input() {
         };
 
     });
-
-
-
-
-
-
-    function startGame() {
-
-        domStartMenu.style.display = 'none' ;
-
-        fileLoader.load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/sceneGraph.json', ( file )=> {
-
-            startFromSceneGraph( file );
-
-        });
-
-    };
-
-
-
-
-    function startFromSceneGraph( file ) {
-
-        let data = lzjs.decompress( file );
-
-        let sceneGraph = parseJSON( data );
-
-        // Initialize atlas with the scene graph
-        atlas = Atlas( sceneGraph );
-
-    };
-
-    
 
 
 
