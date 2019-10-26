@@ -298,6 +298,7 @@
     <script src="libs/stats.min.js"></script>
     <script src="libs/dat.gui.min.js"></script>
     <script src="libs/lzjs.js"></script>
+    <script src='libs/virtualjoystick.js'></script>
 
     <script src="js/init.js"></script>
     <script src="js/loop.js"></script>
@@ -366,7 +367,7 @@
     <!-- Menus -->
 
     <div id="start-menu">
-        <button onclick='input.startGame()'>Start</button>
+        <button id='start-button'>Start</button>
     </div>
 
 
@@ -374,8 +375,8 @@
     <!-- TEMPORARY -->
 
     <div id="gui">
-        <label for="json-scene">load JSON</label><br>
-        <input type='file' id='json-loader' name='json-scene'>
+        <label for="json-loader">load JSON</label><br>
+        <input type='file' id='json-loader' name='jjson-loader'>
     </div>
 
 </body>

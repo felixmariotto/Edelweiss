@@ -10,6 +10,8 @@ function Input() {
 
 
     const domStartMenu = document.getElementById('start-menu');
+    const domStartButton = document.getElementById('start-button');
+
     const domJSONLoader = document.getElementById('json-loader');
 
 
@@ -27,6 +29,18 @@ function Input() {
 
 
 
+
+
+
+
+
+
+
+    function update( delta ) {
+
+        checkJoystickDelta();
+
+    };
 
 
 
@@ -118,6 +132,16 @@ function Input() {
 
 
 
+    domStartButton.addEventListener( 'touchstart', (e)=> {
+        startGame();
+    });
+
+    domStartButton.addEventListener( 'click', (e)=> {
+        startGame();
+    });
+
+
+
 
     function startGame() {
 
@@ -174,17 +198,19 @@ function Input() {
     /////// TOUCHSCREEN
 
 
-    window.addEventListener( 'touchmove', (e)=> {
+    function checkJoystickDelta() {
 
-        // if ( e.touches[0].clientX < window.innerWidth / 2 ) {};
+        if ( joystick.deltaX() != 0 ||
+             joystick.deltaY() != 0 ) {
 
-        if ( e.touches[0].identifier ) {
-
-            alert( e.touches[0].identifier );
+            console.log( 'x : ' + joystick.deltaX() + ' / y : ' + joystick.deltaY() );
 
         };
 
-    });
+    };
+
+
+
 
 
 
@@ -397,7 +423,8 @@ function Input() {
     return {
         params,
         moveKeys,
-        startGame
+        startGame,
+        update
     };
 
 };

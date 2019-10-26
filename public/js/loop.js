@@ -19,6 +19,7 @@ function loop() {
     if ( mixer ) mixer.update( clockDelta );
     if ( charaAnim ) charaAnim.update( clockDelta );
     if ( dynamicItems ) dynamicItems.update( clockDelta );
+    if ( input ) input.update( clockDelta );
 
     if ( cameraControl ) cameraControl.update( loopCount % 10 == 0 );
     if ( stamina ) stamina.update( loopCount % 10 == 0 );
