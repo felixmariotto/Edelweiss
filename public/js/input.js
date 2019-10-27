@@ -24,6 +24,25 @@ function Input() {
 
     var touches = {};
 
+
+
+    //// JOYSTICK
+
+
+    domBase = document.createElement('IMG');
+    domBase.src = 'assets/base.png';
+    domBase.id = 'base'
+
+    domStick = document.createElement('IMG');
+    domStick.src = 'assets/stick.png';
+    domStick.id = 'stick'
+
+    var joystick = new VirtualJoystick({
+        container: document.getElementById('prout'),
+        stickElement: domStick,
+        baseElement: domBase
+    });
+
     // get joystick angle
     var moveVec = new THREE.Vector2(); // vec moved by joystick
     // var fixedVec = new THREE.Vector3( 0, 0, 1 ); // ref to get angle with moveVec
@@ -210,6 +229,8 @@ function Input() {
                 moveKeys.push( 'joystick' );
             };
 
+            console.log( joystick._touchIdx )
+
             // Set the vector we will mesure the angle of with the
             // virtual joystick's position deltas
             moveVec.set( joystick.deltaY(), joystick.deltaX() );
@@ -232,7 +253,7 @@ function Input() {
     document.body.addEventListener( 'touchstart', (e)=> {
         console.log( 'touch start' );
     });
-    
+
 
     document.body.addEventListener( 'touchend', (e)=> {
         console.log( 'touch end' );

@@ -15,10 +15,6 @@ var GUIControler = {
     dash: true
 };
 
-var joystick = new VirtualJoystick({
-	container: document.getElementById('world'),
-});
-
 var clockDelta ;
 
 window.addEventListener('load', ()=> {
