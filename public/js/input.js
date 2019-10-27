@@ -224,8 +224,8 @@ function Input() {
 
     function checkJoystickDelta() {
 
-        if ( Math.abs( joystick.deltaX() ) > 20 ||
-             Math.abs( joystick.deltaY() ) > 20 ) {
+        if ( Math.abs( joystick.deltaX() ) > 10 ||
+             Math.abs( joystick.deltaY() ) > 10 ) {
 
             if ( moveKeys.length == 0 ) {
                 moveKeys.push( 'joystick' );
