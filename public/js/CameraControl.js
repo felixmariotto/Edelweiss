@@ -23,11 +23,11 @@ function CameraControl( player, camera ) {
 	const TOPRIGHTDIR = new THREE.Vector3( 0.12, 0.7, 0.6 ).normalize();
 
 	// camera end vectors depending on ray intersection
-	const BOTTOMLEFTENDVEC = new THREE.Vector3( -1, 3, 6 );
-	const BOTTOMRIGHTENDVEC = new THREE.Vector3( 1, 3, 6 );
-	const TOPLEFTENDVEC = new THREE.Vector3( 0.3, 5, 4 );
-	const TOPRIGHTENDVEC = new THREE.Vector3( -0.3, 5, 4 );
-	const DEFAULTENDVEC = new THREE.Vector3( 0, 4, 6 );
+	const BOTTOMLEFTENDVEC = new THREE.Vector3( -0.5, 1.5, 3 );
+	const BOTTOMRIGHTENDVEC = new THREE.Vector3( 0.5, 1.5, 3 );
+	const TOPLEFTENDVEC = new THREE.Vector3( 0.15, 2.5, 2 );
+	const TOPRIGHTENDVEC = new THREE.Vector3( -0.15, 2.5, 2 );
+	const DEFAULTENDVEC = new THREE.Vector3( 0, 2, 3 );
 
 	var t = 1 ;
 	var cameraStartVec = new THREE.Vector3().copy( BOTTOMRIGHTENDVEC );
