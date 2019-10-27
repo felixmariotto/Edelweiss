@@ -14,7 +14,6 @@ function Input() {
 
     const domJSONLoader = document.getElementById('json-loader');
 
-
     // Movement
     var moveKeys = [];
     var tempDirArray ;
@@ -24,6 +23,10 @@ function Input() {
     };
 
     var touches = {};
+
+    // get joystick angle
+    var moveVec = new THREE.Vector2(); // vec moved by joystick
+    // var fixedVec = new THREE.Vector3( 0, 0, 1 ); // ref to get angle with moveVec
 
 
 
@@ -200,14 +203,40 @@ function Input() {
 
     function checkJoystickDelta() {
 
-        if ( joystick.deltaX() != 0 ||
-             joystick.deltaY() != 0 ) {
+        if ( Math.abs( joystick.deltaX() ) > 20 ||
+             Math.abs( joystick.deltaY() ) > 20 ) {
 
-            console.log( 'x : ' + joystick.deltaX() + ' / y : ' + joystick.deltaY() );
+            if ( moveKeys.length == 0 ) {
+                moveKeys.push( 'joystick' );
+            };
+
+            // Set the vector we will mesure the angle of with the
+            // virtual joystick's position deltas
+            moveVec.set( joystick.deltaY(), joystick.deltaX() );
+
+            controler.setMoveAngle( true, utils.toPiRange( moveVec.angle() ) );
+
+        } else {
+
+            // Reset moveKeys array
+            if ( moveKeys.length > 0 ) {
+                moveKeys.splice( 0, 1 );
+            };
 
         };
 
     };
+
+
+
+    document.body.addEventListener( 'touchstart', (e)=> {
+        console.log( 'touch start' );
+    });
+    
+
+    document.body.addEventListener( 'touchend', (e)=> {
+        console.log( 'touch end' );
+    });
 
 
 
