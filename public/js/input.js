@@ -14,6 +14,8 @@ function Input() {
 
     const domJSONLoader = document.getElementById('json-loader');
 
+    const domWorld = document.getElementById('world');
+
     // Movement
     var moveKeys = [];
     var tempDirArray ;
@@ -38,7 +40,7 @@ function Input() {
     domStick.id = 'stick'
 
     var joystick = new VirtualJoystick({
-        container: document.getElementById('prout'),
+        container: document.getElementById('joystick-container'),
         stickElement: domStick,
         baseElement: domBase
     });
@@ -250,13 +252,15 @@ function Input() {
 
 
 
-    document.body.addEventListener( 'touchstart', (e)=> {
+    domWorld.addEventListener( 'touchstart', (e)=> {
         console.log( 'touch start' );
+        params.isSpacePressed = true ;
     });
 
 
-    document.body.addEventListener( 'touchend', (e)=> {
+    domWorld.addEventListener( 'touchend', (e)=> {
         console.log( 'touch end' );
+        releaseSpace();
     });
 
 
