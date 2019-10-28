@@ -252,11 +252,30 @@ function Atlas( sceneGraph ) {
 		};
 
 
+
+
 		gltfLoader.load('https://edelweiss-game.s3.eu-west-3.amazonaws.com/hero.glb', (glb)=> {
+
 
 			let model = glb.scene ;
 			model.scale.set( SCALECHARA, SCALECHARA, SCALECHARA );
 			charaGroup.add( model );
+
+
+			model.traverse( (obj)=> {
+
+				if ( obj.type == 'Mesh' ||
+					 obj.type == 'SkinnedMesh' ) {
+
+					obj.material.side = THREE.FrontSide;
+
+					obj.castShadow = true ;
+					obj.receiveShadow = true ;
+
+				};
+
+			});
+
 
 			// get the glider object, and give it to the animation
 			// module, the hide it from the scene.

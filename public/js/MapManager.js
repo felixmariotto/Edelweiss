@@ -70,11 +70,14 @@ function MapManager() {
 
 		// Load the map chunk
 
-		console.log('update')
-
 		gltfLoader.load( `https://edelweiss-game.s3.eu-west-3.amazonaws.com/map/x${ x }y${ y }.glb`, (glb)=> {
 
-			console.log( glb );
+			let obj = glb.scene.children[ 0 ];
+
+			obj.material.side = THREE.FrontSide;
+			
+			obj.castShadow = true ;
+			obj.receiveShadow = true ;
 			
 			scene.add( glb.scene );
 

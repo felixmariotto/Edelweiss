@@ -8,6 +8,7 @@
 function Input() {
 
 
+    const ALLOWJOYSTICK = false ;
 
     const domStartMenu = document.getElementById('start-menu');
     const domStartButton = document.getElementById('start-button');
@@ -39,11 +40,15 @@ function Input() {
     domStick.src = 'assets/stick.png';
     domStick.id = 'stick'
 
-    var joystick = new VirtualJoystick({
-        container: document.getElementById('joystick-container'),
-        stickElement: domStick,
-        baseElement: domBase
-    });
+    if ( ALLOWJOYSTICK ) {
+
+        var joystick = new VirtualJoystick({
+            container: document.getElementById('joystick-container'),
+            stickElement: domStick,
+            baseElement: domBase
+        });
+
+    };
 
     // get joystick angle
     var moveVec = new THREE.Vector2(); // vec moved by joystick
@@ -62,7 +67,7 @@ function Input() {
 
     function update( delta ) {
 
-        checkJoystickDelta();
+        if ( ALLOWJOYSTICK ) checkJoystickDelta();
 
     };
 
@@ -231,8 +236,6 @@ function Input() {
                 moveKeys.push( 'joystick' );
             };
 
-            console.log( joystick._touchIdx )
-
             // Set the vector we will mesure the angle of with the
             // virtual joystick's position deltas
             moveVec.set( joystick.deltaY(), joystick.deltaX() );
@@ -242,8 +245,11 @@ function Input() {
         } else {
 
             // Reset moveKeys array
-            if ( moveKeys.length > 0 ) {
+            if ( moveKeys.length > 0 &&
+                 moveKeys.indexOf('joystick') > -1 ) {
+
                 moveKeys.splice( 0, 1 );
+            
             };
 
         };
@@ -253,13 +259,11 @@ function Input() {
 
 
     domWorld.addEventListener( 'touchstart', (e)=> {
-        console.log( 'touch start' );
         params.isSpacePressed = true ;
     });
 
 
     domWorld.addEventListener( 'touchend', (e)=> {
-        console.log( 'touch end' );
         releaseSpace();
     });
 
@@ -281,7 +285,7 @@ function Input() {
         switch( e.code ) {
 
             case 'Escape' :
-                console.log('press escape');
+                // console.log('press escape');
                 break;
 
             case 'Space' :

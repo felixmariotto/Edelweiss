@@ -8,6 +8,7 @@ function CameraControl( player, camera ) {
 	const NEEDARROWS = false ;
 
 	var group = new THREE.Group();
+	scene.add( group );
 
 	var testRays;
 	var lastValidRayDir = 'right' ; // either right or left
@@ -32,8 +33,50 @@ function CameraControl( player, camera ) {
 	var t = 1 ;
 	var cameraStartVec = new THREE.Vector3().copy( BOTTOMRIGHTENDVEC );
 	var cameraEndVec = BOTTOMRIGHTENDVEC ;
+	var cameraLookAtVec = new THREE.Vector3();
+
+	camera.position.copy( BOTTOMRIGHTENDVEC );
+	camera.lookAt( 0, 0, 0 );
 
 
+
+
+	var directionalLight = addShadowedLight( 2.4, 7.8, 5.6, 0xe8f9ff, 0.45 );
+    group.add( directionalLight );
+    group.add( directionalLight.target );
+
+
+
+    function addShadowedLight( x, y, z, color, intensity ) {
+
+        var directionalLight = new THREE.DirectionalLight( color, intensity );
+
+        directionalLight.position.set( x, y, z );
+        directionalLight.castShadow = true;
+
+        var d = 10;
+
+        directionalLight.shadow.camera.left = -d;
+        directionalLight.shadow.camera.right = d;
+        directionalLight.shadow.camera.top = d;
+        directionalLight.shadow.camera.bottom = -d;
+        directionalLight.shadow.camera.near = 0.1;
+        directionalLight.shadow.camera.far = 15;
+        directionalLight.shadow.mapSize.width = 2048;
+        directionalLight.shadow.mapSize.height = 2048;
+        directionalLight.shadow.bias = -0;
+
+        /*
+        var helper = new THREE.DirectionalLightHelper( directionalLight, 5 );
+        scene.add( helper );
+
+    	helper = new THREE.CameraHelper( directionalLight.shadow.camera );
+        scene.add( helper );
+        helper.matrixAutoUpdate = true ;
+        */
+
+        return directionalLight;
+    };
 
 
 
@@ -49,7 +92,6 @@ function CameraControl( player, camera ) {
 
 	} else {
 
-		scene.add( group );
 		group.add( camera );
 		group.position.copy( player.position );
 
@@ -106,6 +148,8 @@ function CameraControl( player, camera ) {
 	function update( intersectRays ) {
 
 		group.position.copy( player.position );
+
+		if ( ORBITCONTROLS ) return
 
 		// RAY INTERSECTION WITH LOGIC SCENE
 
@@ -205,8 +249,9 @@ function CameraControl( player, camera ) {
 			easing.easeInOutQuart( t )
 		);
 
-		// camera.position.copy( cameraEndVec );
-    	camera.lookAt( player.position );
+		cameraLookAtVec.copy( player.position );
+		cameraLookAtVec.y += atlas.PLAYERHEIGHT ;
+    	camera.lookAt( cameraLookAtVec );
 
 	};
 

@@ -7,14 +7,10 @@ function init() {
     // temp
     // scene.overrideMaterial = new THREE.MeshNormalMaterial();
 
-    camera = new THREE.PerspectiveCamera( 90, window.innerWidth/window.innerHeight, 1, 100 );
+    camera = new THREE.PerspectiveCamera( 70, window.innerWidth/window.innerHeight, 0.2, 40 );
 
-    var ambientLight = new THREE.AmbientLight( 0xffffff, 0.5 );
+    var ambientLight = new THREE.AmbientLight( 0xffffff, 0.45 );
 	scene.add( ambientLight );
-
-	var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
-	directionalLight.position.set( 0.24, 0.78, 0.56 );
-	scene.add( directionalLight );
 
     stats = new Stats();
     document.body.appendChild( stats.dom );
@@ -23,7 +19,9 @@ function init() {
         canvas: document.getElementById('world'),
         antialias: true
     });
+    renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.shadowMap.enabled = true ;
 
     
     clock = new THREE.Clock();
