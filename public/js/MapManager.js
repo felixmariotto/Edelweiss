@@ -75,7 +75,9 @@ function MapManager() {
 			let obj = glb.scene.children[ 0 ];
 
 			obj.material.side = THREE.FrontSide;
-			
+
+			obj.material = new THREE.MeshNormalMaterial();
+
 			obj.castShadow = true ;
 			obj.receiveShadow = true ;
 			

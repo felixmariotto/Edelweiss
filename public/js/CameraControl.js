@@ -60,8 +60,8 @@ function CameraControl( player, camera ) {
         directionalLight.shadow.camera.right = d;
         directionalLight.shadow.camera.top = d;
         directionalLight.shadow.camera.bottom = -d;
-        directionalLight.shadow.camera.near = 0.1;
-        directionalLight.shadow.camera.far = 10;
+        directionalLight.shadow.camera.near = 5;
+        directionalLight.shadow.camera.far = 18;
         directionalLight.shadow.mapSize.width = 1024;
         directionalLight.shadow.mapSize.height = 1024;
         directionalLight.shadow.bias = -0;
