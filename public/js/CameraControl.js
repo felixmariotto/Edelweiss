@@ -54,16 +54,16 @@ function CameraControl( player, camera ) {
         directionalLight.position.set( x, y, z );
         directionalLight.castShadow = true;
 
-        var d = 10;
+        var d = 8;
 
         directionalLight.shadow.camera.left = -d;
         directionalLight.shadow.camera.right = d;
         directionalLight.shadow.camera.top = d;
         directionalLight.shadow.camera.bottom = -d;
         directionalLight.shadow.camera.near = 0.1;
-        directionalLight.shadow.camera.far = 15;
-        directionalLight.shadow.mapSize.width = 2048;
-        directionalLight.shadow.mapSize.height = 2048;
+        directionalLight.shadow.camera.far = 10;
+        directionalLight.shadow.mapSize.width = 1024;
+        directionalLight.shadow.mapSize.height = 1024;
         directionalLight.shadow.bias = -0;
 
         /*
