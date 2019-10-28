@@ -3,7 +3,7 @@
 function CameraControl( player, camera ) {
 
 
-	const ORBITCONTROLS = false ;
+	const ORBITCONTROLS = true ;
 
 	const NEEDARROWS = false ;
 
