@@ -267,7 +267,11 @@ function Atlas( sceneGraph ) {
 				if ( obj.type == 'Mesh' ||
 					 obj.type == 'SkinnedMesh' ) {
 
-					obj.material.side = THREE.FrontSide;
+					obj.material = new THREE.MeshLambertMaterial({
+						map: obj.material.map,
+						side: THREE.FrontSide,
+						skinning: true
+					});
 
 					obj.castShadow = true ;
 					obj.receiveShadow = true ;
