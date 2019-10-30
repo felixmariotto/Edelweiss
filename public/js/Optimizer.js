@@ -1,8 +1,9 @@
 
 
-function Optimizer( delta ) {
+function Optimizer() {
 
 	// remove shadows
+	/*
 
 	if ( delta > 1 / 30 ) {
 
@@ -16,6 +17,34 @@ function Optimizer( delta ) {
 
     	console.log('remove shadows')
 
+	};
+	*/
+
+
+
+	function optimize( delta ) {
+
+		console.log( 'optimize' );
+
+		renderer.setPixelRatio( window.devicePixelRatio / 2 );
+
+	};
+
+
+
+
+	function deOptimize( delta ) {
+
+		console.log( 'de -  optimize' );
+
+	};
+
+
+
+
+	return {
+		optimize,
+		deOptimize
 	};
 
 };

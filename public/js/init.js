@@ -47,6 +47,7 @@ function init() {
     interaction = Interaction();
     dynamicItems = DynamicItems();
     mapManager = MapManager();
+    optimizer = Optimizer();
 
 
     loop();

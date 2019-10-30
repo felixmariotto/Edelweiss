@@ -16,7 +16,16 @@ function loop() {
 
     clockDelta = clock.getDelta();
 
+
     requestAnimationFrame( loop );
+    /*
+    setTimeout( function() {
+
+        requestAnimationFrame( loop );
+
+    }, 1000 / 30 );
+    */
+
 
     renderer.render( scene, camera );
 
