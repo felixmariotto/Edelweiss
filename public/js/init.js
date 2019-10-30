@@ -9,7 +9,7 @@ function init() {
 
     camera = new THREE.PerspectiveCamera( 70, window.innerWidth/window.innerHeight, 0.2, 40 );
 
-    var ambientLight = new THREE.AmbientLight( 0xffffff, 0.45 );
+    var ambientLight = new THREE.AmbientLight( 0xffffff, 0.48 );
 	scene.add( ambientLight );
 
     stats = new Stats();
@@ -22,6 +22,8 @@ function init() {
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.shadowMap.enabled = true ;
+    // renderer.gammaOutput = true;
+    // renderer.gammaFactor = 2.2;
 
     
     clock = new THREE.Clock();

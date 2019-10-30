@@ -4,8 +4,8 @@ function Utils() {
 
 
 
-    // This function takes any number, and given that it's an
-    // Euler angle, returns a angle value in the range -PI to PI.
+    // This function takes any number,
+    // and returns a angle value in the range -PI to PI.
     function toPiRange( rad ) {
 
         rad = rad % (Math.PI * 2) ;
@@ -83,6 +83,15 @@ function Utils() {
             Math.pow( vec1.z - vec2.z, 2 )
         );
 
+    };
+
+
+
+
+    // Returns the signed angle between vec1 and vec2 on origin
+    function angleVec2( vec1, vec2 ) {
+        let angle = Math.atan2( vec1.x * vec2.y - vec1.y * vec2.x,
+                                vec1.x * vec2.x + vec1.y * vec2.y ) ;
     };
 
 
