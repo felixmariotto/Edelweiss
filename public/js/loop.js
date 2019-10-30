@@ -1,19 +1,43 @@
 
 
+
+
+
 var loopCount = 0 ;
+
+
+
 
 function loop() {
 
+
+
 	loopCount += 1 ;
+
+    clockDelta = clock.getDelta();
 
     requestAnimationFrame( loop );
 
     renderer.render( scene, camera );
 
+
+
+    // If performances are low,
+    // reduce graphic quality to get at least 45FPS
+    if ( loopCount % 25 == 0 ) {
+
+        if ( clockDelta > 1 / 45 ) {
+
+            console.log('optimize')
+
+        };
+
+    };
+
+
+
     stats.update();
     if ( orbitControls ) orbitControls.update();
-
-    clockDelta = clock.getDelta();
 
     if ( controler ) controler.update( clockDelta );
     if ( mixer ) mixer.update( clockDelta );

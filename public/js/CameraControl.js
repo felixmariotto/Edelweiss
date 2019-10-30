@@ -86,7 +86,7 @@ function CameraControl( player, camera ) {
 	if ( ORBITCONTROLS ) {
 
 		//// OrbitControl part for test
-		orbitControls = new THREE.OrbitControls( camera, renderer.domElement );
+		orbitControls = new THREE.OrbitControls( camera, document.querySelector('#joystick-container') );
 		orbitControls.screenSpacePanning = true ;
 	    orbitControls.keys = [];
 
@@ -259,7 +259,8 @@ function CameraControl( player, camera ) {
 
 
 	return {
-		update
+		update,
+		directionalLight
 	};
 
 };
