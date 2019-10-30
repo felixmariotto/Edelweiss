@@ -10,7 +10,7 @@ function Optimizer() {
     
     cheapRenderer.setPixelRatio( window.devicePixelRatio / 2 );
     cheapRenderer.setSize( window.innerWidth, window.innerHeight );
-   
+    cheapRenderer.shadowMap.enabled = true ;
 
 	// remove shadows
 	/*
