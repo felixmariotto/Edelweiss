@@ -8,7 +8,7 @@
 function Input() {
 
 
-    const ALLOWJOYSTICK = false ;
+    const ALLOWJOYSTICK = true ;
 
     const domStartMenu = document.getElementById('start-menu');
     const domStartButton = document.getElementById('start-button');
