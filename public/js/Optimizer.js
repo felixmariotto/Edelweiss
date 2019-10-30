@@ -2,6 +2,16 @@
 
 function Optimizer() {
 
+
+	cheapRenderer = new THREE.WebGLRenderer({
+        canvas: document.getElementById('world'),
+        antialias: false
+    });
+    
+    cheapRenderer.setPixelRatio( window.devicePixelRatio / 2 );
+    cheapRenderer.setSize( window.innerWidth, window.innerHeight );
+   
+
 	// remove shadows
 	/*
 
@@ -26,7 +36,7 @@ function Optimizer() {
 
 		console.log( 'optimize' );
 
-		renderer.setPixelRatio( window.devicePixelRatio / 2 );
+		renderer = cheapRenderer ;
 
 	};
 
@@ -44,7 +54,8 @@ function Optimizer() {
 
 	return {
 		optimize,
-		deOptimize
+		deOptimize,
+		cheapRenderer
 	};
 
 };

@@ -18,6 +18,7 @@ function loop() {
 
 
     requestAnimationFrame( loop );
+    
     /*
     setTimeout( function() {
 
@@ -27,7 +28,16 @@ function loop() {
     */
 
 
-    renderer.render( scene, camera );
+    if ( optimizer ) {
+
+        optimizer.cheapRenderer.render( scene, camera );
+
+    } else {
+
+        renderer.render( scene, camera );
+
+    };
+    
 
 
 
