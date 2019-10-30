@@ -21,7 +21,7 @@ function init() {
     });
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
-    renderer.shadowMap.enabled = true ;
+    // renderer.shadowMap.enabled = true ;
     // renderer.gammaOutput = true;
     // renderer.gammaFactor = 2.2;
 
