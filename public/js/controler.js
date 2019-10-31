@@ -333,6 +333,7 @@ function Controler( player ) {
         ///////////////////////////////////////
 
 
+
         if ( ( input.moveKeys.length > 0 ) &&
             !state.isClimbing &&
             !state.isSlipping &&

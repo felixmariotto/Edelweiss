@@ -9,8 +9,10 @@ function Atlas( sceneGraph ) {
 	const INTERACTIVECUBERANGE = 0.85 ; // radius
 
 	const NEEDHELPERS = true ;
+
 	const NEEDPLAYERBOX = false ; // specifically allow player box helper
-    const NEEDARROW = false ;
+    const NEEDARROW = false ; // arrows showing player direction
+    const NEEDTILES = false ; // add the tiles helpers
 
     const SCALECHARA = 0.083 ;
 
@@ -147,7 +149,7 @@ function Atlas( sceneGraph ) {
 
 		sceneGraph.tilesGraph[i].forEach( (logicTile)=> {
 
-			if ( NEEDHELPERS ) {
+			if ( NEEDHELPERS && NEEDTILES ) {
 				Tile( logicTile );
 			};
 
@@ -250,11 +252,34 @@ function Atlas( sceneGraph ) {
 		};
 
 
+
+
 		gltfLoader.load('https://edelweiss-game.s3.eu-west-3.amazonaws.com/hero.glb', (glb)=> {
+
 
 			let model = glb.scene ;
 			model.scale.set( SCALECHARA, SCALECHARA, SCALECHARA );
 			charaGroup.add( model );
+
+
+			model.traverse( (obj)=> {
+
+				if ( obj.type == 'Mesh' ||
+					 obj.type == 'SkinnedMesh' ) {
+
+					obj.material = new THREE.MeshLambertMaterial({
+						map: obj.material.map,
+						side: THREE.FrontSide,
+						skinning: true
+					});
+
+					obj.castShadow = true ;
+					obj.receiveShadow = true ;
+
+				};
+
+			});
+
 
 			// get the glider object, and give it to the animation
 			// module, the hide it from the scene.
@@ -322,6 +347,7 @@ function Atlas( sceneGraph ) {
 		checkStage( Math.floor( player.position.y ) + 1 );
 		checkStage( Math.floor( player.position.y ) - 1 );
 
+
 		function checkStage( stage ) {
 
 			if ( sceneGraph.cubesGraph[ stage ] ) {
@@ -344,7 +370,6 @@ function Atlas( sceneGraph ) {
 						};
 
 					};
-
 
 
 					/////////////////////////
@@ -972,6 +997,7 @@ function Atlas( sceneGraph ) {
 		let meshCube = MeshCube( logicCube );
 		meshCube.logicCube = logicCube ;
 		scene.add( meshCube );
+		dynamicItems.addCube( meshCube );
 
 		return meshCube ;
 
@@ -1056,7 +1082,8 @@ function Atlas( sceneGraph ) {
 		intersectRay,
 		PLAYERHEIGHT,
 		PLAYERWIDTH,
-		sceneGraph
+		sceneGraph,
+		player
 	};
 
 

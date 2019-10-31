@@ -1,6 +1,21 @@
 
+
+
+
+
+
+
 function Input() {
 
+
+    const ALLOWJOYSTICK = true ;
+
+    const domStartMenu = document.getElementById('start-menu');
+    const domStartButton = document.getElementById('start-button');
+
+    const domJSONLoader = document.getElementById('json-loader');
+
+    const domWorld = document.getElementById('world');
 
     // Movement
     var moveKeys = [];
@@ -9,6 +24,61 @@ function Input() {
     var params = {
         isSpacePressed: false
     };
+
+    var touches = {};
+
+
+
+    //// JOYSTICK
+
+
+    domBase = document.createElement('IMG');
+    domBase.src = 'assets/base.png';
+    domBase.id = 'base'
+
+    domStick = document.createElement('IMG');
+    domStick.src = 'assets/stick.png';
+    domStick.id = 'stick'
+
+    if ( ALLOWJOYSTICK ) {
+
+        var joystick = new VirtualJoystick({
+            container: document.getElementById('joystick-container'),
+            stickElement: domStick,
+            baseElement: domBase
+        });
+
+    };
+
+    // get joystick angle
+    var moveVec = new THREE.Vector2(); // vec moved by joystick
+    // var fixedVec = new THREE.Vector3( 0, 0, 1 ); // ref to get angle with moveVec
+
+
+
+
+
+
+
+
+
+
+
+
+    function update( delta ) {
+
+        if ( ALLOWJOYSTICK ) checkJoystickDelta();
+
+    };
+
+
+
+
+
+
+
+
+
 
 
 
@@ -40,6 +110,9 @@ function Input() {
     };
 
 
+
+
+
     function parseJSON( data ) {
 
         for ( let valueToReplace of Object.keys( hashTable ) ) {
@@ -55,14 +128,18 @@ function Input() {
     };
 
 
-    document.getElementById('json-scene').addEventListener('click', ()=> {
-        document.getElementById('json-scene').blur();
+
+
+
+    domJSONLoader.addEventListener('click', ()=> {
+        domJSONLoader.blur();
     });
 
-    document.getElementById('json-scene').onchange = function (evt) {
+
+    domJSONLoader.onchange = function (evt) {
 
         var tgt = evt.target || window.event.srcElement,
-            files = tgt.files;
+        files = tgt.files;
     
         // FileReader support
         if (FileReader && files && files.length) {
@@ -71,12 +148,8 @@ function Input() {
 
             fr.onload = function () {
 
-                let data = lzjs.decompress( fr.result );
+                startFromSceneGraph( fr.result );
 
-                let sceneGraph = parseJSON( data );
-
-                // Initialize atlas with the scene graph
-                atlas = Atlas( sceneGraph );
             };
 
             fr.readAsText(files[0]);
@@ -87,6 +160,124 @@ function Input() {
 
 
 
+
+    domStartButton.addEventListener( 'touchstart', (e)=> {
+        startGame();
+    });
+
+    domStartButton.addEventListener( 'click', (e)=> {
+        startGame();
+    });
+
+
+
+
+    function startGame() {
+
+        domStartMenu.style.display = 'none' ;
+
+        fileLoader.load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/sceneGraph.json', ( file )=> {
+
+            startFromSceneGraph( file );
+
+        });
+
+    };
+
+
+
+
+    function startFromSceneGraph( file ) {
+
+        let data = lzjs.decompress( file );
+
+        let sceneGraph = parseJSON( data );
+
+        // Initialize atlas with the scene graph
+        atlas = Atlas( sceneGraph );
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ////////////////////
+    ///// GAME KEYS
+    ////////////////////
+
+
+
+    /////// TOUCHSCREEN
+
+
+    function checkJoystickDelta() {
+
+        if ( Math.abs( joystick.deltaX() ) > 10 ||
+             Math.abs( joystick.deltaY() ) > 10 ) {
+
+            if ( moveKeys.length == 0 ) {
+                moveKeys.push( 'joystick' );
+            };
+
+            // Set the vector we will mesure the angle of with the
+            // virtual joystick's position deltas
+            moveVec.set( joystick.deltaY(), joystick.deltaX() );
+
+            controler.setMoveAngle( true, utils.toPiRange( moveVec.angle() ) );
+
+        } else {
+
+            // Reset moveKeys array
+            if ( moveKeys.length > 0 &&
+                 moveKeys.indexOf('joystick') > -1 ) {
+
+                moveKeys.splice( 0, 1 );
+            
+            };
+
+        };
+
+    };
+
+
+
+    domWorld.addEventListener( 'touchstart', (e)=> {
+        params.isSpacePressed = true ;
+    });
+
+
+    domWorld.addEventListener( 'touchend', (e)=> {
+        releaseSpace();
+    });
+
+
+
+
+
+
+    
+
+
+    /////// KEYBOARD
+
+
     window.addEventListener( 'keydown', (e)=> {
 
         // console.log( e.code );
@@ -94,7 +285,7 @@ function Input() {
         switch( e.code ) {
 
             case 'Escape' :
-                console.log('press escape');
+                // console.log('press escape');
                 break;
 
             case 'Space' :
@@ -120,6 +311,9 @@ function Input() {
         };
         
     }, false);
+
+
+
 
 
 
@@ -263,6 +457,8 @@ function Input() {
 
     function releaseSpace() {
 
+        interaction.hideMessage();
+
         if ( interaction.isInDialogue() ) {
 
             interaction.requestNextLine();
@@ -284,7 +480,9 @@ function Input() {
 
     return {
         params,
-        moveKeys
+        moveKeys,
+        startGame,
+        update
     };
 
 };

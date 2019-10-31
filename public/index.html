@@ -23,6 +23,50 @@
             color: grey;
         }
 
+        .dialogue-box {
+            background-color: white;
+            border-radius: 10px;
+            border-color: black;
+            border-width: 5px;
+            border-style: solid;
+        }
+
+
+
+
+        #start-menu {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate( -50%, -50% );
+            padding: 30px;
+            background-color: green;
+        }
+
+            #start-menu > button {
+                font-size: 3em;
+            }
+
+
+
+        #stick {
+            height: 60px;
+            width: 60px;
+        }
+
+        #base {
+            height: 60px;
+            width: 60px;
+        }
+
+        #joystick-container {
+            height: 100vh;
+            width: 60vw;
+        }
+
+
+
+
         #world {
             position: fixed;
             top: 0;
@@ -35,6 +79,18 @@
             position: fixed;
             bottom: 0;
             right: 0;
+        }
+
+        #message-box {
+            position: fixed;
+            left: 50%;
+            top: 61vh;
+            transform: translate(-50%);
+            background-color: white;
+            padding: 40px;
+            font-size: 2.5em;
+            text-align: center;
+            display: none;
         }
 
 
@@ -81,13 +137,7 @@
 
 
 
-        .dialogue-box {
-            background-color: white;
-            border-radius: 10px;
-            border-color: black;
-            border-width: 5px;
-            border-style: solid;
-        }
+        
 
 
         #talk-container {
@@ -210,13 +260,20 @@
 
 
         #char-container {
-            background-color: blue;
             position: fixed;
             height: 100vh;
             width: 300px;
             bottom: 0px;
             right: -305px;
+            display: flex;
+            flex-direction: column-reverse;
         }
+
+            #char-img {
+                background-color: white;
+                width: 100%;
+                bottom: 0px;
+            }
 
             .show-char {
                 animation: show_char 0.3s ease-out 1 forwards;
@@ -253,10 +310,12 @@
     <script src="libs/three.js"></script>
     <script src="libs/OrbitControls.js"></script>
     <script src="libs/GLTFLoader.js"></script>
+    <script src="libs/DRACOLoader.js"></script>
 
     <script src="libs/stats.min.js"></script>
     <script src="libs/dat.gui.min.js"></script>
     <script src="libs/lzjs.js"></script>
+    <script src='libs/virtualjoystick.js'></script>
 
     <script src="js/init.js"></script>
     <script src="js/loop.js"></script>
@@ -270,14 +329,24 @@
     <script src="js/Stamina.js"></script>
     <script src="js/Interaction.js"></script>
     <script src="js/DynamicItems.js"></script>
+    <script src="js/MapManager.js"></script>
+    <script src="js/Optimizer.js"></script>
 
 </head>
 
 
 
+
+
+
 <body>
 
+
     <script src="js/main.js"></script>
+
+
+
+    <!-- General Game UI -->
 
     <canvas id="world"></canvas>
 
@@ -285,21 +354,53 @@
 
     <div id="overlay"></div>
 
-    <div id="char-container"></div>
-    <div id="talk-container" class='dialogue-box'>
-        <div id="talk-subcontainer">
-            <div id="text-container"></div>
-            <div id="answers-container"></div>
-        </div>
+    <div id="message-box" class="dialogue-box"></div>
+
+
+    <!-- Dialogue UI -->
+
+    <div id="char-container">
+        
+        <img id="char-img" src="">
+
     </div>
+
+    <div id="talk-container" class='dialogue-box'>
+
+        <div id="talk-subcontainer">
+
+            <div id="text-container"></div>
+
+            <div id="answers-container"></div>
+
+        </div>
+
+    </div>
+
     <div id="talker-name-container" class='dialogue-box'>Name</div>
+
+
+
+    <!-- Joystick -->
+
+    <div id='joystick-container'></div>
+
+
+
+    <!-- Menus -->
+
+    <div id="start-menu">
+        <button id='start-button'>Start</button>
+    </div>
+
+
 
 
     <!-- TEMPORARY -->
 
     <div id="gui">
-        <label for="json-scene">load JSON</label><br>
-        <input type='file' id='json-scene' name='json-scene'>
+        <label for="json-loader">load JSON</label><br>
+        <input type='file' id='json-loader' name='jjson-loader'>
     </div>
 
 </body>

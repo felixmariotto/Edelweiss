@@ -14,8 +14,11 @@ function Interaction() {
 	const domCharName = document.getElementById('talker-name-container');
 
 	const domChar = document.getElementById('char-container');
+	const domCharImg = document.getElementById('char-img');
 
 	const domOverlay = document.getElementById('overlay');
+
+	const domMessage = document.getElementById('message-box');
 
 	var currentDialogue ;
 	var currentLine ;
@@ -48,7 +51,112 @@ function Interaction() {
 
 	function trigger( agentName ) {
 
-		console.log( agentName );
+		switch ( agentName ) {
+
+			case 'bonus-stamina-1' :
+				getBonus( 'stamina-1' );
+				break;
+
+		};
+
+	};
+
+
+
+
+
+
+
+
+	///////////////////////////
+	///     INTERACTIONS
+	///////////////////////////
+
+
+	function interactWith( agentName ) {
+
+		switch ( agentName ) {
+
+			case 'char-dad' :
+				startDialogue( 'hello-dad' );
+				break;
+
+			case 'char-papy' :
+				console.log('interact with papy');
+				break;
+
+			case 'char-village-guardian' :
+				console.log('interact with village guardian');
+				break;
+
+		};
+
+	};
+
+
+
+
+
+
+
+
+
+	/////////////////////////////
+	///    BONUSES MANAGEMENT
+	/////////////////////////////
+
+
+	function getBonus( bonusName ) {
+
+		if ( !bonuses[ bonusName ].isFound ) {
+
+			bonuses[ bonusName ].onGet();
+			showMessage( bonuses[ bonusName ].message );
+			bonuses[ bonusName ].isFound = true ;
+
+		};
+
+	};
+
+
+
+
+	var bonuses = {
+
+		'stamina-1' : {
+			isFound: false,
+			onGet : stamina.incrementMaxStamina,
+			message : 'You found an edelWeiss !<br>+ 1 Stamina'
+		}
+
+	};
+
+
+
+
+
+
+
+
+
+
+	///////////////////////////
+	///	   MESSAGES UI
+	///////////////////////////
+
+
+	function showMessage( message ) {
+
+		domMessage.style.display = 'inherit';
+		domMessage.innerHTML = message ;
+
+	};
+
+
+	function hideMessage() {
+
+		domMessage.style.display = 'none';
+
 	};
 
 
@@ -98,13 +206,18 @@ function Interaction() {
 
 
 	// SHOW THE TALK UI
-	function showDialogueUI() {
+	function showDialogueUI( dialogueName ) {
+
+		let dialogueChar = dialogues[ dialogueName ].char ;
 
 		if ( isInAnim ) return
 
 		isInAnim = true ;
 
 		domOverlay.style.display = 'inherit' ;
+
+		domCharName.innerHTML = dialogueChar.name ;
+		domCharImg.src = dialogueChar.url ;
 
 		domTalkContainer.classList.remove( 'hide-talk' );
 		domTalkContainer.classList.add( 'show-talk' );
@@ -129,29 +242,7 @@ function Interaction() {
 
 
 
-
-
-
-
-
-
-
-	///////////////////////////
-	///     INTERACTIONS
-	///////////////////////////
-
-
-	function interactWith( agentName ) {
-
-		switch ( agentName ) {
-
-			case 'char-dad' :
-				startDialogue( 'hello-dad' );
-				break;
-
-		};
-
-	};
+	
 
 
 
@@ -168,7 +259,7 @@ function Interaction() {
 
 
 	///////////////////////////
-	///    DIALGUE FUNCTIONS
+	///    DIALOGUE FUNCTIONS
 	///////////////////////////
 
 
@@ -178,7 +269,7 @@ function Interaction() {
 
 		if ( lastDialogueDate < Date.now() - DIALOGUEBREAKTIME ) {
 
-			showDialogueUI();
+			showDialogueUI( dialogueName );
 
 			currentDialogue = dialogueName ;
 			currentLine = 0 ;
@@ -469,6 +560,33 @@ function Interaction() {
 
 
 
+	///////////////////////////////
+	///		DIALOGUES CHARACTERS
+	///////////////////////////////
+
+	var dialogueChars = {
+
+		dad : {
+			name: 'Dad',
+			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-dad.png'
+		}
+
+	};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	///////////////////////////
 	///    DIALOGUES TREES
 	///////////////////////////
@@ -478,7 +596,7 @@ function Interaction() {
 	var dialogues = {
 
 		'hello-dad' : {
-			char: 'Dad',
+			char: dialogueChars.dad,
 			story: [
 				{ m: 'Hi !' },
 				{ m: 'How are you today ?' },
@@ -498,6 +616,11 @@ function Interaction() {
 
 
 
+
+	
+
+
+
 	
 
 
@@ -511,6 +634,7 @@ function Interaction() {
 		interactWith,
 		trigger,
 		isInDialogue,
+		hideMessage,
 		requestNextLine,
 		chooseAnswer
 	};
