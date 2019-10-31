@@ -65,7 +65,7 @@ function Utils() {
 
 
 
-    // Get the minimal difference between two radians
+    // Get the minimal difference (delta) between two radians
     // ex : -2.5 <--> 2.5 ? => 1.28
     function minDiffRadians( rad1, rad2 ) {
         return Math.atan2( Math.sin( rad1 - rad2), Math.cos( rad1 - rad2) );
