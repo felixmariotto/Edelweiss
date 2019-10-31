@@ -41,6 +41,9 @@ function CameraControl( player, camera ) {
 
 
 
+
+
+
 	var directionalLight = addShadowedLight( 2.4, 7.8, 5.6, 0xffffff, 0.65 );
     group.add( directionalLight );
     group.add( directionalLight.target );
@@ -81,7 +84,20 @@ function CameraControl( player, camera ) {
 
 
 
+
+
+
+
+
+
+
+
 	// INIT
+
+
+	adaptFOV();
+
+
 
 	if ( ORBITCONTROLS ) {
 
@@ -140,6 +156,48 @@ function CameraControl( player, camera ) {
 
 
 	};
+
+
+
+
+
+
+
+
+
+
+
+
+	// Set the FOV depending on wether the display
+	// is horizontal or vertical
+	function adaptFOV() {
+
+		// display is vertical
+		if ( window.innerHeight > window.innerWidth ) {
+
+			camera.fov = 80 ;
+			camera.updateProjectionMatrix();
+
+		// display is horizontal
+		} else {
+
+			camera.fov = 60 ;
+			camera.updateProjectionMatrix();
+
+		};
+
+	};
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -224,6 +282,10 @@ function CameraControl( player, camera ) {
 		};
 
 
+
+
+
+
 		function updateCameraTarget( targetVec ) {
 			
 			if ( cameraEndVec != targetVec ) {
@@ -235,6 +297,7 @@ function CameraControl( player, camera ) {
 			};
 
 		};
+
 
 
 
@@ -258,9 +321,28 @@ function CameraControl( player, camera ) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	return {
 		update,
-		directionalLight
+		directionalLight,
+		adaptFOV
 	};
 
 };

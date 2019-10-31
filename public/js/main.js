@@ -28,7 +28,11 @@ window.addEventListener( 'resize', onWindowResize, false );
 
 
 
+
+
 function onWindowResize() {
+
+    if ( cameraControl ) cameraControl.adaptFOV() ;
 
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();

@@ -7,7 +7,7 @@ function init() {
     // temp
     // scene.overrideMaterial = new THREE.MeshNormalMaterial();
 
-    camera = new THREE.PerspectiveCamera( 70, window.innerWidth/window.innerHeight, 0.2, 40 );
+    camera = new THREE.PerspectiveCamera( 60, window.innerWidth/window.innerHeight, 0.2, 40 );
 
     var ambientLight = new THREE.AmbientLight( 0xffffff, 0.48 );
 	scene.add( ambientLight );

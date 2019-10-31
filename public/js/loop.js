@@ -28,6 +28,12 @@ function loop() {
     */
 
 
+
+    // temp
+    highRenderer.render( scene, camera );
+
+
+    /*
     
     if ( optimizer &&
          optimizer.params.level == 0 ) {
@@ -65,6 +71,11 @@ function loop() {
         };
 
     };
+
+    */
+
+
+
 
 
 

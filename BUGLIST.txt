@@ -4,11 +4,16 @@
 ////////////////////////////////////
 
 
-- movement speed must be adapted to FPS
-	=> can be tested by reducing FPS in loop
 
-- make smaller chunks of map
-	=> better frustum culling, especially for portable
+1 - TEST smaller chunks of map
+		- not use optimizer, to better see the difference of perf
+		- With narrow FOV as well, to see the difference with very horizontal displays
+
+2 - if test is relevant :
+	adapt ENGINE to EXPORT SMALL CHUNKS
+		- must find a name nomenclature for the chunks
+		- export in a directory to export as is to AWS
+		- export the same chunks in GLTF for modeling
 
 
 
