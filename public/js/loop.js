@@ -30,10 +30,10 @@ function loop() {
 
 
     // temp
-    highRenderer.render( scene, camera );
+    // highRenderer.render( scene, camera );
     // console.log(  highRenderer.info.render.calls )
 
-    /*
+    
     
     if ( optimizer &&
          optimizer.params.level == 0 ) {
@@ -72,7 +72,7 @@ function loop() {
 
     };
 
-    */
+    
 
 
 
