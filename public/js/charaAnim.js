@@ -146,10 +146,18 @@ function CharaAnim( player ) {
     var actionsToFadeOut = [];
 
 
+    var moveSpeedRatio ;
+
+
+
+
 
 
 
     function update( delta ) {
+
+
+        moveSpeedRatio = delta / ( 1 / 60 ) ;
 
 
     	// handle the hittingGround action, that make averything
@@ -170,7 +178,7 @@ function CharaAnim( player ) {
     		actionsToFadeIn.forEach( (action)=> {
 
     			actions[ action.actionName ].setEffectiveWeight(
-	    			actions[ action.actionName ].weight + action.fadeSpeed
+	    			actions[ action.actionName ].weight + ( action.fadeSpeed * moveSpeedRatio )
 	    		);
 
 	    		if ( actions[ action.actionName ].weight >=
@@ -192,7 +200,7 @@ function CharaAnim( player ) {
     		actionsToFadeOut.forEach( (action)=> {
 
     			actions[ action.actionName ].setEffectiveWeight(
-	    			actions[ action.actionName ].weight - action.fadeSpeed
+	    			actions[ action.actionName ].weight - ( action.fadeSpeed * moveSpeedRatio )
 	    		);
 
 	    		if ( actions[ action.actionName ].weight <= 0 ) {
