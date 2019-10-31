@@ -17,18 +17,14 @@ function loop() {
     clockDelta = clock.getDelta();
 
 
-    requestAnimationFrame( loop );
+    // requestAnimationFrame( loop );
     
-    /*
     setTimeout( function() {
 
         requestAnimationFrame( loop );
 
     }, 1000 / 30 );
-    */
-
     // 
-
 
     
     if ( optimizer &&
@@ -54,7 +50,7 @@ function loop() {
     if ( loopCount > 60 &&
          optimizer ) {
 
-        console.log( optimizer.params.level )
+        // console.log( optimizer.params.level )
 
         if ( clockDelta > optimizer.OPTFPS ) {
 

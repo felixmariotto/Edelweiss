@@ -3,13 +3,6 @@
 ///		SCHEDULE
 ////////////////////////////////////
 
-- Setup cheap-renderer with portable as target :
-	- no antialiasing
-	- pixelRatio / 2
-
-- If at any time in the in the render loop, FPS is under 45, we switch definitively to cheap-renderer
-
-- Can enable / disable shadows at runTime according to FPS
 
 - movement speed must be adapted to FPS
 	=> can be tested by reducing FPS in loop

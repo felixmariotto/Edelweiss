@@ -65,6 +65,14 @@ function Utils() {
 
 
 
+    // Returns the value between 0 and 1 representing
+    // the interpolant point between vStart and vEnd on v.
+    function interp( vStart, v, vEnd ) {
+        return ( v - vStart ) / ( vEnd - vStart );
+    };
+
+
+
     // Get the minimal difference (delta) between two radians
     // ex : -2.5 <--> 2.5 ? => 1.28
     function minDiffRadians( rad1, rad2 ) {
@@ -102,7 +110,8 @@ function Utils() {
         toPiRange,
         lerpAngles,
         minDiffRadians,
-        distanceVecs
+        distanceVecs,
+        interp
     };
 
 

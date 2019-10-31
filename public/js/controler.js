@@ -20,6 +20,9 @@ function Controler( player ) {
     };
 
 
+    var moveSpeedRatio ; // is used to multiply the speed of movements
+                         // according to FPS
+
     var cancelSpace = false ;
     var actionTime;
 
@@ -227,6 +230,10 @@ function Controler( player ) {
 
 
     function update( delta ) {
+
+
+        moveSpeedRatio = delta / ( 1 / 60 ) ;
+
 
 
 
@@ -521,7 +528,7 @@ function Controler( player ) {
 
                     stamina.reduceStamina( CLIMBPRICE );
 
-                    CLIMBVEC.set( 0, CLIMBSPEED * vecInversion, 0 );
+                    CLIMBVEC.set( 0, moveSpeedRatio * CLIMBSPEED * vecInversion, 0 );
                     CLIMBVEC.applyAxisAngle( axis, angle );
 
                     player.position.addScaledVector( CLIMBVEC, climbSpeedFactor );
@@ -596,13 +603,13 @@ function Controler( player ) {
 
             inertia = 0 ;
 
-            dashTime = dashTime + DASHTIMEINCREMENT || 0.01 ;
+            dashTime = dashTime + ( DASHTIMEINCREMENT * moveSpeedRatio ) || 0.01 ;
 
             let factor = 1 - dashTime ;
 
             player.position.addScaledVector(
                 dashVec,
-                Math.min( DASHDISTANCE * factor, 0.14 )
+                Math.min( DASHDISTANCE * factor, 0.14 ) * moveSpeedRatio
             );
 
             if ( dashTime > 0.98 ) {
@@ -647,7 +654,7 @@ function Controler( player ) {
 
 
         ////////////  PLAYER X Z TRANSLATION ///////////////////////
-        player.position.addScaledVector( HORIZMOVEVECT, inertia );
+        player.position.addScaledVector( HORIZMOVEVECT, inertia * moveSpeedRatio );
 
         
 
@@ -804,7 +811,7 @@ function Controler( player ) {
             } else {
 
                 // Normal gravity
-                speedUp -= 0.06 ;
+                speedUp -= ( 0.06 * moveSpeedRatio ) ;
                 speedUp = Math.max( Math.min( speedUp, 1.25 ), -2.3 );
 
             };
@@ -819,7 +826,9 @@ function Controler( player ) {
 
 
         /////////////  APPLY GRAVITY  ////////////////
-        player.position.y += ( speedUp * 0.1 ) ;
+
+        // We want to clamp the fall value, or player could traverse grounds
+        player.position.y += Math.max( speedUp * 0.1 * moveSpeedRatio, -0.25 ) ;
 
 
 

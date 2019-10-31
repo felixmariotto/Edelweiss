@@ -3,11 +3,21 @@
 function Optimizer() {
 
 
+	/*
+		These two constants define in what range of FPS the game
+		will be displayed. The larger the range, the more stable
+		it will be, as there will be fewer attempts or optimization/ deoptimization
+	*/
+
+	const OPTFPS = 1 / 43 ;	// FPS rate above which optimization must occur
+	const DEOPTFPS = 1 / 55 ; // FPS rate under which de-optimisation will occur
+
+
+
+
+
 	const OPTTIME = 500 ;	// timeout before optimizing
 	const DEOPTTIME = 600 ; // timeout before de-optimizing
-
-	const OPTFPS = 1 / 58 ;	// FPS rate above which optimization must occur
-	const DEOPTFPS = 1 / 60 ; // FPS rate under which de-optimisation will occur
 
 	const domWorldCheap = document.getElementById('worldCheap');
     const domWorldHigh = document.getElementById('worldHigh');
