@@ -659,6 +659,12 @@ function Controler( player ) {
         
 
 
+
+
+
+
+
+
         //////////////////////////////////////
         ///  GRAVITY AND GROUND COLLISION
         //////////////////////////////////////
@@ -667,6 +673,16 @@ function Controler( player ) {
         // atlas compute the position of the player according
         // to the horizontal obstacles in the scene.
         yCollision = atlas.collidePlayerGrounds() ;
+
+
+        // if ground collision, retry collision with less velocity
+        if ( yCollision.point != undefined ) {
+
+            player.position.y -= speedUp * 0.1 * ( moveSpeedRatio - 1 ) ;
+
+            yCollision = atlas.collidePlayerGrounds() ;
+
+        };
 
 
         // There is a collision with the ground
@@ -682,8 +698,6 @@ function Controler( player ) {
                  !state.isSlipping &&
                  !state.isGliding &&
                  speedUp < -0.8 ) {
-
-                console.log( speedUp );
 
                 charaAnim.hitGround( Math.max( - speedUp, 0 ) / 2.3 );
                 hitGroundRecovering = HITGROUNDRECOVERYTIME ;
