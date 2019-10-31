@@ -32,13 +32,13 @@ function loop() {
 
     
     if ( optimizer &&
-         optimizer.params.mustCheap ) {
+         optimizer.params.level == 0 ) {
 
-        cheapRenderer.render( scene, camera );
+        highRenderer.render( scene, camera );
 
     } else {
 
-        highRenderer.render( scene, camera );
+        cheapRenderer.render( scene, camera );
 
     };
 
@@ -51,13 +51,16 @@ function loop() {
 
     // If performances are low,
     // reduce graphic quality to get at least 45FPS
-    if ( loopCount > 60 ) {
+    if ( loopCount > 60 &&
+         optimizer ) {
 
-        if ( clockDelta > 1 / 45 ) {
+        // console.log( optimizer.params.level )
+
+        if ( clockDelta > optimizer.OPTFPS ) {
 
             optimizer.optimize( clockDelta );
 
-        } else {
+        } else if ( clockDelta < optimizer.DEOPTFPS ) {
 
             optimizer.deOptimize( clockDelta );
 

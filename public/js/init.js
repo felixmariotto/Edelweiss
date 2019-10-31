@@ -34,7 +34,7 @@ function init() {
         antialias: false
     });
     
-    cheapRenderer.setPixelRatio( window.devicePixelRatio / 2 );
+    cheapRenderer.setPixelRatio( window.devicePixelRatio );
     cheapRenderer.setSize( window.innerWidth, window.innerHeight );
     cheapRenderer.shadowMap.enabled = true ;
     
