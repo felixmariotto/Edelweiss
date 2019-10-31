@@ -6,8 +6,8 @@ function Optimizer() {
 	const OPTTIME = 500 ;	// timeout before optimizing
 	const DEOPTTIME = 600 ; // timeout before de-optimizing
 
-	const OPTFPS = 1 / 35 ;	// FPS rate above which optimization must occur
-	const DEOPTFPS = 1 / 49 ; // FPS rate under which de-optimisation will occur
+	const OPTFPS = 1 / 40 ;	// FPS rate above which optimization must occur
+	const DEOPTFPS = 1 / 50 ; // FPS rate under which de-optimisation will occur
 
 	const domWorldCheap = document.getElementById('worldCheap');
     const domWorldHigh = document.getElementById('worldHigh');
