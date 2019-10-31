@@ -97,6 +97,8 @@ function MapManager() {
 	// the new chunks of map and adds it to the sccene
 	function addMapChunk( x, y ) {
 
+
+
 		// Update record
 
 		if ( !record[ x ] ) {
