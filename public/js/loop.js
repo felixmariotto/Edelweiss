@@ -31,7 +31,7 @@ function loop() {
 
     // temp
     highRenderer.render( scene, camera );
-
+    // console.log(  highRenderer.info.render.calls )
 
     /*
     
@@ -49,7 +49,7 @@ function loop() {
     
     
     
-    
+
 
 
 

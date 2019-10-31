@@ -8,6 +8,8 @@ function MapManager() {
 
 	//// TEMP
 
+	/*
+
 	gltfLoader.load( `https://edelweiss-game.s3.eu-west-3.amazonaws.com/map/chunks.glb`, (glb)=> {
 
 		console.log( glb );
@@ -31,6 +33,8 @@ function MapManager() {
 		});
 
 	});
+
+	*/
 
 
 
@@ -75,7 +79,7 @@ function MapManager() {
 				if ( !record[ x ] || 
 					 !record[ x ][ y ] ) {
 
-					// addMapChunk( x, y );
+					addMapChunk( x, y );
 
 				};
 
