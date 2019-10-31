@@ -3,14 +3,14 @@
 function Optimizer() {
 
 
-	cheapRenderer = new THREE.WebGLRenderer({
-        canvas: document.getElementById('world'),
-        antialias: false
-    });
+	const domWorldCheap = document.getElementById('worldCheap');
+    const domWorldHigh = document.getElementById('worldHigh');
     
-    cheapRenderer.setPixelRatio( window.devicePixelRatio / 2 );
-    cheapRenderer.setSize( window.innerWidth, window.innerHeight );
-    cheapRenderer.shadowMap.enabled = true ;
+    var params = {
+    	mustCheap: false,
+    	timeCheapify: undefined
+    };
+
 
 	// remove shadows
 	/*
@@ -36,7 +36,11 @@ function Optimizer() {
 
 		console.log( 'optimize' );
 
-		renderer = cheapRenderer ;
+		if ( !params.mustCheap ) {
+
+			switchToCheapRenderer();
+
+		};
 
 	};
 
@@ -47,6 +51,57 @@ function Optimizer() {
 
 		console.log( 'de -  optimize' );
 
+		if ( params.mustCheap
+			 && params.timeCheapify + 1000 < Date.now() ) {
+
+			switchToHighRenderer();
+
+		};
+
+	};
+
+
+
+
+
+
+	//////////////////////////////
+	///    GENERAL FUNCTIONS
+	//////////////////////////////
+
+
+
+	function switchToCheapRenderer() {
+
+		params.timeCheapify = Date.now();
+
+		cheapRenderer.render( scene, camera );
+
+		domWorldHigh.style.display = 'none' ;
+		domWorldCheap.style.display = 'inherit';
+
+		params.mustCheap = true ;
+
+		// cheapRenderer.setSize( window.innerWidth, window.innerHeight );
+		// currentRenderer = cheapRenderer ;
+
+	};
+
+
+
+
+	function switchToHighRenderer() {
+
+		highRenderer.render( scene, camera );
+
+		domWorldHigh.style.display = 'inherit' ;
+		domWorldCheap.style.display = 'none';
+
+		params.mustCheap = false ;
+
+		// cheapRenderer.setSize( window.innerWidth, window.innerHeight );
+		// currentRenderer = cheapRenderer ;
+
 	};
 
 
@@ -55,7 +110,7 @@ function Optimizer() {
 	return {
 		optimize,
 		deOptimize,
-		cheapRenderer
+		params
 	};
 
 };

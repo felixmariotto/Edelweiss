@@ -27,27 +27,39 @@ function loop() {
     }, 1000 / 30 );
     */
 
+    // 
 
-    if ( optimizer ) {
 
-        optimizer.cheapRenderer.render( scene, camera );
+    
+    if ( optimizer &&
+         optimizer.params.mustCheap ) {
+
+        cheapRenderer.render( scene, camera );
 
     } else {
 
-        renderer.render( scene, camera );
+        highRenderer.render( scene, camera );
 
     };
+
+    
+    
+    
     
 
 
 
     // If performances are low,
     // reduce graphic quality to get at least 45FPS
-    if ( loopCount % 25 == 0 ) {
+    if ( loopCount > 60 ) {
 
         if ( clockDelta > 1 / 45 ) {
 
-            console.log('optimize')
+            optimizer.optimize( clockDelta );
+
+        } else {
+
+            optimizer.deOptimize( clockDelta );
 
         };
 

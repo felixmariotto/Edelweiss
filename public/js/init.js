@@ -14,18 +14,50 @@ function init() {
 
     stats = new Stats();
     document.body.appendChild( stats.dom );
+
+
+
+    /////////////////////
+    //   RENDERERS
+    /////////////////////
+
+    /*
+    There is two renderers, one quite demending for the
+    GPU, and one cheaper. highRenderer is the default,
+    but if low FPS is detected in the render loop, we
+    switch to cheapRenderer.
+    */
+
+
+    cheapRenderer = new THREE.WebGLRenderer({
+        canvas: document.getElementById('worldCheap'),
+        antialias: false
+    });
     
-    renderer = new THREE.WebGLRenderer({
-        canvas: document.getElementById('world'),
+    cheapRenderer.setPixelRatio( window.devicePixelRatio / 2 );
+    cheapRenderer.setSize( window.innerWidth, window.innerHeight );
+    cheapRenderer.shadowMap.enabled = true ;
+    
+
+    ////////////////
+
+    highRenderer = new THREE.WebGLRenderer({
+        canvas: document.getElementById('worldHigh'),
         antialias: true
     });
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    renderer.shadowMap.enabled = true ;
-    // renderer.gammaOutput = true;
-    // renderer.gammaFactor = 2.2;
+    highRenderer.setPixelRatio( window.devicePixelRatio );
+    highRenderer.setSize( window.innerWidth, window.innerHeight );
+    highRenderer.shadowMap.enabled = true ;
+    // highRenderer.gammaOutput = true;
+    // highRenderer.gammaFactor = 2.2;
 
-    
+    /////
+
+
+    /////////////////////
+    ///   MISC
+    /////////////////////
+
     clock = new THREE.Clock();
 
     gltfLoader = new THREE.GLTFLoader();

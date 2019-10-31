@@ -15,7 +15,8 @@ function Input() {
 
     const domJSONLoader = document.getElementById('json-loader');
 
-    const domWorld = document.getElementById('world');
+    const domWorldCheap = document.getElementById('worldCheap');
+    const domWorldHigh = document.getElementById('worldHigh');
 
     // Movement
     var moveKeys = [];
@@ -256,14 +257,23 @@ function Input() {
 
     };
 
+    ////
 
-
-    domWorld.addEventListener( 'touchstart', (e)=> {
+    domWorldCheap.addEventListener( 'touchstart', (e)=> {
         params.isSpacePressed = true ;
     });
 
+    domWorldHigh.addEventListener( 'touchstart', (e)=> {
+        params.isSpacePressed = true ;
+    });
 
-    domWorld.addEventListener( 'touchend', (e)=> {
+    ////
+
+    domWorldCheap.addEventListener( 'touchend', (e)=> {
+        releaseSpace();
+    });
+
+    domWorldHigh.addEventListener( 'touchend', (e)=> {
         releaseSpace();
     });
 
