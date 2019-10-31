@@ -19,12 +19,14 @@ function loop() {
 
     // requestAnimationFrame( loop );
     
+
     setTimeout( function() {
 
         requestAnimationFrame( loop );
 
     }, 1000 / 30 );
-    // 
+    //
+
 
     
     if ( optimizer &&
