@@ -6,8 +6,8 @@ function Optimizer() {
 	const OPTTIME = 500 ;	// timeout before optimizing
 	const DEOPTTIME = 600 ; // timeout before de-optimizing
 
-	const OPTFPS = 1 / 43 ;	// FPS rate above which optimization must occur
-	const DEOPTFPS = 1 / 50 ; // FPS rate under which de-optimisation will occur
+	const OPTFPS = 1 / 58 ;	// FPS rate above which optimization must occur
+	const DEOPTFPS = 1 / 60 ; // FPS rate under which de-optimisation will occur
 
 	const domWorldCheap = document.getElementById('worldCheap');
     const domWorldHigh = document.getElementById('worldHigh');
@@ -77,7 +77,9 @@ function Optimizer() {
 
 				cheapRenderer.render( scene, camera );
 
-				cheapRenderer.shadowMap.enabled = false;
+				setTimeout( ()=> {
+					cheapRenderer.shadowMap.enabled = false;
+				}, 0);
 
 		    	params.level = 3 ;
 

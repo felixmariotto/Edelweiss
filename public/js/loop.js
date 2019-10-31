@@ -54,7 +54,7 @@ function loop() {
     if ( loopCount > 60 &&
          optimizer ) {
 
-        // console.log( optimizer.params.level )
+        console.log( optimizer.params.level )
 
         if ( clockDelta > optimizer.OPTFPS ) {
 
