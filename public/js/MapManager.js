@@ -6,6 +6,36 @@ function MapManager() {
 
 
 
+	//// TEMP
+
+	gltfLoader.load( `https://edelweiss-game.s3.eu-west-3.amazonaws.com/map/chunks.glb`, (glb)=> {
+
+		console.log( glb );
+
+		glb.scene.traverse( (obj)=> {
+
+			if ( obj.type == "Mesh" ) {
+
+				obj.material = new THREE.MeshLambertMaterial({
+					map: obj.material.map,
+					side: THREE.FrontSide
+				});
+
+				obj.castShadow = true ;
+				obj.receiveShadow = true ;
+				
+				scene.add( glb.scene );
+
+			};
+
+		});
+
+	});
+
+
+
+
+
 	var record = {
 		/* 
 
@@ -45,7 +75,7 @@ function MapManager() {
 				if ( !record[ x ] || 
 					 !record[ x ][ y ] ) {
 
-					addMapChunk( x, y );
+					// addMapChunk( x, y );
 
 				};
 
@@ -58,7 +88,12 @@ function MapManager() {
 
 
 
+	// This is called in update function of this module.
+	// Every time the player enter a new area, it download
+	// the new chunks of map and adds it to the sccene
 	function addMapChunk( x, y ) {
+
+		debugger
 
 		// Update record
 
@@ -87,6 +122,9 @@ function MapManager() {
 		});
 
 	};
+
+
+
 
 
 
