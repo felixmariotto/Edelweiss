@@ -71,8 +71,7 @@ function MapManager() {
 			if ( atlas &&
 				 atlas.player ) {
 
-				// console.log( atlas.player ) ;
-
+				// compute map chunk(s) to be loaded
 				let x = 0 ;
 				let y = 0 ;
 
