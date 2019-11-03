@@ -4,16 +4,12 @@
 ////////////////////////////////////
 
 
+1 - Make NEW MAP in chunks with ENGINE
 
-1 - TEST smaller chunks of map
-		- not use optimizer, to better see the difference of perf
-		- With narrow FOV as well, to see the difference with very horizontal displays
+2 - Load the new chunks dynamically
 
-2 - if test is relevant :
-	adapt ENGINE to EXPORT SMALL CHUNKS
-		- must find a name nomenclature for the chunks
-		- export in a directory to export as is to AWS
-		- export the same chunks in GLTF for modeling
+3 - Create conversations with NPCs
+
 
 
 
