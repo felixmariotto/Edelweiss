@@ -12,7 +12,8 @@ function Atlas( sceneGraph ) {
 
 	const NEEDPLAYERBOX = false ; // specifically allow player box helper
     const NEEDARROW = false ; // arrows showing player direction
-    const NEEDTILES = false ; // add the tiles helpers
+    const NEEDTILES = true ; // add the tiles helpers
+    const NEEDPLANES = false ; // show helpers for limit planes
 
     const SCALECHARA = 0.083 ;
 
@@ -209,10 +210,12 @@ function Atlas( sceneGraph ) {
 				importedPlane.const
 			);
 
-			var helper = new THREE.PlaneHelper( plane, 1, 0xffff00 );
-			scene.add( helper );
-
 			planes.push( plane );
+
+			if ( NEEDPLANES ) {
+				var helper = new THREE.PlaneHelper( plane, 1, 0xffff00 );
+				scene.add( helper );
+			};
 
 		});
 
@@ -647,14 +650,14 @@ function Atlas( sceneGraph ) {
 		xCollision.majorWallType = undefined ;
 		xCollision.direction = undefined ;
 
+		collidedWalls = [];
+
 		// We check only the tiles at the same height as the player
 		checkStage( Math.floor( player.position.y ) );
 		checkStage( Math.floor( player.position.y ) + 1 );
 		checkStage( Math.floor( player.position.y ) - 1 );
 
 		checkPlanes();
-
-		collidedWalls = [];
 
 		if ( collidedWalls.length == 1 ) {
 
@@ -698,6 +701,7 @@ function Atlas( sceneGraph ) {
 			computeDirection( majorWall );
 
 		};
+
 
 		return xCollision ;
 
@@ -762,8 +766,6 @@ function Atlas( sceneGraph ) {
 			});
 
 		};
-
-
 
 
 
@@ -918,8 +920,6 @@ function Atlas( sceneGraph ) {
 		};
 
 
-
-		
 
 
 		function computeDirection( logicTile ) {

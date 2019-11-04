@@ -78,7 +78,7 @@ function MapManager() {
 				if ( !record[ x ] || 
 					 !record[ x ][ y ] ) {
 
-					addMapChunk( x, y );
+					// addMapChunk( x, y );
 
 				};
 

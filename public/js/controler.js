@@ -944,10 +944,10 @@ function Controler( player ) {
             player.position.z = xCollision.zPoint ;
         };
 
+
         if ( xCollision.majorWallType &&
             ( !state.isDashing ||
               xCollision.direction == dashWallDirection ) ) {
-
 
 
             // Save the direction of the wall while charging dash,

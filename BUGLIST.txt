@@ -10,7 +10,7 @@
 
 3 - Create conversations with NPCs
 
-
+4 - Improve camera
 
 
 
@@ -23,6 +23,8 @@
 //////////////////////////////////
 
 - player can climb far atop an upper ledge if they arrive at this position after a jump
+
+- shadows blinking on low grade devices because of optimisation
 
 	// Not urgent
 - it should not be possible to switch tile from a slipping wall
