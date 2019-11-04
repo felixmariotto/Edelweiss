@@ -26,5 +26,11 @@
 
 - shadows blinking on low grade devices because of optimisation
 
+- make stamina bar blink when out
+
+- player goes through ground when jump beside a cube
+
+
+
 	// Not urgent
 - it should not be possible to switch tile from a slipping wall
