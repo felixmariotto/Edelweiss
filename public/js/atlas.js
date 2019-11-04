@@ -707,25 +707,55 @@ function Atlas( sceneGraph ) {
 
 
 
+		// This function check for collision with the scene's limit planes
 		function checkPlanes() {
+
 
 			planes.forEach( (plane)=> {
 
+
+				// Plane is parallel to camera
 				if ( plane.normal.z != 0 ) {
 
-					// console.log('plane is face')
 					let limit = plane.normal.z * (plane.constant * -1);
 
 					if ( player.position.z + (atlas.PLAYERWIDTH / 2) > limit &&
 						 player.position.z - (atlas.PLAYERWIDTH / 2) < limit ) {
 
 
-						console.log('limit')
+						if ( direction > -Math.PI / 2 &&
+							 direction < Math.PI / 2 ) {
+
+							xCollision.zPoint = plane.constant - (atlas.PLAYERWIDTH / 2) ;
+
+						} else {
+
+							xCollision.zPoint = - plane.constant + (atlas.PLAYERWIDTH / 2) ;
+
+						};
+						
 					};
 
+
+				// plane is right or left
 				} else {
 
-					// console.log('plane is right or left')
+					let limit = plane.normal.x * (plane.constant * -1);
+
+					if ( player.position.x + (atlas.PLAYERWIDTH / 2) > limit &&
+						 player.position.x - (atlas.PLAYERWIDTH / 2) < limit ) {
+
+						if ( direction > 0 ) {
+
+							xCollision.xPoint = plane.constant - (atlas.PLAYERWIDTH / 2) ;
+
+						} else {
+
+							xCollision.xPoint = - plane.constant + (atlas.PLAYERWIDTH / 2) ;
+
+						};
+
+					};
 
 				};
 
