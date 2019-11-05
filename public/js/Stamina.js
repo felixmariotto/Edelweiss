@@ -4,7 +4,7 @@ function Stamina() {
 
     const domBar = document.getElementById('stamina-bar');
 
-    const STARTSTAMINA = 10 ;
+    const STARTSTAMINA = 2 ;
 
     var params = {
         stamina: 0,

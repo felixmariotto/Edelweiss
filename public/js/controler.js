@@ -862,7 +862,7 @@ function Controler( player ) {
         ////////////////////////////
 
         cubeCollision = atlas.collidePlayerCubes();
-        
+
 
         if ( cubeCollision.point ) {
 

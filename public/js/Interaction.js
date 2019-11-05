@@ -73,21 +73,111 @@ function Interaction() {
 	///////////////////////////
 
 
+	// Hold the current "state of relationship" with each NPC
+	// ex : Did the player already talk to Dad about the key ?
+	var dialogueStates = {
+
+		dad: 'init',
+
+		brother: 'init',
+
+		herbalist: 'init'
+
+	};
+
+
+
+
+
+
 	function interactWith( agentName ) {
 
 		switch ( agentName ) {
 
+
+
+
+			/// FAMILY
+
 			case 'char-dad' :
-				startDialogue( 'hello-dad' );
+
+				switch ( dialogueStates.dad ) {
+
+					case 'init' :
+						startDialogue( 'init-dad' );
+						break ;
+
+					case 'waiting-thread' :
+						startDialogue( 'dad-wait-thread' );
+						break ;
+
+				};
+
 				break;
 
-			case 'char-papy' :
-				console.log('interact with papy');
+
+			case 'char-brother' :
+				
+				switch ( dialogueStates.brother ) {
+
+					case 'init' :
+						startDialogue( 'init-brother' );
+						break ;
+
+				};
+
 				break;
+
+
+
+
+			/// TRADE
+
+			case 'char-herbalist' :
+				
+				switch ( dialogueStates.herbalist ) {
+
+					case 'init' :
+						startDialogue( 'init-herbalist' );
+						break ;
+
+					case 'waiting-sage' :
+						startDialogue( 'herbalist-wait-sage' );
+						break ;
+
+				};
+
+				break;
+
+
+			case 'char-herbalist-friend' :
+				console.log('interact with herbalist');
+				break;
+
+			case 'char-merchant' :
+				console.log('interact with merchant');
+				break;
+
+			case 'char-miner' :
+				console.log('interact with miner');
+				break;
+
+			case 'char-miner-boy' :
+				console.log('interact with miner-boy');
+				break;
+
+			/// VILLAGE - MISC
 
 			case 'char-village-guardian' :
 				console.log('interact with village guardian');
 				break;
+
+			/// CABLE-CARS
+
+			case 'cable-1' :
+				console.log('interact with cable-1');
+				break;
+			
 
 		};
 
@@ -106,6 +196,17 @@ function Interaction() {
 	/////////////////////////////
 
 
+	var bonuses = {
+
+		'stamina-1' : {
+			isFound: false,
+			onGet : stamina.incrementMaxStamina,
+			message : 'You found an edelWeiss !<br>+ 1 Stamina'
+		}
+
+	};
+
+
 	function getBonus( bonusName ) {
 
 		if ( !bonuses[ bonusName ].isFound ) {
@@ -121,15 +222,7 @@ function Interaction() {
 
 
 
-	var bonuses = {
-
-		'stamina-1' : {
-			isFound: false,
-			onGet : stamina.incrementMaxStamina,
-			message : 'You found an edelWeiss !<br>+ 1 Stamina'
-		}
-
-	};
+	
 
 
 
@@ -566,10 +659,58 @@ function Interaction() {
 
 	var dialogueChars = {
 
+		// FAMILY
+
 		dad : {
 			name: 'Dad',
 			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-dad.png'
-		}
+		},
+
+		brother : {
+			name: 'Brother',
+			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-brother.jpg'
+		},
+
+		// TRADE
+
+		herbalist : {
+			name: 'Herbalist',
+			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-herbalist.jpg'
+		},
+
+		herbalistFriend : {
+			name: "Herbalist's friend",
+			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-herbalist.jpg'
+		},
+
+		merchant : {
+			name: 'Merchant',
+			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-merchant.jpg'
+		},
+
+		miner : {
+			name: 'Miner',
+			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-miner.jpg'
+		},
+
+		minerBoy : {
+			name: "Miner's son",
+			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-miner-boy.jpg'
+		},
+
+		// VILLAGE - MISC
+
+		gatekeeper : {
+			name: "Gatekeeper",
+			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-gatekeeper.jpg'
+		},
+
+		// CABLE- CAR
+
+		lever : {
+			name: "Cable-car station",
+			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-lever.png'
+		},
 
 	};
 
@@ -595,11 +736,92 @@ function Interaction() {
 
 	var dialogues = {
 
-		'hello-dad' : {
+
+		//////////////
+		///   DAD
+		//////////////
+
+		'init-dad' : {
 			char: dialogueChars.dad,
 			story: [
-				{ m: 'Hi !' },
-				{ m: 'How are you today ?' },
+				{ m: "Can't you leave me alone while I'm working ?" },
+				{ m: "Instead of hanging around, go fetch me some thread in the market.", onCall: ()=> {
+					dialogueStates.dad = 'waiting-thread'
+				} },
+				{ m: "If only you were as useful as your brother..." }
+			]
+		},
+
+
+		'dad-wait-thread' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: "What's hard with fetching some thread, girl ?" },
+				{ question: 'Do you want me to explain how to get to the market ?', answers: [
+					{ m: 'Yes', next: 'help_yes' },
+					{ m: 'No', next: 'help_no' }
+				] },
+				{ label: 'help_yes', m: "Alright I will explain yet another time... You climb this wall beside me, then you cross the little bridge, then you climb the herbalist wall and it's on your right" },
+				{ label: 'help_no', m: 'Hurry up !' }
+			]
+		},
+
+
+
+		///////////////
+		///  BROTHER
+		///////////////
+
+		'init-brother' : {
+			char: dialogueChars.brother,
+			story: [
+				{ m: "I can't believe you cannot climb a wall like this yet, whereas you're two years older than me..."  },
+				{ m: 'This is SO easy !' },
+				{ m: 'Cross the bridge on your right, there is a smaller wall to get to the market.' },
+			]
+		},
+
+
+
+		/////////////////
+		///  HERBALIST
+		/////////////////
+
+		'init-herbalist' : {
+			char: dialogueChars.herbalist,
+			story: [
+				{ m: "My dear dear little daisy, Sorry to interrupt you... I just need a word !"  },
+				{ m: "If you find time between two of your Dad's commands, can you give me a hand up ?" },
+				{ m: "I need sage, but I'm getting old and I cannot climb the mountain anymore..."  },
+				{ question: 'If you find some sage, can you bring it to me ?', answers: [
+					{ m: 'Yes', next: 'help_yes' },
+					{ m: 'No', next: 'help_no' }
+				] },
+				{ label: 'help_yes', m: "Great ! In exchange I will give you my climbing gears, as I no longer need it. Bring me 5 to get the first gear !", onCall: ()=> {
+					dialogueStates.herbalist = "waiting-sage" ;
+				} },
+				{ label: 'help_no', m: "Mh... Well, let's see if you can find another wall to climb to get to the market then !" }
+			]
+		},
+
+
+		'herbalist-wait-sage' : {
+			char: dialogueChars.herbalist,
+			story: [
+				{ m: "Are you bringing me sage ??"  }
+			]
+		},
+
+
+
+
+		///// EXAMPLE
+
+		'init-merch' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: 'What ?' },
+				{ m: "Can't you leave me alone while I'm working ?" },
 				{ question: 'Can you help me ?', answers: [
 					{ m: 'Yes', next: 'help_yes' },
 					{ m: 'No', next: 'help_no' }
