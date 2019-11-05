@@ -849,6 +849,64 @@ function Controler( player ) {
 
 
 
+
+
+
+
+
+
+
+
+        ////////////////////////////
+        ///   CUBES COLLISION
+        ////////////////////////////
+
+        cubeCollision = atlas.collidePlayerCubes();
+        
+
+        if ( cubeCollision.point ) {
+
+            if ( player.position.y != cubeCollision.point.y ) {
+                speedUp = 0 ;
+            };
+
+            player.position.set(
+                cubeCollision.point.x,
+                cubeCollision.point.y,
+                cubeCollision.point.z
+            );
+
+        };
+
+
+        if ( cubeCollision.inRange ) {
+
+            if ( interactiveTag != cubeCollision.tag ) {
+                dynamicItems.showInteractionSign( cubeCollision.tag );
+            };
+
+            interactiveTag = cubeCollision.tag ;
+
+        } else {
+
+            if ( interactiveTag ) {
+                dynamicItems.clearInteractionSign();
+            };
+
+            interactiveTag = undefined ;
+
+        };
+
+
+
+
+
+
+
+
+
+
+
         /////////////////////////////////////////////
         ///  CLIMBING SETTING AND WALL COLLISIONS
         /////////////////////////////////////////////
@@ -1485,45 +1543,7 @@ function Controler( player ) {
 
 
 
-        ////////////////////////////
-        ///   CUBES COLLISION
-        ////////////////////////////
-
-        cubeCollision = atlas.collidePlayerCubes();
-
-
-        if ( cubeCollision.point ) {
-
-            if ( player.position.y != cubeCollision.point.y ) {
-                speedUp = 0 ;
-            };
-
-            player.position.set(
-                cubeCollision.point.x,
-                cubeCollision.point.y,
-                cubeCollision.point.z
-            );
-
-        };
-
-
-        if ( cubeCollision.inRange ) {
-
-            if ( interactiveTag != cubeCollision.tag ) {
-                dynamicItems.showInteractionSign( cubeCollision.tag );
-            };
-
-            interactiveTag = cubeCollision.tag ;
-
-        } else {
-
-            if ( interactiveTag ) {
-                dynamicItems.clearInteractionSign();
-            };
-
-            interactiveTag = undefined ;
-
-        };
+        
 
 
 

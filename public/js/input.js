@@ -93,6 +93,7 @@ function Input() {
         true: '$t',
         false: '$f',
         position: '$p',
+        scale: '$b',
         type: '$k',
         points: '$v',
         isWall: '$w',
