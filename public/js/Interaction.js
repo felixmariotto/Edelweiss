@@ -4,6 +4,8 @@
 function Interaction() {
 
 
+
+
 	const domTalkContainer = document.getElementById('talk-container');
 	var isInAnim = false ;
 
@@ -888,6 +890,7 @@ function Interaction() {
 				{ m: "Can't you leave me alone while I'm working ?" },
 				{ m: "Instead of hanging around, go fetch me some thread in the market.", onCall: ()=> {
 					dialogueStates.dad = 'waiting-thread'
+					dynamicItems.deleteCube( 'barrier-dad' );
 				} }
 			]
 		},
@@ -915,6 +918,7 @@ function Interaction() {
 				{ m: "Yes, now go away !", onCall: ()=> {
 					dialogueStates.dad = "general" ;
 					dialogueStates.gatekeeper = "warning" ;
+					dynamicItems.deleteCube( 'village-gate' );
 				} }
 			]
 		},
@@ -958,6 +962,7 @@ function Interaction() {
 				] },
 				{ label: 'help_yes', m: "Great ! In exchange I will give you my climbing gears, as I no longer need it. Bring me 5 to get the first gear !", onCall: ()=> {
 					dialogueStates.herbalist = "waiting-sage" ;
+					dynamicItems.deleteCube( 'barrier-herbalist' );
 				} },
 				{ label: 'help_no', m: "Mh... Well, let's see if you can find another wall to climb to get to the market then !" }
 			]

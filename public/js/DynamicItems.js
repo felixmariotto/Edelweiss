@@ -1,6 +1,9 @@
 
 
 function DynamicItems() {
+
+
+
 	
 
 	var interactionSign = new THREE.Group(); // will contain the sign sprite
@@ -34,26 +37,88 @@ function DynamicItems() {
 
 
 
+	// Add a cube to the three arrays containing cubes to interact with
+	function addCube( logicCube ) {
 
-	function addCube( meshCube ) {
-
-		switch ( meshCube.logicCube.type ) {
+		switch ( logicCube.type ) {
 
 			case 'cube-interactive' :
-				interactiveCubes.push( meshCube );
+				interactiveCubes.push( logicCube );
 				break;
 
 			case 'cube-trigger' :
-				triggerCubes.push( meshCube );
+				triggerCubes.push( logicCube );
 				break;
 
 			case 'cube-inert' :
-				inertCubes.push( meshCube );
+				inertCubes.push( logicCube );
 				break;
 
 		};
 
 	};
+
+
+
+
+	// Delete a cube from the scene graph and the arrays referencing it
+	function deleteCube( name ) {
+
+		let logicCube = getCubeByName( name );
+
+		logicCube.helper.geometry.dispose();
+		scene.remove( logicCube.helper );
+
+		atlas.deleteCubeFromGraph( logicCube );
+
+		[ inertCubes, interactiveCubes, triggerCubes ].forEach( ( cubes )=> {
+
+			cubes.forEach( ( cube, i )=> {
+
+				if ( cube == logicCube ) {
+
+					cubes.splice( i, 1 );
+
+				};
+				
+			});
+
+		});
+
+	};
+
+
+
+
+	function getCubeByName( name ) {
+
+		let x ;
+
+		[ inertCubes, interactiveCubes, triggerCubes ].forEach( ( cubes )=> {
+
+			cubes.forEach( ( logicCube )=> {
+
+				if ( logicCube.tag == name ) {
+
+					if ( x ) console.error( 'x already defined' );
+
+					x = logicCube ;
+
+				};
+				
+			});
+
+		});
+
+		return x ;
+
+	};
+
+
+
+	// barrier-dad
+	// barrier-herbalist
+	// village-gate
 
 
 
@@ -98,11 +163,11 @@ function DynamicItems() {
 
 		interactionSign.visible = true ;
 
-		interactiveCubes.forEach( ( meshCube )=> {
+		interactiveCubes.forEach( ( logicCube )=> {
 
-			if ( meshCube.logicCube.tag == tag ) {
+			if ( logicCube.tag == tag ) {
 
-				signedCube = meshCube ;
+				signedCube = logicCube ;
 
 			};
 			
@@ -128,6 +193,7 @@ function DynamicItems() {
 		update,
 		showInteractionSign,
 		clearInteractionSign,
-		addCube
+		addCube,
+		deleteCube
 	};
 };

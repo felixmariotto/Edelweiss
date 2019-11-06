@@ -185,6 +185,8 @@ function Atlas( sceneGraph ) {
 
 			sceneGraph.cubesGraph[i].forEach( (logicCube)=> {
 
+				dynamicItems.addCube( logicCube );
+
 				if ( NEEDHELPERS ) {
 					newCube( logicCube );
 				};
@@ -218,6 +220,35 @@ function Atlas( sceneGraph ) {
 			};
 
 		});
+
+	};
+
+
+
+	function deleteCubeFromGraph( logicCube ) {
+
+		for ( let i of Object.keys( sceneGraph.cubesGraph ) ) {
+
+			if ( sceneGraph.cubesGraph[i] ) {
+
+				sceneGraph.cubesGraph[i].forEach( ( cube )=> {
+
+					if ( cube == logicCube ) {
+
+						console.log('delete')
+
+						sceneGraph.cubesGraph[i].splice(
+							sceneGraph.cubesGraph[i].indexOf( cube ),
+							1
+						);
+
+					};
+
+				});
+
+			};
+
+		};
 
 	};
 
@@ -1105,8 +1136,8 @@ function Atlas( sceneGraph ) {
 
 		let meshCube = MeshCube( logicCube );
 		meshCube.logicCube = logicCube ;
+		logicCube.helper = meshCube ;
 		scene.add( meshCube );
-		dynamicItems.addCube( meshCube );
 
 		return meshCube ;
 
@@ -1193,7 +1224,8 @@ function Atlas( sceneGraph ) {
 		PLAYERHEIGHT,
 		PLAYERWIDTH,
 		sceneGraph,
-		player
+		player,
+		deleteCubeFromGraph
 	};
 
 
