@@ -81,7 +81,9 @@ function Interaction() {
 
 		brother: 'init',
 
-		herbalist: 'init'
+		herbalist: 'init',
+
+		merchant: 'init'
 
 	};
 
@@ -154,9 +156,23 @@ function Interaction() {
 				startDialogue( 'herbalist-friend-info' );
 				break;
 
+
 			case 'char-merchant' :
-				console.log('interact with merchant');
+				
+				switch( dialogueStates.merchant ) {
+
+					case 'init' :
+						startDialogue( 'init-merchant' );
+						break;
+
+					case 'wait-key' :
+						startDialogue( 'wait-key-merchant' );
+						break;
+
+				};
+
 				break;
+
 
 			case 'char-miner' :
 				console.log('interact with miner');
@@ -580,8 +596,6 @@ function Interaction() {
 
 	function printAnswerNext() {
 
-		clearQuestion();
-
 		// Get the line with the label of the chosen answer
 		let nextLine = dialogues[ currentDialogue ].story.find( ( line, i )=> {
 
@@ -596,8 +610,18 @@ function Interaction() {
 
 		});
 
-		executeLine( nextLine );
+		clearQuestion();
 
+		if ( !nextLine ) {
+
+			requestNextLine();
+
+		} else {
+
+			executeLine( nextLine );
+
+		};
+		
 	};
 
 
@@ -655,6 +679,8 @@ function Interaction() {
 			domAnswersContainer.children[ i - 1 ].remove();
 
 		};
+
+		questionTree.answers = [] ;
 
 	};
 
@@ -867,6 +893,44 @@ function Interaction() {
 				{ m: "She say that she couldn't have make it without the power of the edelweiss."  },
 				{ m: "I heard somebody at the pub saying that he saw one in the plains up the village."  },
 				{ m: "It's probably a lie though..."  }
+			]
+		},
+
+
+
+
+
+		///////// MERCHANT
+
+		'init-merchant' : {
+			char: dialogueChars.merchant,
+			story: [
+				{ question: 'Hi sweetie, what do you want ?', answers: [
+					{ m: 'I need some thread for my dad.', next: 'thread' },
+					{ m: 'I want the flower on the shelf behind you.', next: 'flower' },
+					{ m: 'Nothing' }
+				] },
+				{ label: 'thread', m: 'I have thread, but in the stockroom, and I lended the keys to the miner. Can you take him and bring it back please ?', onCall: ()=> {
+					dialogueStates.merchant = 'wait-key' ;
+				} },
+				{ label: 'flower', m: "Hahaha sweetie, this is for sale ! I don't think you have money yet, come back later." },
+				{ m: 'See you soon !' }
+			]
+		},
+
+
+		'wait-key-merchant' : {
+			char: dialogueChars.merchant,
+			story: [
+				{ m: "I see that you don't have the stockroom's keys yet..." },
+				{ question: 'Do you need anything ?', answers: [
+					{ m: "I can't find the miner to fetch de key.", next: 'miner' },
+					{ m: 'I want the flower on the shelf behind you.', next: 'flower' },
+					{ m: 'Nothing' }
+				] },
+				{ label: 'miner', m: 'The miner usually stands beside his cable-car, at the bottom right end of the village.' },
+				{ label: 'flower', m: "Hahaha sweetie, this is for sale ! I don't think you have money yet, come back later." },
+				{ m: 'See you soon !' }
 			]
 		},
 
