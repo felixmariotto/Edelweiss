@@ -151,7 +151,7 @@ function Interaction() {
 
 
 			case 'char-herbalist-friend' :
-				console.log('interact with herbalist');
+				startDialogue( 'herbalist-friend-info' );
 				break;
 
 			case 'char-merchant' :
@@ -198,13 +198,31 @@ function Interaction() {
 
 	var bonuses = {
 
+
+
 		'stamina-1' : {
+
 			isFound: false,
-			onGet : stamina.incrementMaxStamina,
+
+			onGet : function() {
+
+				stamina.incrementMaxStamina();
+
+				setTimeout( ()=> {
+					startDialogue( 'herbalist-friend-init' );
+				}, 1100 );
+			},
+
 			message : 'You found an edelWeiss !<br>+ 1 Stamina'
 		}
 
+
+
 	};
+
+
+
+
 
 
 	function getBonus( bonusName ) {
@@ -546,9 +564,9 @@ function Interaction() {
 	function setChosenAnswer() {
 
 		// Clean all the answer of the blinking class
-		questionTree.answers.forEach( ( answer )=> {
-			answer.dom.classList.remove( 'selected-answer' );
-		});
+		for ( domAnswer of domAnswersContainer.children ) {
+			domAnswer.classList.remove( 'selected-answer' );
+		};
 
 		// assign the blinking class to the answer newly chosen
 		let newDomChoice = questionTree.answers[ questionTree.currentChoice ].dom ;
@@ -679,8 +697,8 @@ function Interaction() {
 		},
 
 		herbalistFriend : {
-			name: "Herbalist's friend",
-			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-herbalist.jpg'
+			name: "Herbalist's husband",
+			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-herbalist-husband.jpg'
 		},
 
 		merchant : {
@@ -790,7 +808,7 @@ function Interaction() {
 		'init-herbalist' : {
 			char: dialogueChars.herbalist,
 			story: [
-				{ m: "My dear dear little daisy, Sorry to interrupt you... I just need a word !"  },
+				{ m: "My dear little daisy, Sorry to interrupt you... I just need a word !"  },
 				{ m: "If you find time between two of your Dad's commands, can you give me a hand up ?" },
 				{ m: "I need sage, but I'm getting old and I cannot climb the mountain anymore..."  },
 				{ question: 'If you find some sage, can you bring it to me ?', answers: [
@@ -809,6 +827,46 @@ function Interaction() {
 			char: dialogueChars.herbalist,
 			story: [
 				{ m: "Are you bringing me sage ??"  }
+			]
+		},
+
+
+
+
+		///// HERBALIST'S HUSBAND
+
+		'herbalist-friend-init' : {
+			char: dialogueChars.herbalistFriend,
+			story: [
+				{ m: 'Congrats ! You found your first edelWeiss !' },
+				{ m: 'You can climb taller walls now, look at the stamina bar at the top of your screen.' },
+				{ question: 'Do you want to know more about these flowers ?', answers: [
+					{ m: 'Yes', next: 'help_yes' },
+					{ m: 'No', next: 'help_no' }
+				] },
+				{ label: 'help_yes', m: 'These flowers are very rare, and can only be found in altitude.' },
+				{ label: 'help_no', m: "Fine ! Hurry to the market then, or your dad will get angry again...", end: true },
+				{ m: 'My wife used to climb up the mountain, and she found a lot ! She even reached the peak once...' },
+				{ m: "She say that she couldn't have make it without the power of the edelweiss."  },
+				{ m: "I heard somebody at the pub saying that he saw one in the plains up the village."  },
+				{ m: "It's probably a lie though..."  }
+			]
+		},
+
+
+		'herbalist-friend-info' : {
+			char: dialogueChars.herbalistFriend,
+			story: [
+				{ question: 'Do you want to know more about these flowers ?', answers: [
+					{ m: 'Yes', next: 'help_yes' },
+					{ m: 'No', next: 'help_no' }
+				] },
+				{ label: 'help_yes', m: 'These flowers are very rare, and can only be found in altitude.' },
+				{ label: 'help_no', m: "Fine ! Hurry to the market then, or your dad will get angry again...", end: true },
+				{ m: 'My wife used to climb up the mountain, and she found a lot ! She even reached the peak once...' },
+				{ m: "She say that she couldn't have make it without the power of the edelweiss."  },
+				{ m: "I heard somebody at the pub saying that he saw one in the plains up the village."  },
+				{ m: "It's probably a lie though..."  }
 			]
 		},
 
