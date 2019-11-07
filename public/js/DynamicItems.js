@@ -90,6 +90,7 @@ function DynamicItems() {
 
 
 
+
 	function getCubeByName( name ) {
 
 		let x ;
@@ -116,9 +117,74 @@ function DynamicItems() {
 
 
 
-	// barrier-dad
-	// barrier-herbalist
-	// village-gate
+
+
+
+
+
+
+
+
+
+
+
+
+	////// ANIMATIONS
+
+
+	/*
+
+	This animation system can be used to apply pre-written movements tracks
+	to cubes. All the tracks describing the movements are stocked in the array
+	'tracks'. A new animation can be initiated by calling 
+	actuateCube( cubeToActuate, trackName ). This function create a new action
+	object, that contain the cube to move, the track to apply, and the relative time.
+	It also add this new action to the array 'actionsToPlay', that is checked each
+	frame by the update function, to know what transform to apply.
+
+	*/
+
+	
+	// tracks array stock the tracks that can be applied to cubes.
+	tracks = {
+
+		'move-from-wall' : [
+			{ d: 1000, x: 0.01 },
+			{ d: 1000, y: 0.01 }
+		]
+
+	};
+
+
+	// store the actions to play in the update function
+	actionsToPlay = [];
+
+
+
+	// create a new action obj that will tell the update function how to transform the cube
+	function actuateCube( cubeName, trackName ) {
+
+		let logicCube = getCubeByName( cubeName );
+
+		let action = {
+			logicCube,
+			track: tracks[ trackName ],
+			t: 0
+		};
+
+		actionsToPlay.push( action );
+
+	};
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -126,10 +192,15 @@ function DynamicItems() {
 
 	///// UPDATE
 
-
+	var moveSpeedRatio ;
 	var updateCounter = 0 ;
+	var actionVec = new THREE.Vector3();
+
+
 
 	function update( delta ) {
+
+		moveSpeedRatio = delta / ( 1 / 60 ) ;
 
 		updateCounter ++ ;
 
@@ -144,7 +215,73 @@ function DynamicItems() {
 
 		};
 
+
+		// UPDATE CUBES ACCORDING TO ACTIONS
+		if ( actionsToPlay.length > 0 ) {
+
+			for ( let i = actionsToPlay.length -1 ; i > -1 ; i-- ) {
+
+				// update relative time of the action
+				actionsToPlay[ i ].t += delta * 1000 ;
+
+				// Get the current step in the action track
+				let acc = 0 ;
+				let stepID ;
+
+				for ( let j = 0 ; j < actionsToPlay[ i ].track.length ; j++ ) {
+
+					stepID = j ;
+					acc += actionsToPlay[ i ].track[ j ].d ;
+
+					// break the loop if step "j" is unfinished
+					if ( actionsToPlay[ i ].t < acc ) {
+
+						break ;
+
+					// tracks is finished
+					} else if ( j == actionsToPlay[ i ].track.length -1 ) {
+
+						// delete the action
+						actionsToPlay.splice( i, 1 );
+						break ;
+
+					};
+
+				};
+
+				if ( actionsToPlay[ i ] ) {
+
+					// Set the transform vector according th track's value
+					actionVec.set(
+						( actionsToPlay[ i ].track[ stepID ].x * moveSpeedRatio || 0 ),
+						( actionsToPlay[ i ].track[ stepID ].y * moveSpeedRatio || 0 ),
+						( actionsToPlay[ i ].track[ stepID ].z * moveSpeedRatio || 0 ) 
+					);
+
+					// Add transform vector to the logicCube's position
+					actionsToPlay[ i ].logicCube.position.x += actionVec.x ;
+					actionsToPlay[ i ].logicCube.position.y += actionVec.y ;
+					actionsToPlay[ i ].logicCube.position.z += actionVec.z ;
+
+					// Move the helper
+					actionsToPlay[ i ].logicCube.helper.position.copy(
+						actionsToPlay[ i ].logicCube.position
+					);
+
+				};
+
+			};
+
+		};
+
 	};
+
+
+
+
+
+
+
 
 
 
@@ -194,6 +331,7 @@ function DynamicItems() {
 		showInteractionSign,
 		clearInteractionSign,
 		addCube,
-		deleteCube
+		deleteCube,
+		actuateCube
 	};
 };

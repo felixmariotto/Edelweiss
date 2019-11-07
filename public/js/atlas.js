@@ -235,8 +235,6 @@ function Atlas( sceneGraph ) {
 
 					if ( cube == logicCube ) {
 
-						console.log('delete')
-
 						sceneGraph.cubesGraph[i].splice(
 							sceneGraph.cubesGraph[i].indexOf( cube ),
 							1

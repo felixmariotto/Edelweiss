@@ -891,6 +891,7 @@ function Interaction() {
 				{ m: "Instead of hanging around, go fetch me some thread in the market.", onCall: ()=> {
 					dialogueStates.dad = 'waiting-thread'
 					dynamicItems.deleteCube( 'barrier-dad' );
+					dynamicItems.actuateCube( 'char-dad', 'move-from-wall' );
 				} }
 			]
 		},
