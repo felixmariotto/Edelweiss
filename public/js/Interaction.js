@@ -964,6 +964,7 @@ function Interaction() {
 				{ label: 'help_yes', m: "Great ! In exchange I will give you my climbing gears, as I no longer need it. Bring me 5 to get the first gear !", onCall: ()=> {
 					dialogueStates.herbalist = "waiting-sage" ;
 					dynamicItems.deleteCube( 'barrier-herbalist' );
+					dynamicItems.actuateCube( 'char-herbalist', 'move-from-wall' );
 				} },
 				{ label: 'help_no', m: "Mh... Well, let's see if you can find another wall to climb to get to the market then !" }
 			]

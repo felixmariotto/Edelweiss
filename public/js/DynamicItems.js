@@ -149,8 +149,7 @@ function DynamicItems() {
 	tracks = {
 
 		'move-from-wall' : [
-			{ d: 1000, x: 0.01 },
-			{ d: 1000, y: 0.01 }
+			{ d: 1000, x: 0.018 }
 		]
 
 	};

@@ -6,7 +6,7 @@ function Atlas( sceneGraph ) {
 	const PLAYERWIDTH = 0.3 ;
 
 	const CUBEWIDTH = 0.4 ;
-	const INTERACTIVECUBERANGE = 0.85 ; // radius
+	const INTERACTIVECUBERANGE = 0.82 ; // radius
 
 	const NEEDHELPERS = true ;
 
