@@ -183,17 +183,6 @@ function Atlas( sceneGraph ) {
 
 		if ( sceneGraph.cubesGraph[i] ) {
 
-			for ( let j = sceneGraph.cubesGraph[i].length - 1 ; j > -1 ; j-- ) {
-
-				if ( NEEDHELPERS ) {
-					newCube( sceneGraph.cubesGraph[i][j] );
-				};
-
-				dynamicItems.addCube( sceneGraph.cubesGraph[i][j] );
-
-			};
-
-			/*
 			sceneGraph.cubesGraph[i].forEach( (logicCube)=> {
 
 				if ( NEEDHELPERS ) {
@@ -203,7 +192,6 @@ function Atlas( sceneGraph ) {
 				dynamicItems.addCube( logicCube );
 
 			});
-			*/
 
 		};
 
