@@ -6,7 +6,7 @@ function Atlas( sceneGraph ) {
 	const PLAYERWIDTH = 0.3 ;
 
 	const CUBEWIDTH = 0.4 ;
-	const INTERACTIVECUBERANGE = 0.85 ; // radius
+	const INTERACTIVECUBERANGE = 0.82 ; // radius
 
 	const NEEDHELPERS = true ;
 
@@ -185,6 +185,8 @@ function Atlas( sceneGraph ) {
 
 			sceneGraph.cubesGraph[i].forEach( (logicCube)=> {
 
+				dynamicItems.addCube( logicCube );
+
 				if ( NEEDHELPERS ) {
 					newCube( logicCube );
 				};
@@ -218,6 +220,33 @@ function Atlas( sceneGraph ) {
 			};
 
 		});
+
+	};
+
+
+
+	function deleteCubeFromGraph( logicCube ) {
+
+		for ( let i of Object.keys( sceneGraph.cubesGraph ) ) {
+
+			if ( sceneGraph.cubesGraph[i] ) {
+
+				sceneGraph.cubesGraph[i].forEach( ( cube )=> {
+
+					if ( cube == logicCube ) {
+
+						sceneGraph.cubesGraph[i].splice(
+							sceneGraph.cubesGraph[i].indexOf( cube ),
+							1
+						);
+
+					};
+
+				});
+
+			};
+
+		};
 
 	};
 
@@ -426,12 +455,13 @@ function Atlas( sceneGraph ) {
 					/////////////////////////
 
 					// check for X Z collision
-					if ( !( logicCube.position.x - (CUBEWIDTH / 2) > ( player.position.x + ( PLAYERWIDTH / 2 ) ) ||
-							logicCube.position.z - (CUBEWIDTH / 2) > ( player.position.z + ( PLAYERWIDTH / 2 ) ) ||
-							logicCube.position.x + (CUBEWIDTH / 2) < ( player.position.x - ( PLAYERWIDTH / 2 ) ) ||
-							logicCube.position.z + (CUBEWIDTH / 2) < ( player.position.z - ( PLAYERWIDTH / 2 ) ) ||
-							logicCube.position.y - (CUBEWIDTH / 2) > ( player.position.y + PLAYERHEIGHT ) ||
-							logicCube.position.y + (CUBEWIDTH / 2) < player.position.y ) ) {
+					if ( !( logicCube.position.x - ( (CUBEWIDTH * logicCube.scale.x ) / 2) > ( player.position.x + ( PLAYERWIDTH / 2 ) ) ||
+							logicCube.position.z - ( (CUBEWIDTH * logicCube.scale.z ) / 2) > ( player.position.z + ( PLAYERWIDTH / 2 ) ) ||
+							logicCube.position.x + ( (CUBEWIDTH * logicCube.scale.x ) / 2) < ( player.position.x - ( PLAYERWIDTH / 2 ) ) ||
+							logicCube.position.z + ( (CUBEWIDTH * logicCube.scale.z ) / 2) < ( player.position.z - ( PLAYERWIDTH / 2 ) ) ||
+							logicCube.position.y - ( (CUBEWIDTH * logicCube.scale.y ) / 2) > ( player.position.y + PLAYERHEIGHT ) ||
+							logicCube.position.y + ( (CUBEWIDTH * logicCube.scale.y ) / 2) < player.position.y ) ) {
+
 
 						if ( logicCube.type != 'cube-trigger' ) {
 
@@ -443,23 +473,23 @@ function Atlas( sceneGraph ) {
 
 							// X DIR
 							if ( logicCube.position.x > player.position.x ) {
-								cubeCollision.point.x = Math.min( player.position.x, logicCube.position.x - (CUBEWIDTH / 2) - (PLAYERWIDTH / 2) );
+								cubeCollision.point.x = Math.min( player.position.x, logicCube.position.x - ( (CUBEWIDTH * logicCube.scale.x ) / 2 ) - (PLAYERWIDTH / 2) );
 							} else {
-								cubeCollision.point.x = Math.max( player.position.x, logicCube.position.x + (CUBEWIDTH / 2) + (PLAYERWIDTH / 2) );
+								cubeCollision.point.x = Math.max( player.position.x, logicCube.position.x + ( (CUBEWIDTH * logicCube.scale.x ) / 2 ) + (PLAYERWIDTH / 2) );
 							};
 
 							// Z DIR
 							if ( logicCube.position.z > player.position.z ) {
-								cubeCollision.point.z = Math.min( player.position.z, logicCube.position.z - (CUBEWIDTH / 2) - (PLAYERWIDTH / 2) );
+								cubeCollision.point.z = Math.min( player.position.z, logicCube.position.z - ( (CUBEWIDTH * logicCube.scale.z ) / 2 ) - (PLAYERWIDTH / 2) );
 							} else {
-								cubeCollision.point.z = Math.max( player.position.z, logicCube.position.z + (CUBEWIDTH / 2) + (PLAYERWIDTH / 2) );
+								cubeCollision.point.z = Math.max( player.position.z, logicCube.position.z + ( (CUBEWIDTH * logicCube.scale.z ) / 2 ) + (PLAYERWIDTH / 2) );
 							};
 
 							// Y DIR
 							if ( logicCube.position.y > player.position.y + ( PLAYERHEIGHT / 2 ) ) {
-								cubeCollision.point.y = Math.min( player.position.y, logicCube.position.y - (CUBEWIDTH / 2) - PLAYERHEIGHT );
+								cubeCollision.point.y = Math.min( player.position.y, logicCube.position.y - ( (CUBEWIDTH * logicCube.scale.y ) / 2 ) - PLAYERHEIGHT );
 							} else {
-								cubeCollision.point.y = Math.max( player.position.y, logicCube.position.y + (CUBEWIDTH / 2) );
+								cubeCollision.point.y = Math.max( player.position.y, logicCube.position.y + ( (CUBEWIDTH * logicCube.scale.y ) / 2 ) );
 							};
 
 
@@ -1104,8 +1134,8 @@ function Atlas( sceneGraph ) {
 
 		let meshCube = MeshCube( logicCube );
 		meshCube.logicCube = logicCube ;
+		logicCube.helper = meshCube ;
 		scene.add( meshCube );
-		dynamicItems.addCube( meshCube );
 
 		return meshCube ;
 
@@ -1125,6 +1155,7 @@ function Atlas( sceneGraph ) {
 		let mesh = new THREE.Mesh( geometry, material );
 
 		mesh.position.copy( logicCube.position );
+		mesh.scale.copy( logicCube.scale );
 
 		return mesh ;
 
@@ -1191,7 +1222,8 @@ function Atlas( sceneGraph ) {
 		PLAYERHEIGHT,
 		PLAYERWIDTH,
 		sceneGraph,
-		player
+		player,
+		deleteCubeFromGraph
 	};
 
 
