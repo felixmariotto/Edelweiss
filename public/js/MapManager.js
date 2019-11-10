@@ -4,6 +4,17 @@ function MapManager() {
 
 
 
+	const CHUNK_SIZE = 3 ;
+
+	const CHUNK_LIST = [
+		// Y == 0
+		'x1y0', 'x0y0', 'x-0y0', 'x-1y0', 'x-2y0',
+		// Y == 1
+		'x1y1', 'x0y1', 'x-0y1', 'x-1y1',
+		// Y == 2
+		'x1y2', 'x0y2', 'x-0y2', 'x-1y2'
+	];
+
 
 
 	//// TEMP
@@ -71,14 +82,46 @@ function MapManager() {
 			if ( atlas &&
 				 atlas.player ) {
 
-				// compute map chunk(s) to be loaded
-				let x = 0 ;
-				let y = 0 ;
+				// Get player's x and y pos
+				let x = atlas.player.position.x / CHUNK_SIZE ;
+				let y = atlas.player.position.y / CHUNK_SIZE ;
 
-				if ( !record[ x ] || 
-					 !record[ x ][ y ] ) {
+				// request chunks around player's position
 
-					addMapChunk( x, y );
+				requestChunk( x, y );
+				requestChunk( x + 1, y );
+				requestChunk( x - 1, y );
+
+				requestChunk( x, y + 1 );
+				requestChunk( x + 1, y + 1 );
+				requestChunk( x - 1, y + 1 );
+
+				requestChunk( x, y - 1 );
+				requestChunk( x + 1, y - 1 );
+				requestChunk( x - 1, y - 1 );
+
+				function requestChunk( x, y ) {
+
+					// Round coords toward zero
+					x = x > 0 ? Math.floor( x ) : Math.ceil( x ) ;
+					y = y > 0 ? Math.floor( y ) : Math.ceil( y ) ;
+
+					// Handle the case of negative zero
+					if ( x === 0 && ( 1 / x ) === -Infinity ) x = '-0' ;
+					if ( y === 0 && ( 1 / y ) === -Infinity ) y = '-0' ;
+
+					// console.log( `x${ x }y${ y }` );
+
+					if ( !record[ x ] || 
+						 !record[ x ][ y ] ) {
+
+						if ( CHUNK_LIST.indexOf( `x${ x }y${ y }` ) > -1 ) {
+
+							addMapChunk( x, y );
+
+						};
+
+					};
 
 				};
 
@@ -95,8 +138,6 @@ function MapManager() {
 	// Every time the player enter a new area, it download
 	// the new chunks of map and adds it to the sccene
 	function addMapChunk( x, y ) {
-
-
 
 		// Update record
 
@@ -121,6 +162,10 @@ function MapManager() {
 			obj.receiveShadow = true ;
 			
 			scene.add( glb.scene );
+
+		}, null, (err)=> {
+
+			console.log( `Impossible to load file x${ x }y${ y }` );
 
 		});
 
