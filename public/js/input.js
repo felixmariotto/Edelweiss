@@ -568,7 +568,8 @@ function Input() {
         params,
         moveKeys,
         startGame,
-        update
+        update,
+        joystick
     };
 
 };

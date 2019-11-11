@@ -32,6 +32,8 @@
 
 - disable switching to inexistant answers on the right side
 
+- reset body gliding before to launch it, so it looks like she balance forward because of slowing down
+
 
 
 	// Not urgent

@@ -43,4 +43,14 @@ function onWindowResize() {
 	cheapRenderer.setSize( window.innerWidth, window.innerHeight );
     highRenderer.setSize( window.innerWidth, window.innerHeight );
 
+    if ( input.joystick ) {
+
+        input.joystick._baseX = 100 ;
+        input.joystick._baseY = window.innerHeight - 100 ;
+
+        input.joystick._baseEl.style.top = 
+            `${ window.innerHeight - ( 100 + ( input.joystick._baseEl.clientHeight / 2 ) ) }px` ;
+
+    };
+
 };
