@@ -27,7 +27,8 @@ window.addEventListener('load', ()=> {
 
 window.addEventListener( 'resize', onWindowResize, false );
 
-
+document.getElementById('char-container').style.height =
+        `${ window.innerHeight }px`;
 
 
 
@@ -42,6 +43,9 @@ function onWindowResize() {
 
 	cheapRenderer.setSize( window.innerWidth, window.innerHeight );
     highRenderer.setSize( window.innerWidth, window.innerHeight );
+
+    document.getElementById('char-container').style.height =
+        `${ window.innerHeight }px`;
 
     if ( input.joystick ) {
 
