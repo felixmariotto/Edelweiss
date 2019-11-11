@@ -52,7 +52,6 @@ function loop() {
 
 
 
-
     // If performances are low,
     // reduce graphic quality to get at least 45FPS
     if ( loopCount > 60 &&
@@ -64,15 +63,18 @@ function loop() {
 
             optimizer.optimize( clockDelta );
 
+            console.log( 'opti' )
+
         } else if ( clockDelta < optimizer.DEOPTFPS ) {
 
             optimizer.deOptimize( clockDelta );
+
+            console.log( 'DE - opti' )
 
         };
 
     };
 
-    
 
 
 
@@ -88,7 +90,7 @@ function loop() {
     if ( dynamicItems ) dynamicItems.update( clockDelta );
     if ( input ) input.update( clockDelta );
 
-    if ( cameraControl ) cameraControl.update( loopCount % 10 == 0 );
+    if ( cameraControl ) cameraControl.update( loopCount % 6 == 0 );
     if ( stamina ) stamina.update( loopCount % 10 == 0 );
     if ( mapManager ) mapManager.update( loopCount % 10 == 0 );
 
