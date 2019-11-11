@@ -18,6 +18,10 @@ function Input() {
     const domWorldCheap = document.getElementById('worldCheap');
     const domWorldHigh = document.getElementById('worldHigh');
 
+    const domJoystickContainer = document.getElementById('joystick-container');
+    const domCharContainer = document.getElementById('char-container');
+    const domTalkContainer = document.getElementById('talk-container');
+
     // Movement
     var moveKeys = [];
     var tempDirArray ;
@@ -276,6 +280,30 @@ function Input() {
 
     domWorldHigh.addEventListener( 'touchend', (e)=> {
         releaseSpace();
+    });
+
+    ////
+
+    domJoystickContainer.addEventListener( 'touchend', (e)=> {
+
+        if ( interaction.isInDialogue() ) {
+
+            interaction.requestNextLine();
+
+        };
+
+    });
+
+    domCharContainer.addEventListener( 'touchend', (e)=> {
+
+        interaction.requestNextLine();
+
+    });
+
+    domTalkContainer.addEventListener( 'touchend', (e)=> {
+
+        interaction.requestNextLine();
+
     });
 
 
