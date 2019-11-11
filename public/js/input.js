@@ -52,9 +52,12 @@ function Input() {
     if ( ALLOWJOYSTICK ) {
 
         var joystick = new VirtualJoystick({
-            container: document.getElementById('joystick-container'),
-            stickElement: domStick,
-            baseElement: domBase
+            container : document.getElementById('joystick-container'),
+            stickElement : domStick,
+            baseElement : domBase,
+            stationaryBase : true,
+            baseX : 100,
+            baseY : window.innerHeight - 100
         });
 
     };
@@ -244,8 +247,9 @@ function Input() {
 
     function checkJoystickDelta() {
 
-        if ( Math.abs( joystick.deltaX() ) > 10 ||
-             Math.abs( joystick.deltaY() ) > 10 ) {
+        if ( joystick._pressed && 
+             ( Math.abs( joystick.deltaX() ) > 10 ||
+               Math.abs( joystick.deltaY() ) > 10 ) ) {
 
             if ( moveKeys.length == 0 ) {
                 moveKeys.push( 'joystick' );
