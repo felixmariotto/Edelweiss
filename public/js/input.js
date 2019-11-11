@@ -56,15 +56,14 @@ function Input() {
             stickElement : domStick,
             baseElement : domBase,
             stationaryBase : true,
-            baseX : 100,
-            baseY : window.innerHeight - 100
+            baseX : 85,
+            baseY : window.innerHeight - 85
         });
 
     };
 
     // get joystick angle
     var moveVec = new THREE.Vector2(); // vec moved by joystick
-    // var fixedVec = new THREE.Vector3( 0, 0, 1 ); // ref to get angle with moveVec
 
 
 
