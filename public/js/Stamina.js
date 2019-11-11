@@ -77,7 +77,7 @@ function Stamina() {
             domGauge.style.height = `${ b * 100 }%` ;
             */
 
-            domGauge.style.height = `${ Math.max( Math.min( params.stamina - i, 1 ), 0 ) * 100 }%` ;
+            domGauge.style.width = `${ Math.max( Math.min( params.stamina - i, 1 ), 0 ) * 100 }%` ;
 
         });
 

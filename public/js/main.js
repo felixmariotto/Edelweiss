@@ -12,11 +12,12 @@ var actions = [];
 var utils = Utils();
 var easing = Easing();
 
+/*
 var GUIControler = {
     gliding: true,
     infinityJump: true,
     dash: true
-};
+}; */
 
 var clockDelta ;
 

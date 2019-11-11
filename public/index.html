@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 	<title>Edelweiss</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
@@ -86,6 +87,7 @@
             position: fixed;
             bottom: 0;
             right: 0;
+            display: none;
         }
 
         #message-box {
@@ -105,15 +107,18 @@
 
         #stamina-bar {
             position: fixed;
-            left: 30px;
-            bottom: 30px;
-            width: 20px;
+            left: 20px;
+            top: 20px;
+            height: 20px;
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
         }
 
             .stamina-section {
-                width: 100%;
-                height: 9vh;
-                margin-top: -2px;
+                height: 100%;
+                width: 20vw;
+                margin-right: -2px;
                 background-color: rgba(153, 228, 78, 0.294);
                 border-radius: 4px;
                 border-color: white;
@@ -174,11 +179,11 @@
                 left: 50%;
                 top: 50%;
                 transform: translate( -50%, -50% );
-                overflow-y: scroll;
+                overflow-y: auto;
             }
 
                 #text-container {
-                    font-size: calc(100% + 1vh);
+                    font-size: calc( 100% + 1vh );
                     text-align: center;
                 }
 
@@ -247,8 +252,8 @@
             position: fixed;
             padding: 10px 20px 10px 20px;
             bottom: -80px;
-            right: 50px;
-            font-size: 2.3em;
+            right: 5vw;
+            font-size: calc( 100% + 2vh );
         }
 
             .show-talker-name {

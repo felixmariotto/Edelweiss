@@ -1,11 +1,12 @@
 
 function Controler( player ) {
 
-
+    /*
     // TEMPORARY FEATURE CONTROL
     datGUI.add( GUIControler, 'gliding', true ).onChange( toggleGliding );
     datGUI.add( GUIControler, 'infinityJump', true ).onChange( toggleInfinityJump );
     datGUI.add( GUIControler, 'dash', true ).onChange( toggleDash );
+    */
 
     function toggleGliding( bool ) {
         permission.gliding = bool ;

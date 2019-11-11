@@ -14,6 +14,8 @@ function init() {
 
     stats = new Stats();
     document.body.appendChild( stats.dom );
+    stats.dom.style.right = '0px' ;
+    stats.dom.style.left = 'auto' ;
 
 
 
@@ -71,7 +73,7 @@ function init() {
 
 
     // TEMP
-    datGUI = new dat.GUI();
+    // datGUI = new dat.GUI();
 
 
     input = Input();
