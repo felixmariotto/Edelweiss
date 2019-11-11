@@ -24,7 +24,7 @@ function loop() {
 
         requestAnimationFrame( loop );
 
-    }, 1000 / 30 );
+    }, 1000 / 20 );
     */
 
 
@@ -63,13 +63,9 @@ function loop() {
 
             optimizer.optimize( clockDelta );
 
-            console.log( 'opti' )
-
         } else if ( clockDelta < optimizer.DEOPTFPS ) {
 
             optimizer.deOptimize( clockDelta );
-
-            console.log( 'DE - opti' )
 
         };
 
