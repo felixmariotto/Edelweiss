@@ -150,6 +150,16 @@
             max-height: calc( 25vh - 40px );
         }
 
+            @media screen and ( max-height: 750px ) {
+
+                #talk-container {
+                    padding: 5px 0px 5px 0px;
+                    height: 190px;
+                    max-height: calc( 25vh - 10px );
+                }
+
+            }
+
             #talk-subcontainer {
                 position: relative;
                 width: 70vw;
@@ -161,7 +171,7 @@
             }
 
                 #text-container {
-                    font-size: 1.7em;
+                    font-size: calc(100% + 1vh);
                     text-align: center;
                 }
 
