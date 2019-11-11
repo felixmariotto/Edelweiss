@@ -29,6 +29,13 @@
             border-color: black;
             border-width: 5px;
             border-style: solid;
+            cursor: default;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
 
@@ -147,18 +154,31 @@
             left: 10px;
             width: calc( 100vw - 10px - 20px );
             height: 160px;
+            max-height: calc( 25vh - 40px );
         }
+
+            @media screen and ( max-height: 750px ) {
+
+                #talk-container {
+                    padding: 5px 0px 5px 0px;
+                    height: 190px;
+                    max-height: calc( 25vh - 10px );
+                }
+
+            }
 
             #talk-subcontainer {
                 position: relative;
                 width: 70vw;
+                max-height: 100%;
                 left: 50%;
                 top: 50%;
                 transform: translate( -50%, -50% );
+                overflow-y: scroll;
             }
 
                 #text-container {
-                    font-size: 1.7em;
+                    font-size: calc(100% + 1vh);
                     text-align: center;
                 }
 
@@ -265,6 +285,7 @@
             position: fixed;
             height: 100vh;
             width: 300px;
+            max-width: 50vh;
             bottom: 0px;
             right: -305px;
             display: flex;
@@ -272,9 +293,11 @@
         }
 
             #char-img {
-                background-color: white;
+                position: absolute;
                 width: 100%;
+                max-width: 75vw;
                 bottom: 0px;
+                right: 0px;
             }
 
             .show-char {

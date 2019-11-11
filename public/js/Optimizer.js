@@ -1,5 +1,7 @@
 
 
+
+
 function Optimizer() {
 
 
@@ -9,8 +11,8 @@ function Optimizer() {
 		it will be, as there will be fewer attempts or optimization/ deoptimization
 	*/
 
-	const OPTFPS = 1 / 43 ;	// FPS rate above which optimization must occur
-	const DEOPTFPS = 1 / 55 ; // FPS rate under which de-optimisation will occur
+	const OPTFPS = 1 / 40 ;	// FPS rate above which optimization must occur
+	const DEOPTFPS = 1 / 57 ; // FPS rate under which de-optimisation will occur
 
 
 
@@ -62,11 +64,10 @@ function Optimizer() {
 				switchToCheapRenderer();
 				params.level = 1 ;
 
-			// make pixel ratio lower, which make the screen more
-			// pixelated, but hardly noticable on smartphone
+			// set pixel ratio to 1, which has effect mostly on smartphones
 			} else if ( params.level == 1 ) {
 
-				cheapRenderer.setPixelRatio( window.devicePixelRatio / 2 );
+				cheapRenderer.setPixelRatio( 1 );
 				cheapRenderer.render( scene, camera );
 				params.level = 2 ;
 

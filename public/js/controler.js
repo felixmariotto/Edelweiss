@@ -20,8 +20,6 @@ function Controler( player ) {
     };
 
 
-    var moveSpeedRatio ; // is used to multiply the speed of movements
-                         // according to FPS
 
     var cancelSpace = false ;
     var actionTime;
@@ -232,7 +230,6 @@ function Controler( player ) {
     function update( delta ) {
 
 
-        moveSpeedRatio = delta / ( 1 / 60 ) ;
 
 
         // Handle the gliding action on the stamina level,
@@ -371,7 +368,7 @@ function Controler( player ) {
                     // slow down before instead of U-turn if fast in the air
                     if ( state.isFlying && inertia > 0.15 ) {
 
-                        inertia = inertia * ( 0.7 / moveSpeedRatio ) ;
+                        inertia = inertia * 0.7 ;
 
                     } else {
 
@@ -389,13 +386,13 @@ function Controler( player ) {
 
                     if ( state.isFlying ) {
 
-                        currentDirection = utils.toPiRange( currentDirection + (angleToApply / (20 / moveSpeedRatio)) );
-                        HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply / (20 / moveSpeedRatio) );
+                        currentDirection = utils.toPiRange( currentDirection + (angleToApply / 20) );
+                        HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply / 20 );
 
                     } else {
 
-                        currentDirection = utils.toPiRange( currentDirection + (angleToApply / (4 / moveSpeedRatio)) );
-                        HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply / (4 / moveSpeedRatio) );
+                        currentDirection = utils.toPiRange( currentDirection + (angleToApply / 4) );
+                        HORIZMOVEVECT.applyAxisAngle( AXISHORIZMOVEROT, angleToApply / 4 );
 
                     };
 
@@ -429,13 +426,13 @@ function Controler( player ) {
                     // test for change of direction while in the air
                     if ( angleToApply > 0.1 || angleToApply < -0.1 ) {
 
-                        inertia = inertia - (0.05 * moveSpeedRatio) ;
+                        inertia = inertia - 0.05 ;
 
                     };
 
                 } else {
                     
-                    inertia = inertia + (0.03 * moveSpeedRatio) ;
+                    inertia = inertia + 0.03 ;
 
                 };
 
@@ -450,11 +447,11 @@ function Controler( player ) {
 
                 if ( runCounter > 350 ) {
 
-                    inertia = inertia >= 1.8 ? 1.8 : inertia + ( 0.1 * moveSpeedRatio ) ;
+                    inertia = inertia >= 1.8 ? 1.8 : inertia + 0.1 ;
 
                 } else {
 
-                    inertia = inertia >= 1 ? inertia * 0.95 : inertia + ( 0.06 * moveSpeedRatio ) ;
+                    inertia = inertia >= 1 ? inertia * 0.95 : inertia + 0.06 ;
                     
                 };
 
@@ -528,7 +525,7 @@ function Controler( player ) {
 
                     stamina.reduceStamina( CLIMBPRICE );
 
-                    CLIMBVEC.set( 0, moveSpeedRatio * CLIMBSPEED * vecInversion, 0 );
+                    CLIMBVEC.set( 0, CLIMBSPEED * vecInversion, 0 );
                     CLIMBVEC.applyAxisAngle( axis, angle );
 
                     player.position.addScaledVector( CLIMBVEC, climbSpeedFactor );
@@ -603,13 +600,13 @@ function Controler( player ) {
 
             inertia = 0 ;
 
-            dashTime = dashTime + ( DASHTIMEINCREMENT * moveSpeedRatio ) || 0.01 ;
+            dashTime = dashTime + DASHTIMEINCREMENT || 0.01 ;
 
             let factor = 1 - dashTime ;
 
             player.position.addScaledVector(
                 dashVec,
-                Math.min( DASHDISTANCE * factor, 0.14 ) * moveSpeedRatio
+                Math.min( DASHDISTANCE * factor, 0.14 )
             );
 
             if ( dashTime > 0.98 ) {
@@ -640,13 +637,13 @@ function Controler( player ) {
                 } else {
 
                     // slowdown is slower in the air
-                    inertia = inertia / ( 1 + ( 0.02 * moveSpeedRatio ) ) ;
+                    inertia = inertia / ( 1 + 0.02 ) ;
 
                 };
 
             } else { // on ground
 
-                inertia = inertia / ( 1 + ( 0.6 * moveSpeedRatio ) ) ;
+                inertia = inertia / ( 1 + 0.6 ) ;
 
             };
 
@@ -654,7 +651,7 @@ function Controler( player ) {
 
 
         ////////////  PLAYER X Z TRANSLATION ///////////////////////
-        player.position.addScaledVector( HORIZMOVEVECT, inertia * moveSpeedRatio );
+        player.position.addScaledVector( HORIZMOVEVECT, inertia );
 
         
 
@@ -674,15 +671,6 @@ function Controler( player ) {
         // to the horizontal obstacles in the scene.
         yCollision = atlas.collidePlayerGrounds() ;
 
-
-        // if ground collision, retry collision with less velocity
-        if ( yCollision.point != undefined ) {
-
-            player.position.y -= speedUp * 0.1 * ( moveSpeedRatio - 1 ) ;
-
-            yCollision = atlas.collidePlayerGrounds() ;
-
-        };
 
 
         // There is a collision with the ground
@@ -827,7 +815,7 @@ function Controler( player ) {
             } else {
 
                 // Normal gravity
-                speedUp -= ( 0.06 * moveSpeedRatio ) ;
+                speedUp -= 0.06 ;
                 speedUp = Math.max( Math.min( speedUp, 1.25 ), -2.3 );
 
             };
@@ -844,7 +832,7 @@ function Controler( player ) {
         /////////////  APPLY GRAVITY  ////////////////
 
         // We want to clamp the fall value, or player could traverse grounds
-        player.position.y += speedUp * 0.1 * moveSpeedRatio ;
+        player.position.y += speedUp * 0.1 ;
 
 
 

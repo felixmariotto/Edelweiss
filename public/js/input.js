@@ -18,15 +18,23 @@ function Input() {
     const domWorldCheap = document.getElementById('worldCheap');
     const domWorldHigh = document.getElementById('worldHigh');
 
+    const domCharContainer = document.getElementById('char-container');
+    const domTalkContainer = document.getElementById('talk-container');
+    const domTalkSubcontainer = document.getElementById('talk-subcontainer')
+
     // Movement
     var moveKeys = [];
     var tempDirArray ;
 
     var params = {
-        isSpacePressed: false
+        isSpacePressed : false,
+        // is set to true once and for all whenever a touch event occurs
+        isTouchScreen : false
     };
 
     var touches = {};
+
+    var touchTime;
 
 
 
@@ -164,8 +172,13 @@ function Input() {
 
 
     domStartButton.addEventListener( 'touchstart', (e)=> {
+
+        params.isTouchScreen = true ;
+
         startGame();
+
     });
+    
 
     domStartButton.addEventListener( 'click', (e)=> {
         startGame();
@@ -261,11 +274,19 @@ function Input() {
     ////
 
     domWorldCheap.addEventListener( 'touchstart', (e)=> {
+
+        params.isTouchScreen = true ;
+
         params.isSpacePressed = true ;
+
     });
 
     domWorldHigh.addEventListener( 'touchstart', (e)=> {
+
+        params.isTouchScreen = true ;
+
         params.isSpacePressed = true ;
+
     });
 
     ////
@@ -276,6 +297,56 @@ function Input() {
 
     domWorldHigh.addEventListener( 'touchend', (e)=> {
         releaseSpace();
+    });
+
+    ////
+
+
+    // Set touchTime with Date.now(), so we can know the length of touch later
+
+    domCharContainer.addEventListener( 'touchstart', (e)=> {
+
+        params.isTouchScreen = true ;
+
+        touchTime = Date.now();
+
+    });
+
+    domTalkContainer.addEventListener( 'touchstart', (e)=> {
+
+        params.isTouchScreen = true ;
+
+        touchTime = Date.now();
+
+    });
+
+
+
+
+    ////
+
+    // request next line if the touch action was not for scrolling
+
+    domCharContainer.addEventListener( 'touchend', (e)=> {
+
+        if ( Date.now() < touchTime + 70 &&
+             !interaction.questionTree.isQuestionAsked ) {
+
+            interaction.requestNextLine();
+
+        };
+
+    });
+
+    domTalkContainer.addEventListener( 'touchend', (e)=> {
+
+        if ( Date.now() < touchTime + 70 &&
+             !interaction.questionTree.isQuestionAsked ) {
+
+            interaction.requestNextLine();
+
+        };
+
     });
 
 
