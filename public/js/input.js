@@ -18,7 +18,6 @@ function Input() {
     const domWorldCheap = document.getElementById('worldCheap');
     const domWorldHigh = document.getElementById('worldHigh');
 
-    const domJoystickContainer = document.getElementById('joystick-container');
     const domCharContainer = document.getElementById('char-container');
     const domTalkContainer = document.getElementById('talk-container');
     const domTalkSubcontainer = document.getElementById('talk-subcontainer')
@@ -287,11 +286,7 @@ function Input() {
 
     ////
 
-    domJoystickContainer.addEventListener( 'touchend', (e)=> {
 
-        touchTime = Date.now();
-
-    });
 
     domCharContainer.addEventListener( 'touchstart', (e)=> {
 
@@ -306,17 +301,9 @@ function Input() {
     });
 
 
+
+
     ////
-
-    domJoystickContainer.addEventListener( 'touchend', (e)=> {
-
-        if ( Date.now() < touchTime + 70 ) {
-
-            interaction.requestNextLine();
-
-        };
-
-    });
 
     domCharContainer.addEventListener( 'touchend', (e)=> {
 

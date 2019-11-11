@@ -408,6 +408,12 @@ function Interaction() {
 
 		isInAnim = true ;
 
+		// Hide joystick div
+
+		document.getElementById('joystick-container').style.display = 'inherit' ;
+
+		// Dialogue UI animations
+
 		domChar.classList.remove( 'show-char' );
 		domChar.classList.add( 'hide-char' );
 
@@ -439,6 +445,13 @@ function Interaction() {
 		if ( isInAnim ) return
 
 		isInAnim = true ;
+
+		// Hide joystick div
+
+		document.getElementById('joystick-container').style.display = 'none' ;
+
+
+		// Dialogue UI animations 
 
 		domOverlay.style.display = 'inherit' ;
 
