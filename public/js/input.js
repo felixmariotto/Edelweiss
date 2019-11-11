@@ -21,6 +21,7 @@ function Input() {
     const domJoystickContainer = document.getElementById('joystick-container');
     const domCharContainer = document.getElementById('char-container');
     const domTalkContainer = document.getElementById('talk-container');
+    const domTalkSubcontainer = document.getElementById('talk-subcontainer')
 
     // Movement
     var moveKeys = [];
@@ -31,6 +32,8 @@ function Input() {
     };
 
     var touches = {};
+
+    var touchTime;
 
 
 
@@ -286,7 +289,28 @@ function Input() {
 
     domJoystickContainer.addEventListener( 'touchend', (e)=> {
 
-        if ( interaction.isInDialogue() ) {
+        touchTime = Date.now();
+
+    });
+
+    domCharContainer.addEventListener( 'touchstart', (e)=> {
+
+        touchTime = Date.now();
+
+    });
+
+    domTalkContainer.addEventListener( 'touchstart', (e)=> {
+
+        touchTime = Date.now();
+
+    });
+
+
+    ////
+
+    domJoystickContainer.addEventListener( 'touchend', (e)=> {
+
+        if ( Date.now() < touchTime + 70 ) {
 
             interaction.requestNextLine();
 
@@ -296,13 +320,21 @@ function Input() {
 
     domCharContainer.addEventListener( 'touchend', (e)=> {
 
-        interaction.requestNextLine();
+        if ( Date.now() < touchTime + 70 ) {
+
+            interaction.requestNextLine();
+
+        };
 
     });
 
     domTalkContainer.addEventListener( 'touchend', (e)=> {
 
-        interaction.requestNextLine();
+        if ( Date.now() < touchTime + 70 ) {
+
+            interaction.requestNextLine();
+
+        };
 
     });
 
