@@ -30,6 +30,8 @@
 
 - player goes through ground when jump beside a cube
 
+- disable switching to inexistant answers on the right side
+
 
 
 	// Not urgent

@@ -27,7 +27,9 @@ function Input() {
     var tempDirArray ;
 
     var params = {
-        isSpacePressed: false
+        isSpacePressed : false,
+        // is set to true once and for all whenever a touch event occurs
+        isTouchScreen : false
     };
 
     var touches = {};
@@ -170,8 +172,13 @@ function Input() {
 
 
     domStartButton.addEventListener( 'touchstart', (e)=> {
+
+        params.isTouchScreen = true ;
+
         startGame();
+
     });
+    
 
     domStartButton.addEventListener( 'click', (e)=> {
         startGame();
@@ -267,11 +274,19 @@ function Input() {
     ////
 
     domWorldCheap.addEventListener( 'touchstart', (e)=> {
+
+        params.isTouchScreen = true ;
+
         params.isSpacePressed = true ;
+
     });
 
     domWorldHigh.addEventListener( 'touchstart', (e)=> {
+
+        params.isTouchScreen = true ;
+
         params.isSpacePressed = true ;
+
     });
 
     ////
@@ -287,14 +302,19 @@ function Input() {
     ////
 
 
+    // Set touchTime with Date.now(), so we can know the length of touch later
 
     domCharContainer.addEventListener( 'touchstart', (e)=> {
+
+        params.isTouchScreen = true ;
 
         touchTime = Date.now();
 
     });
 
     domTalkContainer.addEventListener( 'touchstart', (e)=> {
+
+        params.isTouchScreen = true ;
 
         touchTime = Date.now();
 
@@ -305,9 +325,12 @@ function Input() {
 
     ////
 
+    // request next line if the touch action was not for scrolling
+
     domCharContainer.addEventListener( 'touchend', (e)=> {
 
-        if ( Date.now() < touchTime + 70 ) {
+        if ( Date.now() < touchTime + 70 &&
+             !interaction.questionTree.isQuestionAsked ) {
 
             interaction.requestNextLine();
 
@@ -317,7 +340,8 @@ function Input() {
 
     domTalkContainer.addEventListener( 'touchend', (e)=> {
 
-        if ( Date.now() < touchTime + 70 ) {
+        if ( Date.now() < touchTime + 70 &&
+             !interaction.questionTree.isQuestionAsked ) {
 
             interaction.requestNextLine();
 

@@ -691,14 +691,18 @@ function Interaction() {
 	// about to choose.
 	function setChosenAnswer() {
 
-		// Clean all the answer of the blinking class
-		for ( domAnswer of domAnswersContainer.children ) {
-			domAnswer.classList.remove( 'selected-answer' );
-		};
+		if ( !input.params.isTouchScreen ) {
 
-		// assign the blinking class to the answer newly chosen
-		let newDomChoice = questionTree.answers[ questionTree.currentChoice ].dom ;
-		newDomChoice.classList.add( 'selected-answer' );
+			// Clean all the answer of the blinking class
+			for ( domAnswer of domAnswersContainer.children ) {
+				domAnswer.classList.remove( 'selected-answer' );
+			};
+
+			// assign the blinking class to the answer newly chosen
+			let newDomChoice = questionTree.answers[ questionTree.currentChoice ].dom ;
+			newDomChoice.classList.add( 'selected-answer' );
+
+		};
 
 	};
 
@@ -769,6 +773,17 @@ function Interaction() {
 			domAnswersContainer.append( div );
 
 			questionTree.answers[ i ].dom = div ;
+
+			// Add event to select this answer with a touchscreen
+			div.addEventListener( 'touchend', ()=> {
+
+				questionTree.currentChoice = i ;
+
+				setTimeout( ()=> {
+					requestNextLine();
+				}, 50 );
+
+			});
 
 		});
 
@@ -1272,7 +1287,8 @@ function Interaction() {
 		isInDialogue,
 		hideMessage,
 		requestNextLine,
-		chooseAnswer
+		chooseAnswer,
+		questionTree
 	};
 
 };
