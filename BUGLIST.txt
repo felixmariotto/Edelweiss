@@ -22,17 +22,21 @@
 ///		BUG  &  FIXES
 //////////////////////////////////
 
-- player can climb far atop an upper ledge if they arrive at this position after a jump
+- bug when one arrive on a ledge higher than the limit for haul up action
 
 - shadows blinking on low grade devices because of optimisation
 
 - make stamina bar blink when out
 
-- player goes through ground when jump beside a cube
-
 - disable switching to inexistant answers on the right side
 
 - reset body gliding before to launch it, so it looks like she balance forward because of slowing down
+
+- limit gliding to once per fall
+
+- implement death
+
+
 
 
 
