@@ -88,6 +88,6 @@ function loop() {
 
     if ( cameraControl ) cameraControl.update( loopCount % 6 == 0 );
     if ( stamina ) stamina.update( loopCount % 10 == 0 );
-    if ( mapManager ) mapManager.update( loopCount % 10 == 0 );
+    // if ( mapManager ) mapManager.update( loopCount % 10 == 0 );
 
 };
