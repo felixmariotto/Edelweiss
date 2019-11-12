@@ -52,6 +52,7 @@ function Input() {
     domCross = document.createElement('IMG');
     domCross.src = 'assets/cross.png';
     domCross.id = 'cross' ;
+    domCross.style.top = `${ window.innerHeight - 127.5 }px` ;
 
     document.getElementById('joystick-container').appendChild( domCross );
 
