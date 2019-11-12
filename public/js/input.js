@@ -43,11 +43,17 @@ function Input() {
 
     domBase = document.createElement('IMG');
     domBase.src = 'assets/base.png';
-    domBase.id = 'base'
+    domBase.id = 'base' ;
 
     domStick = document.createElement('IMG');
     domStick.src = 'assets/stick.png';
-    domStick.id = 'stick'
+    domStick.id = 'stick' ;
+
+    domCross = document.createElement('IMG');
+    domCross.src = 'assets/cross.png';
+    domCross.id = 'cross' ;
+
+    document.getElementById('joystick-container').appendChild( domCross );
 
     if ( ALLOWJOYSTICK ) {
 
@@ -56,8 +62,10 @@ function Input() {
             stickElement : domStick,
             baseElement : domBase,
             stationaryBase : true,
-            baseX : 85,
-            baseY : window.innerHeight - 85
+            baseX : 90,
+            baseY : window.innerHeight - 90,
+            limitStickTravel: true,
+            stickRadius : 50
         });
 
     };
@@ -245,6 +253,17 @@ function Input() {
 
 
     function checkJoystickDelta() {
+
+        // show/hide cross blinking animation
+        if ( joystick._pressed ) {
+
+            domCross.classList.remove( 'blink-cross' );
+
+        } else {
+
+            domCross.classList.add( 'blink-cross' );
+
+        };
 
         if ( joystick._pressed && 
              ( Math.abs( joystick.deltaX() ) > 10 ||

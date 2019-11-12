@@ -64,20 +64,60 @@
 
 
 
-        #stick {
-            height: 60px;
-            width: 60px;
-        }
+
+
+
+
+
+
 
         #base {
-            height: 60px;
-            width: 60px;
+            width: 75px;
+            height: 75px;
         }
+
+        #stick {
+            width: 75px;
+            height: 75px;
+        }
+
+        #cross {
+            position: fixed;
+            width: 75px;
+            height: 75px;
+            bottom: 52.5px;
+            left: 52.5px;
+            opacity: 0.0 ;
+        }
+
+        .blink-cross {
+            animation: blink_cross 1s infinite ;
+        }
+
+        @keyframes blink_cross {
+            0% {
+                opacity: 1.0 ;
+            }
+            50% {
+                opacity: 0.0 ;
+            }
+            100% {
+                opacity: 1.0 ;
+            }
+        }
+
+
 
         #joystick-container {
             height: 100vh;
             width: 60vw;
         }
+
+
+
+
+
+
 
 
 
