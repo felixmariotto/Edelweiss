@@ -348,6 +348,8 @@ function CharaAnim( player ) {
     				break;
 
     			case 'gliding' :
+                    actions.glide.reset();
+                    actions.glide.time = 0.5 ;
     				glider.visible = true ;
     				actions.gliderDeploy.reset();
     				actions.gliderAction.setEffectiveWeight( 0 );

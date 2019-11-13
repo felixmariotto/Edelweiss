@@ -1,20 +1,4 @@
 
-////////////////////////////////////
-///		SCHEDULE
-////////////////////////////////////
-
-
-1 - Make NEW MAP in chunks with ENGINE
-
-2 - Load the new chunks dynamically
-
-3 - Create conversations with NPCs
-
-4 - Improve camera
-
-
-
-
 
 
 
@@ -29,8 +13,6 @@
 - make stamina bar blink when out
 
 - disable switching to inexistant answers on the right side
-
-- reset body gliding before to launch it, so it looks like she balance forward because of slowing down
 
 - limit gliding to once per fall
 
