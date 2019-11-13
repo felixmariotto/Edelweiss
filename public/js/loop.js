@@ -57,8 +57,7 @@ function loop() {
 
     // If performances are low,
     // reduce graphic quality to get at least 45FPS
-    if ( loopCount > 60 &&
-         optimizer ) {
+    if ( loopCount > 60 && optimizer ) {
 
         if ( clockDelta > optimizer.OPTFPS ) {
 

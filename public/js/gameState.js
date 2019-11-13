@@ -9,7 +9,7 @@ function GameState() {
 	const domBlackScreen = document.getElementById('black-screen');
 
 	var params = {
-		isDying: false
+		isCrashing: false
 	};
 
 	var respownPos = new THREE.Vector3( 0, 1, -4.5 );
@@ -18,16 +18,16 @@ function GameState() {
 
 	// This function is called when the player fell from too high.
 	// Show a black screen, wait one second, respown, remove black screen.
-	function die() {
+	function die( hasCrashed ) {
 
-		params.isDying = true ;
+		if ( hasCrashed ) params.isCrashing = true ;
 
 		domBlackScreen.classList.remove( 'hide-black-screen' );
 		domBlackScreen.classList.add( 'show-black-screen' );
 
 		setTimeout( ()=> {
 
-			params.isDying = false ;
+			params.isCrashing = false ;
 
 			charaAnim.respawn();
 

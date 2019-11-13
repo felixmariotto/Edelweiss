@@ -15,6 +15,8 @@ function Controler( player ) {
         permission.dash = bool ;
     };
 
+    var deathTimeoutToken;
+    const FALL_DEATH_TIMEOUT = 400 ;
 
     var moveSpeedRatio ; // is used to multiply the speed of movements
                          // according to FPS
@@ -261,7 +263,7 @@ function Controler( player ) {
 
 
         // abort the update if player is dying and will respawn
-        if ( gameState.params.isDying ) return ;
+        if ( gameState.params.isCrashing ) return ;
 
 
 
@@ -699,10 +701,14 @@ function Controler( player ) {
                  !state.isGliding &&
                  speedUp < -0.8 ) {
 
-                if ( Math.max( - speedUp, 0 ) / 2.3 > 0.7 ) {
+
+                if ( Math.max( - speedUp, 0 ) / 2.3 > 0.85 ) {
+
+                    clearTimeout( deathTimeoutToken );
+                    deathTimeoutToken = undefined ;
 
                     charaAnim.die();
-                    gameState.die();
+                    gameState.die( true );
                     hitGroundRecovering = HITGROUNDRECOVERYTIME ;
 
                 } else {
@@ -843,6 +849,22 @@ function Controler( player ) {
 
             };
 
+
+        };
+
+
+
+        // Die if the user is falling very fast :
+        // They will easer hit the ground to death, or fall for ever
+        if ( Math.max( - speedUp, 0 ) / 2.3 > 0.95 && !deathTimeoutToken ) {
+
+            deathTimeoutToken = setTimeout( ()=> {
+
+                deathTimeoutToken = undefined ;
+
+                gameState.die();
+
+            }, FALL_DEATH_TIMEOUT );
 
         };
 
