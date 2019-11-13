@@ -20,7 +20,6 @@ var GUIControler = {
     dash: true
 }; */
 
-var clockDelta ;
 
 window.addEventListener('load', ()=> {
     init();

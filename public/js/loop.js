@@ -4,7 +4,7 @@
 
 
 var loopCount = 0 ;
-
+var ticks, clockDelta;
 
 
 // hello
@@ -20,15 +20,15 @@ function loop() {
     clockDelta = clock.getDelta();
 
 
-    requestAnimationFrame( loop );
+    // requestAnimationFrame( loop );
     
-    /*
+    
     setTimeout( function() {
 
         requestAnimationFrame( loop );
 
     }, 1000 / 20 );
-    */
+    
 
 
 
@@ -60,8 +60,6 @@ function loop() {
     if ( loopCount > 60 &&
          optimizer ) {
 
-        // console.log( optimizer.params.level )
-
         if ( clockDelta > optimizer.OPTFPS ) {
 
             optimizer.optimize( clockDelta );
@@ -76,14 +74,28 @@ function loop() {
 
 
 
+    // UPDATE LOGIC
+
+    if ( controler ) {
+
+        ticks = Math.round( ( clockDelta / ( 1 / 60 ) ) * 2 );
+
+        for ( let i = 0 ; i < ticks ; i++ ) {
+
+            controler.update( clockDelta / ticks );
+
+        };
+
+    };
 
 
 
+    // MISC UPDATES
 
     stats.update();
     if ( orbitControls ) orbitControls.update();
 
-    if ( controler ) controler.update( clockDelta );
+    // if ( controler ) controler.update( clockDelta );
     if ( mixer ) mixer.update( clockDelta );
     if ( charaAnim ) charaAnim.update( clockDelta );
     if ( dynamicItems ) dynamicItems.update( clockDelta );
