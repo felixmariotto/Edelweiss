@@ -82,6 +82,7 @@ function init() {
     dynamicItems = DynamicItems();
     mapManager = MapManager();
     optimizer = Optimizer();
+    gameState = GameState();
 
 
     loop();

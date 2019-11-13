@@ -290,11 +290,9 @@ function CharaAnim( player ) {
     		return
 		};
 		
-
-		if ( currentState == "dying" ) {
+		if ( currentState == "dying" && newState != 'respawn' ) {
 			return
 		};
-
 
     	if ( currentState != newState ) {
 
@@ -800,6 +798,11 @@ function CharaAnim( player ) {
     };
 
 
+    function respawn() {
+        setState( 'respawn' );
+    };
+
+
     
 
 
@@ -826,7 +829,8 @@ function CharaAnim( player ) {
         haulUp,
         switchOutward,
         switchInward,
-        pullUnder
+        pullUnder,
+        respawn
     };
 
 };

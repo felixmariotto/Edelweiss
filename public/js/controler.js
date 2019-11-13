@@ -260,6 +260,10 @@ function Controler( player ) {
         };
 
 
+        // abort the update if player is dying and will respawn
+        if ( gameState.params.isDying ) return ;
+
+
 
         // slipRecovering get set to around 500 when the player access
         // a climbable wall after slipping, this way they continue slipping
@@ -695,8 +699,19 @@ function Controler( player ) {
                  !state.isGliding &&
                  speedUp < -0.8 ) {
 
-                charaAnim.hitGround( Math.max( - speedUp, 0 ) / 2.3 );
-                hitGroundRecovering = HITGROUNDRECOVERYTIME ;
+                if ( Math.max( - speedUp, 0 ) / 2.3 > 0.7 ) {
+
+                    charaAnim.die();
+                    gameState.die();
+                    hitGroundRecovering = HITGROUNDRECOVERYTIME ;
+
+                } else {
+
+                    charaAnim.hitGround( Math.max( - speedUp, 0 ) / 2.3 );
+                    hitGroundRecovering = HITGROUNDRECOVERYTIME ;
+
+                };
+
             };
 
 

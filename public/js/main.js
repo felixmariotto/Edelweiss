@@ -3,7 +3,7 @@ var scene, camera, stats, input, atlas,
     orbitControls, controler, clock, datGUI, charaAnim,
     gltfLoader, mixer, cameraControl, stamina, interaction,
     dynamicItems, textureLoader, fileLoader, mapManager,
-    optimizer ;
+    optimizer, gameState ;
 
 var renderer, highRenderer, cheapRenderer ;
 
@@ -11,7 +11,7 @@ var actions = [];
 
 var utils = Utils();
 var easing = Easing();
-var gameState = GameState();
+
 
 /*
 var GUIControler = {
