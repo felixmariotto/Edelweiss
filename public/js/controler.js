@@ -367,7 +367,7 @@ function Controler( player ) {
                     // slow down before instead of U-turn if fast in the air
                     if ( state.isFlying && inertia > 0.15 ) {
 
-                        inertia = inertia * ( 0.7 / moveSpeedRatio ) ;
+                        inertia = inertia * ( 0.7 * moveSpeedRatio ) ;
 
                     } else {
 
@@ -1628,6 +1628,8 @@ function Controler( player ) {
             charaAnim.fall();
 
         };
+
+
 
 
 

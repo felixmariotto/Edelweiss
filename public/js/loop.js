@@ -20,15 +20,15 @@ function loop() {
     clockDelta = clock.getDelta();
 
 
-    // requestAnimationFrame( loop );
+    requestAnimationFrame( loop );
     
-    
+    /*
     setTimeout( function() {
 
         requestAnimationFrame( loop );
 
     }, 1000 / 20 );
-    
+    */
 
 
 
