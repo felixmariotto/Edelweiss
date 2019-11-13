@@ -48,6 +48,44 @@
 
 
 
+        #black-screen {
+            position: fixed;
+            height: 100vh;
+            width: 100vw;
+            background-color: black;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .show-black-screen {
+            animation: show_black_screen 1s ease-in-out forwards;
+        }
+
+        .hide-black-screen {
+            animation: hide_black_screen 1s ease-in-out forwards;
+        }
+
+        @keyframes show_black_screen {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes hide_black_screen {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+
+
+
 
         #start-menu {
             position: fixed;
@@ -407,6 +445,7 @@
     <script src="js/DynamicItems.js"></script>
     <script src="js/MapManager.js"></script>
     <script src="js/Optimizer.js"></script>
+    <script src="js/gameState.js"></script>
 
 </head>
 
@@ -455,6 +494,11 @@
     </div>
 
     <div id="talker-name-container" class='dialogue-box'>Name</div>
+
+
+    <!-- Black screen for death -->
+
+    <div id="black-screen"></div>
 
 
 

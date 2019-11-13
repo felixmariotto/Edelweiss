@@ -787,19 +787,14 @@ function CharaAnim( player ) {
 
 
 
-    function hitGround( power ) {
-    	
-    	if ( power > 0.2 && power < 1 ) {
-			groundHit = false ;
-			
-			setState('hittingGround');
-			
-    	} else if ( power == 1 ) {
+    function hitGround() {
+		groundHit = false ;
+		setState('hittingGround');
+    };
 
-			setState('dying');
-			
-    	};
 
+    function die() {
+        setState('dying');
     };
 
 
@@ -813,6 +808,7 @@ function CharaAnim( player ) {
         setCharaRot,
         group,
         hitGround,
+        die,
         runSlow,
         runFast,
         idleClimb,

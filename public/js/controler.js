@@ -688,8 +688,21 @@ function Controler( player ) {
                  !state.isGliding &&
                  speedUp < -0.8 ) {
 
-                charaAnim.hitGround( Math.max( - speedUp, 0 ) / 2.3 );
-                hitGroundRecovering = HITGROUNDRECOVERYTIME ;
+                var power = Math.max( - speedUp, 0 ) / 2.3 ;
+
+                if ( power > 0.2 && power < 1 ) {
+
+                    charaAnim.hitGround();
+                    hitGroundRecovering = HITGROUNDRECOVERYTIME ;
+                    
+                } else if ( power == 1 ) {
+
+                    charaAnim.die();
+                    gameState.die();
+                    
+                };
+
+                
             };
 
 

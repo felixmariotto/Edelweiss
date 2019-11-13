@@ -11,6 +11,7 @@ var actions = [];
 
 var utils = Utils();
 var easing = Easing();
+var gameState = GameState();
 
 /*
 var GUIControler = {
