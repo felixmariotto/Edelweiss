@@ -17,6 +17,8 @@ function Controler( player ) {
 
     var deathTimeoutToken;
     const FALL_DEATH_TIMEOUT = 400 ;
+    const MAX_FALL_SPEED = 4 ;
+    const FALL_SPEED_DEATH = 0.5 ; // btwn 0 and 1
 
     var moveSpeedRatio ; // is used to multiply the speed of movements
                          // according to FPS
@@ -702,18 +704,17 @@ function Controler( player ) {
                  speedUp < -0.8 ) {
 
 
-                if ( Math.max( - speedUp, 0 ) / 2.3 > 0.85 ) {
+                if ( Math.max( - speedUp, 0 ) / MAX_FALL_SPEED > FALL_SPEED_DEATH ) {
 
                     clearTimeout( deathTimeoutToken );
                     deathTimeoutToken = undefined ;
 
                     charaAnim.die();
                     gameState.die( true );
-                    hitGroundRecovering = HITGROUNDRECOVERYTIME ;
 
                 } else {
 
-                    charaAnim.hitGround( Math.max( - speedUp, 0 ) / 2.3 );
+                    charaAnim.hitGround();
                     hitGroundRecovering = HITGROUNDRECOVERYTIME ;
 
                 };
@@ -845,7 +846,7 @@ function Controler( player ) {
 
                 // Normal gravity
                 speedUp -= ( 0.06 * moveSpeedRatio ) ;
-                speedUp = Math.max( Math.min( speedUp, 1.25 ), -2.3 );
+                speedUp = Math.max( Math.min( speedUp, 1.25 ), -MAX_FALL_SPEED );
 
             };
 
@@ -856,7 +857,7 @@ function Controler( player ) {
 
         // Die if the user is falling very fast :
         // They will easer hit the ground to death, or fall for ever
-        if ( Math.max( - speedUp, 0 ) / 2.3 > 0.95 && !deathTimeoutToken ) {
+        if ( Math.max( - speedUp, 0 ) / MAX_FALL_SPEED > 0.95 && !deathTimeoutToken ) {
 
             deathTimeoutToken = setTimeout( ()=> {
 

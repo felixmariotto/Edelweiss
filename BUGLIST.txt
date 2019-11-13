@@ -16,7 +16,6 @@
 
 - limit gliding to once per fall
 
-- implement death
 
 
 
