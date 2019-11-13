@@ -17,6 +17,8 @@ function Atlas( sceneGraph ) {
 
     const SCALECHARA = 0.083 ;
 
+    const CUBE_INTERSECTION_OFFSET = 0.001 ;
+
 
 	var startTile ;
 	var player ;
@@ -473,23 +475,23 @@ function Atlas( sceneGraph ) {
 
 							// X DIR
 							if ( logicCube.position.x > player.position.x ) {
-								cubeCollision.point.x = Math.min( player.position.x, logicCube.position.x - ( (CUBEWIDTH * logicCube.scale.x ) / 2 ) - (PLAYERWIDTH / 2) );
+								cubeCollision.point.x = Math.min( player.position.x, logicCube.position.x - ( (CUBEWIDTH * logicCube.scale.x ) / 2 ) - (PLAYERWIDTH / 2) - CUBE_INTERSECTION_OFFSET );
 							} else {
-								cubeCollision.point.x = Math.max( player.position.x, logicCube.position.x + ( (CUBEWIDTH * logicCube.scale.x ) / 2 ) + (PLAYERWIDTH / 2) );
+								cubeCollision.point.x = Math.max( player.position.x, logicCube.position.x + ( (CUBEWIDTH * logicCube.scale.x ) / 2 ) + (PLAYERWIDTH / 2) + CUBE_INTERSECTION_OFFSET );
 							};
 
 							// Z DIR
 							if ( logicCube.position.z > player.position.z ) {
-								cubeCollision.point.z = Math.min( player.position.z, logicCube.position.z - ( (CUBEWIDTH * logicCube.scale.z ) / 2 ) - (PLAYERWIDTH / 2) );
+								cubeCollision.point.z = Math.min( player.position.z, logicCube.position.z - ( (CUBEWIDTH * logicCube.scale.z ) / 2 ) - (PLAYERWIDTH / 2) - CUBE_INTERSECTION_OFFSET );
 							} else {
-								cubeCollision.point.z = Math.max( player.position.z, logicCube.position.z + ( (CUBEWIDTH * logicCube.scale.z ) / 2 ) + (PLAYERWIDTH / 2) );
+								cubeCollision.point.z = Math.max( player.position.z, logicCube.position.z + ( (CUBEWIDTH * logicCube.scale.z ) / 2 ) + (PLAYERWIDTH / 2) + CUBE_INTERSECTION_OFFSET );
 							};
 
 							// Y DIR
 							if ( logicCube.position.y > player.position.y + ( PLAYERHEIGHT / 2 ) ) {
-								cubeCollision.point.y = Math.min( player.position.y, logicCube.position.y - ( (CUBEWIDTH * logicCube.scale.y ) / 2 ) - PLAYERHEIGHT );
+								cubeCollision.point.y = Math.min( player.position.y, logicCube.position.y - ( (CUBEWIDTH * logicCube.scale.y ) / 2 ) - PLAYERHEIGHT - CUBE_INTERSECTION_OFFSET );
 							} else {
-								cubeCollision.point.y = Math.max( player.position.y, logicCube.position.y + ( (CUBEWIDTH * logicCube.scale.y ) / 2 ) );
+								cubeCollision.point.y = Math.max( player.position.y, logicCube.position.y + ( (CUBEWIDTH * logicCube.scale.y ) / 2 ) + CUBE_INTERSECTION_OFFSET );
 							};
 
 

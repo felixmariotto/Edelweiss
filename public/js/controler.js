@@ -857,22 +857,31 @@ function Controler( player ) {
         ///   CUBES COLLISION
         ////////////////////////////
 
-        cubeCollision = atlas.collidePlayerCubes();
+        setPlayerFromCubes();
 
+        function setPlayerFromCubes() {
 
-        if ( cubeCollision.point ) {
+            cubeCollision = atlas.collidePlayerCubes();
 
-            if ( player.position.y != cubeCollision.point.y ) {
-                speedUp = 0 ;
+            if ( cubeCollision.point ) {
+
+                if ( player.position.y != cubeCollision.point.y ) {
+                    speedUp = 0 ;
+                };
+
+                player.position.set(
+                    cubeCollision.point.x,
+                    cubeCollision.point.y,
+                    cubeCollision.point.z
+                );
+
+                setPlayerFromCubes();
+
             };
 
-            player.position.set(
-                cubeCollision.point.x,
-                cubeCollision.point.y,
-                cubeCollision.point.z
-            );
-
         };
+
+        
 
 
         if ( cubeCollision.inRange ) {
