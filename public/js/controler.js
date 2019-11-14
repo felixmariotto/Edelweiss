@@ -135,6 +135,7 @@ function Controler( player ) {
     // a wall. "left", "right", "up" or "down".
     // undefined if no wall
     var contactDirection; 
+    var contactType ;
 
     /*
     pendingAction can hold an object containing the information
@@ -965,6 +966,7 @@ function Controler( player ) {
         ///  CLIMBING SETTING AND WALL COLLISIONS
         /////////////////////////////////////////////
 
+
         // COLLISIONS FROM ATLAS MODULE
         xCollision = atlas.collidePlayerWalls( currentDirection );
 
@@ -973,11 +975,12 @@ function Controler( player ) {
         // INWARD ANGLE SWITCH ACTION
         if ( !state.isDashing &&
              contactDirection &&
+             contactType != 'wall-slip' &&
              xCollision.direction &&
              contactDirection != xCollision.direction &&
              player.position.y > xCollision.minHeight ) {
     
-
+    
             let x, z ;
             
 
@@ -1046,6 +1049,7 @@ function Controler( player ) {
 
 
         contactDirection = xCollision.direction ;
+        contactType = xCollision.majorWallType ;
 
 
         if ( xCollision.xPoint ) {
