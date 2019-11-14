@@ -11,6 +11,4 @@
 
 - disable switching to inexistant answers on the right side
 
-
-
-
+- when no more stamina on a wall, action should push out of the wall like jump

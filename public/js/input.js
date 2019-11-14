@@ -296,40 +296,44 @@ function Input() {
 
     };
 
-    ////
 
-    domWorldCheap.addEventListener( 'touchstart', (e)=> {
 
-        params.isTouchScreen = true ;
 
-        params.isSpacePressed = true ;
 
-    });
-
-    domWorldHigh.addEventListener( 'touchstart', (e)=> {
-
-        params.isTouchScreen = true ;
-
-        params.isSpacePressed = true ;
-
-    });
 
 
 
     ////
+
 
     domActionButton.addEventListener( 'touchstart', (e)=> {
+
         e.preventDefault();
+
+        params.isTouchScreen = true ;
+
+        params.isSpacePressed = true ;
+
+        // cosmetic feedback
         domActionButton.style.opacity = '1.0' ;
-        window.navigator.vibrate( 30 );
+        window.navigator.vibrate( 20 );
+
     });
 
+
+
     domActionButton.addEventListener( 'touchend', (e)=> {
+
         e.preventDefault();
+
         releaseSpace();
+
         domActionButton.style.opacity = '0.5' ;
-        window.navigator.vibrate( 30 );
+        window.navigator.vibrate( 20 );
+
     });
+
+
 
     ////
 
