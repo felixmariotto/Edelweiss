@@ -382,9 +382,11 @@ function Controler( player ) {
                 } else if ( angleToApply > 2.8 || angleToApply < -2.8 ) {
 
                     // slow down before instead of U-turn if fast in the air
-                    if ( state.isFlying && inertia > 0.15 ) {
+                    if ( state.isFlying && inertia > 0.10 ) {
 
-                        inertia = inertia * ( 0.7 * moveSpeedRatio ) ;
+                        inertia = inertia * ( 0.94 - ( 0.2 * moveSpeedRatio ) ) ;
+
+                        console.log('inertia : ' + inertia )
 
                     } else {
 
