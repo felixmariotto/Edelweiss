@@ -319,11 +319,13 @@ function Input() {
     ////
 
     domActionButton.addEventListener( 'touchstart', (e)=> {
+        e.preventDefault();
         domActionButton.style.opacity = '1.0' ;
         window.navigator.vibrate( 50 );
     });
 
     domActionButton.addEventListener( 'touchend', (e)=> {
+        e.preventDefault();
         releaseSpace();
         domActionButton.style.opacity = '0.5' ;
         window.navigator.vibrate( 50 );
