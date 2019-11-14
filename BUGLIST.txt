@@ -14,8 +14,6 @@
 
 - disable switching to inexistant answers on the right side
 
-- limit gliding to once per fall
-
 
 
 

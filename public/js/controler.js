@@ -118,6 +118,7 @@ function Controler( player ) {
 
     const GLIDINGTIME = 200 ;
     var glidingCount = 0 ;
+    var hasGlided = false ;
 
     const DASHTIME = 300 ; // ms necessary to charge a dash
     const DASHTIMEINCREMENT = 0.05 ; // dash speed
@@ -303,10 +304,12 @@ function Controler( player ) {
 
             if ( glidingCount >= GLIDINGTIME &&
                 permission.gliding &&
-                stamina.params.stamina > 0) {
+                stamina.params.stamina > 0 &&
+                !hasGlided ) {
 
                 state.isGliding = true ;
                 cancelSpace = true ;
+                hasGlided = true ;
 
             };
 
@@ -325,6 +328,12 @@ function Controler( player ) {
             glidingCount = 0 ;
             dashCount = 0 ;
             state.isGliding = false ;
+
+        };
+
+        if ( !state.isFlying ) {
+
+            hasGlided = false ;
 
         };
 
@@ -1811,7 +1820,7 @@ function Controler( player ) {
         // because they have infinity jump but the are not going up in the air, OR
         // they are on a wall
         if ( ( ( !permission.infinityJump && !state.isFlying || 
-                permission.infinityJump && speedUp <= 0 ) ||
+                permission.infinityJump ) ||
                 state.isSlipping ) &&
               hitGroundRecovering <= 0 &&
               stamina.params.stamina > 0 ) {
