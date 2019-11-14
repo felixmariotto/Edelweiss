@@ -1051,6 +1051,8 @@ function Controler( player ) {
               xCollision.direction == dashWallDirection ) ) {
 
 
+
+
             // Save the direction of the wall while charging dash,
             // for collision detection while dashing
             if ( state.chargingDash ) {
@@ -1450,6 +1452,8 @@ function Controler( player ) {
                     break;
 
                 default :
+
+                    setClimbingState( false );
 
                     state.isSlipping = false ;
 
