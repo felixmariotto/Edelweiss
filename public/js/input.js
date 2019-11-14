@@ -10,8 +10,8 @@ function Input() {
 
     const ALLOWJOYSTICK = true ;
     const STICK_TRAVEL_RADIUS = 50 ;
-    var lastDistance = 0 ;
-    var dist = 0 ;
+    // var lastDistance = 0 ;
+    // var dist = 0 ;
 
     const domStartMenu = document.getElementById('start-menu');
     const domStartButton = document.getElementById('start-button');
@@ -275,16 +275,18 @@ function Input() {
              ( Math.abs( joystick.deltaX() ) > 10 ||
                Math.abs( joystick.deltaY() ) > 10 ) ) {
 
+            /*
             // vibrate when max radius is reached
             dist = Math.abs( joystick.deltaX() ) + Math.abs( joystick.deltaY() ) ;
 
             if ( lastDistance < STICK_TRAVEL_RADIUS &&
                  dist > STICK_TRAVEL_RADIUS ) {
-                
+
                 window.navigator.vibrate( 20 );
             };
 
             lastDistance = dist ;
+            */
 
             //
 
