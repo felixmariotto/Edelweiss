@@ -316,6 +316,7 @@ function Input() {
 
         // cosmetic feedback
         domActionButton.style.opacity = '1.0' ;
+        domActionButton.classList.add( 'push-button' );
         window.navigator.vibrate( 20 );
 
     });
@@ -329,6 +330,7 @@ function Input() {
         releaseSpace();
 
         domActionButton.style.opacity = '0.5' ;
+        domActionButton.classList.remove( 'push-button' );
         window.navigator.vibrate( 20 );
 
     });
