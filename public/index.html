@@ -109,6 +109,11 @@
 
 
 
+        #joystick-container {
+            height: 100vh;
+            width: 60vw;
+        }
+
         #base {
             width: 75px;
             height: 75px;
@@ -143,12 +148,16 @@
             }
         }
 
-
-
-        #joystick-container {
-            height: 100vh;
-            width: 60vw;
+        #action-button {
+            position: fixed;
+            height: 75px;
+            widows: 75px;
+            bottom: 52.5px;
+            right: 35px;
+            opacity: 0.5;
         }
+
+
 
 
 
@@ -518,9 +527,11 @@
 
 
 
-    <!-- Joystick -->
+    <!-- UI Buttons -->
 
     <div id='joystick-container'></div>
+
+    <img id="action-button" src="assets/action.png">
 
 
 

@@ -20,7 +20,9 @@ function Input() {
 
     const domCharContainer = document.getElementById('char-container');
     const domTalkContainer = document.getElementById('talk-container');
-    const domTalkSubcontainer = document.getElementById('talk-subcontainer')
+    const domTalkSubcontainer = document.getElementById('talk-subcontainer');
+
+    const domActionButton = document.getElementById('action-button');
 
     // Movement
     var moveKeys = [];
@@ -312,14 +314,19 @@ function Input() {
 
     });
 
+
+
     ////
 
-    domWorldCheap.addEventListener( 'touchend', (e)=> {
-        releaseSpace();
+    domActionButton.addEventListener( 'touchstart', (e)=> {
+        domActionButton.style.opacity = '1.0' ;
+        window.navigator.vibrate( 50 );
     });
 
-    domWorldHigh.addEventListener( 'touchend', (e)=> {
+    domActionButton.addEventListener( 'touchend', (e)=> {
         releaseSpace();
+        domActionButton.style.opacity = '0.5' ;
+        window.navigator.vibrate( 50 );
     });
 
     ////
