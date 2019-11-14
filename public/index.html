@@ -158,7 +158,11 @@
         }
 
         .push-button {
-            animation: push_button 0.3s ease-in-out 1 forwards ;
+            animation: push_button 0.07s ease-in-out 1 forwards ;
+        }
+
+        .release-button {
+            animation: release_button 0.07s ease-in-out 1 forwards ;
         }
 
         @keyframes push_button {
@@ -173,6 +177,21 @@
                 height: 80px;
                 bottom: 50px;
                 right: 32.5px;
+            }
+        }
+
+        @keyframes release_button {
+            0% {
+                width: 80px;
+                height: 80px;
+                bottom: 50px;
+                right: 32.5px;
+            }
+            100% {
+                width: 75px;
+                height: 75px;
+                bottom: 52.5px;
+                right: 35px;
             }
         }
 
