@@ -45,7 +45,7 @@ function Controler( player ) {
 
     const DISTANCEINTERNALSWITCH = 0.15 ;
     const HAULDOWNLIMIT = -0.02 ;
-    const HAULDOWNMAXSPEED = 0.95 ;
+    const HAULDOWNMAXSPEED = 0.965 ;
     const PERCENTHEIGHTHAULDOWN = 0.9 ; // height of final position
 
     // vert movements
@@ -54,7 +54,7 @@ function Controler( player ) {
     const SLIPSPEED = -0.21 ;
     const MAXSLIPINERTIA = 0.15 ;
     const HAULTOPLIMIT = 0.75 ;
-    const HAULLLOWLIMIT = 0.55 ; // when player arrives from the top
+    const HAULLLOWLIMIT = 0 ; // when player arrives from the top
     const PULLUNDERLIMIT = 0.3 ;
 
     // horiz movements
