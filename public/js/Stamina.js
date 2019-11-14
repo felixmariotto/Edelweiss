@@ -100,7 +100,12 @@ function Stamina() {
         params.stamina -= factor ;
 
         if ( params.stamina < 0 ) {
+
             params.stamina = 0 ;
+
+            // make stamina bar UI blink
+            domBar.classList.add( 'blink_stamina' );
+
         };
 
         if ( update ) {
@@ -118,6 +123,8 @@ function Stamina() {
     function resetStamina() {
 
         params.stamina = params.maxStamina ;
+
+        domBar.classList.remove( 'blink_stamina' );
 
     };
 

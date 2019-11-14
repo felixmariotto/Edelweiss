@@ -199,6 +199,22 @@
             justify-content: flex-end;
         }
 
+        .blink_stamina {
+            animation: blink_stamina 0.15s infinite ;
+        }
+
+        @keyframes blink_stamina {
+            0% {
+                opacity: 1.0 ;
+            }
+            50% {
+                opacity: 0.3 ;
+            }
+            100% {
+                opacity: 1.0 ;
+            }
+        }
+
             .stamina-section {
                 height: 100%;
                 width: 20vw;

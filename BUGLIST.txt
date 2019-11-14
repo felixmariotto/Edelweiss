@@ -6,20 +6,11 @@
 ///		BUG  &  FIXES
 //////////////////////////////////
 
-- bug when one arrive on a ledge higher than the limit for haul up action
 
 - shadows blinking on low grade devices because of optimisation
-
-- make stamina bar blink when out
 
 - disable switching to inexistant answers on the right side
 
 
 
 
-
-
-
-
-	// Not urgent
-- it should not be possible to switch tile from a slipping wall
