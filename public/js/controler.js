@@ -26,6 +26,8 @@ function Controler( player ) {
     var cancelSpace = false ;
     var actionTime;
 
+    var hasCollidedCube;
+
     // CUBES
     var cubeCollision;
     var interactiveTag; // will be undefined if no interactive cube in range
@@ -372,10 +374,9 @@ function Controler( player ) {
         ///////////////////////////////////////
 
 
-
         if ( ( input.moveKeys.length > 0 ) &&
             !state.isClimbing &&
-            !state.isSlipping &&
+            ( !state.isSlipping || hasCollidedCube ) &&
             !state.isDashing &&
             !state.chargingDash ) {
 
@@ -502,7 +503,7 @@ function Controler( player ) {
         //////////////////////////
 
         } else if ( ( input.moveKeys.length > 0 ) &&
-                    ( state.isClimbing || state.isSlipping ) &&
+                    ( state.isClimbing || ( state.isSlipping && !hasCollidedCube ) ) &&
                     !state.chargingDash &&
                     !state.isDashing &&
                     slipRecovering <= 0 ) {
@@ -522,7 +523,8 @@ function Controler( player ) {
                     climbSpeedFactor
                 );
 
-            } else if ( stamina.params.stamina <= 0 ) {
+            } else if ( !state.isSlipping &&
+                        stamina.params.stamina <= 0 ) {
 
                 charaAnim.idleClimb();
 
@@ -558,7 +560,8 @@ function Controler( player ) {
             // Move the player while on the wall
             function climb( axis, vecInversion, angle ) {
 
-                if ( stamina.params.stamina > 0 ) {
+                if ( stamina.params.stamina > 0 ||
+                     state.isSlipping ) {
 
                     if ( contactType != 'wall-slip' ) {
                         stamina.reduceStamina( CLIMBPRICE );
@@ -735,14 +738,10 @@ function Controler( player ) {
                  !state.isGliding &&
                  speedUp < -0.8 ) {
 
-                console.log(speedUp)
-
                 if ( - speedUp / MAX_FALL_SPEED > FALL_SPEED_DEATH ) {
 
                     clearTimeout( deathTimeoutToken );
                     deathTimeoutToken = undefined ;
-
-                    console.log('die because of hit ground')
 
                     charaAnim.die();
                     gameState.die( true );
@@ -950,6 +949,8 @@ function Controler( player ) {
         ///   CUBES COLLISION
         ////////////////////////////
 
+        hasCollidedCube = false ;
+
         setPlayerFromCubes();
 
         function setPlayerFromCubes() {
@@ -957,6 +958,8 @@ function Controler( player ) {
             cubeCollision = atlas.collidePlayerCubes();
 
             if ( cubeCollision.point ) {
+
+                hasCollidedCube = true ;
 
                 if ( player.position.y != cubeCollision.point.y ) {
                     
@@ -1451,7 +1454,7 @@ function Controler( player ) {
             //////////////////////////////////////////////
             
 
-            switch (xCollision.majorWallType) {
+            switch ( xCollision.majorWallType ) {
 
 
                 case 'wall-slip' :
