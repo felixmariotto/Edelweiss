@@ -558,7 +558,9 @@ function Controler( player ) {
 
                 if ( stamina.params.stamina > 0 ) {
 
-                    stamina.reduceStamina( CLIMBPRICE );
+                    if ( contactType != 'wall-slip' ) {
+                        stamina.reduceStamina( CLIMBPRICE );
+                    };
 
                     CLIMBVEC.set( 0, moveSpeedRatio * CLIMBSPEED * vecInversion, 0 );
                     CLIMBVEC.applyAxisAngle( axis, angle );
