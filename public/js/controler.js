@@ -152,15 +152,33 @@ function Controler( player ) {
 
     function startAction( name, duration, endVec, startAngle, endAngle ) {
 
-        pendingAction = {
-            name,
-            startTime : Date.now(),
-            duration,
-            startAngle,
-            endAngle,
-            startVec : new THREE.Vector3().copy( player.position ),
-            endVec
+        // Check that the final position of the action will no be in a cube
+
+        let startVec = new THREE.Vector3().copy( player.position );
+
+        player.position.copy( endVec );
+
+        let collision = atlas.collidePlayerCubes();
+
+        player.position.copy( startVec );
+
+        // if final position is ok, start action
+
+        if ( !collision.point ) {
+
+            pendingAction = {
+                name,
+                startTime : Date.now(),
+                duration,
+                startAngle,
+                endAngle,
+                startVec : new THREE.Vector3().copy( player.position ),
+                endVec
+            };
+
         };
+
+        return !collision.point ;
 
     };
 
