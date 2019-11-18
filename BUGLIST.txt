@@ -12,3 +12,5 @@
 - disable switching to inexistant answers on the right side
 
 - when no more stamina on a wall, action should push out of the wall like jump
+
+- setup loading manager on startup screen, which pre-load the character and some assets
