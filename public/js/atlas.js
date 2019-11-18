@@ -425,7 +425,11 @@ function Atlas( sceneGraph ) {
 
 		checkStage( Math.floor( player.position.y ) );
 		checkStage( Math.floor( player.position.y ) + 1 );
+		checkStage( Math.floor( player.position.y ) + 2 );
+		checkStage( Math.floor( player.position.y ) + 3 );
 		checkStage( Math.floor( player.position.y ) - 1 );
+		checkStage( Math.floor( player.position.y ) - 2 );
+		checkStage( Math.floor( player.position.y ) - 3 );
 
 
 		function checkStage( stage ) {

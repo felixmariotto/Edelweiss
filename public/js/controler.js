@@ -387,8 +387,6 @@ function Controler( player ) {
 
                         inertia = inertia * ( 0.94 - ( 0.2 * moveSpeedRatio ) ) ;
 
-                        console.log('inertia : ' + inertia )
-
                     } else {
 
                         currentDirection = requestedDirection ;
