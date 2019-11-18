@@ -1892,9 +1892,9 @@ function Controler( player ) {
 
 
 
-        // jump
+        // JUMP
         // Here we check that the player can jump because they are on the floor, OR
-        // because they have infinity jump but the are not going up in the air, OR
+        // because they have infinity jump but they are not going up in the air, OR
         // they are on a wall
         if ( ( ( !permission.infinityJump && !state.isFlying || 
                 permission.infinityJump ) ||
@@ -1914,68 +1914,79 @@ function Controler( player ) {
             // or slipping along a wall
             if ( state.isSlipping || state.isClimbing ) {
 
-                switch ( contactDirection ) {
-
-                    case 'right' :
-                        currentDirection = -Math.PI / 2 ;
-                        charaAnim.setCharaRot( -Math.PI / 2 );
-                        HORIZMOVEVECT.set( -SPEED, 0, 0 );
-                        setJump();
-                        break;
-
-                    case 'left' :
-                        currentDirection = Math.PI / 2 ;
-                        charaAnim.setCharaRot( Math.PI / 2 );
-                        HORIZMOVEVECT.set( SPEED, 0, 0 );
-                        setJump();
-                        break;
-
-                    case 'up' :
-                        currentDirection = 0 ;
-                        charaAnim.setCharaRot( 0 );
-                        HORIZMOVEVECT.set( 0, 0, SPEED );
-                        setJump();
-                        break;
-
-                    case 'down' :
-                        currentDirection = Math.PI ;
-                        charaAnim.setCharaRot( Math.PI );
-                        HORIZMOVEVECT.set( 0, 0, -SPEED );
-                        setJump();
-                        break;
-
-                    default :
-                        speedUp = 1.25 ;
-                        break;
-
-                };
+                jumpOutWall( WALLJUMPINERTIA, WALLJUMPSPEEDUP );
 
             } else {
 
                 speedUp = 1.25 ;
             
             };
-            
-
-            function setJump() {
-
-                state.isClimbing = false ;
-                state.isSlipping = false ;
-                state.isFlying = true ;
-                inertia = WALLJUMPINERTIA ;
-                speedUp = WALLJUMPSPEEDUP ;
-
-            };
-
 
         // FALL FROM THE WALL BECAUSE OF LACK OF STAMINA
-        } else if ( state.isClimbing &&
+        } else if ( ( state.isClimbing || state.isSlipping ) &&
                     stamina.params.stamina <= 0 ) {
 
-            fall();
+            jumpOutWall( WALLJUMPINERTIA / 2, WALLJUMPSPEEDUP / 2 );
 
         };
 
+    };
+
+
+
+
+
+
+
+    function jumpOutWall( jumpSpeed, jumpGravity ) {
+
+        switch ( contactDirection ) {
+
+            case 'right' :
+                currentDirection = -Math.PI / 2 ;
+                charaAnim.setCharaRot( -Math.PI / 2 );
+                HORIZMOVEVECT.set( -SPEED, 0, 0 );
+                setJump( jumpSpeed, jumpGravity );
+                break;
+
+            case 'left' :
+                currentDirection = Math.PI / 2 ;
+                charaAnim.setCharaRot( Math.PI / 2 );
+                HORIZMOVEVECT.set( SPEED, 0, 0 );
+                setJump( jumpSpeed, jumpGravity );
+                break;
+
+            case 'up' :
+                currentDirection = 0 ;
+                charaAnim.setCharaRot( 0 );
+                HORIZMOVEVECT.set( 0, 0, SPEED );
+                setJump( jumpSpeed, jumpGravity );
+                break;
+
+            case 'down' :
+                currentDirection = Math.PI ;
+                charaAnim.setCharaRot( Math.PI );
+                HORIZMOVEVECT.set( 0, 0, -SPEED );
+                setJump( jumpSpeed, jumpGravity );
+                break;
+
+            default :
+                speedUp = 1.25 ;
+                break;
+
+        };
+
+    };
+
+
+    function setJump( jumpSpeed, jumpGravity ) {
+
+        charaAnim.jump();
+        state.isClimbing = false ;
+        state.isSlipping = false ;
+        state.isFlying = true ;
+        inertia = jumpSpeed ;
+        speedUp = jumpGravity ;
 
     };
 
