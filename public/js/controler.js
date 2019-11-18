@@ -307,6 +307,16 @@ function Controler( player ) {
         };
 
 
+        // Die if fell into the water
+        if ( player.position.y + ( atlas.PLAYERHEIGHT / 2 ) < atlas.WATER_LEVEL ) {
+
+            clearTimeout( deathTimeoutToken );
+            deathTimeoutToken = undefined ;
+            gameState.die();
+
+        };
+
+
 
 
 

@@ -8,12 +8,15 @@ function Atlas( sceneGraph ) {
 	const CUBEWIDTH = 0.4 ;
 	const INTERACTIVECUBERANGE = 0.82 ; // radius
 
+	const WATER_LEVEL = 0.5 ;
+
 	const NEEDHELPERS = true ;
 
 	const NEEDPLAYERBOX = false ; // specifically allow player box helper
     const NEEDARROW = false ; // arrows showing player direction
     const NEEDTILES = true ; // add the tiles helpers
     const NEEDPLANES = true ; // show helpers for limit planes
+    const NEED_WATER_HELPER = true ;
 
     const SCALECHARA = 0.075 ;
 
@@ -255,6 +258,21 @@ function Atlas( sceneGraph ) {
 			};
 
 		};
+
+	};
+
+
+	if ( NEEDHELPERS && NEED_WATER_HELPER ) {
+
+
+		var geometry = new THREE.PlaneBufferGeometry( 50, 50 );
+		var material = new THREE.MeshBasicMaterial({ color: 0x2d4f5, side: THREE.DoubleSide });
+		var plane = new THREE.Mesh( geometry, material );
+
+		plane.rotation.x = Math.PI / 2 ;
+		plane.position.y = WATER_LEVEL ;
+
+		scene.add( plane );
 
 	};
 
@@ -1226,6 +1244,7 @@ function Atlas( sceneGraph ) {
 		intersectRay,
 		PLAYERHEIGHT,
 		PLAYERWIDTH,
+		WATER_LEVEL,
 		sceneGraph,
 		player,
 		deleteCubeFromGraph,
