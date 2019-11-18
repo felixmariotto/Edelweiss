@@ -31,9 +31,9 @@ function Controler( player ) {
     var interactiveTag; // will be undefined if no interactive cube in range
 
     /// STAMINA PRICE
-    const CLIMBPRICE = 0.01 ;
+    const CLIMBPRICE = 0.005 ;
     const GLIDINGPRICE = 0.01 ;
-    const JUMPPRICE = 0.75 ;
+    const JUMPPRICE = 1.0 ;
     const DASHPRICE = 0.5 ;
 
     // animations
@@ -934,7 +934,21 @@ function Controler( player ) {
             if ( cubeCollision.point ) {
 
                 if ( player.position.y != cubeCollision.point.y ) {
-                    speedUp = 0 ;
+                    
+                    if ( Math.max( - speedUp, 0 ) / MAX_FALL_SPEED > FALL_SPEED_DEATH ) {
+
+                        clearTimeout( deathTimeoutToken );
+                        deathTimeoutToken = undefined ;
+
+                        charaAnim.die();
+                        gameState.die( true );
+
+                    } else {
+
+                        speedUp = 0 ;
+
+                    };
+                    
                 };
 
                 player.position.set(

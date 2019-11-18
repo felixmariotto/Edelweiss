@@ -2,7 +2,7 @@
 function Atlas( sceneGraph ) {
 
 
-	const PLAYERHEIGHT = 0.65 ;
+	const PLAYERHEIGHT = 0.62 ;
 	const PLAYERWIDTH = 0.3 ;
 
 	const CUBEWIDTH = 0.4 ;
@@ -15,12 +15,12 @@ function Atlas( sceneGraph ) {
     const NEEDTILES = true ; // add the tiles helpers
     const NEEDPLANES = true ; // show helpers for limit planes
 
-    const SCALECHARA = 0.083 ;
+    const SCALECHARA = 0.075 ;
 
     const CUBE_INTERSECTION_OFFSET = 0.001 ;
 
 
-	var startTile ;
+	var startPos = new THREE.Vector3();
 	var player ;
 
 	var planes = [];
@@ -173,7 +173,13 @@ function Atlas( sceneGraph ) {
 			};
 
 			if ( logicTile.type == 'ground-start' ) {
-				startTile = logicTile ;
+
+				startPos.set(
+					(logicTile.points[0].x + logicTile.points[1].x) / 2,
+					(logicTile.points[0].y + logicTile.points[1].y) / 2,
+					(logicTile.points[0].z + logicTile.points[1].z) / 2
+				);
+
 			};
 
 		});
@@ -263,7 +269,7 @@ function Atlas( sceneGraph ) {
 
 	// PLAYER LOGIC
 
-	var player = Player( startTile );
+	var player = Player();
 
 	controler = Controler( player );
 
@@ -273,21 +279,14 @@ function Atlas( sceneGraph ) {
 
 
 
-	function Player( startTile ) {
-
-		// TEMP in case there is no startTile
-		startTile = startTile || { points: [ {x:1, y:0, z:1}, {x:0, y:0, z:0} ] };
+	function Player() {
 
 		let group = new THREE.Group();
 		scene.add( group );
 
 		let position = group.position ;
 
-		group.position.set(
-			(startTile.points[0].x + startTile.points[1].x) / 2,
-			(startTile.points[0].y + startTile.points[1].y) / 2,
-			(startTile.points[0].z + startTile.points[1].z) / 2
-		);
+		group.position.copy( startPos );
 
 			
 		/// HELPER
@@ -1229,7 +1228,8 @@ function Atlas( sceneGraph ) {
 		PLAYERWIDTH,
 		sceneGraph,
 		player,
-		deleteCubeFromGraph
+		deleteCubeFromGraph,
+		startPos
 	};
 
 

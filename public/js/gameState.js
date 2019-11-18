@@ -31,7 +31,7 @@ function GameState() {
 
 			charaAnim.respawn();
 
-			atlas.player.position.copy( respownPos );
+			atlas.player.position.copy( atlas.startPos );
 
 			domBlackScreen.classList.remove( 'show-black-screen' );
 			domBlackScreen.classList.add( 'hide-black-screen' );
