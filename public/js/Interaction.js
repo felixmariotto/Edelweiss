@@ -323,9 +323,11 @@ function Interaction() {
 
 				stamina.incrementMaxStamina();
 
+				/*
 				setTimeout( ()=> {
 					startDialogue( 'herbalist-friend-init' );
 				}, 1100 );
+				*/
 			},
 
 			message : 'You found an edelWeiss !<br>+ 1 Stamina'

@@ -307,14 +307,6 @@ function Controler( player ) {
         };
 
 
-        // Die if fell into the water
-        if ( player.position.y + ( atlas.PLAYERHEIGHT / 2 ) < atlas.WATER_LEVEL ) {
-
-            clearTimeout( deathTimeoutToken );
-            deathTimeoutToken = undefined ;
-            gameState.die();
-
-        };
 
 
 
@@ -743,11 +735,14 @@ function Controler( player ) {
                  !state.isGliding &&
                  speedUp < -0.8 ) {
 
+                console.log(speedUp)
 
-                if ( Math.max( - speedUp, 0 ) / MAX_FALL_SPEED > FALL_SPEED_DEATH ) {
+                if ( - speedUp / MAX_FALL_SPEED > FALL_SPEED_DEATH ) {
 
                     clearTimeout( deathTimeoutToken );
                     deathTimeoutToken = undefined ;
+
+                    console.log('die because of hit ground')
 
                     charaAnim.die();
                     gameState.die( true );
@@ -906,6 +901,26 @@ function Controler( player ) {
                 gameState.die();
 
             }, FALL_DEATH_TIMEOUT );
+
+        };
+
+
+
+
+
+
+
+        // Die if fell into the water
+        if ( player.position.y + ( atlas.PLAYERHEIGHT / 2 ) < atlas.WATER_LEVEL ) {
+
+            clearTimeout( deathTimeoutToken );
+            deathTimeoutToken = undefined ;
+
+            if ( !gameState.params.isDying ) {
+
+                 gameState.die();
+
+            };
 
         };
 
@@ -1982,10 +1997,20 @@ function Controler( player ) {
 
 
 
+
+    function setSpeedUp( speed ) {
+
+        speedUp = speed ;
+
+    };
+
+
+
     return {
         update,
         spaceInput,
-        setMoveAngle
+        setMoveAngle,
+        setSpeedUp
     };
 
 };
