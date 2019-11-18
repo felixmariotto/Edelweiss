@@ -2,9 +2,11 @@
 
 function Stamina() {
 
+
     const domBar = document.getElementById('stamina-bar');
 
     const STARTSTAMINA = 1 ;
+    const TOLERANCE = 0.2 ;
 
     var params = {
         stamina: 0,
@@ -12,7 +14,6 @@ function Stamina() {
     };
 
     var gauges = [];
-
 
 
 
@@ -67,17 +68,16 @@ function Stamina() {
     // DOM STAMINA BAR UPDATE
     ///////////////////////////
 
+
     function updateDom() {
 
         gauges.forEach( ( domGauge, i )=> {
 
-            /*
-            let a = params.stamina - i
+            let a = ( ( params.stamina * ( params.maxStamina + TOLERANCE ) ) / params.maxStamina ) - i - TOLERANCE ;
             let b = Math.max( Math.min( a, 1 ), 0 );
-            domGauge.style.height = `${ b * 100 }%` ;
-            */
+            domGauge.style.width = `${ b * 100 }%` ;
 
-            domGauge.style.width = `${ Math.max( Math.min( params.stamina - i, 1 ), 0 ) * 100 }%` ;
+            // domGauge.style.width = `${ Math.max( Math.min( params.stamina - i, 1 ), 0 ) * 100 }%` ;
 
         });
 
@@ -99,12 +99,17 @@ function Stamina() {
 
         params.stamina -= factor ;
 
-        if ( params.stamina < 0 ) {
-
-            params.stamina = 0 ;
+        // Check if stamina is bellow 0 + tolerance
+        if ( ( params.stamina * params.maxStamina ) / ( params.maxStamina - TOLERANCE ) < TOLERANCE ) {
 
             // make stamina bar UI blink
             domBar.classList.add( 'blink_stamina' );
+
+        };
+
+        if ( params.stamina < 0 ) {
+
+            params.stamina = 0 ;
 
         };
 
