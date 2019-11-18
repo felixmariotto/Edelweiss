@@ -414,7 +414,7 @@ function CharaAnim( player ) {
 
     			case 'slipping' :
                     if ( newState == 'jumping' ) {
-                        setFadeOut( 'slip', 0.5 );
+                        setFadeOut( 'slip', 0.2 );
                     } else {
                         setFadeOut( 'slip', 0.1 );
                     };

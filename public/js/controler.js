@@ -1760,7 +1760,7 @@ function Controler( player ) {
 
             charaAnim.slip();
 
-        } else if ( state.isFlying && speedUp < 0 ) {
+        } else if ( state.isFlying && speedUp <= 0 ) {
 
             charaAnim.fall();
 
