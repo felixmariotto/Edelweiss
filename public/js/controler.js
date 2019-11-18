@@ -1082,6 +1082,17 @@ function Controler( player ) {
               xCollision.direction == dashWallDirection ) ) {
 
 
+            // Check if player is mostly out of any wall
+            if ( xCollision.maxHeight < player.position.y + ( atlas.PLAYERHEIGHT / 2 ) ||
+                 xCollision.minHeight > player.position.y + ( atlas.PLAYERHEIGHT / 2 ) ||
+                 xCollision.maxX < player.position.x - 0.05 ||
+                 xCollision.minX > player.position.x + 0.05 ||
+                 xCollision.maxZ < player.position.z - 0.05 ||
+                 xCollision.minZ > player.position.z + 0.05 ) {
+
+                state.isClimbing = false ;
+                return
+            };
 
 
             // Save the direction of the wall while charging dash,

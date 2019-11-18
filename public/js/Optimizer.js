@@ -52,7 +52,7 @@ function Optimizer() {
 		so rendering will be faster, with worst graphics as
 		a trade-off
     */
-	function optimize( delta ) {
+	function optimize() {
 
 		if ( params.timeOpti + OPTTIME < Date.now() ) {
 
@@ -109,7 +109,7 @@ function Optimizer() {
 		It will decrement the level of optimization by one,
 		which will make graphics better but frame rate maybe lower
 	*/
-	function deOptimize( delta ) {
+	function deOptimize() {
 
 		// Respect a timeout before any attempt of de-optimizing
 		if ( params.timeOpti + DEOPTTIME < Date.now() ) {

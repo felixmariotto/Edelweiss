@@ -61,11 +61,11 @@ function loop() {
 
         if ( clockDelta > optimizer.OPTFPS ) {
 
-            optimizer.optimize( clockDelta );
+            optimizer.optimize();
 
         } else if ( clockDelta < optimizer.DEOPTFPS ) {
 
-            optimizer.deOptimize( clockDelta );
+            optimizer.deOptimize();
 
         };
 
