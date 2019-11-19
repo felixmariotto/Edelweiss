@@ -15,6 +15,8 @@ function CameraControl( player, camera ) {
 	const DEFAULT_CAMERA_DISTANCE = 2.5 ;
 	const MIN_CAMERA_DISTANCE = 1.2 ;
 	const CAMERA_COLLISION_OFFSET = 0.4; // offset to avoid collision
+	const CAMERA_COLLISION_DISTANCE = 0.4; // hit box size
+	const CAMERA_TWEENING_SPEED = 0.1 ;
 
 	var cameraWantedPos = new THREE.Vector3();
 
@@ -300,29 +302,31 @@ function CameraControl( player, camera ) {
 
 		/// CAMERA COLLISION
 
+		group.localToWorld( camera.position );
+
+		stages = [
+			Math.floor( camera.position.y ) -1,
+			Math.floor( camera.position.y ),
+			Math.floor( camera.position.y ) +1
+		];
+
+		group.worldToLocal( camera.position );
+
+
 		checkCameraCollision( cameraColRayTop );
+		checkCameraCollision( cameraColRayBottom );
 
 
 		function checkCameraCollision( ray ) {
 
 			cameraRay.at( distCamera, ray.origin );
 
-			group.localToWorld( camera.position );
-
-			let stages = [
-				Math.floor( camera.position.y ) -1,
-				Math.floor( camera.position.y ),
-				Math.floor( camera.position.y ) +1
-			];
-
-			group.worldToLocal( camera.position );
-
-
 			group.localToWorld( ray.origin );
 
 			rayCollision = atlas.intersectRay( ray, stages, true ) ;
 
-			if ( rayCollision ) {
+			if ( rayCollision &&
+				 camera.position.distanceTo( group.worldToLocal( rayCollision ) ) < CAMERA_COLLISION_DISTANCE ) {
 
 				cameraOffsetVec.copy( ray.direction )
 							   .multiplyScalar( CAMERA_COLLISION_OFFSET )
@@ -343,9 +347,9 @@ function CameraControl( player, camera ) {
 
 		// camera.position.copy( cameraWantedPos );
 
-		camera.position.x = utils.lerp( camera.position.x, cameraWantedPos.x, 0.1 );
-		camera.position.y = utils.lerp( camera.position.y, cameraWantedPos.y, 0.1 );
-		camera.position.z = utils.lerp( camera.position.z, cameraWantedPos.z, 0.1 );
+		camera.position.x = utils.lerp( camera.position.x, cameraWantedPos.x, CAMERA_TWEENING_SPEED );
+		camera.position.y = utils.lerp( camera.position.y, cameraWantedPos.y, CAMERA_TWEENING_SPEED );
+		camera.position.z = utils.lerp( camera.position.z, cameraWantedPos.z, CAMERA_TWEENING_SPEED );
 
 		camera.lookAt( player.position )
 

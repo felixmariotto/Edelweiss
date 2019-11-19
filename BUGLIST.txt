@@ -7,13 +7,11 @@
 //////////////////////////////////
 
 
-- shadows blinking on low grade devices because of optimisation
 
-- disable switching to inexistant answers on the right side
 
-- when no more stamina on a wall, action should push out of the wall like jump
 
-- setup loading manager on startup screen, which pre-load the character and some assets
+
+
 
 
 
@@ -40,6 +38,7 @@
 
 - More feedback when out of stamina
 - Real title screen
+- setup loading manager on startup screen, which pre-load the character and some assets
 
 
 
@@ -47,4 +46,18 @@
 
 - Re-balance climbing cost
 - Create dialogues
+- disable switching to inexistant answers on the right side
 - Create checkpoints and respawn
+
+
+
+///// PART 5 : ART /////
+
+- Draw characters
+- Model map
+
+
+
+///// PART 6 : POLISHING /////
+
+- shadows blinking on low grade devices because of optimisation
