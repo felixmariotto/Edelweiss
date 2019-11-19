@@ -12,10 +12,9 @@ function CameraControl( player, camera ) {
 
 	const MAX_YAW = 0.2 ;
 	const CAMERA_DIRECTION = new THREE.Vector3( 0, 0.3, 1 ).normalize();
-	const DEFAULT_CAMERA_DISTANCE = 2.5 ;
+	const DEFAULT_CAMERA_DISTANCE = 3.5 ;
 	const MIN_CAMERA_DISTANCE = 1.2 ;
-	const CAMERA_COLLISION_OFFSET = 0.4; // offset to avoid collision
-	const CAMERA_COLLISION_DISTANCE = 0.4; // hit box size
+	const CAMERA_COLLISION_DISTANCE = 0.5; // hit box size
 	const CAMERA_TWEENING_SPEED = 0.1 ;
 
 	var cameraWantedPos = new THREE.Vector3();
@@ -296,7 +295,7 @@ function CameraControl( player, camera ) {
 
 		};
 
-		cameraRay.at( distCamera, cameraWantedPos );
+		cameraRay.at( distCamera * 0.95, cameraWantedPos );
 
 
 
@@ -315,6 +314,8 @@ function CameraControl( player, camera ) {
 
 		checkCameraCollision( cameraColRayTop );
 		checkCameraCollision( cameraColRayBottom );
+		checkCameraCollision( cameraColRayRight );
+		checkCameraCollision( cameraColRayLeft );
 
 
 		function checkCameraCollision( ray ) {
@@ -328,9 +329,13 @@ function CameraControl( player, camera ) {
 			if ( rayCollision &&
 				 camera.position.distanceTo( group.worldToLocal( rayCollision ) ) < CAMERA_COLLISION_DISTANCE ) {
 
+				let dist = camera.position.distanceTo( rayCollision );
+
 				cameraOffsetVec.copy( ray.direction )
-							   .multiplyScalar( CAMERA_COLLISION_OFFSET )
+							   .multiplyScalar( 1 - dist )
 							   .negate();
+
+				console.log( cameraOffsetVec.y );
 
 				cameraWantedPos.add( cameraOffsetVec );
 
