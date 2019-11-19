@@ -14,6 +14,9 @@ function CameraControl( player, camera ) {
 	const CAMERA_DIRECTION = new THREE.Vector3( 0, 0.3, 1 ).normalize();
 	const DEFAULT_CAMERA_DISTANCE = 2.5 ;
 	const MIN_CAMERA_DISTANCE = 1.2 ;
+	const CAMERA_COLLISION_OFFSET = 0.4; // offset to avoid collision
+
+	var cameraWantedPos = new THREE.Vector3();
 
 	var testRayOrigin = new THREE.Vector3();
 	var testRayDirection = new THREE.Vector3();
@@ -23,6 +26,28 @@ function CameraControl( player, camera ) {
 	var cameraRayDirection = new THREE.Vector3();
 	var cameraRayAxis = new THREE.Vector3( 0, 1, 0 );
 	var cameraRay = new THREE.Ray( cameraRayOrigin, cameraRayDirection );
+
+	var cameraOffsetVec = new THREE.Vector3();
+
+	var cameraColRayTop = new THREE.Ray(
+		new THREE.Vector3(),
+		new THREE.Vector3( 0, 1, 0 )
+	);
+
+	var cameraColRayBottom = new THREE.Ray(
+		new THREE.Vector3(),
+		new THREE.Vector3( 0, -1, 0 )
+	);
+
+	var cameraColRayLeft = new THREE.Ray(
+		new THREE.Vector3(),
+		new THREE.Vector3( -1, 1, 0 )
+	);
+
+	var cameraColRayRight = new THREE.Ray(
+		new THREE.Vector3(),
+		new THREE.Vector3( 1, 1, 0 )
+	);
 
 
 	// TEMP
@@ -252,10 +277,10 @@ function CameraControl( player, camera ) {
 
 			group.worldToLocal( rayCollision );
 
-			var distCamera = rayCollision.length();
+			var distCamera = rayCollision.distanceTo( cameraRay.origin );
 
 			// TEMP
-			setTimeout( ()=> {debugger}, 50);
+			// setTimeout( ()=> {debugger}, 100);
 
 		} else {
 
@@ -269,12 +294,45 @@ function CameraControl( player, camera ) {
 
 		};
 
+		cameraRay.at( distCamera, cameraWantedPos );
+
+
+
+		/// CAMERA COLLISION
+
+
+
+		checkCameraCollision( cameraColRayTop );
+
+
+		function checkCameraCollision( ray ) {
+
+			cameraRay.at( distCamera, ray.origin );
+
+			group.localToWorld( ray.origin );
+
+			rayCollision = atlas.intersectRay( ray, stages, true ) ;
+
+			if ( rayCollision ) {
+
+				cameraOffsetVec.copy( ray.direction )
+							   .multiplyScalar( CAMERA_COLLISION_OFFSET )
+							   .negate();
+
+				cameraWantedPos.add( cameraOffsetVec );
+
+			};
+
+		};
+
 		
+
+
 
 
 		/// TEMP TEST
 
-		cameraRay.at( distCamera, camera.position );
+		camera.position.copy( cameraWantedPos );
 
 		camera.lookAt( player.position )
 
