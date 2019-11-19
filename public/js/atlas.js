@@ -1004,17 +1004,15 @@ function Atlas( sceneGraph ) {
 
 
 
-	function intersectRay( ray, mustTestGrounds ) {
+	function intersectRay( ray, stages, mustTestGrounds ) {
 
 		rayCollision = undefined ;
 
-		checkStage( Math.floor( player.position.y ) );
-		checkStage( Math.floor( player.position.y ) + 1 );
-		checkStage( Math.floor( player.position.y ) + 2 );
-		checkStage( Math.floor( player.position.y ) + 3 );
+		stages.forEach( ( id )=> {
+			checkStage( id );
+		});
 
 		return rayCollision ;
-
 
 		function checkStage( stage ) {
 
@@ -1043,6 +1041,7 @@ function Atlas( sceneGraph ) {
 
 							};
 
+
 						} else {
 
 							tempTriVec1.set( logicTile.points[0].x, logicTile.points[0].y, logicTile.points[1].z );
@@ -1058,8 +1057,8 @@ function Atlas( sceneGraph ) {
 							tempRayCollision = ray.intersectTriangle(
 								tempTriVec1,
 								tempTriVec2,
-								logicTile.points[0],
-								false, // must try backface culling later
+								baseVec,
+								false,
 								rayCollisionVec
 							);
 

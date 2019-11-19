@@ -9,6 +9,10 @@ function CameraControl( player, camera ) {
 	var group = new THREE.Group();
 	scene.add( group );
 
+	var rayOrigin = new THREE.Vector3();
+	var rayDirection = new THREE.Vector3();
+	var testRay = new THREE.Ray( rayOrigin, rayDirection );
+
 
 	// TEMP
 	camera.position.set( 0, 1.1, 3.5 );
@@ -135,6 +139,60 @@ function CameraControl( player, camera ) {
 	function update( intersectRays ) {
 
 		group.position.copy( player.position );
+
+		////// GET INTERSECTION POINTS ON RIGHT AND LEFT OF PLAYER
+
+		rayOrigin.copy( player.position );
+		rayOrigin.y += atlas.PLAYERHEIGHT / 2 ;
+
+		/// LEFT
+
+		rayDirection.set( -1, 0, 0 );
+
+		let stages = [
+			Math.floor( player.position.y ) -1,
+			Math.floor( player.position.y ),
+			Math.floor( player.position.y ) +1
+		];
+
+		let intersectVec = atlas.intersectRay( testRay, stages, true );
+
+		let intersectionLeft = intersectVec ? intersectVec.x : false ;
+
+		/// RIGHT
+
+		rayDirection.set( 1, 0, 0 );
+
+		intersectVec = atlas.intersectRay( testRay, stages, false );
+
+		let intersectionRight = intersectVec ? intersectVec.x : false ;
+
+		// console.log( intersectionRight );
+
+		let leftRightRatio ;
+
+		if ( intersectionLeft === false &&
+			 intersectionRight === false ) {
+
+		 leftRightRatio = 0.5 ;
+
+		} else if ( intersectionLeft === false ) {
+
+			leftRightRatio = 1 ;
+
+		} else if ( intersectionRight === false ) {
+
+			leftRightRatio = 0 ;
+
+		} else {
+
+			leftRightRatio = ( player.position.x - intersectionLeft ) /
+								 ( intersectionRight - intersectionLeft );
+
+		};
+		
+
+		console.log( leftRightRatio );
 
 	};
 
