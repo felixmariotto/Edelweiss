@@ -11,13 +11,14 @@ function CameraControl( player, camera ) {
 
 
 	const MAX_YAW = 0.2 ;
+	var CAMERA_DIRECTION = new THREE.Vector3( 0, 0.3, 1 ).normalize();
 
 	var testRayOrigin = new THREE.Vector3();
 	var testRayDirection = new THREE.Vector3();
 	var testRay = new THREE.Ray( testRayOrigin, testRayDirection );
 
-	var cameraRayOrigin = new THREE.Vector3();
-	var cameraRayDirection = new THREE.Vector3( 0, 0, 1 );
+	var cameraRayOrigin = new THREE.Vector3( 0, 0.3, 0 );
+	var cameraRayDirection = new THREE.Vector3();
 	var cameraRayAxis = new THREE.Vector3( 0, 1, 0 );
 	var cameraRay = new THREE.Ray( cameraRayOrigin, cameraRayDirection );
 
@@ -208,9 +209,7 @@ function CameraControl( player, camera ) {
 
 		/// INTERSECT CAMERA RAY
 
-		// cameraRayOrigin.copy( player.position );
-
-		cameraRayDirection.set( 0, 0, 1 );
+		cameraRayDirection.copy( CAMERA_DIRECTION );
 
 		cameraRayDirection.applyAxisAngle(
 			cameraRayAxis,
@@ -218,11 +217,61 @@ function CameraControl( player, camera ) {
 		);
 
 
+
+
+		/*
+
+		group.localToWorld( cameraRayOrigin );
+
+		var arrowHelper = new THREE.ArrowHelper( cameraRayDirection, cameraRayOrigin, 10 );
+		scene.add( arrowHelper );
+
+		group.worldToLocal( cameraRayOrigin );
+
+		*/
+
+
+
+		/// CAMERA DISTANCE
+
+		stages = [
+			Math.floor( player.position.y ),
+			Math.floor( player.position.y ) +1,
+			Math.floor( player.position.y ) +2,
+			Math.floor( player.position.y ) +3,
+			Math.floor( player.position.y ) +4,
+		];
+
+		group.localToWorld( cameraRayOrigin );
+
+		let rayCollision = atlas.intersectRay( cameraRay, stages, true );
+
+		group.worldToLocal( cameraRayOrigin );
+
+		// console.log( rayCollision );
+
+		let distCamera
+
+		if ( rayCollision ) {
+
+			group.worldToLocal( rayCollision );
+
+			distCamera = rayCollision.length();
+
+			setTimeout( ()=> {debugger}, 50);
+
+		} else {
+
+			distCamera = 4 ;
+
+		};
+
+		
+
+
 		/// TEMP TEST
 
-		cameraRay.at( 2.5, camera.position );
-
-		camera.position.y += 1
+		cameraRay.at( distCamera, camera.position );
 
 		camera.lookAt( player.position )
 
