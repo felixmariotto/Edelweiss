@@ -11,7 +11,9 @@ function CameraControl( player, camera ) {
 
 
 	const MAX_YAW = 0.2 ;
-	var CAMERA_DIRECTION = new THREE.Vector3( 0, 0.3, 1 ).normalize();
+	const CAMERA_DIRECTION = new THREE.Vector3( 0, 0.3, 1 ).normalize();
+	const DEFAULT_CAMERA_DISTANCE = 2.5 ;
+	const MIN_CAMERA_DISTANCE = 1.2 ;
 
 	var testRayOrigin = new THREE.Vector3();
 	var testRayDirection = new THREE.Vector3();
@@ -179,24 +181,22 @@ function CameraControl( player, camera ) {
 
 		/// ANGLE OF CAMERA RAY
 
-		let leftRightRatio ;
-
 		if ( intersectionLeft === false &&
 			 intersectionRight === false ) {
 
-		 	leftRightRatio = 0.5 ;
+		 	var leftRightRatio = 0.5 ;
 
 		} else if ( intersectionLeft === false ) {
 
-			leftRightRatio = 1 ;
+			var leftRightRatio = 1 ;
 
 		} else if ( intersectionRight === false ) {
 
-			leftRightRatio = 0 ;
+			var leftRightRatio = 0 ;
 
 		} else {
 
-			leftRightRatio = ( player.position.x - intersectionLeft ) /
+			var leftRightRatio = ( player.position.x - intersectionLeft ) /
 							 ( intersectionRight - intersectionLeft );
 
 		};
@@ -248,21 +248,24 @@ function CameraControl( player, camera ) {
 
 		group.worldToLocal( cameraRayOrigin );
 
-		// console.log( rayCollision );
-
-		let distCamera
-
 		if ( rayCollision ) {
 
 			group.worldToLocal( rayCollision );
 
-			distCamera = rayCollision.length();
+			var distCamera = rayCollision.length();
 
+			// TEMP
 			setTimeout( ()=> {debugger}, 50);
 
 		} else {
 
-			distCamera = 4 ;
+			var distCamera = DEFAULT_CAMERA_DISTANCE ;
+
+		};
+
+		if ( distCamera < MIN_CAMERA_DISTANCE ) {
+
+			distCamera = DEFAULT_CAMERA_DISTANCE ;
 
 		};
 
