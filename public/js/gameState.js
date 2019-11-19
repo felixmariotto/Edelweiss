@@ -21,8 +21,6 @@ function GameState() {
 	// Show a black screen, wait one second, respown, remove black screen.
 	function die( hasCrashed ) {
 
-		console.log('coucou')
-
 		params.isDying = true ;
 		if ( hasCrashed ) params.isCrashing = true ;
 

@@ -9,9 +9,17 @@ function CameraControl( player, camera ) {
 	var group = new THREE.Group();
 	scene.add( group );
 
-	var rayOrigin = new THREE.Vector3();
-	var rayDirection = new THREE.Vector3();
-	var testRay = new THREE.Ray( rayOrigin, rayDirection );
+
+	const MAX_YAW = 0.2 ;
+
+	var testRayOrigin = new THREE.Vector3();
+	var testRayDirection = new THREE.Vector3();
+	var testRay = new THREE.Ray( testRayOrigin, testRayDirection );
+
+	var cameraRayOrigin = new THREE.Vector3();
+	var cameraRayDirection = new THREE.Vector3( 0, 0, 1 );
+	var cameraRayAxis = new THREE.Vector3( 0, 1, 0 );
+	var cameraRay = new THREE.Ray( cameraRayOrigin, cameraRayDirection );
 
 
 	// TEMP
@@ -142,12 +150,12 @@ function CameraControl( player, camera ) {
 
 		////// GET INTERSECTION POINTS ON RIGHT AND LEFT OF PLAYER
 
-		rayOrigin.copy( player.position );
-		rayOrigin.y += atlas.PLAYERHEIGHT / 2 ;
+		testRayOrigin.copy( player.position );
+		testRayOrigin.y += atlas.PLAYERHEIGHT / 2 ;
 
 		/// LEFT
 
-		rayDirection.set( -1, 0, 0 );
+		testRayDirection.set( -1, 0, 0 );
 
 		let stages = [
 			Math.floor( player.position.y ) -1,
@@ -161,20 +169,21 @@ function CameraControl( player, camera ) {
 
 		/// RIGHT
 
-		rayDirection.set( 1, 0, 0 );
+		testRayDirection.set( 1, 0, 0 );
 
 		intersectVec = atlas.intersectRay( testRay, stages, false );
 
 		let intersectionRight = intersectVec ? intersectVec.x : false ;
 
-		// console.log( intersectionRight );
+
+		/// ANGLE OF CAMERA RAY
 
 		let leftRightRatio ;
 
 		if ( intersectionLeft === false &&
 			 intersectionRight === false ) {
 
-		 leftRightRatio = 0.5 ;
+		 	leftRightRatio = 0.5 ;
 
 		} else if ( intersectionLeft === false ) {
 
@@ -187,12 +196,37 @@ function CameraControl( player, camera ) {
 		} else {
 
 			leftRightRatio = ( player.position.x - intersectionLeft ) /
-								 ( intersectionRight - intersectionLeft );
+							 ( intersectionRight - intersectionLeft );
 
 		};
-		
 
-		console.log( leftRightRatio );
+		let angle = Math.asin( (leftRightRatio * 2) -1 );
+
+		// contraint to MAX_YAW
+		angle = (angle * MAX_YAW) / (Math.PI / 2) ;
+
+
+		/// INTERSECT CAMERA RAY
+
+		// cameraRayOrigin.copy( player.position );
+
+		cameraRayDirection.set( 0, 0, 1 );
+
+		cameraRayDirection.applyAxisAngle(
+			cameraRayAxis,
+			-angle
+		);
+
+
+		/// TEMP TEST
+
+		cameraRay.at( 2.5, camera.position );
+
+		camera.position.y += 1
+
+		camera.lookAt( player.position )
+
+		
 
 	};
 
