@@ -111,7 +111,8 @@ function Utils() {
         lerpAngles,
         minDiffRadians,
         distanceVecs,
-        interp
+        interp,
+        lerp
     };
 
 

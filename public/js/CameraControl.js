@@ -300,14 +300,23 @@ function CameraControl( player, camera ) {
 
 		/// CAMERA COLLISION
 
-
-
 		checkCameraCollision( cameraColRayTop );
 
 
 		function checkCameraCollision( ray ) {
 
 			cameraRay.at( distCamera, ray.origin );
+
+			group.localToWorld( camera.position );
+
+			let stages = [
+				Math.floor( camera.position.y ) -1,
+				Math.floor( camera.position.y ),
+				Math.floor( camera.position.y ) +1
+			];
+
+			group.worldToLocal( camera.position );
+
 
 			group.localToWorld( ray.origin );
 
@@ -330,9 +339,13 @@ function CameraControl( player, camera ) {
 
 
 
-		/// TEMP TEST
+		/// EASING
 
-		camera.position.copy( cameraWantedPos );
+		// camera.position.copy( cameraWantedPos );
+
+		camera.position.x = utils.lerp( camera.position.x, cameraWantedPos.x, 0.1 );
+		camera.position.y = utils.lerp( camera.position.y, cameraWantedPos.y, 0.1 );
+		camera.position.z = utils.lerp( camera.position.z, cameraWantedPos.z, 0.1 );
 
 		camera.lookAt( player.position )
 
