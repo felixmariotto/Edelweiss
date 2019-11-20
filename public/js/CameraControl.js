@@ -173,14 +173,21 @@ function CameraControl( player, camera ) {
 	//////////////////////
 
 
+
 	function update( intersectRays ) {
 
+
+
 		group.position.copy( player.position );
+
+
 
 		////// GET INTERSECTION POINTS ON RIGHT AND LEFT OF PLAYER
 
 		testRayOrigin.copy( player.position );
 		testRayOrigin.y += atlas.PLAYERHEIGHT / 2 ;
+
+
 
 		/// LEFT
 
@@ -196,25 +203,17 @@ function CameraControl( player, camera ) {
 
 		let intersectionLeft = intersectVec ? intersectVec.x : false ;
 
+
+
 		/// RIGHT
 
 		testRayDirection.set( 1, 0, 0 );
 
 		intersectVec = atlas.intersectRay( testRay, stages, false );
 
-
-
 		let intersectionRight = intersectVec ? intersectVec.x : false ;
 
-		// console.log( intersectionRight );
 
-		/*
-		if ( intersectionLeft && intersectionRight ) {
-			console.log('intersectionLeft : ' + intersectionLeft);
-			console.log('intersectionRight : ' + intersectionRight);
-			debugger
-		};
-		*/
 
 		/// ANGLE OF CAMERA RAY
 
@@ -240,48 +239,25 @@ function CameraControl( player, camera ) {
 
 		let angle = Math.asin( (leftRightRatio * 2) -1 );
 
-		/*
-		if ( !angle ) {
-			console.log( 'leftRightRatio = ' + leftRightRatio );
-			console.log( Math.asin( (leftRightRatio * 2) -1 ) );
-			debugger
-		}\
-		*/
+
 
 		// contraint to MAX_YAW
 		angle = (angle * MAX_YAW) / (Math.PI / 2) ;
 
 
+
 		/// INTERSECT CAMERA RAY
 
-		cameraRayDirection.copy( CAMERA_DIRECTION );
+		cameraRay.direction.copy( CAMERA_DIRECTION );
 
-		cameraRayDirection.applyAxisAngle(
+		cameraRay.direction.applyAxisAngle(
 			cameraRayAxis,
 			-angle
 		);
 
 
 
-
-
-
-		/*
-
-		group.localToWorld( cameraRayOrigin );
-
-		var arrowHelper = new THREE.ArrowHelper( cameraRayDirection, cameraRayOrigin, 10 );
-		scene.add( arrowHelper );
-
-		group.worldToLocal( cameraRayOrigin );
-
-		*/
-
-
-
 		/// CAMERA DISTANCE
-
-
 
 		/*
 		THIS PRODUCED WEIRD JERKS TOWARD PLAYER WHEN THEY
@@ -344,12 +320,12 @@ function CameraControl( player, camera ) {
 
 		group.worldToLocal( camera.position );
 
-		/*
-		checkCameraCollision( cameraColRayTop );
-		checkCameraCollision( cameraColRayBottom );
+		
+		// checkCameraCollision( cameraColRayTop );
+		// checkCameraCollision( cameraColRayBottom );
 		checkCameraCollision( cameraColRayRight );
-		checkCameraCollision( cameraColRayLeft );
-		*/
+		// checkCameraCollision( cameraColRayLeft );
+		
 
 		function checkCameraCollision( ray ) {
 
@@ -360,19 +336,25 @@ function CameraControl( player, camera ) {
 			rayCollision = atlas.intersectRay( ray, stages, true ) ;
 
 			if ( rayCollision &&
-				 camera.position.distanceTo( group.worldToLocal( rayCollision ) ) < CAMERA_COLLISION_DISTANCE ) {
+				 camera.position.distanceTo( group.worldToLocal( rayCollision ) ) <
+				 CAMERA_COLLISION_DISTANCE ) {
 
-				let dist = camera.position.distanceTo( rayCollision );
+				let dist = camera.position.distanceTo( rayCollision ) ;
+
+				console.log( dist )
 
 				cameraOffsetVec.copy( ray.direction )
-							   .multiplyScalar( 1 - dist )
-							   .negate();
+							   .clampLength( 0, dist );
 
-				console.log( dist );
+				cameraOffsetVec.x = cameraOffsetVec.x * -1 ;
 
 				cameraWantedPos.add( cameraOffsetVec );
 
-			};
+			} else {
+
+				console.log(false)
+
+			}
 
 		};
 
@@ -382,8 +364,6 @@ function CameraControl( player, camera ) {
 
 
 		/// EASING
-
-		// camera.position.copy( cameraWantedPos );
 
 		camera.position.x = utils.lerp( camera.position.x, cameraWantedPos.x, CAMERA_TWEENING_SPEED );
 		camera.position.y = utils.lerp( camera.position.y, cameraWantedPos.y, CAMERA_TWEENING_SPEED );
