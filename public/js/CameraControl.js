@@ -13,10 +13,11 @@ function CameraControl( player, camera ) {
 	const MAX_YAW = 0.2 ;
 	const CAMERA_DIRECTION = new THREE.Vector3( 0, 0.4, 1 ).normalize();
 	const DEFAULT_CAMERA_DISTANCE = 3.5 ;
-	const MIN_CAMERA_DISTANCE = 1.2 ;
-	const CAMERA_COLLISION_DISTANCE = 0.5; // hit box size
-	const CAMERA_TWEENING_SPEED = 0.1 ;
+	const MIN_CAMERA_DISTANCE = 0.2 ;
+	const CAMERA_WIDTH = 0.5 ;
+	const CAMERA_TWEENING_SPEED = 0.05 ;
 
+	var cameraCollision;
 	var cameraTarget = new THREE.Vector3();
 	var cameraWantedPos = new THREE.Vector3();
 
@@ -287,7 +288,7 @@ function CameraControl( player, camera ) {
 
 			// We want to camera to be positioned at the intersection
 			// between the ray and the obstacle
-			var distCamera = rayCollision.distanceTo( cameraRay.origin );
+			var distCamera = rayCollision.distanceTo( cameraRay.origin ) - 0.05;
 
 		} else {
 
@@ -310,8 +311,70 @@ function CameraControl( player, camera ) {
 
 
 
+		
+
+		
+
+		//////////////////////
+		///  POSITION CAMERA
+		////
+
+
+		// camera.position.copy( cameraWantedPos );
+
+		// ease-out
+		camera.position.x = utils.lerp( camera.position.x, cameraWantedPos.x, CAMERA_TWEENING_SPEED );
+		camera.position.y = utils.lerp( camera.position.y, cameraWantedPos.y, CAMERA_TWEENING_SPEED );
+		camera.position.z = utils.lerp( camera.position.z, cameraWantedPos.z, CAMERA_TWEENING_SPEED );
+
+		camera.lookAt( cameraTarget );
+
+
+
+
+
+
+
+		/////////////////////////
 		/// CAMERA COLLISION
 
+		// atlas.collideCamera()
+
+		cameraCollision = atlas.collideCamera();
+
+		if ( cameraCollision.target.length() > 0 ) {
+
+			console.log( cameraCollision.target.distanceTo( camera.position ) );
+
+			camera.position.copy( cameraCollision.target );
+
+		};
+		
+		
+
+		/*
+		var arrowHelper = new THREE.ArrowHelper( cameraColRayTop.direction, cameraColRayTop.origin, 10 );
+		scene.add( arrowHelper );
+		*/
+
+		/*
+		setTimeout( ()=> {
+			console.log( camera.position );
+			console.log( cameraColRayTop.origin )
+			debugger
+		}, 500);
+		*/
+
+		
+
+		/*
+		var arrowHelper = new THREE.ArrowHelper( cameraColRayTop.direction, cameraColRayTop.origin, 10 );
+		scene.add( arrowHelper );
+
+		var arrowHelper = new THREE.ArrowHelper( cameraColRayRight.direction, cameraColRayTop.origin, 10 );
+		scene.add( arrowHelper );
+		*/
+		
 		/*
 
 		stages = [
@@ -320,16 +383,17 @@ function CameraControl( player, camera ) {
 			Math.floor( camera.position.y ) +1
 		];
 
-		
 		checkCameraCollision( cameraColRayTop );
 		checkCameraCollision( cameraColRayBottom );
 		checkCameraCollision( cameraColRayRight );
 		checkCameraCollision( cameraColRayLeft );
+
+		scene.add( utils.boxHelper( 0.01, camera.position ) );
 		
 
 		function checkCameraCollision( ray ) {
 
-			cameraRay.at( distCamera, ray.origin );
+			ray.origin.copy( camera.position );
 
 			rayCollision = atlas.intersectRay( ray, stages, true ) ;
 
@@ -337,36 +401,25 @@ function CameraControl( player, camera ) {
 				 camera.position.distanceTo( rayCollision ) <
 				 CAMERA_COLLISION_DISTANCE ) {
 
-				let dist = camera.position.distanceTo( rayCollision );
+				
+				
+				let dist = CAMERA_COLLISION_DISTANCE - camera.position.distanceTo( rayCollision );
+
+				console.log( dist );
 
 				cameraOffsetVec.copy( ray.direction )
-							   .clampLength( 0, dist );
+							   .setLength( dist + 0.1 );
 
-				cameraOffsetVec.x = cameraOffsetVec.x * -1 ;
+				// cameraOffsetVec.x = cameraOffsetVec.x * -1 ;
 
-				cameraWantedPos.add( cameraOffsetVec );
-
+				camera.position.add( cameraOffsetVec );
+				
 			};
 
 		};
-
 		*/
 
-		
 
-
-
-
-		/// EASING
-
-
-		// camera.position.copy( cameraWantedPos );
-
-		camera.position.x = utils.lerp( camera.position.x, cameraWantedPos.x, CAMERA_TWEENING_SPEED );
-		camera.position.y = utils.lerp( camera.position.y, cameraWantedPos.y, CAMERA_TWEENING_SPEED );
-		camera.position.z = utils.lerp( camera.position.z, cameraWantedPos.z, CAMERA_TWEENING_SPEED );
-
-		camera.lookAt( player.position )
 
 	};
 
@@ -383,7 +436,8 @@ function CameraControl( player, camera ) {
 	return {
 		update,
 		directionalLight,
-		adaptFOV
+		adaptFOV,
+		CAMERA_WIDTH
 	};
 
 };

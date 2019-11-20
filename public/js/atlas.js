@@ -28,9 +28,15 @@ function Atlas( sceneGraph ) {
 
 	var planes = [];
 
+
+	var cameraCollision = {
+		target: new THREE.Vector3(),
+		tempTarget: new THREE.Vector3()
+	};
+
 	// This is used in cube collision to know which
 	// direction is the one with less collision
-	var cubeColSortArr = [ 'x', 'y', 'z' ];
+	var collisionSortArr = [ 'x', 'y', 'z' ];
 
 	var cubeCollision = {
 		point: undefined,
@@ -433,6 +439,150 @@ function Atlas( sceneGraph ) {
 	/////////////////////////
 
 
+
+
+	function collideCamera() {
+
+		cameraCollision.target.set( 0, 0, 0 ) ;
+
+		checkStage( Math.floor( camera.position.y ) );
+		checkStage( Math.floor( camera.position.y ) + 1 );
+		checkStage( Math.floor( camera.position.y ) -1 );
+
+		return cameraCollision ;
+
+		function checkStage( stage ) {
+
+			if ( sceneGraph.tilesGraph[ stage ] ) {
+
+				// loop through the group of tiles at the same height as the player
+				sceneGraph.tilesGraph[ stage ].forEach( ( logicTile )=> {
+
+					// AABB collision detection
+					if ( !( Math.min( logicTile.points[0].x, logicTile.points[1].x ) > camera.position.x + ( cameraControl.CAMERA_WIDTH / 2 ) ||
+							Math.max( logicTile.points[0].x, logicTile.points[1].x ) < camera.position.x - ( cameraControl.CAMERA_WIDTH / 2 ) ||
+							Math.min( logicTile.points[0].y, logicTile.points[1].y ) > camera.position.y + ( cameraControl.CAMERA_WIDTH / 2 ) ||
+							Math.max( logicTile.points[0].y, logicTile.points[1].y ) < camera.position.y - ( cameraControl.CAMERA_WIDTH / 2 ) ||
+							Math.min( logicTile.points[0].z, logicTile.points[1].z ) > camera.position.z + ( cameraControl.CAMERA_WIDTH / 2 ) ||
+							Math.max( logicTile.points[0].z, logicTile.points[1].z ) < camera.position.z - ( cameraControl.CAMERA_WIDTH / 2 )  ) ) {
+
+						///////////////////////////////////////////////////////
+						// Set cubeCollision.point from the cube coordinates
+						///////////////////////////////////////////
+
+						cameraCollision.tempTarget.set( 0, 0, 0 );
+
+						// X DIR
+						if ( logicTile.isWall ) {
+
+							let tileX = (logicTile.points[0].x + logicTile.points[1].x) / 2 ;
+							
+							if ( tileX > camera.position.x ) {
+								cameraCollision.tempTarget.x = Math.min( camera.position.x, tileX - ( cameraControl.CAMERA_WIDTH / 2 ) );
+							} else {
+								cameraCollision.tempTarget.x = Math.max( camera.position.x, tileX + ( cameraControl.CAMERA_WIDTH / 2 ) );
+							};
+
+						} else {
+
+							cameraCollision.tempTarget.x = camera.position.x ;
+
+						};
+						
+
+						// Z DIR
+						if ( logicTile.isWall ) {
+
+							let tileZ = (logicTile.points[0].z + logicTile.points[1].z) / 2 ;
+							
+							if ( tileZ > camera.position.z ) {
+								cameraCollision.tempTarget.z = Math.min( camera.position.z, tileZ - ( cameraControl.CAMERA_WIDTH / 2 ) );
+							} else {
+								cameraCollision.tempTarget.z = Math.max( camera.position.z, tileZ + ( cameraControl.CAMERA_WIDTH / 2 ) );
+							};
+
+						} else {
+
+							cameraCollision.tempTarget.z = camera.position.z ;
+
+						};
+						
+
+						// Y DIR
+						if ( !logicTile.isWall ) {
+
+							let tileY = (logicTile.points[0].y + logicTile.points[1].y) / 2 ;
+							
+							if ( tileY > camera.position.y ) {
+								cameraCollision.tempTarget.y = Math.min( camera.position.y, tileY - ( cameraControl.CAMERA_WIDTH / 2 ) );
+							} else {
+								cameraCollision.tempTarget.y = Math.max( camera.position.y, tileY + ( cameraControl.CAMERA_WIDTH / 2 ) );
+							};
+
+						} else {
+
+							cameraCollision.tempTarget.y = camera.position.y ;
+
+						};
+						
+
+
+						/// All this mess is to get cubeCollision.point value which
+						// is the closest from camera.position values, then clamp
+						// the other two to camera.position values.
+
+						/*
+						collisionSortArr.sort( (a, b)=> {
+
+							return Math.abs( cameraCollision.tempTarget[a] - camera.position[a] ) -
+								   Math.abs( cameraCollision.tempTarget[b] - camera.position[b] )
+
+						});
+
+						
+						cameraCollision.tempTarget[ collisionSortArr[1] ] = camera.position[ collisionSortArr[1] ] ;
+						cameraCollision.tempTarget[ collisionSortArr[2] ] = camera.position[ collisionSortArr[2] ] ;
+						*/
+						
+
+						// Check if tempTarget is farther than the collision already found
+						if ( cameraCollision.target.length() > 0 ) {
+
+							if ( camera.position.distanceTo( cameraCollision.target ) >
+								 camera.position.distanceTo( cameraCollision.tempTarget ) ) {
+
+								cameraCollision.target.copy( cameraCollision.tempTarget );
+
+							};
+
+						} else {
+
+							// console.log( camera.position.distanceTo( cameraCollision.tempTarget ) )
+
+							cameraCollision.target.copy( cameraCollision.tempTarget );
+
+						};
+
+					};
+
+				});
+
+			};
+
+		};
+
+	};
+
+
+
+
+
+
+
+
+
+
+
 	function collidePlayerCubes() {
 
 		cubeCollision.point = undefined ;
@@ -518,15 +668,15 @@ function Atlas( sceneGraph ) {
 							// is the closest from player.position values, then clamp
 							// the other two to player.position values.
 
-							cubeColSortArr.sort( (a, b)=> {
+							collisionSortArr.sort( (a, b)=> {
 
 								return Math.abs( cubeCollision.point[a] - player.position[a] ) -
 									   Math.abs( cubeCollision.point[b] - player.position[b] )
 
 							});
 
-							cubeCollision.point[ cubeColSortArr[1] ] = player.position[ cubeColSortArr[1] ] ;
-							cubeCollision.point[ cubeColSortArr[2] ] = player.position[ cubeColSortArr[2] ] ;
+							cubeCollision.point[ collisionSortArr[1] ] = player.position[ collisionSortArr[1] ] ;
+							cubeCollision.point[ collisionSortArr[2] ] = player.position[ collisionSortArr[2] ] ;
 
 						} else {
 
@@ -1281,7 +1431,8 @@ function Atlas( sceneGraph ) {
 		sceneGraph,
 		player,
 		deleteCubeFromGraph,
-		startPos
+		startPos,
+		collideCamera
 	};
 
 

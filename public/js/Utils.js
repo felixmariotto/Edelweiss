@@ -104,6 +104,23 @@ function Utils() {
 
 
 
+    function boxHelper( x, position ) {
+
+        let geometry = new THREE.BoxBufferGeometry( x, x, x );
+        let material = new THREE.MeshNormalMaterial();
+        let mesh = new THREE.Mesh( geometry, material );
+
+        if ( position ) {
+
+            mesh.position.copy( position );
+
+        };
+
+        return mesh
+    };
+
+
+
 
 
     return {
@@ -112,7 +129,8 @@ function Utils() {
         minDiffRadians,
         distanceVecs,
         interp,
-        lerp
+        lerp,
+        boxHelper
     };
 
 

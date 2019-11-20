@@ -75,13 +75,15 @@ function loop() {
 
     // UPDATE LOGIC
 
-    if ( controler ) {
+    if ( controler && cameraControl ) {
 
         ticks = Math.round( ( clockDelta / ( 1 / 60 ) ) * 2 );
 
         for ( let i = 0 ; i < ticks ; i++ ) {
 
             controler.update( clockDelta / ticks );
+
+            cameraControl.update();
 
         };
 
@@ -94,13 +96,12 @@ function loop() {
     stats.update();
     if ( orbitControls ) orbitControls.update();
 
-    // if ( controler ) controler.update( clockDelta );
     if ( mixer ) mixer.update( clockDelta );
     if ( charaAnim ) charaAnim.update( clockDelta );
     if ( dynamicItems ) dynamicItems.update( clockDelta );
     if ( input ) input.update( clockDelta );
 
-    if ( cameraControl ) cameraControl.update( loopCount % 6 == 0 );
+    
     if ( stamina ) stamina.update( loopCount % 10 == 0 );
     // if ( mapManager ) mapManager.update( loopCount % 10 == 0 );
 
