@@ -284,15 +284,9 @@ function CameraControl( player, camera ) {
 		let rayCollision = atlas.intersectRay( cameraRay, stages, true );
 
 		if ( rayCollision ) {
-			let helper = new THREE.Mesh( new THREE.BoxBufferGeometry( 0.1, 0.1, 0.1), new THREE.MeshNormalMaterial() );
-			helper.position.copy( rayCollision );
-			scene.add( helper );
-		};
 
-		// console.log( rayCollision.distanceTo( cameraRay.origin ) )
-
-		if ( rayCollision ) {
-
+			// We want to camera to be positioned at the intersection
+			// between the ray and the obstacle
 			var distCamera = rayCollision.distanceTo( cameraRay.origin );
 
 		} else {
@@ -301,6 +295,9 @@ function CameraControl( player, camera ) {
 
 		};
 
+		// if the computed obstacle is far, no need to move camera.
+		// And if it's too close, the camera would be too close from player,
+		// so it's better to stay away and loose line of sight
 		if ( distCamera < MIN_CAMERA_DISTANCE ||
 			 distCamera > DEFAULT_CAMERA_DISTANCE ) {
 
@@ -308,6 +305,7 @@ function CameraControl( player, camera ) {
 
 		};
 
+		// Set the vector cameraWantedPos at the computed point
 		cameraRay.at( distCamera, cameraWantedPos );
 
 
@@ -361,15 +359,12 @@ function CameraControl( player, camera ) {
 
 		/// EASING
 
-		// cameraWantedPos.add( player.position );
 
-		camera.position.copy( cameraWantedPos );
+		// camera.position.copy( cameraWantedPos );
 
-		/*
 		camera.position.x = utils.lerp( camera.position.x, cameraWantedPos.x, CAMERA_TWEENING_SPEED );
 		camera.position.y = utils.lerp( camera.position.y, cameraWantedPos.y, CAMERA_TWEENING_SPEED );
 		camera.position.z = utils.lerp( camera.position.z, cameraWantedPos.z, CAMERA_TWEENING_SPEED );
-		*/
 
 		camera.lookAt( player.position )
 
