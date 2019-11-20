@@ -11,12 +11,13 @@ function CameraControl( player, camera ) {
 
 
 	const MAX_YAW = 0.2 ;
-	const CAMERA_DIRECTION = new THREE.Vector3( 0, 0.3, 1 ).normalize();
+	const CAMERA_DIRECTION = new THREE.Vector3( 0, 0.4, 1 ).normalize();
 	const DEFAULT_CAMERA_DISTANCE = 3.5 ;
 	const MIN_CAMERA_DISTANCE = 1.2 ;
 	const CAMERA_COLLISION_DISTANCE = 0.5; // hit box size
 	const CAMERA_TWEENING_SPEED = 0.1 ;
 
+	var cameraTarget = new THREE.Vector3();
 	var cameraWantedPos = new THREE.Vector3();
 
 	var testRayOrigin = new THREE.Vector3();
@@ -130,8 +131,7 @@ function CameraControl( player, camera ) {
 
 	} else {
 
-		group.add( camera );
-		group.position.copy( player.position );
+		scene.add( camera );
 
 	};
 
@@ -177,27 +177,27 @@ function CameraControl( player, camera ) {
 	function update( intersectRays ) {
 
 
+		cameraTarget.copy( player.position );
+		cameraTarget.y += atlas.PLAYERHEIGHT / 2 ;
 
-		group.position.copy( player.position );
 
-
-
+		///////////////////////////////////////////////////////////////
 		////// GET INTERSECTION POINTS ON RIGHT AND LEFT OF PLAYER
 
-		testRayOrigin.copy( player.position );
-		testRayOrigin.y += atlas.PLAYERHEIGHT / 2 ;
+		testRay.origin.copy( cameraTarget );
 
-
-
-		/// LEFT
-
-		testRayDirection.set( -1, 0, 0 );
-
+		// get the scene graph stages to check
 		let stages = [
 			Math.floor( player.position.y ) -1,
 			Math.floor( player.position.y ),
 			Math.floor( player.position.y ) +1
 		];
+
+
+
+		/// LEFT
+
+		testRay.direction.set( -1, 0, 0 );
 
 		let intersectVec = atlas.intersectRay( testRay, stages, true );
 
@@ -207,7 +207,7 @@ function CameraControl( player, camera ) {
 
 		/// RIGHT
 
-		testRayDirection.set( 1, 0, 0 );
+		testRay.direction.set( 1, 0, 0 );
 
 		intersectVec = atlas.intersectRay( testRay, stages, false );
 
@@ -215,6 +215,7 @@ function CameraControl( player, camera ) {
 
 
 
+		///////////////////////////////
 		/// ANGLE OF CAMERA RAY
 
 		if ( intersectionLeft === false &&
@@ -232,11 +233,15 @@ function CameraControl( player, camera ) {
 
 		} else {
 
+			// cross product to get a ratio between 0 and 1 where
+			// 0 means a wall is very close on the LEFT, and
+			// 1 a wall is very close on the RIGHT.
 			var leftRightRatio = ( player.position.x - intersectionLeft ) /
 								 ( intersectionRight - intersectionLeft );
 
 		};
 
+		// a radian angle between -1.57 and 1.57 is computed from the ratio
 		let angle = Math.asin( (leftRightRatio * 2) -1 );
 
 
@@ -246,8 +251,17 @@ function CameraControl( player, camera ) {
 
 
 
+
+
+
+		/////////////////////////////////////////
 		/// INTERSECT CAMERA RAY
 
+
+		// The computed angle is applied to the ray we use
+		// to position the camera
+
+		cameraRay.origin.copy( cameraTarget );
 		cameraRay.direction.copy( CAMERA_DIRECTION );
 
 		cameraRay.direction.applyAxisAngle(
@@ -256,13 +270,9 @@ function CameraControl( player, camera ) {
 		);
 
 
-
 		/// CAMERA DISTANCE
 
-		/*
-		THIS PRODUCED WEIRD JERKS TOWARD PLAYER WHEN THEY
-		WALKED BEHIND AN OBSTACLE
-
+		// scene graph stages to check fo collision with camera ray
 		stages = [
 			Math.floor( player.position.y ),
 			Math.floor( player.position.y ) +1,
@@ -271,20 +281,19 @@ function CameraControl( player, camera ) {
 			Math.floor( player.position.y ) +4,
 		];
 
-		group.localToWorld( cameraRayOrigin );
-
 		let rayCollision = atlas.intersectRay( cameraRay, stages, true );
 
-		group.worldToLocal( cameraRayOrigin );
+		if ( rayCollision ) {
+			let helper = new THREE.Mesh( new THREE.BoxBufferGeometry( 0.1, 0.1, 0.1), new THREE.MeshNormalMaterial() );
+			helper.position.copy( rayCollision );
+			scene.add( helper );
+		};
+
+		// console.log( rayCollision.distanceTo( cameraRay.origin ) )
 
 		if ( rayCollision ) {
 
-			group.worldToLocal( rayCollision );
-
 			var distCamera = rayCollision.distanceTo( cameraRay.origin );
-
-			// TEMP
-			// setTimeout( ()=> {debugger}, 100);
 
 		} else {
 
@@ -292,17 +301,12 @@ function CameraControl( player, camera ) {
 
 		};
 
-		if ( distCamera < MIN_CAMERA_DISTANCE ) {
+		if ( distCamera < MIN_CAMERA_DISTANCE ||
+			 distCamera > DEFAULT_CAMERA_DISTANCE ) {
 
 			distCamera = DEFAULT_CAMERA_DISTANCE ;
 
 		};
-
-		cameraRay.at( distCamera * 0.95, cameraWantedPos );
-
-		*/
-
-		distCamera = DEFAULT_CAMERA_DISTANCE ;
 
 		cameraRay.at( distCamera, cameraWantedPos );
 
@@ -310,7 +314,7 @@ function CameraControl( player, camera ) {
 
 		/// CAMERA COLLISION
 
-		group.localToWorld( camera.position );
+		/*
 
 		stages = [
 			Math.floor( camera.position.y ) -1,
@@ -318,30 +322,24 @@ function CameraControl( player, camera ) {
 			Math.floor( camera.position.y ) +1
 		];
 
-		group.worldToLocal( camera.position );
-
 		
-		// checkCameraCollision( cameraColRayTop );
-		// checkCameraCollision( cameraColRayBottom );
+		checkCameraCollision( cameraColRayTop );
+		checkCameraCollision( cameraColRayBottom );
 		checkCameraCollision( cameraColRayRight );
-		// checkCameraCollision( cameraColRayLeft );
+		checkCameraCollision( cameraColRayLeft );
 		
 
 		function checkCameraCollision( ray ) {
 
 			cameraRay.at( distCamera, ray.origin );
 
-			group.localToWorld( ray.origin );
-
 			rayCollision = atlas.intersectRay( ray, stages, true ) ;
 
 			if ( rayCollision &&
-				 camera.position.distanceTo( group.worldToLocal( rayCollision ) ) <
+				 camera.position.distanceTo( rayCollision ) <
 				 CAMERA_COLLISION_DISTANCE ) {
 
-				let dist = camera.position.distanceTo( rayCollision ) ;
-
-				console.log( dist )
+				let dist = camera.position.distanceTo( rayCollision );
 
 				cameraOffsetVec.copy( ray.direction )
 							   .clampLength( 0, dist );
@@ -350,13 +348,11 @@ function CameraControl( player, camera ) {
 
 				cameraWantedPos.add( cameraOffsetVec );
 
-			} else {
-
-				console.log(false)
-
-			}
+			};
 
 		};
+
+		*/
 
 		
 
@@ -365,9 +361,15 @@ function CameraControl( player, camera ) {
 
 		/// EASING
 
+		// cameraWantedPos.add( player.position );
+
+		camera.position.copy( cameraWantedPos );
+
+		/*
 		camera.position.x = utils.lerp( camera.position.x, cameraWantedPos.x, CAMERA_TWEENING_SPEED );
 		camera.position.y = utils.lerp( camera.position.y, cameraWantedPos.y, CAMERA_TWEENING_SPEED );
 		camera.position.z = utils.lerp( camera.position.z, cameraWantedPos.z, CAMERA_TWEENING_SPEED );
+		*/
 
 		camera.lookAt( player.position )
 
