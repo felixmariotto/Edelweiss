@@ -8,7 +8,7 @@ function Atlas( sceneGraph ) {
 	const CUBEWIDTH = 0.4 ;
 	const INTERACTIVECUBERANGE = 0.82 ; // radius
 
-	const WATER_LEVEL = 0.5 ;
+	const WATER_LEVEL = -0.5 ;
 
 	const NEEDHELPERS = true ;
 
@@ -63,12 +63,10 @@ function Atlas( sceneGraph ) {
 	};
 
 
-
-	var rayCollisionVec = new THREE.Vector3();
 	var tempTriVec1 = new THREE.Vector3();
 	var tempTriVec2 = new THREE.Vector3();
-	var tempRayCollision ;
-	var rayCollision; // This is what is returned after ray collision
+	var tempRayCollision = new THREE.Vector3();
+	var rayCollision = new THREE.Vector3(); // This is what is returned after ray collision
 
 	// used for wall collision
 	var checkDirection ;
@@ -1006,13 +1004,13 @@ function Atlas( sceneGraph ) {
 
 	function intersectRay( ray, stages, mustTestGrounds ) {
 
-		rayCollision = undefined ;
+		rayCollision.set( 0, 0, 0 ) ;
 
 		stages.forEach( ( id )=> {
 			checkStage( id );
 		});
 
-		return rayCollision ;
+		return rayCollision.length() > 0 ? rayCollision : false ;
 
 		function checkStage( stage ) {
 
@@ -1054,17 +1052,53 @@ function Atlas( sceneGraph ) {
 
 						logicTile.points.forEach( (baseVec)=> {
 
-							tempRayCollision = ray.intersectTriangle(
+							tempRayCollision.set( 0, 0, 0 );
+
+							ray.intersectTriangle(
 								tempTriVec1,
 								tempTriVec2,
 								baseVec,
 								false,
-								rayCollisionVec
+								tempRayCollision
 							);
 
-							if ( tempRayCollision ) {
-								// Here it may be useful to make a length check
-								rayCollision = tempRayCollision ;
+							if ( tempRayCollision.length() > 0 ) {
+
+								if ( rayCollision.length() > 0 ) {
+
+									/*
+									console.log( tempRayCollision )
+									console.log( rayCollision )
+
+									console.log( tempRayCollision.distanceTo( ray.origin ) )
+									console.log( rayCollision.distanceTo( ray.origin ) )
+									debugger
+									*/
+
+									if ( tempRayCollision.distanceTo( ray.origin ) <
+										 rayCollision.distanceTo( ray.origin ) ) {
+
+										rayCollision.copy( tempRayCollision ) ;
+
+									};
+
+								} else {
+
+									rayCollision.copy( tempRayCollision ) ;
+
+								};
+								
+
+								/*
+								if ( !rayCollision ||
+									 ( tempRayCollision.distanceTo( ray.origin ) <
+									 rayCollision.distanceTo( ray.origin ) ) ) {
+
+									rayCollision = tempRayCollision ;
+
+								};
+								*/
+
 							};
 
 						});

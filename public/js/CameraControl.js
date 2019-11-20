@@ -202,8 +202,19 @@ function CameraControl( player, camera ) {
 
 		intersectVec = atlas.intersectRay( testRay, stages, false );
 
+
+
 		let intersectionRight = intersectVec ? intersectVec.x : false ;
 
+		// console.log( intersectionRight );
+
+		/*
+		if ( intersectionLeft && intersectionRight ) {
+			console.log('intersectionLeft : ' + intersectionLeft);
+			console.log('intersectionRight : ' + intersectionRight);
+			debugger
+		};
+		*/
 
 		/// ANGLE OF CAMERA RAY
 
@@ -223,11 +234,19 @@ function CameraControl( player, camera ) {
 		} else {
 
 			var leftRightRatio = ( player.position.x - intersectionLeft ) /
-							 ( intersectionRight - intersectionLeft );
+								 ( intersectionRight - intersectionLeft );
 
 		};
 
 		let angle = Math.asin( (leftRightRatio * 2) -1 );
+
+		/*
+		if ( !angle ) {
+			console.log( 'leftRightRatio = ' + leftRightRatio );
+			console.log( Math.asin( (leftRightRatio * 2) -1 ) );
+			debugger
+		}\
+		*/
 
 		// contraint to MAX_YAW
 		angle = (angle * MAX_YAW) / (Math.PI / 2) ;
@@ -241,6 +260,8 @@ function CameraControl( player, camera ) {
 			cameraRayAxis,
 			-angle
 		);
+
+
 
 
 
@@ -259,6 +280,12 @@ function CameraControl( player, camera ) {
 
 
 		/// CAMERA DISTANCE
+
+
+
+		/*
+		THIS PRODUCED WEIRD JERKS TOWARD PLAYER WHEN THEY
+		WALKED BEHIND AN OBSTACLE
 
 		stages = [
 			Math.floor( player.position.y ),
@@ -297,6 +324,12 @@ function CameraControl( player, camera ) {
 
 		cameraRay.at( distCamera * 0.95, cameraWantedPos );
 
+		*/
+
+		distCamera = DEFAULT_CAMERA_DISTANCE ;
+
+		cameraRay.at( distCamera, cameraWantedPos );
+
 
 
 		/// CAMERA COLLISION
@@ -311,12 +344,12 @@ function CameraControl( player, camera ) {
 
 		group.worldToLocal( camera.position );
 
-
+		/*
 		checkCameraCollision( cameraColRayTop );
 		checkCameraCollision( cameraColRayBottom );
 		checkCameraCollision( cameraColRayRight );
 		checkCameraCollision( cameraColRayLeft );
-
+		*/
 
 		function checkCameraCollision( ray ) {
 
@@ -335,7 +368,7 @@ function CameraControl( player, camera ) {
 							   .multiplyScalar( 1 - dist )
 							   .negate();
 
-				console.log( cameraOffsetVec.y );
+				console.log( dist );
 
 				cameraWantedPos.add( cameraOffsetVec );
 
@@ -357,8 +390,6 @@ function CameraControl( player, camera ) {
 		camera.position.z = utils.lerp( camera.position.z, cameraWantedPos.z, CAMERA_TWEENING_SPEED );
 
 		camera.lookAt( player.position )
-
-		
 
 	};
 
