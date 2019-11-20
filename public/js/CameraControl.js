@@ -17,7 +17,7 @@ function CameraControl( player, camera ) {
 	const CAMERA_WIDTH = 0.5 ;
 	const CAMERA_TWEENING_SPEED = 0.05 ;
 
-	var cameraCollision;
+	var backupCameraPos = new THREE.Vector3();
 	var cameraTarget = new THREE.Vector3();
 	var cameraWantedPos = new THREE.Vector3();
 
@@ -312,114 +312,33 @@ function CameraControl( player, camera ) {
 
 
 		
-
 		
 
 		//////////////////////
 		///  POSITION CAMERA
 		////
 
+		backupCameraPos.copy( camera.position );
 
-		// camera.position.copy( cameraWantedPos );
+		attemptCameraMove( 'x' );
+		attemptCameraMove( 'y' );
+		attemptCameraMove( 'z' );
 
-		// ease-out
-		camera.position.x = utils.lerp( camera.position.x, cameraWantedPos.x, CAMERA_TWEENING_SPEED );
-		camera.position.y = utils.lerp( camera.position.y, cameraWantedPos.y, CAMERA_TWEENING_SPEED );
-		camera.position.z = utils.lerp( camera.position.z, cameraWantedPos.z, CAMERA_TWEENING_SPEED );
+		function attemptCameraMove( dir ) {
 
-		camera.lookAt( cameraTarget );
+			camera.position[ dir ] = utils.lerp( camera.position[ dir ], cameraWantedPos[ dir ], CAMERA_TWEENING_SPEED );
 
+			if ( atlas.collideCamera() ) {
 
+				camera.position[ dir ] = backupCameraPos[ dir ];
 
-
-
-
-
-		/////////////////////////
-		/// CAMERA COLLISION
-
-		// atlas.collideCamera()
-
-		cameraCollision = atlas.collideCamera();
-
-		if ( cameraCollision.target.length() > 0 ) {
-
-			console.log( cameraCollision.target.distanceTo( camera.position ) );
-
-			camera.position.copy( cameraCollision.target );
-
-		};
-		
-		
-
-		/*
-		var arrowHelper = new THREE.ArrowHelper( cameraColRayTop.direction, cameraColRayTop.origin, 10 );
-		scene.add( arrowHelper );
-		*/
-
-		/*
-		setTimeout( ()=> {
-			console.log( camera.position );
-			console.log( cameraColRayTop.origin )
-			debugger
-		}, 500);
-		*/
-
-		
-
-		/*
-		var arrowHelper = new THREE.ArrowHelper( cameraColRayTop.direction, cameraColRayTop.origin, 10 );
-		scene.add( arrowHelper );
-
-		var arrowHelper = new THREE.ArrowHelper( cameraColRayRight.direction, cameraColRayTop.origin, 10 );
-		scene.add( arrowHelper );
-		*/
-		
-		/*
-
-		stages = [
-			Math.floor( camera.position.y ) -1,
-			Math.floor( camera.position.y ),
-			Math.floor( camera.position.y ) +1
-		];
-
-		checkCameraCollision( cameraColRayTop );
-		checkCameraCollision( cameraColRayBottom );
-		checkCameraCollision( cameraColRayRight );
-		checkCameraCollision( cameraColRayLeft );
-
-		scene.add( utils.boxHelper( 0.01, camera.position ) );
-		
-
-		function checkCameraCollision( ray ) {
-
-			ray.origin.copy( camera.position );
-
-			rayCollision = atlas.intersectRay( ray, stages, true ) ;
-
-			if ( rayCollision &&
-				 camera.position.distanceTo( rayCollision ) <
-				 CAMERA_COLLISION_DISTANCE ) {
-
-				
-				
-				let dist = CAMERA_COLLISION_DISTANCE - camera.position.distanceTo( rayCollision );
-
-				console.log( dist );
-
-				cameraOffsetVec.copy( ray.direction )
-							   .setLength( dist + 0.1 );
-
-				// cameraOffsetVec.x = cameraOffsetVec.x * -1 ;
-
-				camera.position.add( cameraOffsetVec );
-				
 			};
 
 		};
-		*/
 
 
+
+		camera.lookAt( cameraTarget );
 
 	};
 
