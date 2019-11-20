@@ -30,7 +30,10 @@
 
 ///// PART 2 : REFACTORING CAMERA / CONTROL /////
 
-- Refactor camera movement
+- Handle case user walk back to wall and camera get trapped
+- Handle case camera wants to get close to player but face a wall
+- Handle case camera got trapped outside the walls and cannot get line of sight back
+- Handle case player is turning at an angle and camera yaw exceed what is allowed
 
 
 
