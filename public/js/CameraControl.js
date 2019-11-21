@@ -352,11 +352,7 @@ function CameraControl( player, camera ) {
 
 		
 
-		testRay.origin.copy( camera.position );
-
-		testRay.direction.copy( cameraWantedPos )
-						 .sub( camera.position )
-						 .normalize();
+		
 
 		stages = [
 			Math.floor( camera.position.y ),
@@ -364,12 +360,43 @@ function CameraControl( player, camera ) {
 			Math.floor( camera.position.y ) -1,
 		];
 
-		rayCollision = atlas.intersectRay( testRay, stages, true );
+		// If there is obstacles on camera path, we try to avoid it
+		if ( isObstacleOnCameraPath() ) {
 
-		if ( rayCollision &&
-			 rayCollision.points[ 0 ].distanceTo( camera.position ) < cameraWantedPos.distanceTo( camera.position ) ) {
+			backupCameraPos.copy( camera.position );
 
-			console.log( 'coucou' );
+			camera.position.y -= 0.5 ;
+
+			if ( isObstacleOnCameraPath() ) {
+
+				camera.position.copy( backupCameraPos );
+
+			};
+
+		};
+
+		function isObstacleOnCameraPath() {
+
+			testRay.origin.copy( camera.position );
+
+			testRay.direction.copy( cameraWantedPos )
+							 .sub( camera.position )
+							 .normalize();
+
+			// We check if intersection between camera and cameraWantedPos
+			rayCollision = atlas.intersectRay( testRay, stages, true );
+
+			// If there is, we try to avoid the obstacle on the path
+			if ( rayCollision &&
+				 rayCollision.points[ 0 ].distanceTo( camera.position ) < cameraWantedPos.distanceTo( camera.position ) ) {
+
+				return true ;
+
+			} else {
+
+				return false ;
+
+			};
 
 		};
 		
