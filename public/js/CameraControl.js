@@ -14,7 +14,7 @@ function CameraControl( player, camera ) {
 	const CAMERA_DIRECTION = new THREE.Vector3( 0, 0.4, 1 ).normalize();
 	const DEFAULT_CAMERA_DISTANCE = 2.7 ;
 	const MIN_CAMERA_DISTANCE = 1.7 ;
-	const CAMERA_WIDTH = 0.3 ;
+	const CAMERA_WIDTH = 0.29 ;
 	const CAMERA_TWEENING_SPEED = 0.05 ;
 
 	var backupCameraPos = new THREE.Vector3();
@@ -200,9 +200,11 @@ function CameraControl( player, camera ) {
 
 		testRay.direction.set( -1, 0, 0 );
 
-		let intersectVec = atlas.intersectRay( testRay, stages, true );
+		let rayCollision = atlas.intersectRay( testRay, stages, true );
 
-		let intersectionLeft = intersectVec ? intersectVec.x : false ;
+		let intersectionLeft = rayCollision.points ?
+											rayCollision.points[ 0 ].x :
+											false ;
 
 
 
@@ -210,9 +212,11 @@ function CameraControl( player, camera ) {
 
 		testRay.direction.set( 1, 0, 0 );
 
-		intersectVec = atlas.intersectRay( testRay, stages, false );
+		rayCollision = atlas.intersectRay( testRay, stages, false );
 
-		let intersectionRight = intersectVec ? intersectVec.x : false ;
+		let intersectionRight = rayCollision.points ?
+											rayCollision.points[ 0 ].x :
+											false ;
 
 
 
@@ -282,13 +286,13 @@ function CameraControl( player, camera ) {
 			Math.floor( player.position.y ) +4,
 		];
 
-		let rayCollision = atlas.intersectRay( cameraRay, stages, true );
+		rayCollision = atlas.intersectRay( cameraRay, stages, true );
 
 		if ( rayCollision ) {
 
 			// We want to camera to be positioned at the intersection
 			// between the ray and the obstacle
-			var distCamera = rayCollision.distanceTo( cameraRay.origin ) - 0.05;
+			var distCamera = rayCollision.points[ 0 ].distanceTo( cameraRay.origin ) - 0.05;
 
 			if ( distCamera > DEFAULT_CAMERA_DISTANCE ) {
 
@@ -312,8 +316,6 @@ function CameraControl( player, camera ) {
 
 		if ( distCamera < MIN_CAMERA_DISTANCE ) {
 
-			// console.log( 'elevate cameraWantedPos' )
-
 			testRay.origin.copy( cameraWantedPos );
 			testRay.direction.set( 0, 1, 0 );
 
@@ -324,10 +326,10 @@ function CameraControl( player, camera ) {
 				Math.floor( cameraWantedPos.y ) +3,
 			];
 
-			let rayCollision = atlas.intersectRay( testRay, stages, true );
+			let rayCollision = atlas.intersectRay( testRay, stages );
 
-			if ( !rayCollision ||
-				 !( rayCollision.distanceTo( cameraWantedPos ) < ( CAMERA_WIDTH / 2 ) ) ) {
+			if ( !rayCollision.points ||
+				 !( rayCollision.points[ 0 ].distanceTo( cameraWantedPos ) < ( CAMERA_WIDTH / 2 ) ) ) {
 
 				let height = Math.sqrt( Math.pow( MIN_CAMERA_DISTANCE, 2 ) - Math.pow( distCamera, 2 ) );
 
@@ -338,6 +340,38 @@ function CameraControl( player, camera ) {
 		};
 
 
+
+
+
+
+
+
+
+		//////////////////////
+		/// CAMERA PATH
+
+		
+
+		testRay.origin.copy( camera.position );
+
+		testRay.direction.copy( cameraWantedPos )
+						 .sub( camera.position )
+						 .normalize();
+
+		stages = [
+			Math.floor( camera.position.y ),
+			Math.floor( camera.position.y ) +1,
+			Math.floor( camera.position.y ) -1,
+		];
+
+		rayCollision = atlas.intersectRay( testRay, stages, true );
+
+		if ( rayCollision &&
+			 rayCollision.points[ 0 ].distanceTo( camera.position ) < cameraWantedPos.distanceTo( camera.position ) ) {
+
+			console.log( 'coucou' );
+
+		};
 		
 
 

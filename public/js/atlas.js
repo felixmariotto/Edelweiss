@@ -69,7 +69,16 @@ function Atlas( sceneGraph ) {
 	var tempTriVec1 = new THREE.Vector3();
 	var tempTriVec2 = new THREE.Vector3();
 	var tempRayCollision = new THREE.Vector3();
-	var rayCollision = new THREE.Vector3(); // This is what is returned after ray collision
+	
+	var rayCollision = {
+		// We only need two points, because it's not relevant
+		// to know if there is more than two intersection points
+		points: [
+			new THREE.Vector3(),
+			new THREE.Vector3()
+		],
+		closestTile: undefined
+	};
 
 	// used for wall collision
 	var checkDirection ;
@@ -1056,13 +1065,14 @@ function Atlas( sceneGraph ) {
 
 	function intersectRay( ray, stages, mustTestGrounds ) {
 
-		rayCollision.set( 0, 0, 0 ) ;
+		rayCollision.points[ 0 ].set( 0, 0, 0 ) ;
+		rayCollision.points[ 1 ].set( 0, 0, 0 ) ;
 
 		stages.forEach( ( id )=> {
 			checkStage( id );
 		});
 
-		return rayCollision.length() > 0 ? rayCollision : false ;
+		return rayCollision.points[ 0 ].length() > 0 ? rayCollision : false ;
 
 		function checkStage( stage ) {
 
@@ -1073,7 +1083,6 @@ function Atlas( sceneGraph ) {
 					// does not test grounds if not asked for in argument
 					if ( !mustTestGrounds && logicTile.isWall ||
 						 mustTestGrounds ) {
-
 
 						// Depending on the tile's direction, we create temporary vectors
 						// for the ray intersection with a triangle
@@ -1116,45 +1125,39 @@ function Atlas( sceneGraph ) {
 
 							if ( tempRayCollision.length() > 0 ) {
 
-								if ( rayCollision.length() > 0 ) {
+								if ( tempCollisionShorterThan( rayCollision.points[ 0 ] ) ) {
 
-									/*
-									console.log( tempRayCollision )
-									console.log( rayCollision )
+									rayCollision.points[ 1 ].copy( rayCollision.points[ 0 ] );
+									rayCollision.points[ 0 ].copy( tempRayCollision );
 
-									console.log( tempRayCollision.distanceTo( ray.origin ) )
-									console.log( rayCollision.distanceTo( ray.origin ) )
-									debugger
-									*/
+								} else if ( tempCollisionShorterThan( rayCollision.points[ 1 ] ) ) {
+
+									rayCollision.points[ 1 ].copy( tempRayCollision );
+
+								};
+
+								
+
+								function tempCollisionShorterThan( collisionVec ) {
+
+									if ( collisionVec.length() == 0 ) return true ;
 
 									if ( tempRayCollision.distanceTo( ray.origin ) <
-										 rayCollision.distanceTo( ray.origin ) ) {
+										 collisionVec.distanceTo( ray.origin ) ) {
 
-										rayCollision.copy( tempRayCollision ) ;
+										return true ;
+
+									} else {
+
+										return false ;
 
 									};
 
-								} else {
-
-									rayCollision.copy( tempRayCollision ) ;
-
 								};
-								
-
-								/*
-								if ( !rayCollision ||
-									 ( tempRayCollision.distanceTo( ray.origin ) <
-									 rayCollision.distanceTo( ray.origin ) ) ) {
-
-									rayCollision = tempRayCollision ;
-
-								};
-								*/
 
 							};
 
 						});
-
 
 					};
 
