@@ -12,9 +12,9 @@ function CameraControl( player, camera ) {
 
 	const MAX_YAW = 0.2 ;
 	const CAMERA_DIRECTION = new THREE.Vector3( 0, 0.4, 1 ).normalize();
-	const DEFAULT_CAMERA_DISTANCE = 3.5 ;
-	const MIN_CAMERA_DISTANCE = 0.2 ;
-	const CAMERA_WIDTH = 0.5 ;
+	const DEFAULT_CAMERA_DISTANCE = 2.7 ;
+	const MIN_CAMERA_DISTANCE = 1.7 ;
+	const CAMERA_WIDTH = 0.3 ;
 	const CAMERA_TWEENING_SPEED = 0.05 ;
 
 	var backupCameraPos = new THREE.Vector3();
@@ -290,24 +290,55 @@ function CameraControl( player, camera ) {
 			// between the ray and the obstacle
 			var distCamera = rayCollision.distanceTo( cameraRay.origin ) - 0.05;
 
+			if ( distCamera > DEFAULT_CAMERA_DISTANCE ) {
+
+				distCamera = DEFAULT_CAMERA_DISTANCE ;
+
+			};
+
 		} else {
 
 			var distCamera = DEFAULT_CAMERA_DISTANCE ;
 
 		};
 
-		// if the computed obstacle is far, no need to move camera.
-		// And if it's too close, the camera would be too close from player,
-		// so it's better to stay away and loose line of sight
-		if ( distCamera < MIN_CAMERA_DISTANCE ||
-			 distCamera > DEFAULT_CAMERA_DISTANCE ) {
-
-			distCamera = DEFAULT_CAMERA_DISTANCE ;
-
-		};
 
 		// Set the vector cameraWantedPos at the computed point
 		cameraRay.at( distCamera, cameraWantedPos );
+
+		
+		// Check if wanted position is too close from player,
+		// if yes, then make it higher
+
+		if ( distCamera < MIN_CAMERA_DISTANCE ) {
+
+			// console.log( 'elevate cameraWantedPos' )
+
+			testRay.origin.copy( cameraWantedPos );
+			testRay.direction.set( 0, 1, 0 );
+
+			stages = [
+				Math.floor( cameraWantedPos.y ),
+				Math.floor( cameraWantedPos.y ) +1,
+				Math.floor( cameraWantedPos.y ) +2,
+				Math.floor( cameraWantedPos.y ) +3,
+			];
+
+			let rayCollision = atlas.intersectRay( testRay, stages, true );
+
+			if ( !rayCollision ||
+				 !( rayCollision.distanceTo( cameraWantedPos ) < ( CAMERA_WIDTH / 2 ) ) ) {
+
+				let height = Math.sqrt( Math.pow( MIN_CAMERA_DISTANCE, 2 ) - Math.pow( distCamera, 2 ) );
+
+				cameraWantedPos.y += height ;
+
+			};
+
+		};
+
+
+		
 
 
 
