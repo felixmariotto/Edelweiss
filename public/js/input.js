@@ -8,15 +8,7 @@
 function Input() {
 
 
-    const ALLOWJOYSTICK = true ;
     const STICK_TRAVEL_RADIUS = 50 ;
-    // var lastDistance = 0 ;
-    // var dist = 0 ;
-
-    const domStartMenu = document.getElementById('start-menu');
-    const domStartButton = document.getElementById('start-button');
-
-    const domJSONLoader = document.getElementById('json-loader');
 
     const domWorldCheap = document.getElementById('worldCheap');
     const domWorldHigh = document.getElementById('worldHigh');
@@ -41,29 +33,31 @@ function Input() {
 
     var touchTime;
 
-
+    var joystick, domCross, moveVec;
 
     //// JOYSTICK
 
+    function initJoystick() {
 
-    domBase = document.createElement('IMG');
-    domBase.src = 'assets/base.png';
-    domBase.id = 'base' ;
+        var domBase = document.createElement('IMG');
+        domBase.src = 'assets/base.png';
+        domBase.id = 'base' ;
 
-    domStick = document.createElement('IMG');
-    domStick.src = 'assets/stick.png';
-    domStick.id = 'stick' ;
+        var domStick = document.createElement('IMG');
+        domStick.src = 'assets/stick.png';
+        domStick.id = 'stick' ;
 
-    domCross = document.createElement('IMG');
-    domCross.src = 'assets/cross.png';
-    domCross.id = 'cross' ;
-    domCross.style.top = `${ window.innerHeight - 127.5 }px` ;
+        domCross = document.createElement('IMG');
+        domCross.src = 'assets/cross.png';
+        domCross.id = 'cross' ;
+        domCross.style.top = `${ window.innerHeight - 127.5 }px` ;
 
-    document.getElementById('joystick-container').appendChild( domCross );
+        document.getElementById('joystick-container').appendChild( domCross );
 
-    if ( ALLOWJOYSTICK ) {
+        // get joystick angle
+        moveVec = new THREE.Vector2(); // vec moved by joystick
 
-        var joystick = new VirtualJoystick({
+        joystick = new VirtualJoystick({
             container : document.getElementById('joystick-container'),
             stickElement : domStick,
             baseElement : domBase,
@@ -74,12 +68,9 @@ function Input() {
             stickRadius : STICK_TRAVEL_RADIUS
         });
 
+        params.isTouchScreen = true ;
+
     };
-
-    // get joystick angle
-    var moveVec = new THREE.Vector2(); // vec moved by joystick
-
-
 
 
 
@@ -92,155 +83,9 @@ function Input() {
 
     function update( delta ) {
 
-        if ( ALLOWJOYSTICK ) checkJoystickDelta();
+        if ( input.params.isTouchScreen ) checkJoystickDelta();
 
     };
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /////////////////////
-    ///   IMPORT JSON
-    /////////////////////
-
-
-    var hashTable = {
-        true: '$t',
-        false: '$f',
-        position: '$p',
-        scale: '$b',
-        type: '$k',
-        points: '$v',
-        isWall: '$w',
-        isXAligned: '$i',
-        'ground-basic': '$g',
-        'ground-start': '$s',
-        'wall-limit': '$l',
-        'wall-easy': '$e',
-        'wall-medium' : '$m',
-        'wall-hard': '$h',
-        'wall-fall': '$a',
-        'wall-slip': '$c',
-        'cube-inert': '$r',
-        'cube-interactive': '$q',
-        'cube-trigger': '$o'
-    };
-
-
-
-
-
-    function parseJSON( data ) {
-
-        for ( let valueToReplace of Object.keys( hashTable ) ) {
-
-            text = hashTable[ valueToReplace ]
-            text = text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-
-            data = data.replace( new RegExp( text , 'g' ), valueToReplace );
-
-        };
-
-        return JSON.parse( data ) ;
-    };
-
-
-
-
-
-    domJSONLoader.addEventListener('click', ()=> {
-        domJSONLoader.blur();
-    });
-
-
-    domJSONLoader.onchange = function (evt) {
-
-        var tgt = evt.target || window.event.srcElement,
-        files = tgt.files;
-    
-        // FileReader support
-        if (FileReader && files && files.length) {
-
-            var fr = new FileReader();
-
-            fr.onload = function () {
-
-                startFromSceneGraph( fr.result );
-
-            };
-
-            fr.readAsText(files[0]);
-
-        };
-
-    };
-
-
-
-
-    domStartButton.addEventListener( 'touchstart', (e)=> {
-
-        params.isTouchScreen = true ;
-
-        startGame();
-
-    });
-    
-
-    domStartButton.addEventListener( 'click', (e)=> {
-        startGame();
-    });
-
-
-
-
-    function startGame() {
-
-        domStartMenu.style.display = 'none' ;
-
-        fileLoader.load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/sceneGraph.json', ( file )=> {
-
-            startFromSceneGraph( file );
-
-        });
-
-    };
-
-
-
-
-    function startFromSceneGraph( file ) {
-
-        let data = lzjs.decompress( file );
-
-        let sceneGraph = parseJSON( data );
-
-        // Initialize atlas with the scene graph
-        atlas = Atlas( sceneGraph );
-
-    };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -328,8 +173,6 @@ function Input() {
 
         e.preventDefault();
 
-        params.isTouchScreen = true ;
-
         params.isSpacePressed = true ;
 
         // cosmetic feedback
@@ -364,15 +207,11 @@ function Input() {
 
     domCharContainer.addEventListener( 'touchstart', (e)=> {
 
-        params.isTouchScreen = true ;
-
         touchTime = Date.now();
 
     });
 
     domTalkContainer.addEventListener( 'touchstart', (e)=> {
-
-        params.isTouchScreen = true ;
 
         touchTime = Date.now();
 
@@ -492,8 +331,11 @@ function Input() {
 
 
     function removeMoveKey( keyString ) {
+
         moveKeys.splice( moveKeys.indexOf( keyString ), 1 );
+
         sendMoveDirection();
+
     };
 
 
@@ -501,7 +343,11 @@ function Input() {
 
     function addMoveKey( keyString ) {
 
-        if ( interaction.isInDialogue() ) {
+        if ( gameState.params.isGamePaused ) {
+
+            console.log( 'navigate in menu' );
+
+        } else if ( interaction.isInDialogue() ) {
 
             interaction.chooseAnswer( keyString );
 
@@ -599,7 +445,11 @@ function Input() {
 
         interaction.hideMessage();
 
-        if ( interaction.isInDialogue() ) {
+        if ( gameState.params.isGamePaused ) {
+
+            console.log( 'validate in menu' );
+
+        } else if ( interaction.isInDialogue() ) {
 
             interaction.requestNextLine();
 
@@ -621,9 +471,8 @@ function Input() {
     return {
         params,
         moveKeys,
-        startGame,
         update,
-        joystick
+        initJoystick
     };
 
 };
