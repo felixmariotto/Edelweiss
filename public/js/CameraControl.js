@@ -360,41 +360,105 @@ function CameraControl( player, camera ) {
 			Math.floor( camera.position.y ) -1,
 		];
 
-		// If there is obstacles on camera path, we try to avoid it
-		if ( isObstacleOnCameraPath() ) {
 
-			backupCameraPos.copy( camera.position );
 
-			camera.position.y -= 0.5 ;
 
-			if ( isObstacleOnCameraPath() ) {
 
-				camera.position.copy( backupCameraPos );
 
-			};
+		testRay.origin.copy( camera.position );
 
-		};
+		testRay.direction.copy( cameraWantedPos )
+						 .sub( camera.position )
+						 .normalize();
 
-		function isObstacleOnCameraPath() {
+		// We check if intersection between camera and cameraWantedPos
+		rayCollision = atlas.intersectRay( testRay, stages, true );
 
-			testRay.origin.copy( camera.position );
+		// If there is, we try to avoid the obstacle on the path
+		if ( rayCollision &&
+			 rayCollision.points[ 0 ].distanceTo( camera.position ) < cameraWantedPos.distanceTo( camera.position ) ) {
 
-			testRay.direction.copy( cameraWantedPos )
-							 .sub( camera.position )
-							 .normalize();
+			if ( rayCollision.closestTile.isWall &&
+				 rayCollision.closestTile.isXAligned ) {
 
-			// We check if intersection between camera and cameraWantedPos
-			rayCollision = atlas.intersectRay( testRay, stages, true );
+				// This object contain the information about the edges of the tile
+				// being an obstacle on the camera path. We will use it to move the
+				// camera in the shortest escape path
 
-			// If there is, we try to avoid the obstacle on the path
-			if ( rayCollision &&
-				 rayCollision.points[ 0 ].distanceTo( camera.position ) < cameraWantedPos.distanceTo( camera.position ) ) {
+				let edges = [
 
-				return true ;
+					{
+						dist : rayCollision.points[ 0 ].y -
+							  Math.min( rayCollision.closestTile.points[ 0 ].y,
+									   rayCollision.closestTile.points[ 1 ].y ),
+						pos : Math.min( rayCollision.closestTile.points[ 0 ].y,
+									   rayCollision.closestTile.points[ 1 ].y ),
+						dir : 'y',
+						sign : -1
+					},
 
-			} else {
+					{
+						dist : rayCollision.points[ 0 ].x -
+							 Math.min( rayCollision.closestTile.points[ 0 ].x,
+									   rayCollision.closestTile.points[ 1 ].x ),
+						pos : Math.min( rayCollision.closestTile.points[ 0 ].x,
+									   rayCollision.closestTile.points[ 1 ].x ),
+						dir : 'x',
+						sign : -1
+					},
 
-				return false ;
+					{
+						dist: rayCollision.points[ 0 ].y -
+							 Math.max( rayCollision.closestTile.points[ 0 ].y,
+									   rayCollision.closestTile.points[ 1 ].y ),
+						pos: Math.max( rayCollision.closestTile.points[ 0 ].y,
+									   rayCollision.closestTile.points[ 1 ].y ),
+						dir : 'y',
+						sign : 1
+					},
+
+					{
+						dist : rayCollision.points[ 0 ].x -
+							 Math.max( rayCollision.closestTile.points[ 0 ].x,
+									   rayCollision.closestTile.points[ 1 ].x ),
+						pos : Math.max( rayCollision.closestTile.points[ 0 ].x,
+									   rayCollision.closestTile.points[ 1 ].x ),
+						dir : 'x',
+						sign : 1
+					}
+
+				];
+
+				// Find the closest edge
+				edges.sort( ( a, b )=> {
+
+					return Math.abs( a.dist ) - Math.abs( b.dist );
+
+				});
+
+				// For each edge, we check if an adjacent tile exists.
+				// If so, we try the next edge.
+				// If not we move the camera in the wanted position.
+
+				for ( edge of edges ) {
+
+					if ( atlas.adjTileExists( rayCollision.closestTile, edge.dir, edge.sign ) ) {
+
+						continue ;
+
+					} else {
+
+						// Align the camera on the same plane as the obstacle tile on the x axis
+						camera.position.z = rayCollision.closestTile.points[ 0 ].z ;
+						
+						// push the camera on X or Y to avoid the obstacle tile
+						camera.position[ edge.dir ] = edge.pos + ( ( CAMERA_WIDTH / 2 ) + edge.sign );
+
+						break ;
+
+					};
+
+				};
 
 			};
 

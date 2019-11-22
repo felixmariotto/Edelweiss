@@ -1,7 +1,6 @@
 
 function Atlas( sceneGraph ) {
 
-
 	const PLAYERHEIGHT = 0.62 ;
 	const PLAYERWIDTH = 0.3 ;
 
@@ -1067,6 +1066,7 @@ function Atlas( sceneGraph ) {
 
 		rayCollision.points[ 0 ].set( 0, 0, 0 ) ;
 		rayCollision.points[ 1 ].set( 0, 0, 0 ) ;
+		rayCollision.closestTile = undefined ;
 
 		stages.forEach( ( id )=> {
 			checkStage( id );
@@ -1125,10 +1125,16 @@ function Atlas( sceneGraph ) {
 
 							if ( tempRayCollision.length() > 0 ) {
 
+								// Here we check if the collision point found is closer than
+								// the two we already have, and if so, we position it accordingly
+								// in the array
+
 								if ( tempCollisionShorterThan( rayCollision.points[ 0 ] ) ) {
 
 									rayCollision.points[ 1 ].copy( rayCollision.points[ 0 ] );
 									rayCollision.points[ 0 ].copy( tempRayCollision );
+
+									rayCollision.closestTile = logicTile ;
 
 								} else if ( tempCollisionShorterThan( rayCollision.points[ 1 ] ) ) {
 
@@ -1325,6 +1331,72 @@ function Atlas( sceneGraph ) {
 
 
 
+
+
+	// adjTileExists is used by cameraControl to know if the tile
+	// obstructing the camera path has an adjacent tile in the
+	// specified direction.
+
+	var testTileVecs = [
+		new THREE.Vector3(),
+		new THREE.Vector3()
+	];
+
+	function adjTileExists( testTile, dir, sign ) {
+
+		let exists = false ;
+
+		// create the vector if the hypotetic tile
+
+		testTileVecs[ 0 ].copy( testTile.points[ 0 ] );
+		testTileVecs[ 1 ].copy( testTile.points[ 1 ] );
+
+		testTileVecs[ 0 ][ dir ] += sign ;
+		testTileVecs[ 1 ][ dir ] += sign ;
+
+		// test each tile of this tilesGraph stage for equality
+
+		sceneGraph.tilesGraph[ Math.min( testTileVecs[0].y, testTileVecs[1].y ) ].forEach( (logicTile)=> {
+
+			if ( (utils.vecEquals( testTileVecs[0], logicTile.points[0] ) && utils.vecEquals( testTileVecs[1], logicTile.points[1] ) ) ||
+				 (utils.vecEquals( testTileVecs[1], logicTile.points[0] ) && utils.vecEquals( testTileVecs[0], logicTile.points[1] ) ) ) {
+
+				exists = true ;
+
+			};
+
+		});
+
+		// We do the same here with the other possible set of points
+		// for the hypothetic tile.
+
+		if ( !exists ) {
+
+			[ testTileVecs[0].x, testTileVecs[1].x ] = [ testTileVecs[1].x, testTileVecs[0].x ];
+			[ testTileVecs[0].y, testTileVecs[1].y ] = [ testTileVecs[1].y, testTileVecs[0].y ];
+
+			sceneGraph.tilesGraph[ Math.min( testTileVecs[0].y, testTileVecs[1].y ) ].forEach( (logicTile)=> {
+
+				if ( (utils.vecEquals( testTileVecs[0], logicTile.points[0] ) && utils.vecEquals( testTileVecs[1], logicTile.points[1] ) ) ||
+					 (utils.vecEquals( testTileVecs[1], logicTile.points[0] ) && utils.vecEquals( testTileVecs[0], logicTile.points[1] ) ) ) {
+
+					exists = true ;
+
+				};
+
+			});
+
+		};
+
+		return exists ;
+
+	};
+
+
+
+
+
+
 	return {
 		collidePlayerGrounds,
 		collidePlayerWalls,
@@ -1337,7 +1409,8 @@ function Atlas( sceneGraph ) {
 		player,
 		deleteCubeFromGraph,
 		startPos,
-		collideCamera
+		collideCamera,
+		adjTileExists
 	};
 
 

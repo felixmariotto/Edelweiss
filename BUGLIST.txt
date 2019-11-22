@@ -24,7 +24,7 @@
 
 /////  PART 1 : DEBUGGING ALL MOVES //////
 
-- Nothing at the moment
+- Not reset stamina when user hit roof !
 
 
 
