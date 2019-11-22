@@ -224,11 +224,12 @@
         #message-box {
             position: fixed;
             left: 50%;
-            top: 61vh;
-            transform: translate(-50%);
+            top: 50%;
+            transform: translate( calc(-50% + 50px), calc(-50% + 50px) );
             background-color: white;
-            padding: 40px;
-            font-size: 2.5em;
+            padding: 20px;
+            margin: -50px;
+            font-size: calc( 100% + 1.5vh );
             text-align: center;
             display: none;
         }
