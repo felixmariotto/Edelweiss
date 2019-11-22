@@ -24,16 +24,13 @@
 
 /////  PART 1 : DEBUGGING ALL MOVES //////
 
-- Not reset stamina when user hit roof !
+- Nothing at the moment
 
 
 
 ///// PART 2 : REFACTORING CAMERA / CONTROL /////
 
-- Handle case user walk back to wall and camera U-turn because center of player is more backward than center of camera
-- Handle case camera wants to get close to player but face a wall
-- Handle case camera got trapped outside the walls and cannot get line of sight back
-- Handle case player is turning at an angle and camera yaw exceed what is allowed
+- Nothing at the moment
 
 
 

@@ -727,11 +727,7 @@ function Controler( player ) {
         // There is a collision with the ground
         if ( yCollision.point != undefined ) {
 
-
-            // The player can recover all their stamina
-            stamina.resetStamina();
-
-
+            
             if ( state.isFlying &&
                  !state.isClimbing &&
                  !state.isSlipping &&
@@ -766,6 +762,10 @@ function Controler( player ) {
 
                 state.isFlying = false ;
                 player.position.y = yCollision.point ;
+
+
+                // The player can recover all their stamina
+                stamina.resetStamina();
 
 
                 /////////////////////////
