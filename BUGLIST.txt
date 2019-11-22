@@ -36,14 +36,14 @@
 
 ///// PART 3 : IMPROVE UI //////
 
-- More feedback when out of stamina
-- Real title screen
-- setup loading manager on startup screen, which pre-load the character and some assets
+- More feedback when out of stamina ?
+
 
 
 
 ///// PART 4 : MAP DESIGN /////
 
+- Improve map design
 - Re-balance climbing cost
 - Create dialogues
 - disable switching to inexistant answers on the right side
