@@ -452,7 +452,9 @@ function CameraControl( player, camera ) {
 						camera.position.z = rayCollision.closestTile.points[ 0 ].z ;
 						
 						// push the camera on X or Y to avoid the obstacle tile
-						camera.position[ edge.dir ] = edge.pos + ( ( CAMERA_WIDTH / 2 ) + edge.sign );
+						camera.position[ edge.dir ] = edge.pos +
+													  ( ( CAMERA_WIDTH / 2 ) * edge.sign ) +
+													  ( 0.1 * edge.sign );
 
 						break ;
 
@@ -480,21 +482,22 @@ function CameraControl( player, camera ) {
 		attemptCameraMove( 'y' );
 		attemptCameraMove( 'z' );
 
-		function attemptCameraMove( dir ) {
+		camera.lookAt( cameraTarget );
 
-			camera.position[ dir ] = utils.lerp( camera.position[ dir ], cameraWantedPos[ dir ], CAMERA_TWEENING_SPEED );
+	};
 
-			if ( atlas.collideCamera() ) {
 
-				camera.position[ dir ] = backupCameraPos[ dir ];
 
-			};
+
+	function attemptCameraMove( dir ) {
+
+		camera.position[ dir ] = utils.lerp( camera.position[ dir ], cameraWantedPos[ dir ], CAMERA_TWEENING_SPEED );
+
+		if ( atlas.collideCamera() ) {
+
+			camera.position[ dir ] = backupCameraPos[ dir ];
 
 		};
-
-
-
-		camera.lookAt( cameraTarget );
 
 	};
 
