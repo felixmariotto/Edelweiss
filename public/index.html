@@ -37,6 +37,11 @@
             color: grey;
         }
 
+        button {
+            padding: 10px 20px 10px 20px;
+            border-radius: 5px;
+        }
+
         .dialogue-box {
             background-color: white;
             border-radius: 10px;
@@ -52,7 +57,7 @@
             width: 100vw;
             object-fit: cover;
             pointer-events: none;
-            background-color: white;
+            background-color: #e3f9ff;
         }
 
         #black-screen {
@@ -94,18 +99,36 @@
 
 
 
+
+
+        #title-container {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            margin: -50px;
+            transform: translate( calc( -50% + 50px ) );
+            text-align: center;
+        }
+
+            #title {
+                font-size: calc( 100% + 4.5vh );
+            }
+
+            #author {
+                font-size: calc( 100% + 1.8vh );
+            }
+
         #start-menu {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate( -50%, -50% );
             padding: 30px;
-            background-color: green;
             display: none;
         }
 
             #start-menu > button {
-                font-size: 3em;
+                font-size: calc( 100% + 1.5vh );
             }
 
 
@@ -593,9 +616,15 @@
 
     <!-- Menus -->
 
-    <div id="start-menu">
+    <div id="start-menu" class='dialogue-box'>
         <button id='start-button'>Start</button>
     </div>
+
+    <div id="title-container">
+        <h1 id="title">Edelweiss</h1>
+        <h2 id="author">By Félix Mariotto</h2>
+    </div>
+    
 
 
 

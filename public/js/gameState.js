@@ -15,6 +15,7 @@ function GameState() {
 	const domStartMenu = document.getElementById('start-menu');
     const domStartButton = document.getElementById('start-button');
     const domTitleBackground = document.getElementById('title-background');
+    const domTitleContainer = document.getElementById('title-container');
 
     const domJSONLoader = document.getElementById('json-loader');
 	const domLoadMap = document.getElementById('gui');
@@ -145,7 +146,8 @@ function GameState() {
 	function startGame( isTouchScreen ) {
 
         domStartMenu.style.display = 'none' ;
-        domTitleBackground.style.display = 'none';
+        domTitleBackground.style.display = 'none' ;
+        domTitleContainer.style.display = 'none' ;
 
         domStaminaBar.style.display = 'flex' ;
 
