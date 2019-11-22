@@ -5,7 +5,7 @@ function Stamina() {
 
     const domBar = document.getElementById('stamina-bar');
 
-    const STARTSTAMINA = 5 ;
+    const STARTSTAMINA = 2 ;
     const TOLERANCE = 0.2 ;
 
     var params = {
@@ -105,6 +105,14 @@ function Stamina() {
             // make stamina bar UI blink
             domBar.classList.add( 'blink_stamina' );
 
+            let domSections = document.querySelectorAll('.stamina-section');
+
+            domSections.forEach( (domSection)=> {
+
+                domSection.style.backgroundColor = '#c7001e' ;
+
+            });
+
         };
 
         if ( params.stamina < 0 ) {
@@ -127,9 +135,21 @@ function Stamina() {
     // climbing again
     function resetStamina() {
 
-        params.stamina = params.maxStamina ;
+        if ( params.stamina != params.maxStamina ) {
 
-        domBar.classList.remove( 'blink_stamina' );
+            domBar.classList.remove( 'blink_stamina' );
+
+            let domSections = document.querySelectorAll('.stamina-section');
+
+            domSections.forEach( (domSection)=> {
+
+                domSection.style.backgroundColor = 'rgba(153, 228, 78, 0.294)' ;
+
+            });
+
+        };
+
+        params.stamina = params.maxStamina ;
 
     };
 

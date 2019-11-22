@@ -35,6 +35,7 @@ function GameState() {
 			charaAnim.respawn();
 
 			atlas.player.position.copy( atlas.startPos );
+			cameraControl.resetCameraPos();
 
 			controler.setSpeedUp( 0 );
 

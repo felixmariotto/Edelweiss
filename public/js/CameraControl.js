@@ -508,6 +508,20 @@ function CameraControl( player, camera ) {
 
 
 
+	function resetCameraPos() {
+
+		camera.position.copy( CAMERA_DIRECTION );
+		camera.position.multiplyScalar( DEFAULT_CAMERA_DISTANCE );
+		camera.position.add( player.position );
+
+	};
+
+
+
+
+
+
+
 
 
 
@@ -515,7 +529,8 @@ function CameraControl( player, camera ) {
 		update,
 		directionalLight,
 		adaptFOV,
-		CAMERA_WIDTH
+		CAMERA_WIDTH,
+		resetCameraPos
 	};
 
 };
