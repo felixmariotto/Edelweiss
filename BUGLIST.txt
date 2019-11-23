@@ -43,8 +43,6 @@
 
 ///// PART 4 : MAP DESIGN /////
 
-- Improve map design
-- Re-balance climbing cost
 - Create dialogues
 - disable switching to inexistant answers on the right side
 - Create checkpoints and respawn

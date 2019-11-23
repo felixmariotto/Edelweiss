@@ -33,7 +33,7 @@ function Controler( player ) {
     var interactiveTag; // will be undefined if no interactive cube in range
 
     /// STAMINA PRICE
-    const CLIMBPRICE = 0.005 ;
+    const CLIMBPRICE = 0.0045 ;
     const GLIDINGPRICE = 0.01 ;
     const JUMPPRICE = 1.0 ;
     const DASHPRICE = 0.5 ;

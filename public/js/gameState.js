@@ -133,6 +133,8 @@ function GameState() {
 
                 generateWorld( fr.result );
 
+                startGame();
+
             };
 
             fr.readAsText(files[0]);
@@ -161,6 +163,12 @@ function GameState() {
         };
 
         params.isGamePaused = false ;
+
+        setTimeout( ()=> {
+
+            feedback.showMessage();
+
+        });
 
     };
 

@@ -3,7 +3,7 @@ var scene, camera, stats, input, atlas,
     orbitControls, controler, clock, datGUI, charaAnim,
     gltfLoader, mixer, cameraControl, stamina, interaction,
     dynamicItems, textureLoader, fileLoader, mapManager,
-    optimizer, gameState ;
+    optimizer, gameState, feedback ;
 
 var renderer, highRenderer, cheapRenderer ;
 
@@ -11,6 +11,8 @@ var actions = [];
 
 var utils = Utils();
 var easing = Easing();
+
+
 
 
 /*
@@ -22,7 +24,14 @@ var GUIControler = {
 
 
 window.addEventListener('load', ()=> {
+
+    feedback = Feedback();
+    feedback.setMessage(
+        "Hi ! I need your feedback to improve my game. White you're playing, if you have any comment, suggestion, declaration of love, or death threat, please use the banana button at the top left of your screen to send me a message."
+    );
+
     init();
+
 });
 
 window.addEventListener( 'resize', onWindowResize, false );

@@ -7,7 +7,7 @@ function Atlas( sceneGraph ) {
 	const CUBEWIDTH = 0.4 ;
 	const INTERACTIVECUBERANGE = 0.82 ; // radius
 
-	const WATER_LEVEL = -0.5 ;
+	const WATER_LEVEL = 0.5 ;
 
 	const NEEDHELPERS = true ;
 
