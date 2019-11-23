@@ -25,10 +25,14 @@ var GUIControler = {
 
 window.addEventListener('load', ()=> {
 
+    /*
+
     feedback = Feedback();
     feedback.setMessage(
         "Hi ! I need your feedback to improve my game. White you're playing, if you have any comment, suggestion, declaration of love, or death threat, please use the banana button at the top left of your screen to send me a message."
     );
+
+    */
 
     init();
 

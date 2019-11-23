@@ -166,7 +166,7 @@ function GameState() {
 
         setTimeout( ()=> {
 
-            feedback.showMessage();
+            // feedback.showMessage();
 
         });
 
