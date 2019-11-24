@@ -33,7 +33,7 @@ function Input() {
 
     var touchTime;
 
-    var joystick, domCross, moveVec;
+    var joystick, domCross, moveVec, joystickAngle, joystickState ;
 
     //// JOYSTICK
 
@@ -143,13 +143,21 @@ function Input() {
             // virtual joystick's position deltas
             moveVec.set( joystick.deltaY(), joystick.deltaX() );
 
-            let angle = ( Math.round( ( moveVec.angle() / 6 ) * 4 ) / 4 ) * ( Math.PI * 2 ) ;
+            joystickAngle = ( Math.round( ( moveVec.angle() / 6 ) * 4 ) / 4 ) * ( Math.PI * 2 ) ;
 
-            // console.log( angle );
+            if ( joystickState != joystickAngle ) {
 
-            controler.setMoveAngle( true, utils.toPiRange( angle ) );
+                window.navigator.vibrate( 20 );
+
+                joystickState = joystickAngle ;
+
+            };
+
+            controler.setMoveAngle( true, utils.toPiRange( joystickAngle ) );
 
         } else {
+
+            joystickState = undefined ;
 
             // Reset moveKeys array
             if ( moveKeys.length > 0 &&
