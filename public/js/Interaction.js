@@ -68,6 +68,14 @@ function Interaction() {
 				};
 				break;
 
+			case 'cave-2' :
+				console.log('enter cave 2');
+				break;
+
+			case 'cave-1' :
+				console.log('enter cave 1');
+				break;
+
 		};
 
 	};

@@ -1,5 +1,10 @@
 
+
+
+
 function Atlas( sceneGraph ) {
+
+
 
 	const PLAYERHEIGHT = 0.62 ;
 	const PLAYERWIDTH = 0.3 ;
@@ -141,9 +146,17 @@ function Atlas( sceneGraph ) {
 		side: THREE.DoubleSide
 	});
 
+
+
+
 	// GROUND MATERIALS
 	const BASICGROUNDMAT = new THREE.MeshLambertMaterial({
 		color: 0x777777,
+		side: THREE.DoubleSide
+	});
+
+	const SPECIALGROUNDMAT = new THREE.MeshLambertMaterial({
+		color: 0xff9b05,
 		side: THREE.DoubleSide
 	});
 
@@ -1290,6 +1303,9 @@ function Atlas( sceneGraph ) {
 
 			case 'ground-basic' :
 				return BASICGROUNDMAT ;
+
+			case 'ground-special' :
+				return SPECIALGROUNDMAT ;
 
 			case 'ground-start' :
 				return STARTGROUNDMAT ;
