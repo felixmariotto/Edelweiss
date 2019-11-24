@@ -139,11 +139,15 @@ function Input() {
                 moveKeys.push( 'joystick' );
             };
 
-            // Set the vector we will mesure the angle of with the
+            // Set the vector we will measure the angle of with the
             // virtual joystick's position deltas
             moveVec.set( joystick.deltaY(), joystick.deltaX() );
 
-            controler.setMoveAngle( true, utils.toPiRange( moveVec.angle() ) );
+            let angle = ( Math.round( ( moveVec.angle() / 6 ) * 4 ) / 4 ) * ( Math.PI * 2 ) ;
+
+            // console.log( angle );
+
+            controler.setMoveAngle( true, utils.toPiRange( angle ) );
 
         } else {
 
