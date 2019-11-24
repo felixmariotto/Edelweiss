@@ -188,41 +188,91 @@ function Atlas( sceneGraph ) {
 
 
 	// initialise the map
+	initMap();
+
+
+
+
 	
-	for ( let i of Object.keys( sceneGraph.tilesGraph ) ) {
 
-		sceneGraph.tilesGraph[i].forEach( (logicTile)=> {
+	
+	function initMap( gateName ) {
 
-			if ( NEEDHELPERS && NEEDTILES ) {
-				Tile( logicTile );
-			};
+		for ( let i of Object.keys( sceneGraph.tilesGraph ) ) {
 
-			if ( logicTile.type == 'ground-start' ) {
+			if ( !sceneGraph.tilesGraph[i] ) continue
 
-				startPos.set(
-					(logicTile.points[0].x + logicTile.points[1].x) / 2,
-					(logicTile.points[0].y + logicTile.points[1].y) / 2,
-					(logicTile.points[0].z + logicTile.points[1].z) / 2
-				);
+			sceneGraph.tilesGraph[i].forEach( (logicTile)=> {
 
-			};
-
-		});
-
-	};
-
-
-	for ( let i of Object.keys( sceneGraph.cubesGraph ) ) {
-
-		if ( sceneGraph.cubesGraph[i] ) {
-
-			sceneGraph.cubesGraph[i].forEach( (logicCube)=> {
-
-				if ( NEEDHELPERS ) {
-					newCube( logicCube );
+				if ( NEEDHELPERS && NEEDTILES ) {
+					Tile( logicTile );
 				};
 
-				dynamicItems.addCube( logicCube );
+				if ( logicTile.type == 'ground-start' ) {
+
+					startPos.set(
+						(logicTile.points[0].x + logicTile.points[1].x) / 2,
+						(logicTile.points[0].y + logicTile.points[1].y) / 2,
+						(logicTile.points[0].z + logicTile.points[1].z) / 2
+					);
+
+				};
+
+				if ( logicTile.tag && logicTile.tag == 'exit-' + gateName ) {
+
+					gameState.respownPos.set(
+						(logicTile.points[0].x + logicTile.points[1].x) / 2,
+						(logicTile.points[0].y + logicTile.points[1].y) / 2,
+						(logicTile.points[0].z + logicTile.points[1].z) / 2
+					);
+
+				};
+
+			});
+
+		};
+
+
+		for ( let i of Object.keys( sceneGraph.cubesGraph ) ) {
+
+			if ( sceneGraph.cubesGraph[i] ) {
+
+				sceneGraph.cubesGraph[i].forEach( (logicCube)=> {
+
+					if ( NEEDHELPERS ) {
+						newCube( logicCube );
+					};
+
+					dynamicItems.addCube( logicCube );
+
+				});
+
+			};
+
+		};
+
+
+		// Can remove conditional later
+		if ( sceneGraph.planes ) {
+
+			sceneGraph.planes.forEach( (importedPlane)=> {
+
+				var plane = new THREE.Plane(
+					new THREE.Vector3(
+						importedPlane.norm.x,
+						0,
+						importedPlane.norm.z
+					),
+					importedPlane.const
+				);
+
+				planes.push( plane );
+
+				if ( NEEDPLANES ) {
+					var helper = new THREE.PlaneHelper( plane, 1, 0xffff00 );
+					helper.isHelper = true ;
+					scene.add( helper );
+				};
 
 			});
 
@@ -231,30 +281,35 @@ function Atlas( sceneGraph ) {
 	};
 
 
-	// Can remove conditional later
-	if ( sceneGraph.planes ) {
 
-		sceneGraph.planes.forEach( (importedPlane)=> {
 
-			var plane = new THREE.Plane(
-				new THREE.Vector3(
-					importedPlane.norm.x,
-					0,
-					importedPlane.norm.z
-				),
-				importedPlane.const
-			);
 
-			planes.push( plane );
 
-			if ( NEEDPLANES ) {
-				var helper = new THREE.PlaneHelper( plane, 1, 0xffff00 );
-				scene.add( helper );
+	function clearMap() {
+
+		return new Promise( ( resolve, reject )=> {
+
+			for ( let i = scene.children.length -1 ; i > -1 ; i-- ) {
+
+				if ( scene.children[ i ].isHelper ) {
+
+					scene.children[ i ].geometry.dispose();
+					scene.remove( scene.children[ i ] );
+
+				};
+
+				if ( i == 0 ) resolve();
+
 			};
 
 		});
 
 	};
+
+
+
+
+
 
 
 
@@ -1233,6 +1288,8 @@ function Atlas( sceneGraph ) {
 
 		let mesh = new THREE.Mesh( geometry, material );
 
+		mesh.isHelper = true ;
+
 		mesh.position.set(
 			( logicTile.points[0].x + logicTile.points[1].x ) / 2,
 			( logicTile.points[0].y + logicTile.points[1].y ) / 2,
@@ -1286,6 +1343,8 @@ function Atlas( sceneGraph ) {
 
 		mesh.position.copy( logicCube.position );
 		mesh.scale.copy( logicCube.scale );
+
+		mesh.isHelper = true ;
 
 		return mesh ;
 
@@ -1344,6 +1403,41 @@ function Atlas( sceneGraph ) {
 		};
 
 	};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/////////////////////////
+	///    FUNCTIONS
+	/////////////////////////
+
+
+
 
 
 
@@ -1413,6 +1507,39 @@ function Atlas( sceneGraph ) {
 
 
 
+
+
+
+
+
+
+	function switchGraph( graphName, gateName ) {
+
+		sceneGraph = gameState.sceneGraphs[ graphName ];
+
+		clearMap().then( ()=> {
+
+			initMap( gateName );
+
+			gameState.resetPlayerPos();
+			gameState.params.isGamePaused = false ;
+
+		});
+
+	};
+
+
+
+
+
+
+
+
+
+
+
+
+
 	return {
 		collidePlayerGrounds,
 		collidePlayerWalls,
@@ -1426,7 +1553,8 @@ function Atlas( sceneGraph ) {
 		deleteCubeFromGraph,
 		startPos,
 		collideCamera,
-		adjTileExists
+		adjTileExists,
+		switchGraph
 	};
 
 

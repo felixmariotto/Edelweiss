@@ -51,29 +51,41 @@ function Interaction() {
 	///////////////////////////////
 
 
+
 	function trigger( agentName ) {
 
+
 		switch ( agentName ) {
+
 
 			case 'bonus-stamina-1' :
 				getBonus( 'stamina-1' );
 				break;
 
+
 			case 'info-cable-car' :
+
 				if ( dialogueStates.minerBoy == 'init' ) {
 					setTimeout( ()=> {
 						startDialogue( 'cable-info-miner-boy' );
 						dialogueStates.minerBoy = 'general' ;
 					});
 				};
+
 				break;
 
-			case 'cave-2' :
-				console.log('enter cave 2');
+
+			case 'cave-0' :
+
+				gameState.switchMapGraph( 'cave-A', 'cave-0' );
+
 				break;
+
 
 			case 'cave-1' :
-				console.log('enter cave 1');
+				
+				gameState.switchMapGraph( 'cave-A', 'cave-1' );
+
 				break;
 
 		};

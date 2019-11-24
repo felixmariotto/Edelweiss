@@ -287,7 +287,8 @@ function Controler( player ) {
 
 
         // abort the update if player is dying and will respawn
-        if ( gameState.params.isCrashing ) return ;
+        if ( gameState.params.isCrashing ||
+             gameState.params.isGamePaused ) return ;
 
 
 

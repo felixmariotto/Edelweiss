@@ -7,8 +7,7 @@ function GameState() {
 
 
 
-	const DEVELOPMENT_LAYOUT = true ;
-
+	const DEVELOPMENT_LAYOUT = false ;
 
 
 
@@ -29,7 +28,10 @@ function GameState() {
 
 
 
-
+    // will hold the sceneGraphs of the caves as well
+    var sceneGraphs = {
+        moutain: undefined
+    };
 
 	var params = {
 		isGamePaused: true,
@@ -98,7 +100,7 @@ function GameState() {
 
 		domStartMenu.style.display = 'inherit';
 
-		fileLoader.load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/sceneGraph.json', ( file )=> {
+		fileLoader.load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/moutain.json', ( file )=> {
 
             generateWorld( file );
 
@@ -119,7 +121,7 @@ function GameState() {
 	///// STARTING THE GAME
 
 
-    function loadJSON(evt) {
+    function loadJSON( evt ) {
 
         var tgt = evt.target || window.event.srcElement,
         files = tgt.files;
@@ -205,18 +207,21 @@ function GameState() {
 
     function generateWorld( file ) {
 
-        let data = lzjs.decompress( file );
-
-        let sceneGraph = parseJSON( data );
+        var moutainGraph = parseJSON( file );
 
         // Initialize atlas with the scene graph
-        atlas = Atlas( sceneGraph );
+        atlas = Atlas( moutainGraph );
+
+        // store this sceneGraph into the graphs object
+        sceneGraphs.mountain = moutainGraph ;
 
     };
 
 
 
-	function parseJSON( data ) {
+	function parseJSON( file ) {
+
+        let data = lzjs.decompress( file );
 
         for ( let valueToReplace of Object.keys( hashTable ) ) {
 
@@ -272,7 +277,7 @@ function GameState() {
 
 			charaAnim.respawn();
 
-			atlas.player.position.copy( atlas.startPos );
+			atlas.player.position.copy( respownPos );
 			cameraControl.resetCameraPos();
 
 			controler.setSpeedUp( 0 );
@@ -283,13 +288,83 @@ function GameState() {
 		}, 1000);
 
 	};
+
+
+
+
+
+    function switchMapGraph( caveGraphName, caveGateName ) {
+
+        if ( params.isGamePaused ) return ;
+
+        params.isGamePaused = true ;
+
+        console.log( 'enter cave ' + caveGraphName + ' by gate ' + caveGateName );
+
+        if ( !sceneGraphs[ caveGraphName ] ) {
+
+            switch( caveGraphName ) {
+
+                case 'cave-A' :
+                    load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/cave-A.json' );
+                    break;
+
+            };
+
+            function load( url ) {
+
+                fileLoader.load( url, ( file )=> {
+
+                    var sceneGraph = parseJSON( file );
+
+                    sceneGraphs[ caveGraphName ] = sceneGraph ;
+
+                    atlas.switchGraph( caveGraphName, caveGateName );
+
+                });
+
+            };
+
+        } else {
+
+            console.log( 'sceneGraph is already acquired' );
+
+            atlas.switchGraph( caveGraphName, caveGateName );
+
+        };
+
+    };
+
+
+
+
+
+
+
+    function resetPlayerPos() {
+
+        atlas.player.position.copy( respownPos );
+
+        cameraControl.resetCameraPos();
+
+    };
 	
+
+
+
+
+
+
 
 
 
 	return {
 		die,
-		params
+		params,
+        sceneGraphs,
+        switchMapGraph,
+        resetPlayerPos,
+        respownPos
 	};
 
 };
