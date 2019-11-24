@@ -281,7 +281,7 @@
             display: none;
         }
 
-        .blink_stamina {
+        .blink-stamina {
             animation: blink_stamina 0.15s infinite ;
         }
 
@@ -310,6 +310,46 @@
                 flex-direction: column;
                 justify-content: flex-end;
             }
+
+                .show-stamina {
+                    animation: show_stamina 0.8s linear 1 forwards ;
+                }
+
+                @keyframes show_stamina {
+                    0% {
+                        opacity: 1 ;
+                    }
+                    10% {
+                        opacity: 0 ;
+                    }
+                    20% {
+                        opacity: 1 ;
+                    }
+                    30% {
+                        opacity: 0 ;
+                    }
+                    40% {
+                        opacity: 1 ;
+                    }
+                    50% {
+                        opacity: 0 ;
+                    }
+                    60% {
+                        opacity: 1 ;
+                    }
+                    70% {
+                        opacity: 0 ;
+                    }
+                    80% {
+                        opacity: 1 ;
+                    }
+                    90% {
+                        opacity: 0 ;
+                    }
+                    100% {
+                        opacity: 1 ;
+                    }
+                }
 
                 .stamina-gauge {
                     width: 100%;

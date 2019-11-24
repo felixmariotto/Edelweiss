@@ -10,7 +10,8 @@ function Stamina() {
 
     var params = {
         stamina: 0,
-        maxStamina: 0
+        maxStamina: 0,
+        playerKnowsStamina: false
     };
 
     var gauges = [];
@@ -39,6 +40,13 @@ function Stamina() {
 
         params.stamina = gauges.length ;
         params.maxStamina = gauges.length ; 
+
+        // Make the "new" section blink (in fact, the first one).
+        let sections = document.querySelectorAll( '.stamina-section' );
+        sections[ 0 ].classList.remove( 'show-stamina' );
+        setTimeout( ()=> {
+            sections[ 0 ].classList.add( 'show-stamina' );
+        }, 100);
 
     };
 
@@ -103,7 +111,7 @@ function Stamina() {
         if ( ( params.stamina * params.maxStamina ) / ( params.maxStamina - TOLERANCE ) < TOLERANCE ) {
 
             // make stamina bar UI blink
-            domBar.classList.add( 'blink_stamina' );
+            domBar.classList.add( 'blink-stamina' );
 
             let domSections = document.querySelectorAll('.stamina-section');
 
@@ -119,10 +127,20 @@ function Stamina() {
 
             params.stamina = 0 ;
 
+            if ( !params.playerKnowsStamina ) {
+
+                params.playerKnowsStamina = true ;
+
+                interaction.showMessage( 'Out of stamina ! <br> Go back on the ground' );
+
+            };
+
         };
 
         if ( update ) {
+
             updateDom();
+
         };
 
     };
@@ -137,7 +155,7 @@ function Stamina() {
 
         if ( params.stamina != params.maxStamina ) {
 
-            domBar.classList.remove( 'blink_stamina' );
+            domBar.classList.remove( 'blink-stamina' );
 
             let domSections = document.querySelectorAll('.stamina-section');
 

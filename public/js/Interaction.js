@@ -330,7 +330,7 @@ function Interaction() {
 				*/
 			},
 
-			message : 'You found an edelWeiss !<br>+ 1 Stamina'
+			message : '+ 1 Stamina'
 		}
 
 
@@ -377,6 +377,16 @@ function Interaction() {
 
 		domMessage.style.display = 'inherit';
 		domMessage.innerHTML = message ;
+
+		setTimeout( ()=> {
+
+			if ( domMessage.style.display == 'inherit' ) {
+
+				hideMessage();
+
+			};
+
+		}, 2000);
 
 	};
 
@@ -1287,6 +1297,7 @@ function Interaction() {
 		interactWith,
 		trigger,
 		isInDialogue,
+		showMessage,
 		hideMessage,
 		requestNextLine,
 		chooseAnswer,
