@@ -35,7 +35,7 @@ function Controler( player ) {
     /// STAMINA PRICE
     const CLIMBPRICE = 0.00855 ;
     const GLIDINGPRICE = 0.01 ;
-    const JUMPPRICE = 1.0 ;
+    const JUMPPRICE = 2.0 ;
     const DASHPRICE = 0.5 ;
 
     // animations

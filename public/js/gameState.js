@@ -7,7 +7,7 @@ function GameState() {
 
 
 
-	const DEVELOPMENT_LAYOUT = true ;
+	const DEVELOPMENT_LAYOUT = false ;
 
 
 
@@ -40,6 +40,7 @@ function GameState() {
 	};
 
 	var respawnPos = new THREE.Vector3();
+    var gateTilePos = new THREE.Vector3();
 
 	var enterGateTime ;
 	const ENTER_GATE_DURATION = 300;
@@ -352,7 +353,7 @@ function GameState() {
 
     	if ( Date.now() > enterGateTime + ENTER_GATE_DURATION ) {
 
-    		resetPlayerPos();
+    		resetPlayerPos( gateTilePos );
 	    	gameState.params.isGamePaused = false ;
 
 	    	domBlackScreen.classList.remove( 'show-black-screen' );
@@ -362,7 +363,7 @@ function GameState() {
 
     		setTimeout( ()=> {
 
-    			resetPlayerPos();
+    			resetPlayerPos( gateTilePos );
 		    	gameState.params.isGamePaused = false ;
 
 		    	domBlackScreen.classList.remove( 'show-black-screen' );
@@ -380,9 +381,9 @@ function GameState() {
 
 
 
-    function resetPlayerPos() {
+    function resetPlayerPos( vec ) {
 
-        atlas.player.position.copy( respawnPos );
+        atlas.player.position.copy( typeof vec != 'undefined' ? vec : respawnPos );
 
         cameraControl.resetCameraPos();
 
@@ -496,6 +497,7 @@ function GameState() {
         switchMapGraph,
         resetPlayerPos,
         respawnPos,
+        gateTilePos,
         endPassGateAnim,
         setSavedPosition
 	};

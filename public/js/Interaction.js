@@ -191,6 +191,10 @@ function Interaction() {
 				startDialogue( 'npc-fall' );
 				break;
 
+			case 'npc-jump-slip' :
+				startDialogue( 'npc-jump-slip' );
+				break;
+
 
 
 			///// NPC RESPAWN
@@ -199,31 +203,13 @@ function Interaction() {
 				startDialogue( 'npc-respawn-0' );
 				break;
 
-			/*
 
-			case 'char-dad' :
 
-				switch ( dialogueStates.dad ) {
+			///// MISC
 
-					case 'init' :
-						startDialogue( 'init-dad' );
-						break ;
-
-					case 'waiting-thread' :
-						startDialogue( 'dad-wait-thread' );
-						break ;
-
-					case 'give-permission' :
-						startDialogue( 'dad-give-permission' );
-						break ;
-
-					case 'general' :
-						startDialogue( 'dad-general' );
-						break ;
-
-				};
-
-			*/
+			case 'npc-miner' :
+				startDialogue( 'npc-miner' );
+				break;
 
 		};
 
@@ -898,7 +884,14 @@ function Interaction() {
 		'npc-fall' : {
 			char: dialogueChars.dad,
 			story: [
-				{ m: `This cliff looks very high.. If you fell, you would probably die.` }
+				{ m: `This cliff looks very high... If we fell, we would probably die.` }
+			]
+		},
+
+		'npc-jump-slip' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: `You can also jump while slipping along a wall, it's super useful when there is nowhere to climb.` }
 			]
 		},
 
@@ -920,6 +913,27 @@ function Interaction() {
 					gameState.setSavedPosition( 0 );
 				}, end: true },
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
+			]
+		},
+
+
+
+
+
+
+		///// MISC
+
+		'npc-miner' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: `Welcome to the mine !` },
+				{ question: 'Did you come here before ?', answers: [
+					{ m: 'Yes', next: 'yes' },
+					{ m: 'No', next: 'no' }
+				] },
+				{ label: 'yes', m: 'Enjoy your time here then.', end: true },
+				{ label: 'no', m: 'This mine is huge, it goes very far into the mountain.' },
+				{ m: `I've never been too far though, and I doubt you will !` }
 			]
 		},
 		

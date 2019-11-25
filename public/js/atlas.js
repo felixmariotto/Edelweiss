@@ -16,7 +16,7 @@ function Atlas( sceneGraph ) {
 
 	const NEEDHELPERS = true ;
 
-	const NEEDPLAYERBOX = true ; // specifically allow player box helper
+	const NEEDPLAYERBOX = false ; // specifically allow player box helper
     const NEEDARROW = false ; // arrows showing player direction
     const NEEDTILES = true ; // add the tiles helpers
     const NEEDPLANES = true ; // show helpers for limit planes
@@ -225,19 +225,15 @@ function Atlas( sceneGraph ) {
 
 				};
 
-				/*  RESPAWN THE PLAYER IN FRONT OF THE LAST GATE THEY TRAVERSED
-
 				if ( logicTile.tag && logicTile.tag == 'exit-' + gateName ) {
 
-					gameState.respawnPos.set(
+					gameState.gateTilePos.set(
 						(logicTile.points[0].x + logicTile.points[1].x) / 2,
 						(logicTile.points[0].y + logicTile.points[1].y) / 2,
 						(logicTile.points[0].z + logicTile.points[1].z) / 2
 					);
 
 				};
-
-				*/
 
 			});
 
