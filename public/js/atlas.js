@@ -1521,11 +1521,24 @@ function Atlas( sceneGraph ) {
 
 			initMap( gateName );
 
+
+
 			gameState.resetPlayerPos();
 			gameState.params.isGamePaused = false ;
 
 		});
 
+	};
+
+
+
+
+
+
+
+
+	function getSceneGraph() {
+		return sceneGraph ;
 	};
 
 
@@ -1541,6 +1554,7 @@ function Atlas( sceneGraph ) {
 
 
 	return {
+		getSceneGraph,
 		collidePlayerGrounds,
 		collidePlayerWalls,
 		collidePlayerCubes,
@@ -1548,7 +1562,6 @@ function Atlas( sceneGraph ) {
 		PLAYERHEIGHT,
 		PLAYERWIDTH,
 		WATER_LEVEL,
-		sceneGraph,
 		player,
 		deleteCubeFromGraph,
 		startPos,

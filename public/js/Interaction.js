@@ -77,14 +77,14 @@ function Interaction() {
 
 			case 'cave-0' :
 
-				gameState.switchMapGraph( 'cave-A', 'cave-0' );
+				gameState.switchMapGraph( 'cave-0' );
 
 				break;
 
 
 			case 'cave-1' :
 				
-				gameState.switchMapGraph( 'cave-A', 'cave-1' );
+				gameState.switchMapGraph( 'cave-1' );
 
 				break;
 

@@ -30,7 +30,7 @@ function GameState() {
 
     // will hold the sceneGraphs of the caves as well
     var sceneGraphs = {
-        moutain: undefined
+        mountain: undefined
     };
 
 	var params = {
@@ -100,7 +100,7 @@ function GameState() {
 
 		domStartMenu.style.display = 'inherit';
 
-		fileLoader.load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/moutain.json', ( file )=> {
+		fileLoader.load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/mountain.json', ( file )=> {
 
             generateWorld( file );
 
@@ -207,13 +207,13 @@ function GameState() {
 
     function generateWorld( file ) {
 
-        var moutainGraph = parseJSON( file );
+        var mountainGraph = parseJSON( file );
 
         // Initialize atlas with the scene graph
-        atlas = Atlas( moutainGraph );
+        atlas = Atlas( mountainGraph );
 
         // store this sceneGraph into the graphs object
-        sceneGraphs.mountain = moutainGraph ;
+        sceneGraphs.mountain = mountainGraph ;
 
     };
 
@@ -293,17 +293,25 @@ function GameState() {
 
 
 
-    function switchMapGraph( caveGraphName, caveGateName ) {
+
+
+
+    function switchMapGraph( gateName ) {
+
+    	let graphName = getDestinationFromGate( gateName ) ;
+
+    	domBlackScreen.classList.remove( 'hide-black-screen' );
+		domBlackScreen.classList.add( 'show-black-screen' );
 
         if ( params.isGamePaused ) return ;
 
         params.isGamePaused = true ;
 
-        console.log( 'enter cave ' + caveGraphName + ' by gate ' + caveGateName );
+        console.log( 'enter cave ' + graphName + ' by gate ' + gateName );
 
-        if ( !sceneGraphs[ caveGraphName ] ) {
+        if ( !sceneGraphs[ graphName ] ) {
 
-            switch( caveGraphName ) {
+            switch( graphName ) {
 
                 case 'cave-A' :
                     load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/cave-A.json' );
@@ -317,9 +325,12 @@ function GameState() {
 
                     var sceneGraph = parseJSON( file );
 
-                    sceneGraphs[ caveGraphName ] = sceneGraph ;
+                    sceneGraphs[ graphName ] = sceneGraph ;
 
-                    atlas.switchGraph( caveGraphName, caveGateName );
+                    atlas.switchGraph( graphName, gateName );
+
+                    domBlackScreen.classList.remove( 'show-black-screen' );
+					domBlackScreen.classList.add( 'hide-black-screen' );
 
                 });
 
@@ -329,7 +340,10 @@ function GameState() {
 
             console.log( 'sceneGraph is already acquired' );
 
-            atlas.switchGraph( caveGraphName, caveGateName );
+            domBlackScreen.classList.remove( 'show-black-screen' );
+			domBlackScreen.classList.add( 'hide-black-screen' );
+
+            atlas.switchGraph( graphName, gateName );
 
         };
 
@@ -346,6 +360,47 @@ function GameState() {
         atlas.player.position.copy( respownPos );
 
         cameraControl.resetCameraPos();
+
+    };
+
+
+
+
+
+
+
+
+
+    function getDestinationFromGate( gateName ) {
+
+    	switch( gateName ) {
+
+    		case 'cave-0' :
+
+    			if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
+
+    				return 'cave-A';
+
+    			} else {
+
+    				return 'mountain';
+
+    			};
+
+    		case 'cave-1' :
+
+    			if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
+
+    				return 'cave-A';
+
+    			} else {
+
+    				return 'mountain';
+
+    			};
+    			
+
+    	};
 
     };
 	
