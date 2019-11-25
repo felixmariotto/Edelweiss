@@ -143,6 +143,22 @@ function Interaction() {
 
 
 
+
+	/*
+	//// TODO
+
+	respawn-0 => first respawn tile
+
+	npc-jump
+	npc-climb
+	npc-stamina
+	npc-climb-jump
+	npc-run
+	npc-fall
+
+	*/
+
+
 	function interactWith( agentName ) {
 
 		switch ( agentName ) {

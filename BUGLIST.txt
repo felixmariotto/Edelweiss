@@ -59,3 +59,5 @@
 ///// PART 6 : POLISHING /////
 
 - shadows blinking on low grade devices because of optimisation
+- empecher switch tile on limit tiles
+- animation climb down right is bugged

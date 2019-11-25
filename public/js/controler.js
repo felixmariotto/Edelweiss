@@ -541,7 +541,7 @@ function Controler( player ) {
                     break;
 
                 case 'down' :
-                    climb( AXISZ, -1, requestedDirection );
+                    climb( AXISZ, 1, -requestedDirection );
                     charaAnim.setCharaRot( 0 );
                     break;
 
