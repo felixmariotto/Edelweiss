@@ -198,6 +198,7 @@ function Atlas( sceneGraph ) {
 	
 	function initMap( gateName ) {
 
+
 		for ( let i of Object.keys( sceneGraph.tilesGraph ) ) {
 
 			if ( !sceneGraph.tilesGraph[i] ) continue
@@ -288,6 +289,8 @@ function Atlas( sceneGraph ) {
 	function clearMap() {
 
 		return new Promise( ( resolve, reject )=> {
+
+			planes = [];
 
 			for ( let i = scene.children.length -1 ; i > -1 ; i-- ) {
 
