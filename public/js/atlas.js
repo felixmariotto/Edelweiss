@@ -1524,10 +1524,7 @@ function Atlas( sceneGraph ) {
 
 			initMap( gateName );
 
-
-
-			gameState.resetPlayerPos();
-			gameState.params.isGamePaused = false ;
+			gameState.endPassGateAnim();
 
 		});
 

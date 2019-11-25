@@ -41,7 +41,8 @@ function GameState() {
 
 	var respownPos = new THREE.Vector3( 0, 1, -4.5 );
 
-
+	var enterGateTime ;
+	const ENTER_GATE_DURATION = 300;
 
 
 
@@ -298,54 +299,78 @@ function GameState() {
 
     function switchMapGraph( gateName ) {
 
+    	if ( params.isGamePaused ) return ;
+
+        params.isGamePaused = true ;
+
     	let graphName = getDestinationFromGate( gateName ) ;
 
     	domBlackScreen.classList.remove( 'hide-black-screen' );
 		domBlackScreen.classList.add( 'show-black-screen' );
 
-        if ( params.isGamePaused ) return ;
+		enterGateTime = Date.now();
 
-        params.isGamePaused = true ;
+        setTimeout( ()=> {
 
-        console.log( 'enter cave ' + graphName + ' by gate ' + gateName );
+	        if ( !sceneGraphs[ graphName ] ) {
 
-        if ( !sceneGraphs[ graphName ] ) {
+	            switch( graphName ) {
 
-            switch( graphName ) {
+	                case 'cave-A' :
+	                    load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/cave-A.json' );
+	                    break;
 
-                case 'cave-A' :
-                    load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/cave-A.json' );
-                    break;
+	            };
 
-            };
+	            function load( url ) {
 
-            function load( url ) {
+	                fileLoader.load( url, ( file )=> {
 
-                fileLoader.load( url, ( file )=> {
+	                    var sceneGraph = parseJSON( file );
 
-                    var sceneGraph = parseJSON( file );
+	                    sceneGraphs[ graphName ] = sceneGraph ;
 
-                    sceneGraphs[ graphName ] = sceneGraph ;
+	                    atlas.switchGraph( graphName, gateName );
 
-                    atlas.switchGraph( graphName, gateName );
+	                });
 
-                    domBlackScreen.classList.remove( 'show-black-screen' );
-					domBlackScreen.classList.add( 'hide-black-screen' );
+	            };
 
-                });
+	        } else {
 
-            };
+	            atlas.switchGraph( graphName, gateName );
 
-        } else {
+	        };
 
-            console.log( 'sceneGraph is already acquired' );
+        }, 220);
 
-            domBlackScreen.classList.remove( 'show-black-screen' );
+    };
+
+
+
+    function endPassGateAnim() {
+
+    	if ( Date.now() > enterGateTime + ENTER_GATE_DURATION ) {
+
+    		resetPlayerPos();
+	    	gameState.params.isGamePaused = false ;
+
+	    	domBlackScreen.classList.remove( 'show-black-screen' );
 			domBlackScreen.classList.add( 'hide-black-screen' );
 
-            atlas.switchGraph( graphName, gateName );
+    	} else {
 
-        };
+    		setTimeout( ()=> {
+
+    			resetPlayerPos();
+		    	gameState.params.isGamePaused = false ;
+
+		    	domBlackScreen.classList.remove( 'show-black-screen' );
+				domBlackScreen.classList.add( 'hide-black-screen' );
+
+    		}, (enterGateTime + ENTER_GATE_DURATION) - Date.now() );
+
+    	};
 
     };
 
@@ -419,7 +444,8 @@ function GameState() {
         sceneGraphs,
         switchMapGraph,
         resetPlayerPos,
-        respownPos
+        respownPos,
+        endPassGateAnim
 	};
 
 };
