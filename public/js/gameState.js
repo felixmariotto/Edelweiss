@@ -39,7 +39,7 @@ function GameState() {
 		isDying: false
 	};
 
-	var respownPos = new THREE.Vector3( 0, 1, -4.5 );
+	var respawnPos = new THREE.Vector3();
 
 	var enterGateTime ;
 	const ENTER_GATE_DURATION = 300;
@@ -278,7 +278,7 @@ function GameState() {
 
 			charaAnim.respawn();
 
-			atlas.player.position.copy( respownPos );
+			atlas.player.position.copy( respawnPos );
 			cameraControl.resetCameraPos();
 
 			controler.setSpeedUp( 0 );
@@ -382,7 +382,7 @@ function GameState() {
 
     function resetPlayerPos() {
 
-        atlas.player.position.copy( respownPos );
+        atlas.player.position.copy( respawnPos );
 
         cameraControl.resetCameraPos();
 
@@ -428,6 +428,57 @@ function GameState() {
     	};
 
     };
+
+
+
+
+
+
+
+
+    function setSavedPosition( respawnID ) {
+
+        console.log( `save progress on ${ 'respawn-' + respawnID }` );
+
+        if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
+
+            checkStage( Math.floor( atlas.player.position.y ) );
+            checkStage( Math.floor( atlas.player.position.y ) -1 );
+            checkStage( Math.floor( atlas.player.position.y ) +1 );
+
+            function checkStage( stage ) {
+
+                if ( !atlas.getSceneGraph().tilesGraph[ stage ] ) return ;
+
+                atlas.getSceneGraph().tilesGraph[ stage ].forEach( (logicTile)=> {
+
+                    if ( logicTile.tag && logicTile.tag == 'respawn-' + respawnID ) {
+
+                        setTileAsRespawn( logicTile );
+
+                    };
+
+                });
+
+            }
+
+        } else {
+
+            console.log( 'switch sceneGraph' );
+
+        };
+
+        function setTileAsRespawn( logicTile ) {
+
+            respawnPos.set(
+                (logicTile.points[0].x + logicTile.points[1].x) / 2,
+                (logicTile.points[0].y + logicTile.points[1].y) / 2,
+                (logicTile.points[0].z + logicTile.points[1].z) / 2
+            );
+
+        };
+
+    };
 	
 
 
@@ -444,8 +495,9 @@ function GameState() {
         sceneGraphs,
         switchMapGraph,
         resetPlayerPos,
-        respownPos,
-        endPassGateAnim
+        respawnPos,
+        endPassGateAnim,
+        setSavedPosition
 	};
 
 };

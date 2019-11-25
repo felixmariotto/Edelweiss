@@ -217,17 +217,27 @@ function Atlas( sceneGraph ) {
 						(logicTile.points[0].z + logicTile.points[1].z) / 2
 					);
 
-				};
-
-				if ( logicTile.tag && logicTile.tag == 'exit-' + gateName ) {
-
-					gameState.respownPos.set(
+					gameState.respawnPos.set(
 						(logicTile.points[0].x + logicTile.points[1].x) / 2,
 						(logicTile.points[0].y + logicTile.points[1].y) / 2,
 						(logicTile.points[0].z + logicTile.points[1].z) / 2
 					);
 
 				};
+
+				/*  RESPAWN THE PLAYER IN FRONT OF THE LAST GATE THEY TRAVERSED
+
+				if ( logicTile.tag && logicTile.tag == 'exit-' + gateName ) {
+
+					gameState.respawnPos.set(
+						(logicTile.points[0].x + logicTile.points[1].x) / 2,
+						(logicTile.points[0].y + logicTile.points[1].y) / 2,
+						(logicTile.points[0].z + logicTile.points[1].z) / 2
+					);
+
+				};
+
+				*/
 
 			});
 

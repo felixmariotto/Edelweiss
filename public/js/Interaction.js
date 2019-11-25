@@ -156,6 +156,8 @@ function Interaction() {
 	npc-run
 	npc-fall
 
+	npc-respawn-0
+
 	*/
 
 
@@ -163,10 +165,41 @@ function Interaction() {
 
 		switch ( agentName ) {
 
+			/// TUTORIALS
+
+			case 'npc-jump' :
+				startDialogue( 'npc-jump' );
+				break;
+
+			case 'npc-climb' :
+				startDialogue( 'npc-climb' );
+				break;
+
+			case 'npc-stamina' :
+				startDialogue( 'npc-stamina' );
+				break;
+
+			case 'npc-climb-jump' :
+				startDialogue( 'npc-climb-jump' );
+				break;
+
+			case 'npc-run' :
+				startDialogue( 'npc-run' );
+				break;
+
+			case 'npc-fall' :
+				startDialogue( 'npc-fall' );
+				break;
 
 
 
-			/// FAMILY
+			///// NPC RESPAWN
+
+			case 'npc-respawn-0' :
+				startDialogue( 'npc-respawn-0' );
+				break;
+
+			/*
 
 			case 'char-dad' :
 
@@ -190,145 +223,7 @@ function Interaction() {
 
 				};
 
-				break;
-
-
-			case 'char-brother' :
-				
-				switch ( dialogueStates.brother ) {
-
-					case 'init' :
-						startDialogue( 'init-brother' );
-						break ;
-
-				};
-
-				break;
-
-
-
-
-			/// TRADE
-
-			case 'char-herbalist' :
-				
-				switch ( dialogueStates.herbalist ) {
-
-					case 'init' :
-						startDialogue( 'init-herbalist' );
-						break ;
-
-					case 'waiting-sage' :
-						startDialogue( 'herbalist-wait-sage' );
-						break ;
-
-				};
-
-				break;
-
-
-			case 'char-herbalist-friend' :
-				startDialogue( 'herbalist-friend-info' );
-				break;
-
-
-			case 'char-merchant' :
-				
-				switch( dialogueStates.merchant ) {
-
-					case 'init' :
-						startDialogue( 'init-merchant' );
-						break;
-
-					case 'wait-key' :
-						startDialogue( 'wait-key-merchant' );
-						break;
-
-					case 'give-thread' :
-						startDialogue( 'give-thread-merchant' );
-						break;
-
-					case 'general' :
-						startDialogue( 'general-merchant' );
-						break;
-
-				};
-
-				break;
-
-
-			case 'char-miner' :
-				
-				switch( dialogueStates.miner ) {
-
-					case 'init' :
-						startDialogue( 'init-miner' );
-						break;
-
-					case 'give-key' :
-						startDialogue( 'give-key-miner' );
-						break;
-
-					case 'general' :
-						startDialogue( 'general-miner' );
-						break;
-
-				};
-
-				break;
-
-			case 'char-miner-boy' :
-
-				if ( dialogueStates.minerBoy == 'general' ) {
-					startDialogue( 'general-miner-boy' );
-				};
-
-				break;
-
-
-
-
-			/// VILLAGE - MISC
-
-			case 'char-gatekeeper' :
-				
-				switch( dialogueStates.gatekeeper ) {
-
-					case 'init' :
-						startDialogue( 'init-gatekeeper' );
-						break;
-
-					case 'warning' :
-						startDialogue( 'warning-gatekeeper' );
-						break;
-
-				};
-
-				break;
-
-
-
-
-
-			/// CABLE-CARS
-
-			case 'cable-1' :
-				
-				switch( dialogueStates.cable1 ) {
-
-					case 'init' :
-						startDialogue( 'station-activation' );
-						dialogueStates.cable1 = 'use';
-						break;
-
-					case 'use' :
-						startDialogue( 'station-use' );
-						break;
-
-				};
-
-				break;
-
+			*/
 
 		};
 
@@ -956,141 +851,53 @@ function Interaction() {
 	var dialogues = {
 
 
-		//////////////
-		///   DAD
-		//////////////
+		///// TUTORIALS
 
-		'init-dad' : {
+
+		'npc-jump' : {
 			char: dialogueChars.dad,
 			story: [
-				{ m: "Can't you leave me alone while I'm working ?" },
-				{ m: "Instead of hanging around, go fetch me some thread in the market.", onCall: ()=> {
-					dialogueStates.dad = 'waiting-thread'
-					dynamicItems.deleteCube( 'barrier-dad' );
-					dynamicItems.actuateCube( 'char-dad', 'move-from-wall' );
-				} }
+				{ m: `Press on ${ input.params.isTouchScreen ? 'the action button' : 'space' } to jump.` }
 			]
 		},
 
 
-		'dad-wait-thread' : {
+		'npc-climb' : {
 			char: dialogueChars.dad,
 			story: [
-				{ m: "What's hard with fetching some thread, girl ?" },
-				{ question: 'Do you want me to explain how to get to the market ?', answers: [
-					{ m: 'Yes', next: 'help_yes' },
-					{ m: 'No', next: 'help_no' }
-				] },
-				{ label: 'help_yes', m: "Alright... You climb this wall beside me, then you cross the little bridge, then you climb the herbalist wall and it's on your right" },
-				{ label: 'help_no', m: 'Hurry up !' }
+				{ m: `Some walls can be climbed, walk toward the wall on your right to climb it.` }
 			]
 		},
 
 
-		'dad-give-permission' : {
+		'npc-stamina' : {
 			char: dialogueChars.dad,
 			story: [
-				{ m: "Ah at last you got this thread..." },
-				{ m: "Do you have my permission to leave the village to activate the cable-car stations ?" },
-				{ m: "Yes, now go away !", onCall: ()=> {
-					dialogueStates.dad = "general" ;
-					dialogueStates.gatekeeper = "warning" ;
-					dynamicItems.deleteCube( 'village-gate' );
-				} }
+				{ m: `You may be too weak to climb some walls... Try to find some edelweiss, they will increase your stamina and make you stronger !` }
 			]
 		},
 
-		'dad-general' : {
+
+		'npc-climb-jump' : {
 			char: dialogueChars.dad,
 			story: [
-				{ m: "Go play elsewhere !" }
+				{ m: `Did you know you can jump while climbing ? Just press ${ input.params.isTouchScreen ? 'the action button' : 'space' } while climbing.` }
 			]
 		},
 
 
-
-		///////////////
-		///  BROTHER
-		///////////////
-
-		'init-brother' : {
-			char: dialogueChars.brother,
+		'npc-run' : {
+			char: dialogueChars.dad,
 			story: [
-				{ m: "I can't believe you cannot climb a wall like this yet, whereas you're two years older than me..."  },
-				{ m: 'Cross the bridge on your right, there is a smaller wall to get to the market.' },
+				{ m: `Hold ${ input.params.isTouchScreen ? 'the action button' : 'space' } while walking to run, you will then jump way farther.` }
 			]
 		},
 
 
-
-		/////////////////
-		///  HERBALIST
-		/////////////////
-
-		'init-herbalist' : {
-			char: dialogueChars.herbalist,
+		'npc-fall' : {
+			char: dialogueChars.dad,
 			story: [
-				{ m: "My dear little daisy, Sorry to interrupt you... I just need a word !"  },
-				{ m: "If you find time between two of your Dad's commands, can you give me a hand up ?" },
-				{ m: "I need sage, but I'm getting old and I cannot climb the mountain anymore..."  },
-				{ question: 'If you find some sage, can you bring it to me ?', answers: [
-					{ m: 'Yes', next: 'help_yes' },
-					{ m: 'No', next: 'help_no' }
-				] },
-				{ label: 'help_yes', m: "Great ! In exchange I will give you my climbing gears, as I no longer need it. Bring me 5 to get the first gear !", onCall: ()=> {
-					dialogueStates.herbalist = "waiting-sage" ;
-					dynamicItems.deleteCube( 'barrier-herbalist' );
-					dynamicItems.actuateCube( 'char-herbalist', 'move-from-wall' );
-				} },
-				{ label: 'help_no', m: "Mh... Well, let's see if you can find another wall to climb to get to the market then !" }
-			]
-		},
-
-
-		'herbalist-wait-sage' : {
-			char: dialogueChars.herbalist,
-			story: [
-				{ m: "Are you bringing me sage ??"  }
-			]
-		},
-
-
-
-
-		///// HERBALIST'S HUSBAND
-
-		'herbalist-friend-init' : {
-			char: dialogueChars.herbalistFriend,
-			story: [
-				{ m: 'Congrats ! You found your first edelweiss !' },
-				{ m: 'You can climb taller walls now, look at the stamina bar at the top of your screen.' },
-				{ question: 'Do you want to know more about these flowers ?', answers: [
-					{ m: 'Yes', next: 'help_yes' },
-					{ m: 'No', next: 'help_no' }
-				] },
-				{ label: 'help_yes', m: 'These flowers are very rare, and can only be found in altitude.' },
-				{ label: 'help_no', m: "Fine ! Hurry to the market then, or your dad will get angry again...", end: true },
-				{ m: 'My wife used to climb up the mountain, and she found a lot ! She even reached the peak once...' },
-				{ m: "She say that she couldn't have make it without the power of the edelweiss."  },
-				{ m: "I heard somebody at the pub saying that he saw one in the plains up the village."  },
-				{ m: "It's probably a lie though..."  }
-			]
-		},
-
-
-		'herbalist-friend-info' : {
-			char: dialogueChars.herbalistFriend,
-			story: [
-				{ question: 'Do you want to know more about the edelweiss ?', answers: [
-					{ m: 'Yes', next: 'help_yes' },
-					{ m: 'No', next: 'help_no' }
-				] },
-				{ label: 'help_yes', m: 'These flowers are very rare, and can only be found in altitude.' },
-				{ label: 'help_no', m: "Fine ! See you next time.", end: true },
-				{ m: 'My wife used to climb up the mountain, and she found a lot ! She even reached the peak once...' },
-				{ m: "She say that she couldn't have make it without the power of the edelweiss."  },
-				{ m: "I heard somebody at the pub saying that he saw one in the plains up the village."  },
-				{ m: "It's probably a lie though..."  }
+				{ m: `This cliff looks very high.. If you fell, you would probably die.` }
 			]
 		},
 
@@ -1098,196 +905,24 @@ function Interaction() {
 
 
 
-		///////// MERCHANT
 
-		'init-merchant' : {
-			char: dialogueChars.merchant,
+		////// NPC RESPAWN
+
+		'npc-respawn-0' : {
+			char: dialogueChars.dad,
 			story: [
-				{ question: 'Hi sweetie, what do you want ?', answers: [
-					{ m: 'I need some thread for my dad.', next: 'thread' },
-					{ m: 'I want the flower on the shelf behind you.', next: 'flower' },
-					{ m: 'Nothing' }
-				] },
-				{ label: 'thread', m: 'I have thread, but in the stockroom, and I lended the keys to the miner. Can you take him and bring it back please ?', onCall: ()=> {
-					dialogueStates.merchant = 'wait-key' ;
-					dialogueStates.miner = 'give-key' ;
-				} },
-				{ label: 'flower', m: "Hahaha sweetie, this is for sale ! I don't think you have money yet, come back later." },
-				{ m: 'See you soon !' }
-			]
-		},
-
-
-		'wait-key-merchant' : {
-			char: dialogueChars.merchant,
-			story: [
-				{ m: "I see that you don't have the stockroom's keys yet..." },
-				{ question: 'Do you need anything ?', answers: [
-					{ m: "I can't find the miner to fetch de key.", next: 'miner' },
-					{ m: 'I want the flower on the shelf behind you.', next: 'flower' },
-					{ m: 'Nothing' }
-				] },
-				{ label: 'miner', m: 'The miner usually stands beside his cable-car, at the bottom right end of the village.' },
-				{ label: 'flower', m: "Hahaha sweetie, this is for sale ! I don't think you have money yet, come back later." },
-				{ m: 'See you soon !' }
-			]
-		},
-
-
-		'give-thread-merchant' : {
-			char: dialogueChars.merchant,
-			story: [
-				{ m: "You got the key of the stockroom, perfect !" },
-				{ m: "Here is your thread, hurry to bring it back to your dad.", onCall: ()=> {
-					dialogueStates.merchant = 'general' ;
-					dialogueStates.dad = 'give-permission' ;
-				} }
-			]
-		},
-
-
-		'general-merchant' : {
-			char: dialogueChars.merchant,
-			story: [
-				{ question: 'Hi sweetie, what do you want ?', answers: [
-					{ m: "How goes the business ?", next: 'info' },
-					{ m: 'I want the flower on the shelf behind you.', next: 'flower' },
-					{ m: 'Nothing' }
-				] },
-				{ label: 'info', m: "Not so well I must say... " },
-				{ label: 'flower', m: "Hahaha sweetie, this is for sale ! I don't think you have money yet, come back later." },
-				{ m: 'See you soon !' }
-			]
-		},
-
-
-
-
-		///// MINER
-
-		'init-miner' : {
-			char: dialogueChars.miner,
-			story: [
-				{ m: "Is it not a nice cable-car that we have here ?" },
-				{ m: "It's my pride to have setup this new system for the mine. I'm gonna bring industrial age to this remote village, willy-nilly !" }
-			]
-		},
-
-
-		'give-key-miner' : {
-			char: dialogueChars.miner,
-			story: [
-				{ m: "You want the stockroom's key ?" },
-				{ m: "Sure I will give it to you, but first let me ask you something..." },
-				{ m: "You see my cable-car ? We use it for transporting the ore down from the mountain." },
-				{ m: "During winter we cannot use the mine, so we stop the cable-car." },
-				{ m: "But now it's spring, we will set back to work and we need to reactivate it." },
-				{ m: "Somebody must climb the mountain and reactivate the stations one by one." },
-				{ m: "However, I'm getting old and I don't think I can do it again this year..." },
-				{ question: 'Would you mind doing it for me please ?', answers: [
+				{ question: 'Hi ! Do you want to save your progression ?', answers: [
 					{ m: 'Yes', next: 'yes' },
 					{ m: 'No', next: 'no' }
 				] },
-				{ label: 'yes', m: "You're such a nice girl ! I'm sure you will like the journey. Here is the key of the stockroom, you can go back to the merchant.", onCall: ()=> {
-					dialogueStates.merchant = 'give-thread' ;
-					dialogueStates.miner = 'general' ;
+				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
+					gameState.setSavedPosition( 0 );
 				}, end: true },
-				{ label: 'no', m: "Oh... Never mind. I don't have time for the stockroom's key though, sorry.", end: true },
+				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]
 		},
+		
 
-
-		'general-miner' : {
-			char: dialogueChars.miner,
-			story: [
-				{ m: "Thank you for accepting to reactivate the cable-car stations !" },
-				{ m: "There is still 5 cable-car stations to activate." }
-			]
-		},
-
-
-
-
-		///// GATEKEEPER
-
-		'init-gatekeeper' : {
-			char: dialogueChars.gatekeeper,
-			story: [
-				{ m: "You want to go out ?" },
-				{ m: "You can't leave the village without your Dad's permission, for what it's worth." }
-			]
-		},
-
-
-		'warning-gatekeeper' : {
-			char: dialogueChars.gatekeeper,
-			story: [
-				{ m: "Be careful out there. Come back to the village if you need climbing gears." },
-			]
-		},
-
-
-
-
-		///// MINER BOY
-
-		'cable-info-miner-boy' : {
-			char: dialogueChars.minerBoy,
-			story: [
-				{ m: "So it's you who will activate the cable stations ?" },
-				{ m: "When I'm grown up it's me who will do it !" },
-				{ m: "The first station is here, on the right. Walk in front of the control panel and press SPACE like you want to talk to somebody." }
-			]
-		},
-
-
-		'general-miner-boy' : {
-			char: dialogueChars.minerBoy,
-			story: [
-				{ m: "The first station is here, on the right. To activate it go to the control panel and press SPACE like you want to talk to somebody." }
-			]
-		},
-
-
-
-
-		///// CABLE STATION
-
-		'station-activation' : {
-			char: dialogueChars.lever,
-			story: [
-				{ m: 'Station activated !' },
-				{ question: 'Do you want to go somewhere ?', answers: [
-					{ m: 'Yes', next: 'yes' },
-					{ m: 'No', next: 'no' }
-				] },
-				{ label: 'no', m: '...', end: true },
-				{ label: 'yes', m: 'Select a destination' },
-				{ question: 'Where do you want to go ?', answers: [
-					{ m: 'Village', next: 'village' },
-					{ m: 'Forest', next: 'forest' },
-					{ m: 'Ridges', next: 'ridges' }
-				] },
-				{ label: 'village', m: 'Here we go.. Village !' },
-				{ label: 'forest', m: 'Here we go.. Forest !' },
-				{ label: 'ridges', m: 'Here we go.. Ridges !' },
-			]
-		},
-
-
-		'station-use' : {
-			char: dialogueChars.lever,
-			story: [
-				{ question: 'Where do you want to go ?', answers: [
-					{ m: 'Village', next: 'village' },
-					{ m: 'Forest', next: 'forest' },
-					{ m: 'Ridges', next: 'ridges' }
-				] },
-				{ label: 'village', m: 'Here we go.. Village !' },
-				{ label: 'forest', m: 'Here we go.. Forest !' },
-				{ label: 'ridges', m: 'Here we go.. Ridges !' },
-			]
-		},
 
 
 
