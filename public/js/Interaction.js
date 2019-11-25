@@ -203,6 +203,10 @@ function Interaction() {
 				startDialogue( 'npc-respawn-0' );
 				break;
 
+			case 'npc-respawn-1' :
+				startDialogue( 'npc-respawn-1' );
+				break;
+
 
 
 			///// MISC
@@ -900,7 +904,9 @@ function Interaction() {
 
 
 
+
 		////// NPC RESPAWN
+
 
 		'npc-respawn-0' : {
 			char: dialogueChars.dad,
@@ -911,6 +917,21 @@ function Interaction() {
 				] },
 				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
 					gameState.setSavedPosition( 0 );
+				}, end: true },
+				{ label: 'no', m: 'Ho ? OK...', end: true  }
+			]
+		},
+
+
+		'npc-respawn-1' : {
+			char: dialogueChars.dad,
+			story: [
+				{ question: 'Hi ! Do you want to save your progression ?', answers: [
+					{ m: 'Yes', next: 'yes' },
+					{ m: 'No', next: 'no' }
+				] },
+				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
+					gameState.setSavedPosition( 1 );
 				}, end: true },
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]

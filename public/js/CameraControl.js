@@ -121,6 +121,8 @@ function CameraControl( player, camera ) {
 
 	adaptFOV();
 
+	resetCameraPos();
+
 
 
 	if ( ORBITCONTROLS ) {
