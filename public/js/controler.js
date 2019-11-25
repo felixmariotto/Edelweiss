@@ -33,7 +33,7 @@ function Controler( player ) {
     var interactiveTag; // will be undefined if no interactive cube in range
 
     /// STAMINA PRICE
-    const CLIMBPRICE = 0.0045 ;
+    const CLIMBPRICE = 0.00855 ;
     const GLIDINGPRICE = 0.01 ;
     const JUMPPRICE = 1.0 ;
     const DASHPRICE = 0.5 ;
@@ -565,7 +565,7 @@ function Controler( player ) {
                      state.isSlipping ) {
 
                     if ( contactType != 'wall-slip' ) {
-                        stamina.reduceStamina( CLIMBPRICE );
+                        stamina.reduceStamina( CLIMBPRICE * ( moveSpeedRatio * 2 ) );
                     };
 
                     CLIMBVEC.set( 0, moveSpeedRatio * CLIMBSPEED * vecInversion, 0 );

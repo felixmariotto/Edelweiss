@@ -61,3 +61,5 @@
 - shadows blinking on low grade devices because of optimisation
 - empecher switch tile on limit tiles
 - animation climb down right is bugged
+- regression with animation when dashing up a ledge : animation haulUp, then continue dash
+- stop blinking stamina bars when game starts

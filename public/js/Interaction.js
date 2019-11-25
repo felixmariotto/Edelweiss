@@ -873,7 +873,8 @@ function Interaction() {
 		'npc-stamina' : {
 			char: dialogueChars.dad,
 			story: [
-				{ m: `You may be too weak to climb some walls... Try to find some edelweiss, they will increase your stamina and make you stronger !` }
+				{ m: `You may be too weak to climb some walls... Try to find some edelweiss, they will increase your stamina and make you stronger !` },
+				{ m: `Have a look in the mine.` }
 			]
 		},
 

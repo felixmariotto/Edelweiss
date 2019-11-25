@@ -16,7 +16,7 @@ function Atlas( sceneGraph ) {
 
 	const NEEDHELPERS = true ;
 
-	const NEEDPLAYERBOX = false ; // specifically allow player box helper
+	const NEEDPLAYERBOX = true ; // specifically allow player box helper
     const NEEDARROW = false ; // arrows showing player direction
     const NEEDTILES = true ; // add the tiles helpers
     const NEEDPLANES = true ; // show helpers for limit planes
