@@ -115,7 +115,7 @@ function Controler( player ) {
     var permission = {
         gliding: true,
         infinityJump: true,
-        dash: true
+        dash: false
     };
 
     const GLIDINGTIME = 200 ;
@@ -2022,6 +2022,7 @@ function Controler( player ) {
 
 
     return {
+        permission,
         update,
         spaceInput,
         setMoveAngle,

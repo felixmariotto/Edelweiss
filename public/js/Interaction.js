@@ -57,35 +57,28 @@ function Interaction() {
 
 		switch ( agentName ) {
 
+			/// STAMINA
 
 			case 'bonus-stamina-1' :
 				getBonus( 'stamina-1' );
 				break;
 
+			
+			/// ITEMS
 
-			case 'info-cable-car' :
-
-				if ( dialogueStates.minerBoy == 'init' ) {
-					setTimeout( ()=> {
-						startDialogue( 'cable-info-miner-boy' );
-						dialogueStates.minerBoy = 'general' ;
-					});
-				};
-
+			case 'bonus-dash' :
+				getBonus( 'bonus-dash' );
 				break;
 
+
+			/// CAVES
 
 			case 'cave-0' :
-
 				gameState.switchMapGraph( 'cave-0' );
-
 				break;
 
-
 			case 'cave-1' :
-				
 				gameState.switchMapGraph( 'cave-1' );
-
 				break;
 
 		};
@@ -199,6 +192,10 @@ function Interaction() {
 				startDialogue( 'npc-wall-medium' );
 				break;
 
+			case 'npc-dash' :
+				startDialogue( 'npc-dash' );
+				break;
+
 				
 
 
@@ -264,6 +261,22 @@ function Interaction() {
 			},
 
 			message : '+ 1 Stamina'
+		},
+
+
+
+		'bonus-dash' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				controler.permission.dash = true ;
+
+			},
+
+			message : 'You found the Dash Gauntlets ! <br>You can now dash when you are on a wall !'
+
 		}
 
 
@@ -911,10 +924,19 @@ function Interaction() {
 			]
 		},
 
+		'npc-dash' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: `Do you have Dash Gauntlets ?` },
+				{ m: `With Dash Gauntlets, you can dash on a wall by holding ${ input.params.isTouchScreen ? 'the action button' : 'space' } while climbing.` },
+				{ m: `When you gathered enough energy, point in the direction you want to dash, then release ${ input.params.isTouchScreen ? 'the action button' : 'space' }.` },
+			]
+		},
+
 		'npc-wall-medium' : {
 			char: dialogueChars.dad,
 			story: [
-				{ m: `Some rock walls can be climbed, like the one on your right.` },
+				{ m: `Some rock walls can be climbed, like the one on your left.` },
 				{ m: `However, climbing them takes more stamina than climbing roots and branches.` }
 			]
 		},
