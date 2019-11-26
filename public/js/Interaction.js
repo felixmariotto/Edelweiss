@@ -59,8 +59,27 @@ function Interaction() {
 
 			/// STAMINA
 
+			// grotte
 			case 'bonus-stamina-1' :
 				getBonus( 'stamina-1' );
+				break;
+
+			case 'bonus-stamina-0' :
+				getBonus( 'stamina-0' );
+				break;
+
+
+			/// FALL
+
+			case 'bonus-fall-0' :
+				getBonus( 'fall-0' );
+				break;
+
+
+			/// CLIMB
+
+			case 'bonus-climb-0' :
+				getBonus( 'climb-0' );
 				break;
 
 			
@@ -245,6 +264,10 @@ function Interaction() {
 
 
 
+		///////// STAMINA
+
+
+		// grotte
 		'stamina-1' : {
 
 			isFound: false,
@@ -263,6 +286,63 @@ function Interaction() {
 			message : '+ 1 Stamina'
 		},
 
+
+
+		'stamina-0' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				stamina.incrementMaxStamina();
+
+			},
+
+			message : '+ 1 Stamina'
+		},
+
+
+
+
+		////// FALL BONUS (increase speed to death)
+
+		'fall-0' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				controler.upgradeSpeedDeath();
+
+			},
+
+			message : '+ 15% resistance to fall'
+		},
+
+
+
+
+
+		////// CLIMB BONUS (climb faster)
+
+		'climb-0' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				controler.upgradeAcceleration();
+				
+			},
+
+			message : '+ 15% climbing speed'
+		},
+
+
+
+
+
+		/////// ITEMS
 
 
 		'bonus-dash' : {
