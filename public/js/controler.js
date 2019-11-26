@@ -18,7 +18,8 @@ function Controler( player ) {
     var deathTimeoutToken;
     const FALL_DEATH_TIMEOUT = 400 ;
     const MAX_FALL_SPEED = 4 ;
-    const FALL_SPEED_DEATH = 0.5 ; // btwn 0 and 1
+    var speedDeathLevel = 0 ; // when 4, fallSpeedDeath is 0.65
+    var fallSpeedDeath = 0.5 ; // btwn 0 and 1
 
     var moveSpeedRatio ; // is used to multiply the speed of movements
                          // according to FPS
@@ -77,6 +78,8 @@ function Controler( player ) {
     const MEDIUMWALLFACTOR = 0.6 ; // speed
     const HARDWALLFACTOR = 0.4 ; // speed
     var climbSpeedFactor;
+    var accelerationLevel = 0 ;
+    var climbAcceleration = 1 ; // This is used for climbing faster after the player unlocked bonuses
     var CLIMBSPEED = 0.022 ;
     var CLIMBVEC = new THREE.Vector3();
     var AXISX = new THREE.Vector3( 1, 0, 0 );
@@ -115,7 +118,7 @@ function Controler( player ) {
     var permission = {
         gliding: true,
         infinityJump: true,
-        dash: true
+        dash: false
     };
 
     const GLIDINGTIME = 200 ;
@@ -521,7 +524,7 @@ function Controler( player ) {
                 charaAnim.climb(
                     contactDirection,
                     requestedDirection,
-                    climbSpeedFactor
+                    climbSpeedFactor * climbAcceleration
                 );
 
             } else if ( !state.isSlipping &&
@@ -571,7 +574,7 @@ function Controler( player ) {
                     CLIMBVEC.set( 0, moveSpeedRatio * CLIMBSPEED * vecInversion, 0 );
                     CLIMBVEC.applyAxisAngle( axis, angle );
 
-                    player.position.addScaledVector( CLIMBVEC, climbSpeedFactor );
+                    player.position.addScaledVector( CLIMBVEC, climbSpeedFactor * climbAcceleration );
 
                     // This part is to allow the player to go down the wall when they
                     // touch the ground
@@ -735,7 +738,7 @@ function Controler( player ) {
                  !state.isGliding &&
                  speedUp < -0.8 ) {
 
-                if ( - speedUp / MAX_FALL_SPEED > FALL_SPEED_DEATH ) {
+                if ( - speedUp / MAX_FALL_SPEED > fallSpeedDeath ) {
 
                     clearTimeout( deathTimeoutToken );
                     deathTimeoutToken = undefined ;
@@ -964,7 +967,7 @@ function Controler( player ) {
 
                 if ( player.position.y != cubeCollision.point.y ) {
                     
-                    if ( Math.max( - speedUp, 0 ) / MAX_FALL_SPEED > FALL_SPEED_DEATH ) {
+                    if ( Math.max( - speedUp, 0 ) / MAX_FALL_SPEED > fallSpeedDeath ) {
 
                         clearTimeout( deathTimeoutToken );
                         deathTimeoutToken = undefined ;
@@ -2013,6 +2016,9 @@ function Controler( player ) {
 
 
 
+
+
+
     function setSpeedUp( speed ) {
 
         speedUp = speed ;
@@ -2021,11 +2027,49 @@ function Controler( player ) {
 
 
 
+
+
+
+
+
+    function upgradeAcceleration() {
+
+        accelerationLevel = ( accelerationLevel + 1 ) % 5 ;
+
+        climbAcceleration = 1 + ( 0.15 * accelerationLevel );
+
+    };
+
+
+
+
+
+
+
+
+    function upgradeSpeedDeath() {
+
+        speedDeathLevel = ( speedDeathLevel + 1 ) % 5 ;
+
+        fallSpeedDeath = 0.5 + ( 0.375 * speedDeathLevel );
+
+    };
+
+
+
+
+
+
+
+
     return {
+        permission,
         update,
         spaceInput,
         setMoveAngle,
-        setSpeedUp
+        setSpeedUp,
+        upgradeAcceleration,
+        upgradeSpeedDeath
     };
 
 };

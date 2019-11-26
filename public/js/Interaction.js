@@ -57,35 +57,47 @@ function Interaction() {
 
 		switch ( agentName ) {
 
+			/// STAMINA
 
+			// grotte
 			case 'bonus-stamina-1' :
 				getBonus( 'stamina-1' );
 				break;
 
-
-			case 'info-cable-car' :
-
-				if ( dialogueStates.minerBoy == 'init' ) {
-					setTimeout( ()=> {
-						startDialogue( 'cable-info-miner-boy' );
-						dialogueStates.minerBoy = 'general' ;
-					});
-				};
-
+			case 'bonus-stamina-0' :
+				getBonus( 'stamina-0' );
 				break;
 
+
+			/// FALL
+
+			case 'bonus-fall-0' :
+				getBonus( 'fall-0' );
+				break;
+
+
+			/// CLIMB
+
+			case 'bonus-climb-0' :
+				getBonus( 'climb-0' );
+				break;
+
+			
+			/// ITEMS
+
+			case 'bonus-dash' :
+				getBonus( 'bonus-dash' );
+				break;
+
+
+			/// CAVES
 
 			case 'cave-0' :
-
 				gameState.switchMapGraph( 'cave-0' );
-
 				break;
 
-
 			case 'cave-1' :
-				
 				gameState.switchMapGraph( 'cave-1' );
-
 				break;
 
 		};
@@ -195,6 +207,16 @@ function Interaction() {
 				startDialogue( 'npc-jump-slip' );
 				break;
 
+			case 'npc-wall-medium' :
+				startDialogue( 'npc-wall-medium' );
+				break;
+
+			case 'npc-dash' :
+				startDialogue( 'npc-dash' );
+				break;
+
+				
+
 
 
 			///// NPC RESPAWN
@@ -206,6 +228,12 @@ function Interaction() {
 			case 'npc-respawn-1' :
 				startDialogue( 'npc-respawn-1' );
 				break;
+
+			case 'npc-respawn-2' :
+				startDialogue( 'npc-respawn-2' );
+				break;
+
+
 
 
 
@@ -236,6 +264,10 @@ function Interaction() {
 
 
 
+		///////// STAMINA
+
+
+		// grotte
 		'stamina-1' : {
 
 			isFound: false,
@@ -252,6 +284,79 @@ function Interaction() {
 			},
 
 			message : '+ 1 Stamina'
+		},
+
+
+
+		'stamina-0' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				stamina.incrementMaxStamina();
+
+			},
+
+			message : '+ 1 Stamina'
+		},
+
+
+
+
+		////// FALL BONUS (increase speed to death)
+
+		'fall-0' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				controler.upgradeSpeedDeath();
+
+			},
+
+			message : '+ 15% resistance to fall'
+		},
+
+
+
+
+
+		////// CLIMB BONUS (climb faster)
+
+		'climb-0' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				controler.upgradeAcceleration();
+				
+			},
+
+			message : '+ 15% climbing speed'
+		},
+
+
+
+
+
+		/////// ITEMS
+
+
+		'bonus-dash' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				controler.permission.dash = true ;
+
+			},
+
+			message : 'You found the Dash Gauntlets ! <br>You can now dash when you are on a wall !'
+
 		}
 
 
@@ -899,6 +1004,23 @@ function Interaction() {
 			]
 		},
 
+		'npc-dash' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: `Do you have Dash Gauntlets ?` },
+				{ m: `With Dash Gauntlets, you can dash on a wall by holding ${ input.params.isTouchScreen ? 'the action button' : 'space' } while climbing.` },
+				{ m: `When you gathered enough energy, point in the direction you want to dash, then release ${ input.params.isTouchScreen ? 'the action button' : 'space' }.` },
+			]
+		},
+
+		'npc-wall-medium' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: `Some rock walls can be climbed, like the one on your left.` },
+				{ m: `However, climbing them takes more stamina than climbing roots and branches.` }
+			]
+		},
+
 
 
 
@@ -932,6 +1054,21 @@ function Interaction() {
 				] },
 				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
 					gameState.setSavedPosition( 1 );
+				}, end: true },
+				{ label: 'no', m: 'Ho ? OK...', end: true  }
+			]
+		},
+
+
+		'npc-respawn-2' : {
+			char: dialogueChars.dad,
+			story: [
+				{ question: 'Hi ! Do you want to save your progression ?', answers: [
+					{ m: 'Yes', next: 'yes' },
+					{ m: 'No', next: 'no' }
+				] },
+				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
+					gameState.setSavedPosition( 2 );
 				}, end: true },
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]

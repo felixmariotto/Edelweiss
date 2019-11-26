@@ -1558,7 +1558,6 @@ function Atlas( sceneGraph ) {
 
 
 
-
 	return {
 		getSceneGraph,
 		collidePlayerGrounds,
