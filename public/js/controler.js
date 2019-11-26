@@ -35,9 +35,9 @@ function Controler( player ) {
 
     /// STAMINA PRICE
     const CLIMBPRICE = 0.00855 ;
-    const GLIDINGPRICE = 0.01 ;
+    const GLIDINGPRICE = 0.015 ;
     const JUMPPRICE = 2.0 ;
-    const DASHPRICE = 0.5 ;
+    const DASHPRICE = 3.0 ;
 
     // animations
     const HAULDURATION = 250 ;
@@ -76,7 +76,7 @@ function Controler( player ) {
     var SLIPWALLFACTOR = 0.35 ;
     const EASYWALLFACTOR = 0.8 ; // speed
     const MEDIUMWALLFACTOR = 0.6 ; // speed
-    const HARDWALLFACTOR = 0.4 ; // speed
+    const HARDWALLFACTOR = 0.5 ; // speed
     var climbSpeedFactor;
     var accelerationLevel = 0 ;
     var climbAcceleration = 1 ; // This is used for climbing faster after the player unlocked bonuses
@@ -118,7 +118,7 @@ function Controler( player ) {
     var permission = {
         gliding: true,
         infinityJump: true,
-        dash: false
+        dash: true
     };
 
     const GLIDINGTIME = 200 ;
@@ -127,7 +127,7 @@ function Controler( player ) {
 
     const DASHTIME = 300 ; // ms necessary to charge a dash
     const DASHTIMEINCREMENT = 0.05 ; // dash speed
-    const DASHDISTANCE = 0.28 ;
+    const DASHDISTANCE = 0.20 ;
     var dashCount = 0 ;
     var dashVec = new THREE.Vector3();
     var dashTime;

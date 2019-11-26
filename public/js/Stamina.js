@@ -5,7 +5,7 @@ function Stamina() {
 
     const domBar = document.getElementById('stamina-bar');
 
-    const STARTSTAMINA = 15 ;
+    const STARTSTAMINA = 4 ;
     const TOLERANCE = 0.2 ;
 
     var params = {

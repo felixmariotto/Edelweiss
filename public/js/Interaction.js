@@ -64,8 +64,14 @@ function Interaction() {
 				getBonus( 'stamina-1' );
 				break;
 
+			// toit maison
 			case 'bonus-stamina-0' :
 				getBonus( 'stamina-0' );
+				break;
+
+			// arrete foret
+			case 'bonus-stamina-2' :
+				getBonus( 'stamina-2' );
 				break;
 
 
@@ -229,11 +235,15 @@ function Interaction() {
 				startDialogue( 'npc-respawn-1' );
 				break;
 
+			// gauntlet
 			case 'npc-respawn-2' :
 				startDialogue( 'npc-respawn-2' );
 				break;
 
-
+			// river
+			case 'npc-respawn-3' :
+				startDialogue( 'npc-respawn-3' );
+				break;
 
 
 
@@ -289,6 +299,21 @@ function Interaction() {
 
 
 		'stamina-0' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				stamina.incrementMaxStamina();
+
+			},
+
+			message : '+ 1 Stamina'
+		},
+
+
+
+		'stamina-2' : {
 
 			isFound: false,
 
@@ -1069,6 +1094,21 @@ function Interaction() {
 				] },
 				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
 					gameState.setSavedPosition( 2 );
+				}, end: true },
+				{ label: 'no', m: 'Ho ? OK...', end: true  }
+			]
+		},
+
+
+		'npc-respawn-3' : {
+			char: dialogueChars.dad,
+			story: [
+				{ question: 'Hi ! Do you want to save your progression ?', answers: [
+					{ m: 'Yes', next: 'yes' },
+					{ m: 'No', next: 'no' }
+				] },
+				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
+					gameState.setSavedPosition( 3 );
 				}, end: true },
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]
