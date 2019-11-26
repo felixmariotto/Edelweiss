@@ -195,6 +195,12 @@ function Interaction() {
 				startDialogue( 'npc-jump-slip' );
 				break;
 
+			case 'npc-wall-medium' :
+				startDialogue( 'npc-wall-medium' );
+				break;
+
+				
+
 
 
 			///// NPC RESPAWN
@@ -206,6 +212,12 @@ function Interaction() {
 			case 'npc-respawn-1' :
 				startDialogue( 'npc-respawn-1' );
 				break;
+
+			case 'npc-respawn-2' :
+				startDialogue( 'npc-respawn-2' );
+				break;
+
+
 
 
 
@@ -899,6 +911,14 @@ function Interaction() {
 			]
 		},
 
+		'npc-wall-medium' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: `Some rock walls can be climbed, like the one on your right.` },
+				{ m: `However, climbing them takes more stamina than climbing roots and branches.` }
+			]
+		},
+
 
 
 
@@ -932,6 +952,21 @@ function Interaction() {
 				] },
 				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
 					gameState.setSavedPosition( 1 );
+				}, end: true },
+				{ label: 'no', m: 'Ho ? OK...', end: true  }
+			]
+		},
+
+
+		'npc-respawn-2' : {
+			char: dialogueChars.dad,
+			story: [
+				{ question: 'Hi ! Do you want to save your progression ?', answers: [
+					{ m: 'Yes', next: 'yes' },
+					{ m: 'No', next: 'no' }
+				] },
+				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
+					gameState.setSavedPosition( 2 );
 				}, end: true },
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]
