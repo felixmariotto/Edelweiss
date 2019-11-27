@@ -272,6 +272,16 @@ function GameState() {
 		domBlackScreen.classList.remove( 'hide-black-screen' );
 		domBlackScreen.classList.add( 'show-black-screen' );
 
+        setTimeout( ()=> {
+
+            if ( atlas.getSceneGraph() != sceneGraphs.mountain ) {
+
+                atlas.switchGraph( 'mountain', null, true );
+
+            };
+
+        }, 250 );
+
 		setTimeout( ()=> {
 
 			params.isCrashing = false ;
@@ -287,7 +297,7 @@ function GameState() {
 			domBlackScreen.classList.remove( 'show-black-screen' );
 			domBlackScreen.classList.add( 'hide-black-screen' );
 
-		}, 1000);
+		}, 850);
 
 	};
 
@@ -320,6 +330,10 @@ function GameState() {
 	                case 'cave-A' :
 	                    load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/cave-A.json' );
 	                    break;
+
+                    case 'cave-B' :
+                        load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/cave-B.json' );
+                        break;
 
 	            };
 
@@ -401,6 +415,7 @@ function GameState() {
 
     	switch( gateName ) {
 
+            // village
     		case 'cave-0' :
 
     			if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
@@ -413,6 +428,7 @@ function GameState() {
 
     			};
 
+            // gauntlet
     		case 'cave-1' :
 
     			if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
@@ -424,6 +440,48 @@ function GameState() {
     				return 'mountain';
 
     			};
+
+            // glider
+            case 'cave-2' :
+
+                if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
+
+                    return 'cave-A';
+
+                } else {
+
+                    return 'mountain';
+
+                };
+
+            // double-jump
+            // cave-3
+
+            // cow field
+            case 'cave-4' :
+
+                if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
+
+                    return 'cave-B';
+
+                } else {
+
+                    return 'mountain';
+
+                };
+
+            // low river
+            case 'cave-5' :
+
+                if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
+
+                    return 'cave-B';
+
+                } else {
+
+                    return 'mountain';
+
+                };
     			
 
     	};

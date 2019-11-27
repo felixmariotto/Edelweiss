@@ -95,15 +95,36 @@ function Interaction() {
 				getBonus( 'bonus-dash' );
 				break;
 
+			case 'bonus-glider' :
+				getBonus( 'bonus-glider' );
+				break;
+
 
 			/// CAVES
 
+			// village
 			case 'cave-0' :
 				gameState.switchMapGraph( 'cave-0' );
 				break;
 
+			// gauntlet
 			case 'cave-1' :
 				gameState.switchMapGraph( 'cave-1' );
+				break;
+
+			// river top
+			case 'cave-2' :
+				gameState.switchMapGraph( 'cave-2' );
+				break;
+
+			// cow field
+			case 'cave-4' :
+				gameState.switchMapGraph( 'cave-4' );
+				break;
+
+			// river down
+			case 'cave-5' :
+				gameState.switchMapGraph( 'cave-5' );
 				break;
 
 		};
@@ -240,9 +261,19 @@ function Interaction() {
 				startDialogue( 'npc-respawn-2' );
 				break;
 
-			// river
+			// river down
 			case 'npc-respawn-3' :
 				startDialogue( 'npc-respawn-3' );
+				break;
+
+			// river middle
+			case 'npc-respawn-4' :
+				startDialogue( 'npc-respawn-4' );
+				break;
+
+			// river top
+			case 'npc-respawn-5' :
+				startDialogue( 'npc-respawn-5' );
 				break;
 
 
@@ -381,6 +412,22 @@ function Interaction() {
 			},
 
 			message : 'You found the Dash Gauntlets ! <br>You can now dash when you are on a wall !'
+
+		},
+
+
+
+		'bonus-glider' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				controler.permission.gliding = true ;
+
+			},
+
+			message : 'You found the Glider ! <br>You can now glide in the air !'
 
 		}
 
@@ -1109,6 +1156,36 @@ function Interaction() {
 				] },
 				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
 					gameState.setSavedPosition( 3 );
+				}, end: true },
+				{ label: 'no', m: 'Ho ? OK...', end: true  }
+			]
+		},
+
+
+		'npc-respawn-4' : {
+			char: dialogueChars.dad,
+			story: [
+				{ question: 'Hi ! Do you want to save your progression ?', answers: [
+					{ m: 'Yes', next: 'yes' },
+					{ m: 'No', next: 'no' }
+				] },
+				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
+					gameState.setSavedPosition( 4 );
+				}, end: true },
+				{ label: 'no', m: 'Ho ? OK...', end: true  }
+			]
+		},
+
+
+		'npc-respawn-5' : {
+			char: dialogueChars.dad,
+			story: [
+				{ question: 'Hi ! Do you want to save your progression ?', answers: [
+					{ m: 'Yes', next: 'yes' },
+					{ m: 'No', next: 'no' }
+				] },
+				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
+					gameState.setSavedPosition( 5 );
 				}, end: true },
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]

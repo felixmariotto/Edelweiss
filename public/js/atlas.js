@@ -1522,7 +1522,7 @@ function Atlas( sceneGraph ) {
 
 
 
-	function switchGraph( graphName, gateName ) {
+	function switchGraph( graphName, gateName, respawn ) {
 
 		sceneGraph = gameState.sceneGraphs[ graphName ];
 
@@ -1530,7 +1530,15 @@ function Atlas( sceneGraph ) {
 
 			initMap( gateName );
 
-			gameState.endPassGateAnim();
+			if ( respawn ) {
+
+				player.position.copy( gameState.respawnPos );
+
+			} else {
+
+				gameState.endPassGateAnim();
+
+			};
 
 		});
 

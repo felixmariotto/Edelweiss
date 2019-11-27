@@ -116,7 +116,7 @@ function Controler( player ) {
 
     // player permission
     var permission = {
-        gliding: true,
+        gliding: false,
         infinityJump: true,
         dash: true
     };
@@ -127,7 +127,7 @@ function Controler( player ) {
 
     const DASHTIME = 300 ; // ms necessary to charge a dash
     const DASHTIMEINCREMENT = 0.05 ; // dash speed
-    const DASHDISTANCE = 0.20 ;
+    const DASHDISTANCE = 0.21 ;
     var dashCount = 0 ;
     var dashVec = new THREE.Vector3();
     var dashTime;
