@@ -276,6 +276,11 @@ function Interaction() {
 				startDialogue( 'npc-respawn-5' );
 				break;
 
+			// canyon top
+			case 'npc-respawn-6' :
+				startDialogue( 'npc-respawn-6' );
+				break;
+
 
 
 			///// MISC
@@ -1186,6 +1191,21 @@ function Interaction() {
 				] },
 				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
 					gameState.setSavedPosition( 5 );
+				}, end: true },
+				{ label: 'no', m: 'Ho ? OK...', end: true  }
+			]
+		},
+
+
+		'npc-respawn-6' : {
+			char: dialogueChars.dad,
+			story: [
+				{ question: 'Hi ! Do you want to save your progression ?', answers: [
+					{ m: 'Yes', next: 'yes' },
+					{ m: 'No', next: 'no' }
+				] },
+				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
+					gameState.setSavedPosition( 6 );
 				}, end: true },
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]
