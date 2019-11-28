@@ -63,3 +63,4 @@
 - animation climb down right is bugged
 - regression with animation when dashing up a ledge : animation haulUp, then continue dash
 - stop blinking stamina bars when game starts
+- joueur ne doit pas etre capable de grimper quand il tombe suffisament vite pour mourrir si il tombait sur le sol

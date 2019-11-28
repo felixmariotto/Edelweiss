@@ -59,19 +59,34 @@ function Interaction() {
 
 			/// STAMINA
 
-			// grotte
+			// cave
 			case 'bonus-stamina-1' :
 				getBonus( 'stamina-1' );
 				break;
 
-			// toit maison
+			// house roof
 			case 'bonus-stamina-0' :
 				getBonus( 'stamina-0' );
 				break;
 
-			// arrete foret
+			// start forest
 			case 'bonus-stamina-2' :
 				getBonus( 'stamina-2' );
+				break;
+
+			// forest heart
+			case 'bonus-stamina-3' :
+				getBonus( 'stamina-3' );
+				break;
+
+			// ridge left
+			case 'bonus-stamina-4' :
+				getBonus( 'stamina-4' );
+				break;
+
+			// canyon
+			case 'bonus-stamina-5' :
+				getBonus( 'stamina-5' );
 				break;
 
 
@@ -81,11 +96,29 @@ function Interaction() {
 				getBonus( 'fall-0' );
 				break;
 
+			// before waterfall in forest
+			case 'bonus-fall-1' :
+				getBonus( 'fall-1' );
+				break;
+
+			// middle of canyon
+			case 'bonus-fall-2' :
+				getBonus( 'fall-2' );
+				break;
+
 
 			/// CLIMB
 
 			case 'bonus-climb-0' :
 				getBonus( 'climb-0' );
+				break;
+
+			case 'bonus-climb-1' :
+				getBonus( 'climb-1' );
+				break;
+
+			case 'bonus-climb-2' :
+				getBonus( 'climb-2' );
 				break;
 
 			
@@ -98,6 +131,12 @@ function Interaction() {
 			case 'bonus-glider' :
 				getBonus( 'bonus-glider' );
 				break;
+
+			case 'bonus-boots' :
+				getBonus( 'bonus-boots' );
+				break;
+
+
 
 
 			/// CAVES
@@ -117,6 +156,13 @@ function Interaction() {
 				gameState.switchMapGraph( 'cave-2' );
 				break;
 
+			// ridge
+			case 'cave-3' :
+				gameState.switchMapGraph( 'cave-3' );
+				break;
+
+			/////////////////////
+
 			// cow field
 			case 'cave-4' :
 				gameState.switchMapGraph( 'cave-4' );
@@ -125,6 +171,30 @@ function Interaction() {
 			// river down
 			case 'cave-5' :
 				gameState.switchMapGraph( 'cave-5' );
+				break;
+
+			/////////////////////
+
+			// ridge right side
+			case 'cave-6' :
+				gameState.switchMapGraph( 'cave-6' );
+				break;
+
+			// ridge left side
+			case 'cave-7' :
+				gameState.switchMapGraph( 'cave-7' );
+				break;
+
+			/////////////////////
+
+			// cliff
+			case 'cave-8' :
+				gameState.switchMapGraph( 'cave-8' );
+				break;
+
+			// canyon
+			case 'cave-9' :
+				gameState.switchMapGraph( 'cave-9' );
 				break;
 
 		};
@@ -242,6 +312,18 @@ function Interaction() {
 				startDialogue( 'npc-dash' );
 				break;
 
+			case 'npc-glide' :
+				startDialogue( 'npc-glide' );
+				break;
+
+			case 'npc-wall-hard' :
+				startDialogue( 'npc-wall-hard' );
+				break;
+
+			case 'npc-double-jump' :
+				startDialogue( 'npc-double-jump' );
+				break;
+
 				
 
 
@@ -279,6 +361,11 @@ function Interaction() {
 			// canyon top
 			case 'npc-respawn-6' :
 				startDialogue( 'npc-respawn-6' );
+				break;
+
+			// ridge
+			case 'npc-respawn-7' :
+				startDialogue( 'npc-respawn-7' );
 				break;
 
 
@@ -364,10 +451,80 @@ function Interaction() {
 
 
 
+		'stamina-3' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				stamina.incrementMaxStamina();
+
+			},
+
+			message : '+ 1 Stamina'
+		},
+
+
+
+		'stamina-4' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				stamina.incrementMaxStamina();
+
+			},
+
+			message : '+ 1 Stamina'
+		},
+
+
+		'stamina-5' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				stamina.incrementMaxStamina();
+
+			},
+
+			message : '+ 1 Stamina'
+		},
+
+
+
 
 		////// FALL BONUS (increase speed to death)
 
 		'fall-0' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				controler.upgradeSpeedDeath();
+
+			},
+
+			message : '+ 15% resistance to fall'
+		},
+
+		'fall-1' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				controler.upgradeSpeedDeath();
+
+			},
+
+			message : '+ 15% resistance to fall'
+		},
+
+		'fall-2' : {
 
 			isFound: false,
 
@@ -387,6 +544,32 @@ function Interaction() {
 		////// CLIMB BONUS (climb faster)
 
 		'climb-0' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				controler.upgradeAcceleration();
+				
+			},
+
+			message : '+ 15% climbing speed'
+		},
+
+		'climb-1' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				controler.upgradeAcceleration();
+				
+			},
+
+			message : '+ 15% climbing speed'
+		},
+
+		'climb-2' : {
 
 			isFound: false,
 
@@ -434,7 +617,23 @@ function Interaction() {
 
 			message : 'You found the Glider ! <br>You can now glide in the air !'
 
-		}
+		},
+
+
+
+		'bonus-boots' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				controler.permission.infinityJump = true ;
+
+			},
+
+			message : 'You found the Cloud Boots ! <br>You can now jump once in the air !'
+
+		},
 
 
 
@@ -1094,7 +1293,33 @@ function Interaction() {
 			char: dialogueChars.dad,
 			story: [
 				{ m: `Some rock walls can be climbed, like the one on your left.` },
-				{ m: `However, climbing them takes more stamina than climbing roots and branches.` }
+				{ m: `However, climbing them takes more stamina than climbing roots and branches.` },
+				{ m: `If you don't have enough stamina, consider going back to find an edelweiss.` }
+			]
+		},
+
+		'npc-glide' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: `Do you have a Glider ?` },
+				{ m: `With a Glider, you can glide in the air by holding ${ input.params.isTouchScreen ? 'the action button' : 'space' } while in the air.` },
+			]
+		},
+
+		'npc-double-jump' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: `Do you have Clouds Boots ?` },
+				{ m: `With Clouds Boots, you can jump in the air once, by pressing ${ input.params.isTouchScreen ? 'the action button' : 'space' } while in the air.` },
+			]
+		},
+
+		'npc-wall-hard' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: `This wall of ice can be climbed.` },
+				{ m: `However, climbing it takes a lot of stamina.` },
+				{ m: `If you don't have enough stamina, consider going back to find an edelweiss.` }
 			]
 		},
 
@@ -1212,25 +1437,20 @@ function Interaction() {
 		},
 
 
-
-
-
-
-		///// MISC
-
-		'npc-miner' : {
+		'npc-respawn-7' : {
 			char: dialogueChars.dad,
 			story: [
-				{ m: `Welcome to the mine !` },
-				{ question: 'Did you come here before ?', answers: [
+				{ question: 'Hi ! Do you want to save your progression ?', answers: [
 					{ m: 'Yes', next: 'yes' },
 					{ m: 'No', next: 'no' }
 				] },
-				{ label: 'yes', m: 'Enjoy your time here then.', end: true },
-				{ label: 'no', m: 'This mine is huge, it goes very far into the mountain.' },
-				{ m: `I've never been too far though, and I doubt you will !` }
+				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
+					gameState.setSavedPosition( 7 );
+				}, end: true },
+				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]
 		},
+
 		
 
 
