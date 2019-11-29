@@ -266,8 +266,6 @@ function GameState() {
 	// Show a black screen, wait one second, respown, remove black screen.
 	function die( hasCrashed ) {
 
-        console.log('die')
-
 		params.isDying = true ;
 		if ( hasCrashed ) params.isCrashing = true ;
 
@@ -286,15 +284,15 @@ function GameState() {
 
 		setTimeout( ()=> {
 
-			params.isCrashing = false ;
-			params.isDying = false ;
-
 			charaAnim.respawn();
 
 			atlas.player.position.copy( respawnPos );
 			cameraControl.resetCameraPos();
 
 			controler.setSpeedUp( 0 );
+
+            params.isCrashing = false ;
+            params.isDying = false ;
 
 			domBlackScreen.classList.remove( 'show-black-screen' );
 			domBlackScreen.classList.add( 'hide-black-screen' );

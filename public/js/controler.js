@@ -894,16 +894,22 @@ function Controler( player ) {
 
 
         // Die if the user is falling very fast :
-        // They will easer hit the ground to death, or fall for ever
+        // They will either hit the ground to death, or fall for ever
         if ( Math.max( - speedUp, 0 ) / MAX_FALL_SPEED > 0.95 && !deathTimeoutToken ) {
 
-            deathTimeoutToken = setTimeout( ()=> {
+            if ( !gameState.params.isDying ) {
 
-                deathTimeoutToken = undefined ;
+                gameState.params.isDying = true ;
 
-                gameState.die();
+                deathTimeoutToken = setTimeout( ()=> {
 
-            }, FALL_DEATH_TIMEOUT );
+                    deathTimeoutToken = undefined ;
+
+                    gameState.die();
+
+                }, FALL_DEATH_TIMEOUT );
+
+            };
 
         };
 
