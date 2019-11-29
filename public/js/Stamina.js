@@ -5,7 +5,7 @@ function Stamina() {
 
     const domBar = document.getElementById('stamina-bar');
 
-    const STARTSTAMINA = 8 ; // max 9
+    const STARTSTAMINA = 2 ; // max 9
     const TOLERANCE = 0.2 ;
 
     var params = {
