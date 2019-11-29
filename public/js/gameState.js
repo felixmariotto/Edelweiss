@@ -7,7 +7,7 @@ function GameState() {
 
 
 
-	const DEVELOPMENT_LAYOUT = false ;
+	const DEVELOPMENT_LAYOUT = true ;
 
 
 
@@ -266,6 +266,8 @@ function GameState() {
 	// Show a black screen, wait one second, respown, remove black screen.
 	function die( hasCrashed ) {
 
+        console.log('die')
+
 		params.isDying = true ;
 		if ( hasCrashed ) params.isCrashing = true ;
 
@@ -341,6 +343,10 @@ function GameState() {
 
                     case 'cave-D' :
                         load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/cave-D.json' );
+                        break;
+
+                    case 'dev-home' :
+                        load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/dev-home.json' );
                         break;
 
 	            };
@@ -554,6 +560,19 @@ function GameState() {
                     return 'mountain';
 
                 };
+
+            // canyon
+            case 'cave-10' :
+
+                if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
+
+                    return 'dev-home';
+
+                } else {
+
+                    return 'mountain';
+
+                };
     			
 
     	};
@@ -579,9 +598,9 @@ function GameState() {
 
             function checkStage( stage ) {
 
-                if ( !atlas.getSceneGraph().tilesGraph[ stage ] ) return ;
+                if ( !sceneGraphs.mountain.tilesGraph[ stage ] ) return ;
 
-                atlas.getSceneGraph().tilesGraph[ stage ].forEach( (logicTile)=> {
+                sceneGraphs.mountain.tilesGraph[ stage ].forEach( (logicTile)=> {
 
                     if ( logicTile.tag && logicTile.tag == 'respawn-' + respawnID ) {
 
@@ -595,7 +614,21 @@ function GameState() {
 
         } else {
 
-            console.log( 'switch sceneGraph' );
+            sceneGraphs.mountain.tilesGraph.forEach( ( stage )=> {
+
+                if ( !stage ) return ;
+
+                stage.forEach( ( logicTile )=> {
+
+                    if ( logicTile.tag && logicTile.tag == 'respawn-' + respawnID ) {
+
+                        setTileAsRespawn( logicTile );
+
+                    };
+
+                });
+
+            });
 
         };
 

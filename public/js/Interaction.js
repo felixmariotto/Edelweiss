@@ -26,6 +26,8 @@ function Interaction() {
 	var currentLine ;
 	var lastDialogueDate = Date.now();
 
+	var hasTalkedToDev = false ;
+
 	const DIALOGUEBREAKTIME = 1000 ; // time in ms to wait between dialogues
 
 
@@ -195,6 +197,11 @@ function Interaction() {
 			// canyon
 			case 'cave-9' :
 				gameState.switchMapGraph( 'cave-9' );
+				break;
+
+			// peak
+			case 'cave-10' :
+				gameState.switchMapGraph( 'cave-10' );
 				break;
 
 		};
@@ -372,8 +379,36 @@ function Interaction() {
 
 			///// MISC
 
-			case 'npc-miner' :
-				startDialogue( 'npc-miner' );
+			case 'npc-dev' :
+
+				if ( !hasTalkedToDev ) {
+
+					hasTalkedToDev = true ;
+
+					if ( stamina.params.stamina == 9 ) {
+
+						startDialogue( 'dev-greeting-finish' );
+
+					} else {
+
+						startDialogue( 'dev-greeting' );
+
+					};
+
+				} else {
+
+					if ( stamina.params.stamina == 9 ) {
+
+						startDialogue( 'dev-main-finish' );
+
+					} else {
+
+						startDialogue( 'dev-main' );
+
+					};
+
+				};
+
 				break;
 
 		};
@@ -1446,6 +1481,85 @@ function Interaction() {
 				] },
 				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
 					gameState.setSavedPosition( 7 );
+				}, end: true },
+				{ label: 'no', m: 'Ho ? OK...', end: true  }
+			]
+		},
+
+
+
+
+
+
+
+		///// MISC
+
+		'dev-greeting' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: 'Ho ! A player !' },
+				{ m: 'Congratulations, you reached the top of the mountain !' },
+				{ m: `Let me check your stamina... It seems that you still have ${ 9 - stamina.params.stamina } edelweiss yet to find.` },
+				{ question: 'Do you want to save your progression ?', answers: [
+					{ m: 'Yes', next: 'yes' },
+					{ m: 'No', next: 'no' }
+				] },
+				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
+					gameState.setSavedPosition( 8 );
+				}, end: true },
+				{ label: 'no', m: 'Ho ? OK...', end: true  }
+			]
+		},
+
+
+		'dev-greeting-finish' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: 'Ho ! A player !' },
+				{ m: 'Congratulations, you reached the top of the mountain !' },
+				{ m: `Let me check your stamina... Waw ! You found all the edelweiss !` },
+				{ m: `You are ready to finish the game.`  },
+				{ question: `Do you want to save your progression ?`, answers: [
+					{ m: 'Yes', next: 'yes' },
+					{ m: 'No', next: 'no' }
+				] },
+				{ label: 'yes', m: 'Your progression is saved, see you up there !', onCall: ()=> {
+					gameState.setSavedPosition( 8 );
+				}, end: true },
+				{ label: 'no', m: 'Ho ? OK...', end: true  }
+			]
+		},
+
+
+		'dev-main' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: "Thank you for you commitment in the game, that's encouraging for me." },
+				{ m: `Let me check your stamina... It seems that you still have ${ 9 - stamina.params.stamina } edelweiss yet to find.` },
+				{ question: 'Do you want to save your progression ?', answers: [
+					{ m: 'Yes', next: 'yes' },
+					{ m: 'No', next: 'no' }
+				] },
+				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
+					gameState.setSavedPosition( 8 );
+				}, end: true },
+				{ label: 'no', m: 'Ho ? OK...', end: true  }
+			]
+		},
+
+
+		'dev-main-finish' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: "Thank you for you commitment in the game, that's encouraging for me." },
+				{ m: `Let me check your stamina... Well, you found all the edelweiss !` },
+				{ m: "You are now ready to finish the game." },
+				{ question: 'Do you want to save your progression ?', answers: [
+					{ m: 'Yes', next: 'yes' },
+					{ m: 'No', next: 'no' }
+				] },
+				{ label: 'yes', m: 'Your progression is saved, see you up there !', onCall: ()=> {
+					gameState.setSavedPosition( 8 );
 				}, end: true },
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]

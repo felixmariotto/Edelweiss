@@ -209,7 +209,8 @@ function Atlas( sceneGraph ) {
 					Tile( logicTile );
 				};
 
-				if ( logicTile.type == 'ground-start' ) {
+				if ( logicTile.type == 'ground-start' &&
+					 gameState.respawnPos.length() == 0 ) {
 
 					startPos.set(
 						(logicTile.points[0].x + logicTile.points[1].x) / 2,
