@@ -383,11 +383,7 @@ function CameraControl( player, camera ) {
 			if ( rayCollision.closestTile.isWall &&
 				 rayCollision.closestTile.isXAligned ) {
 
-				// This object contain the information about the edges of the tile
-				// being an obstacle on the camera path. We will use it to move the
-				// camera in the shortest escape path
-
-				let edges = [
+				dodgeCamera( rayCollision, 'z', [
 
 					{
 						dist : rayCollision.points[ 0 ].y -
@@ -429,40 +425,55 @@ function CameraControl( player, camera ) {
 						sign : 1
 					}
 
-				];
+				]);
 
-				// Find the closest edge
-				edges.sort( ( a, b )=> {
 
-					return Math.abs( a.dist ) - Math.abs( b.dist );
+			} else if ( rayCollision.closestTile.isWall &&
+						!rayCollision.closestTile.isXAligned ) {
 
-				});
+				dodgeCamera( rayCollision, 'x', [
 
-				// For each edge, we check if an adjacent tile exists.
-				// If so, we try the next edge.
-				// If not we move the camera in the wanted position.
+					{
+						dist : rayCollision.points[ 0 ].y -
+							  Math.min( rayCollision.closestTile.points[ 0 ].y,
+									   rayCollision.closestTile.points[ 1 ].y ),
+						pos : Math.min( rayCollision.closestTile.points[ 0 ].y,
+									   rayCollision.closestTile.points[ 1 ].y ),
+						dir : 'y',
+						sign : -1
+					},
 
-				for ( edge of edges ) {
+					{
+						dist : rayCollision.points[ 0 ].z -
+							 Math.min( rayCollision.closestTile.points[ 0 ].z,
+									   rayCollision.closestTile.points[ 1 ].z ),
+						pos : Math.min( rayCollision.closestTile.points[ 0 ].z,
+									   rayCollision.closestTile.points[ 1 ].z ),
+						dir : 'z',
+						sign : -1
+					},
 
-					if ( atlas.adjTileExists( rayCollision.closestTile, edge.dir, edge.sign ) ) {
+					{
+						dist: rayCollision.points[ 0 ].y -
+							 Math.max( rayCollision.closestTile.points[ 0 ].y,
+									   rayCollision.closestTile.points[ 1 ].y ),
+						pos: Math.max( rayCollision.closestTile.points[ 0 ].y,
+									   rayCollision.closestTile.points[ 1 ].y ),
+						dir : 'y',
+						sign : 1
+					},
 
-						continue ;
+					{
+						dist : rayCollision.points[ 0 ].z -
+							 Math.max( rayCollision.closestTile.points[ 0 ].z,
+									   rayCollision.closestTile.points[ 1 ].z ),
+						pos : Math.max( rayCollision.closestTile.points[ 0 ].z,
+									   rayCollision.closestTile.points[ 1 ].z ),
+						dir : 'z',
+						sign : 1
+					}
 
-					} else {
-
-						// Align the camera on the same plane as the obstacle tile on the x axis
-						camera.position.z = rayCollision.closestTile.points[ 0 ].z ;
-						
-						// push the camera on X or Y to avoid the obstacle tile
-						camera.position[ edge.dir ] = edge.pos +
-													  ( ( CAMERA_WIDTH / 2 ) * edge.sign ) +
-													  ( 0.1 * edge.sign );
-
-						break ;
-
-					};
-
-				};
+				]);
 
 			};
 
@@ -485,6 +496,52 @@ function CameraControl( player, camera ) {
 		attemptCameraMove( 'z' );
 
 		camera.lookAt( cameraTarget );
+
+	};
+
+
+
+
+	function dodgeCamera( rayCollision, adjDir, edges ) {
+
+		console.log('collision')
+
+		// 'edges' object contain the information about the edges of the tile
+		// being an obstacle on the camera path. We will use it to move the
+		// camera in the shortest escape path
+
+		// Find the closest edge
+		edges.sort( ( a, b )=> {
+
+			return Math.abs( a.dist ) - Math.abs( b.dist );
+
+		});
+
+		// For each edge, we check if an adjacent tile exists.
+		// If so, we try the next edge.
+		// If not we move the camera in the wanted position.
+
+		for ( edge of edges ) {
+
+			if ( atlas.adjTileExists( rayCollision.closestTile, edge.dir, edge.sign ) ) {
+
+				continue ;
+
+			} else {
+
+				// Align the camera on the same plane as the obstacle tile on the x axis
+				camera.position[ adjDir ] = rayCollision.closestTile.points[ 0 ][ adjDir ] ;
+				
+				// push the camera on X or Y to avoid the obstacle tile
+				camera.position[ edge.dir ] = edge.pos +
+											  ( ( CAMERA_WIDTH / 2 ) * edge.sign ) +
+											  ( 0.1 * edge.sign );
+
+				break ;
+
+			};
+
+		};
 
 	};
 

@@ -91,6 +91,11 @@ function Interaction() {
 				getBonus( 'stamina-5' );
 				break;
 
+			// peak
+			case 'bonus-stamina-6' :
+				getBonus( 'stamina-6' );
+				break;
+
 
 			/// FALL
 
@@ -411,6 +416,11 @@ function Interaction() {
 
 				break;
 
+
+			case 'npc-dev-end' :
+				startDialogue( 'dev-end' );
+				break;
+
 		};
 
 	};
@@ -431,9 +441,7 @@ function Interaction() {
 	var bonuses = {
 
 
-
 		///////// STAMINA
-
 
 		// grotte
 		'stamina-1' : {
@@ -451,7 +459,9 @@ function Interaction() {
 				*/
 			},
 
-			message : '+ 1 Stamina'
+			message : `${ stamina.params.stamina == 8 ?
+						'+ 1 Stamina <br>This was the last edelweiss ! <br>Go back to the peak !' :
+						'+ 1 Stamina' }`
 		},
 
 
@@ -466,7 +476,9 @@ function Interaction() {
 
 			},
 
-			message : '+ 1 Stamina'
+			message : `${ stamina.params.stamina == 8 ?
+						'+ 1 Stamina <br>This was the last edelweiss ! <br>Go back to the peak !' :
+						'+ 1 Stamina' }`
 		},
 
 
@@ -481,7 +493,9 @@ function Interaction() {
 
 			},
 
-			message : '+ 1 Stamina'
+			message : `${ stamina.params.stamina == 8 ?
+						'+ 1 Stamina <br>This was the last edelweiss ! <br>Go back to the peak !' :
+						'+ 1 Stamina' }`
 		},
 
 
@@ -496,7 +510,9 @@ function Interaction() {
 
 			},
 
-			message : '+ 1 Stamina'
+			message : `${ stamina.params.stamina == 8 ?
+						'+ 1 Stamina <br>This was the last edelweiss ! <br>Go back to the peak !' :
+						'+ 1 Stamina' }`
 		},
 
 
@@ -511,7 +527,9 @@ function Interaction() {
 
 			},
 
-			message : '+ 1 Stamina'
+			message : `${ stamina.params.stamina == 8 ?
+						'+ 1 Stamina <br>This was the last edelweiss ! <br>Go back to the peak !' :
+						'+ 1 Stamina' }`
 		},
 
 
@@ -525,7 +543,25 @@ function Interaction() {
 
 			},
 
-			message : '+ 1 Stamina'
+			message : `${ stamina.params.stamina == 8 ?
+						'+ 1 Stamina <br>This was the last edelweiss ! <br>Go back to the peak !' :
+						'+ 1 Stamina' }`
+		},
+
+
+		'stamina-6' : {
+
+			isFound: false,
+
+			onGet : function() {
+
+				stamina.incrementMaxStamina();
+
+			},
+
+			message : `${ stamina.params.stamina == 8 ?
+						'+ 1 Stamina <br>This was the last edelweiss ! <br>Go back to the peak !' :
+						'+ 1 Stamina' }`
 		},
 
 
@@ -1562,6 +1598,17 @@ function Interaction() {
 					gameState.setSavedPosition( 8 );
 				}, end: true },
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
+			]
+		},
+
+
+		'dev-end' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: "Hi again ! This is the real end to this game." },
+				{ m: `I must tell you that I am deeply moved by your finishing Edelweiss.` },
+				{ m: 'Edelweiss is my first "true" game, and you liked it enough to find the last extra edelweiss, it really means something to me.' },
+				{ m: "If you are intereseted about my next game, visit my website : <a href='http://www.32x.io'>http://www.32x.io</a>" },
 			]
 		},
 
