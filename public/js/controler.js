@@ -116,9 +116,9 @@ function Controler( player ) {
 
     // player permission
     var permission = {
-        gliding: true,
-        infinityJump: true,
-        dash: true
+        gliding: false,
+        infinityJump: false,
+        dash: false
     };
 
     const GLIDINGTIME = 200 ;
