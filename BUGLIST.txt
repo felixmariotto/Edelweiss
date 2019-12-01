@@ -6,9 +6,32 @@
 ///		BUG  &  FIXES
 //////////////////////////////////
 
+- Placer PNJ mine devant l'entrée, et le faire bouger après avoir parlé
+- Ombrer le visage de l'héroine smooth
+- Ne pas respawn à point de départ, sinon le joueur va re-chercher l'edelweiss ( respawn devant pnj mine )
+- Controler : empêcher de grimper si direction est perpendiculaire au mur ( super chiant quand on saute le long d'un mur )
+- Tomber plus droit quand relâche car plus de stamina
+- Créer une animation de charge pour le dash
+- Créer une animation de dépense de stamina, pour tout ce qui coûte de la stamina
+- Ajouter PNJ pour pointer vers la descente de la riviere
+- Changer le wording : 'devriez cherchez UNE AUTRE edelweiss to have at least 4 bars of stamina'
+- Quand le joueur commence à grimper un mur dans un angle, il faut le pousser hors de l'angle, sans quoi il switch de tile direct
+- Baisser la sensibilité à la chute, c'est frustrant pour le joueur
 
 
+- Elever vitesser de course rapide
+- Accelerer la vitesse de course normale
+- Adapter la map
+- Saut quand on appuit sur espace, et non quand on relache
 
+
+- Après le dash gauntlet, réduire hauteur des bords, car inutilement dur et frustrant
+- Revoir le systeme de grottes, il en faut plus, avec des entrées un peu mieux cachées pour éviter que le joueur fonce droit dedans au lieu de suivre le chemin principale. Les entrées doivent être plus près des edelweiss
+- Respawn bas de la rivière : mettre le point de respawn dans l'axe du gué
+- Mur respawn 1 oblige a grimper vers un mur caché à l'arrière, à corriger
+- Grotte rivière : le joueur peut descendre la fissure par le milieu, à corriger
+- Ajouter un point de respawn au niveau de la falaise
+- voir si le fond de l'entrée de grotte de la maison du développeur a bien une tile ( ça pourrait expliquer le bug caméra )
 
 
 
@@ -22,32 +45,13 @@
 /////////////////////////////
 
 
-/////  PART 1 : DEBUGGING ALL MOVES //////
+/////  PART 1 : REMOVE FAST RUN + IMPROVE JUMP INPUT //////
 
-- Nothing at the moment
+/////  PART 2 : RE-MODEL MAP ACCORDING TO NO FAST RUN //////
 
+/////  PART 3 : RE-ORGANIZE CAVES //////
 
-
-///// PART 2 : REFACTORING CAMERA / CONTROL /////
-
-- Nothing at the moment
-
-
-
-///// PART 3 : IMPROVE UI //////
-
-- More feedback when out of stamina ?
-
-
-
-
-///// PART 4 : MAP DESIGN /////
-
-- Create dialogues
-- disable switching to inexistant answers on the right side
-- Create checkpoints and respawn
-
-
+/////  PART 4 : VARIOUS IMPROVMENTS ABOVE //////
 
 ///// PART 5 : ART /////
 

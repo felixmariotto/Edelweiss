@@ -12,7 +12,7 @@ function CameraControl( player, camera ) {
 
 	const MAX_YAW = 0.2 ;
 	const CAMERA_DIRECTION = new THREE.Vector3( 0, 0.4, 1 ).normalize();
-	const DEFAULT_CAMERA_DISTANCE = 2.7 ;
+	const DEFAULT_CAMERA_DISTANCE = 2.4 ;
 	const MIN_CAMERA_DISTANCE = 1.7 ;
 	const CAMERA_WIDTH = 0.29 ;
 	const CAMERA_TWEENING_SPEED = 0.05 ;
@@ -148,13 +148,13 @@ function CameraControl( player, camera ) {
 		// display is vertical
 		if ( window.innerHeight > window.innerWidth ) {
 
-			camera.fov = 80 ;
+			camera.fov = 110 ;
 			camera.updateProjectionMatrix();
 
 		// display is horizontal
 		} else {
 
-			camera.fov = 60 ;
+			camera.fov = 90 ;
 			camera.updateProjectionMatrix();
 
 		};
