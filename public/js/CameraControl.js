@@ -504,7 +504,6 @@ function CameraControl( player, camera ) {
 
 	function dodgeCamera( rayCollision, adjDir, edges ) {
 
-		console.log('collision')
 
 		// 'edges' object contain the information about the edges of the tile
 		// being an obstacle on the camera path. We will use it to move the

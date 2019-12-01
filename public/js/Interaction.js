@@ -380,6 +380,16 @@ function Interaction() {
 				startDialogue( 'npc-respawn-7' );
 				break;
 
+			// peak middle
+			case 'npc-respawn-8' :
+				startDialogue( 'npc-respawn-8' );
+				break;
+
+			// peak top
+			case 'npc-respawn-9' :
+				startDialogue( 'npc-respawn-9' );
+				break;
+
 
 
 			///// MISC
@@ -1523,6 +1533,36 @@ function Interaction() {
 		},
 
 
+		'npc-respawn-8' : {
+			char: dialogueChars.dad,
+			story: [
+				{ question: 'Hi ! Do you want to save your progression ?', answers: [
+					{ m: 'Yes', next: 'yes' },
+					{ m: 'No', next: 'no' }
+				] },
+				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
+					gameState.setSavedPosition( 8 );
+				}, end: true },
+				{ label: 'no', m: 'Ho ? OK...', end: true  }
+			]
+		},
+
+
+		'npc-respawn-9' : {
+			char: dialogueChars.dad,
+			story: [
+				{ question: 'Hi ! Do you want to save your progression ?', answers: [
+					{ m: 'Yes', next: 'yes' },
+					{ m: 'No', next: 'no' }
+				] },
+				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
+					gameState.setSavedPosition( 9 );
+				}, end: true },
+				{ label: 'no', m: 'Ho ? OK...', end: true  }
+			]
+		},
+
+
 
 
 
@@ -1541,7 +1581,7 @@ function Interaction() {
 					{ m: 'No', next: 'no' }
 				] },
 				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
-					gameState.setSavedPosition( 8 );
+					gameState.setSavedPosition( 10 );
 				}, end: true },
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]
@@ -1560,7 +1600,7 @@ function Interaction() {
 					{ m: 'No', next: 'no' }
 				] },
 				{ label: 'yes', m: 'Your progression is saved, see you up there !', onCall: ()=> {
-					gameState.setSavedPosition( 8 );
+					gameState.setSavedPosition( 10 );
 				}, end: true },
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]
@@ -1577,7 +1617,7 @@ function Interaction() {
 					{ m: 'No', next: 'no' }
 				] },
 				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
-					gameState.setSavedPosition( 8 );
+					gameState.setSavedPosition( 10 );
 				}, end: true },
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]
@@ -1595,7 +1635,7 @@ function Interaction() {
 					{ m: 'No', next: 'no' }
 				] },
 				{ label: 'yes', m: 'Your progression is saved, see you up there !', onCall: ()=> {
-					gameState.setSavedPosition( 8 );
+					gameState.setSavedPosition( 10 );
 				}, end: true },
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]

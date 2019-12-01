@@ -1476,6 +1476,8 @@ function Atlas( sceneGraph ) {
 
 		// test each tile of this tilesGraph stage for equality
 
+		if ( !sceneGraph.tilesGraph[ Math.min( testTileVecs[0].y, testTileVecs[1].y ) ] ) return ;
+
 		sceneGraph.tilesGraph[ Math.min( testTileVecs[0].y, testTileVecs[1].y ) ].forEach( (logicTile)=> {
 
 			if ( (utils.vecEquals( testTileVecs[0], logicTile.points[0] ) && utils.vecEquals( testTileVecs[1], logicTile.points[1] ) ) ||
