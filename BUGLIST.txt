@@ -17,10 +17,10 @@
 - Changer le wording : 'devriez cherchez UNE AUTRE edelweiss to have at least 4 bars of stamina'
 - Quand le joueur commence à grimper un mur dans un angle, il faut le pousser hors de l'angle, sans quoi il switch de tile direct
 - Baisser la sensibilité à la chute, c'est frustrant pour le joueur
+- Limiter double-saut
+- Double-saut semble accelerer inertia
 
 
-- Elever vitesser de course rapide
-- Accelerer la vitesse de course normale
 - Adapter la map
 - Saut quand on appuit sur espace, et non quand on relache
 

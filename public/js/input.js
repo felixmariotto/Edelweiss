@@ -33,6 +33,8 @@ function Input() {
 
     var touchTime;
 
+    var blockAction = false ;
+
     var joystick, domCross, moveVec, joystickAngle, joystickState ;
 
     //// JOYSTICK
@@ -201,7 +203,9 @@ function Input() {
 
         e.preventDefault();
 
-        releaseSpace();
+        params.isSpacePressed = false ;
+
+        releaseAction();
 
         domActionButton.style.opacity = '0.5' ;
         domActionButton.classList.remove( 'push-button' );
@@ -279,10 +283,6 @@ function Input() {
                 // console.log('press escape');
                 break;
 
-            case 'Space' :
-                params.isSpacePressed = true ;
-                break;
-
             case 'ArrowLeft' :
                 addMoveKey( 'left' );
                 break;
@@ -297,6 +297,19 @@ function Input() {
 
             case 'ArrowDown' :
                 addMoveKey( 'down' );
+                break;
+
+            case 'Space' :
+
+                if ( !params.isSpacePressed &&
+                     !blockAction ) {
+
+                    params.isSpacePressed = true ;
+
+                    pressAction();
+
+                };
+
                 break;
 
         };
@@ -329,7 +342,18 @@ function Input() {
                 break;
 
             case 'Space' :
-                releaseSpace();
+
+                if ( !blockAction ) {
+
+                    releaseAction();
+                    params.isSpacePressed = false ;
+
+                } else {
+
+                    blockAction = false ;
+
+                };
+
                 break;
 
         };
@@ -453,7 +477,10 @@ function Input() {
 
 
 
-    function releaseSpace() {
+
+
+
+    function pressAction() {
 
         interaction.hideMessage();
 
@@ -467,12 +494,45 @@ function Input() {
 
         } else {
 
-            controler.spaceInput();
+            controler.pressAction();
 
         };
-        
-        params.isSpacePressed = false ;
+
     };
+
+
+
+
+
+
+
+
+    function releaseAction() {
+
+        if ( !gameState.params.isGamePaused &&
+             !interaction.isInDialogue() ) {
+
+            controler.releaseAction();
+
+        };
+    
+    };
+
+
+
+
+
+
+
+
+    function blockPressAction() {
+
+        blockAction = true ;
+        params.isSpacePressed = false ;
+        
+    };
+
+
 
 
 
@@ -484,7 +544,8 @@ function Input() {
         params,
         moveKeys,
         update,
-        initJoystick
+        initJoystick,
+        blockPressAction
     };
 
 };

@@ -718,14 +718,7 @@ function CharaAnim( player ) {
     };
 
 
-    function runSlow() {
-    	actions.run.setEffectiveTimeScale( 1 );
-    	setState( 'running' );
-    };
-
-
-    function runFast() {
-    	actions.run.setEffectiveTimeScale( 1.5 );
+    function run() {
     	setState( 'running' );
     };
 
@@ -818,8 +811,7 @@ function CharaAnim( player ) {
         group,
         hitGround,
         die,
-        runSlow,
-        runFast,
+        run,
         idleClimb,
         climb,
         idleGround,

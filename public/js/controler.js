@@ -69,7 +69,6 @@ function Controler( player ) {
     var requestedDirection = 0 ;
     var angleToApply = 0 ;
     var inertia = 0 ;
-    var runCounter = 0;
 
     // climbing movements
     var xCollision ;
@@ -116,9 +115,9 @@ function Controler( player ) {
 
     // player permission
     var permission = {
-        gliding: false,
-        infinityJump: false,
-        dash: false
+        gliding: true,
+        infinityJump: true,
+        dash: true
     };
 
     const GLIDINGTIME = 200 ;
@@ -452,33 +451,12 @@ function Controler( player ) {
             //  INERTIA
             /////////////
 
-            // increment the counter allowing to run
-            if ( input.params.isSpacePressed ) {
-                runCounter += delta * 1000 ;
-            } else {
-                runCounter = 0;
-            };
-
 
             if ( state.isFlying ) { // in air
 
-                // Keep the inertia if it is a running jump
-                if ( inertia > 1 ) {
+                inertia = inertia + (0.03 * moveSpeedRatio) ;
 
-                    // test for change of direction while in the air
-                    if ( angleToApply > 0.1 || angleToApply < -0.1 ) {
-
-                        inertia = inertia - (0.05 * moveSpeedRatio) ;
-
-                    };
-
-                } else {
-                    
-                    inertia = inertia + (0.03 * moveSpeedRatio) ;
-
-                };
-
-                // Set a max speed while gliding, even after a run jump
+                // Set a max speed while gliding
                 if ( state.isGliding ) {
 
                     inertia = Math.min( inertia, 1 );
@@ -487,15 +465,7 @@ function Controler( player ) {
                 
             } else { // on ground
 
-                if ( runCounter > 350 ) {
-
-                    inertia = inertia >= 1.8 ? 1.8 : inertia + ( 0.1 * moveSpeedRatio ) ;
-
-                } else {
-
-                    inertia = inertia >= 1 ? inertia * 0.95 : inertia + ( 0.06 * moveSpeedRatio ) ;
-                    
-                };
+                inertia = inertia >= 1 ? inertia * 0.95 : inertia + ( 0.06 * moveSpeedRatio ) ;
 
             };
 
@@ -513,7 +483,6 @@ function Controler( player ) {
                     slipRecovering <= 0 ) {
 
 
-            runCounter = 0 ;
             inertia = 0 ;
 
 
@@ -670,9 +639,6 @@ function Controler( player ) {
         } else {
 
 
-            // reset the counter allowing to run
-            runCounter = 0 ;
-
             if ( state.isFlying ) {
 
                 // We set a minimal speed when gliding
@@ -776,7 +742,7 @@ function Controler( player ) {
                 ///  HAUL DOWN ACTION
                 /////////////////////////
 
-                // Check for speed so that if the player walk fast or run
+                // Check for speed so that if the player walk fast
                 // toward the edge, they won't be hauled down. To be hauled down,
                 // one must approach the edge slowly.
                 if ( inertia <= HAULDOWNMAXSPEED ) {
@@ -1707,15 +1673,7 @@ function Controler( player ) {
 
             if ( input.moveKeys.length > 0 ) {
 
-                if ( inertia > 1.1 ) {
-
-                    charaAnim.runFast();
-    
-                } else {
-    
-                    charaAnim.runSlow();
-    
-                };
+                charaAnim.run();
 
             } else {
 
@@ -1854,8 +1812,61 @@ function Controler( player ) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+    function pressAction() {
+
+        // JUMP
+        if ( ( !state.isFlying || state.isSlipping ) &&
+             hitGroundRecovering <= 0 &&
+             stamina.params.stamina > 0 &&
+             !state.isClimbing ) {
+
+            input.blockPressAction();
+
+            // Animate the jump
+            charaAnim.jump();
+
+            // Take the price in stamina
+            stamina.reduceStamina( JUMPPRICE, true );
+
+            player.position.y += 0.1 ;
+
+            if ( !state.isSlipping ) {
+
+                speedUp = 1.25 ;
+
+            } else {
+
+                jumpOutWall( WALLJUMPINERTIA, WALLJUMPSPEEDUP );
+
+            };
+
+        };
+
+    };
+
+
+
+
+
+
+
+
+
+
     // Sent here by input module when the user released space bar
-    function spaceInput() {
+    function releaseAction() {
 
 
 
@@ -1901,14 +1912,10 @@ function Controler( player ) {
 
 
 
-
         // JUMP
-        // Here we check that the player can jump because they are on the floor, OR
-        // because they have infinity jump but they are not going up in the air, OR
-        // they are on a wall
-        if ( ( ( !permission.infinityJump && !state.isFlying || 
-                permission.infinityJump ) ||
-                state.isSlipping ) &&
+        // Here we check that the player can jump because they are on a wall
+        if ( ( ( permission.infinityJump && state.isFlying ) ||
+               state.isClimbing ) &&
               hitGroundRecovering <= 0 &&
               stamina.params.stamina > 0 ) {
 
@@ -1920,17 +1927,7 @@ function Controler( player ) {
 
             player.position.y += 0.1 ;
 
-            // This conditional to make sure that the player is climbing
-            // or slipping along a wall
-            if ( state.isSlipping || state.isClimbing ) {
-
-                jumpOutWall( WALLJUMPINERTIA, WALLJUMPSPEEDUP );
-
-            } else {
-
-                speedUp = 1.25 ;
-            
-            };
+            jumpOutWall( WALLJUMPINERTIA, WALLJUMPSPEEDUP );
 
         // FALL FROM THE WALL BECAUSE OF LACK OF STAMINA
         } else if ( ( state.isClimbing || state.isSlipping ) &&
@@ -1939,6 +1936,8 @@ function Controler( player ) {
             jumpOutWall( WALLJUMPINERTIA / 2, WALLJUMPSPEEDUP / 2 );
 
         };
+
+
 
     };
 
@@ -2071,7 +2070,8 @@ function Controler( player ) {
     return {
         permission,
         update,
-        spaceInput,
+        pressAction,
+        releaseAction,
         setMoveAngle,
         setSpeedUp,
         upgradeAcceleration,
