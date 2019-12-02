@@ -185,9 +185,16 @@ function Input() {
 
     domActionButton.addEventListener( 'touchstart', (e)=> {
 
-        e.preventDefault();
+        // e.preventDefault();
 
-        params.isSpacePressed = true ;
+        if ( !params.isSpacePressed &&
+             !blockAction ) {
+
+            params.isSpacePressed = true ;
+
+            pressAction();
+
+        };
 
         // cosmetic feedback
         domActionButton.style.opacity = '1.0' ;
@@ -201,11 +208,18 @@ function Input() {
 
     domActionButton.addEventListener( 'touchend', (e)=> {
 
-        e.preventDefault();
+        // e.preventDefault();
 
-        params.isSpacePressed = false ;
+        if ( !blockAction ) {
 
-        releaseAction();
+            releaseAction();
+            params.isSpacePressed = false ;
+
+        } else {
+
+            blockAction = false ;
+
+        };
 
         domActionButton.style.opacity = '0.5' ;
         domActionButton.classList.remove( 'push-button' );
