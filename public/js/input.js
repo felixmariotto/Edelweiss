@@ -185,7 +185,9 @@ function Input() {
 
     domActionButton.addEventListener( 'touchstart', (e)=> {
 
-        // e.preventDefault();
+        if (e.cancelable) {
+           e.preventDefault();
+        };
 
         if ( !params.isSpacePressed &&
              !blockAction ) {
@@ -208,7 +210,9 @@ function Input() {
 
     domActionButton.addEventListener( 'touchend', (e)=> {
 
-        // e.preventDefault();
+        if (e.cancelable) {
+           e.preventDefault();
+        };
 
         if ( !blockAction ) {
 
