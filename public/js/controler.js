@@ -19,7 +19,7 @@ function Controler( player ) {
     const FALL_DEATH_TIMEOUT = 400 ;
     const MAX_FALL_SPEED = 4 ;
     var speedDeathLevel = 0 ; // when 4, fallSpeedDeath is 0.65
-    var fallSpeedDeath = 0.5 ; // btwn 0 and 1
+    var fallSpeedDeath = 0.6 ; // btwn 0 and 1
 
     var moveSpeedRatio ; // is used to multiply the speed of movements
                          // according to FPS
@@ -1468,7 +1468,7 @@ function Controler( player ) {
                          player.position.y < xCollision.maxHeight - (atlas.PLAYERHEIGHT * 0.95) &&
                          !state.isDashing ) {
 
-                        fall();
+                        jumpOutWall( WALLJUMPINERTIA / 3, WALLJUMPSPEEDUP / 3 );
                     };
 
                     setClimbingState( false );
@@ -1771,58 +1771,6 @@ function Controler( player ) {
 
 
 
-    function fall() {
-
-        // compute desired fall direction
-        if ( contactDirection == 'left' ) {
-
-            currentDirection = Math.PI / 2 ;
-            HORIZMOVEVECT.set( SPEED, 0, 0 );
-        
-        } else if ( contactDirection == 'right' ) {
-
-            currentDirection = -Math.PI / 2 ;
-            HORIZMOVEVECT.set( -SPEED, 0, 0 );
-
-        } else if ( contactDirection == 'up' ) {
-
-            currentDirection = 0 ;
-            HORIZMOVEVECT.set( 0, 0, SPEED );
-
-        } else if ( contactDirection == 'down' ) {
-
-            currentDirection = Math.PI ;
-            HORIZMOVEVECT.set( 0, 0, -SPEED );
-
-        };
-
-        inertia = FALLINITINERTIA ;
-        speedUp = FALLINITGRAVITY ;
-        // player is pushed out of contact with the wall,
-        // so the fall cannot be avoided
-        player.position.addScaledVector( HORIZMOVEVECT, FALLINITPUSHPOWER );
-
-    };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     function pressAction() {
 
@@ -1933,7 +1881,7 @@ function Controler( player ) {
         } else if ( ( state.isClimbing || state.isSlipping ) &&
                     stamina.params.stamina <= 0 ) {
 
-            jumpOutWall( WALLJUMPINERTIA / 2, WALLJUMPSPEEDUP / 2 );
+            jumpOutWall( WALLJUMPINERTIA / 3, WALLJUMPSPEEDUP / 3 );
 
         };
 

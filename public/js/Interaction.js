@@ -153,60 +153,59 @@ function Interaction() {
 				gameState.switchMapGraph( 'cave-0' );
 				break;
 
-			// gauntlet
+			// cow field
 			case 'cave-1' :
 				gameState.switchMapGraph( 'cave-1' );
 				break;
 
-			// river top
+			// gauntlet
 			case 'cave-2' :
 				gameState.switchMapGraph( 'cave-2' );
 				break;
 
-			// ridge
+			// forest
 			case 'cave-3' :
 				gameState.switchMapGraph( 'cave-3' );
 				break;
 
-			/////////////////////
-
-			// cow field
+			// end forest
 			case 'cave-4' :
 				gameState.switchMapGraph( 'cave-4' );
 				break;
 
-			// river down
+			// checkpoint bottom cliff
 			case 'cave-5' :
 				gameState.switchMapGraph( 'cave-5' );
 				break;
 
-			/////////////////////
-
-			// ridge right side
+			// behind pillar in the cliff
 			case 'cave-6' :
 				gameState.switchMapGraph( 'cave-6' );
 				break;
 
-			// ridge left side
+			// middle of the cliff bottom
 			case 'cave-7' :
 				gameState.switchMapGraph( 'cave-7' );
 				break;
 
-			/////////////////////
-
-			// cliff
+			// middle of the cliff top (lead to other side)
 			case 'cave-8' :
 				gameState.switchMapGraph( 'cave-8' );
 				break;
 
-			// canyon
+			// other side cliff
 			case 'cave-9' :
 				gameState.switchMapGraph( 'cave-9' );
 				break;
 
-			// peak
+			// checkpoint peak
 			case 'cave-10' :
 				gameState.switchMapGraph( 'cave-10' );
+				break;
+
+			// checkpoint peak
+			case 'cave-11' :
+				gameState.switchMapGraph( 'cave-11' );
 				break;
 
 		};
