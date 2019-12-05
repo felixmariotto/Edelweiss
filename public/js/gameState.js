@@ -325,29 +325,7 @@ function GameState() {
 
 	        if ( !sceneGraphs[ graphName ] ) {
 
-	            switch( graphName ) {
-
-	                case 'cave-A' :
-	                    load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/cave-A.json' );
-	                    break;
-
-                    case 'cave-B' :
-                        load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/cave-B.json' );
-                        break;
-
-                    case 'cave-C' :
-                        load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/cave-C.json' );
-                        break;
-
-                    case 'cave-D' :
-                        load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/cave-D.json' );
-                        break;
-
-                    case 'dev-home' :
-                        load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/dev-home.json' );
-                        break;
-
-	            };
+	            load( `https://edelweiss-game.s3.eu-west-3.amazonaws.com/${ graphName }.json` );
 
 	            function load( url ) {
 

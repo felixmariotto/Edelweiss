@@ -56,7 +56,6 @@ function Interaction() {
 
 	function trigger( agentName ) {
 
-
 		switch ( agentName ) {
 
 			/// STAMINA
