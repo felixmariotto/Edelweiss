@@ -66,7 +66,7 @@ function Interaction() {
 				getBonus( 'stamina-1' );
 				break;
 
-			// house roof
+			// cow field
 			case 'bonus-stamina-0' :
 				getBonus( 'stamina-0' );
 				break;
@@ -203,7 +203,7 @@ function Interaction() {
 				gameState.switchMapGraph( 'cave-10' );
 				break;
 
-			// checkpoint peak
+			// dev home
 			case 'cave-11' :
 				gameState.switchMapGraph( 'cave-11' );
 				break;
@@ -264,21 +264,6 @@ function Interaction() {
 
 
 
-	/*
-	//// TODO
-
-	respawn-0 => first respawn tile
-
-	npc-jump
-	npc-climb
-	npc-stamina
-	npc-climb-jump
-	npc-run
-	npc-fall
-
-	npc-respawn-0
-
-	*/
 
 
 	function interactWith( agentName ) {
@@ -301,10 +286,6 @@ function Interaction() {
 
 			case 'npc-climb-jump' :
 				startDialogue( 'npc-climb-jump' );
-				break;
-
-			case 'npc-run' :
-				startDialogue( 'npc-run' );
 				break;
 
 			case 'npc-fall' :
@@ -1334,14 +1315,6 @@ function Interaction() {
 			char: dialogueChars.dad,
 			story: [
 				{ m: `Did you know you can jump while climbing ? Just press ${ input.params.isTouchScreen ? 'the action button' : 'space' } while climbing.` }
-			]
-		},
-
-
-		'npc-run' : {
-			char: dialogueChars.dad,
-			story: [
-				{ m: `Hold ${ input.params.isTouchScreen ? 'the action button' : 'space' } while walking to run, you will then jump way farther.` }
 			]
 		},
 

@@ -440,12 +440,12 @@ function GameState() {
 
     			};
 
-            // gauntlet
+            // cow field
     		case 'cave-1' :
 
     			if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
 
-    				return 'cave-A';
+    				return 'cave-B';
 
     			} else {
 
@@ -453,12 +453,12 @@ function GameState() {
 
     			};
 
-            // glider
+            // gauntlet
             case 'cave-2' :
 
                 if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
 
-                    return 'cave-A';
+                    return 'cave-B';
 
                 } else {
 
@@ -466,14 +466,12 @@ function GameState() {
 
                 };
 
-            // double-jump
+            // forest
             case 'cave-3' :
-
-            console.log('coucou')
 
                 if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
 
-                    return 'cave-A';
+                    return 'cave-C';
 
                 } else {
 
@@ -481,12 +479,12 @@ function GameState() {
 
                 };
 
-            // cow field
+            // end forest
             case 'cave-4' :
 
                 if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
 
-                    return 'cave-B';
+                    return 'cave-C';
 
                 } else {
 
@@ -494,12 +492,12 @@ function GameState() {
 
                 };
 
-            // low river
+            // checkpoint bottom cliff
             case 'cave-5' :
 
                 if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
 
-                    return 'cave-B';
+                    return 'cave-D';
 
                 } else {
 
@@ -507,12 +505,12 @@ function GameState() {
 
                 };
 
-            // lridge right side
+            // behind pillar in the cliff
             case 'cave-6' :
 
                 if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
 
-                    return 'cave-C';
+                    return 'cave-D';
 
                 } else {
 
@@ -520,12 +518,12 @@ function GameState() {
 
                 };
 
-            // ridge left side
+            // middle of the cliff bottom
             case 'cave-7' :
 
                 if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
 
-                    return 'cave-C';
+                    return 'cave-E';
 
                 } else {
 
@@ -533,12 +531,12 @@ function GameState() {
 
                 };
 
-            // cliff
+            // middle of the cliff top (lead to other side)
             case 'cave-8' :
 
                 if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
 
-                    return 'cave-D';
+                    return 'cave-F';
 
                 } else {
 
@@ -546,12 +544,12 @@ function GameState() {
 
                 };
 
-            // canyon
+            // other side cliff
             case 'cave-9' :
 
                 if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
 
-                    return 'cave-D';
+                    return 'cave-F';
 
                 } else {
 
@@ -559,8 +557,21 @@ function GameState() {
 
                 };
 
-            // canyon
+            // checkpoint peak
             case 'cave-10' :
+
+                if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
+
+                    return 'cave-E';
+
+                } else {
+
+                    return 'mountain';
+
+                };
+
+            // dev home
+            case 'cave-11' :
 
                 if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
 

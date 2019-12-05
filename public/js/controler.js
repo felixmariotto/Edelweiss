@@ -61,7 +61,7 @@ function Controler( player ) {
     const PULLUNDERLIMIT = 0.3 ;
 
     // horiz movements
-    var SPEED = 0.035 ;
+    var SPEED = 0.04 ;
     var HORIZMOVEVECT = new THREE.Vector3( 0, 0, SPEED );
     var AXISHORIZMOVEROT = new THREE.Vector3( 0, 1, 0 );
     var requestedMove ;
@@ -455,19 +455,14 @@ function Controler( player ) {
             if ( state.isFlying ) { // in air
 
                 inertia = inertia + (0.03 * moveSpeedRatio) ;
-
-                // Set a max speed while gliding
-                if ( state.isGliding ) {
-
-                    inertia = Math.min( inertia, 1 );
-
-                };
                 
             } else { // on ground
 
-                inertia = inertia >= 1 ? inertia * 0.95 : inertia + ( 0.06 * moveSpeedRatio ) ;
+                inertia = inertia + ( 0.06 * moveSpeedRatio ) ;
 
             };
+
+            inertia = Math.min( inertia, 1 );
 
 
 
@@ -1737,10 +1732,6 @@ function Controler( player ) {
 
 
 
-
-
-
-
     };
 
 
@@ -1773,6 +1764,13 @@ function Controler( player ) {
 
 
     function pressAction() {
+
+
+        if ( interactiveTag ) {
+            interaction.interactWith( interactiveTag );
+            return
+        };
+
 
         // JUMP
         if ( ( !state.isFlying || state.isSlipping ) &&
@@ -1823,12 +1821,6 @@ function Controler( player ) {
             return
         };
 
-
-
-        if ( interactiveTag ) {
-            interaction.interactWith( interactiveTag );
-            return
-        };
 
 
 
