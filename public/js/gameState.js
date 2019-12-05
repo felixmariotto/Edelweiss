@@ -7,7 +7,7 @@ function GameState() {
 
 
 
-	const DEVELOPMENT_LAYOUT = true ;
+	const DEVELOPMENT_LAYOUT = false ;
 
 
 
