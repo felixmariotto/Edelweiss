@@ -12,7 +12,7 @@ function CameraControl( player, camera ) {
 
 	const MAX_YAW = 0.2 ;
 	const CAMERA_DIRECTION = new THREE.Vector3( 0, 0.4, 1 ).normalize();
-	const DEFAULT_CAMERA_DISTANCE = 2.4 ;
+	const DEFAULT_CAMERA_DISTANCE = 2.2 ;
 	const MIN_CAMERA_DISTANCE = 1.7 ;
 	const CAMERA_WIDTH = 0.29 ;
 	const CAMERA_TWEENING_SPEED = 0.05 ;
