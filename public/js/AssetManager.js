@@ -69,7 +69,7 @@ function AssetManager() {
 
 			ladyMixers[ i ] = new THREE.AnimationMixer( newModel );
 
-			ladyIdles[ i ] = ladyMixers[ 0 ].clipAction( glb.animations[ 0 ] );
+			ladyIdles[ i ] = ladyMixers[ i ].clipAction( glb.animations[ 0 ] );
 			ladyIdles[ i ].play();
 
 			setLambert( newModel );
