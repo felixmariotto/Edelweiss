@@ -97,6 +97,9 @@ function loop() {
     if ( orbitControls ) orbitControls.update();
 
     if ( mixer ) mixer.update( clockDelta );
+    if ( alpinistMixer ) alpinistMixer.update( clockDelta );
+    if ( ladyMixer ) ladyMixer.update( clockDelta );
+
     if ( charaAnim ) charaAnim.update( clockDelta );
     if ( dynamicItems ) dynamicItems.update( clockDelta );
     if ( input ) input.update( clockDelta );

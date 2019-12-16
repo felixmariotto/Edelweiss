@@ -15,9 +15,17 @@ function AssetManager() {
 
 		let model = glb.scene ;
 		model.scale.set( SCALE_ALPINIST, SCALE_ALPINIST, SCALE_ALPINIST );
-		alpinistGroup.add( model );
+		scene.add( model );
+
+		alpinistMixer = new THREE.AnimationMixer( model );
+
+		alpinistIdle = alpinistMixer.clipAction( glb.animations[ 0 ] );
+		alpinistIdle.play();
 
 		setLambert( model );
+
+		// temp
+		model.position.x += 1 ;
 
 	});
 
@@ -27,6 +35,11 @@ function AssetManager() {
 		let model = glb.scene ;
 		model.scale.set( SCALE_LADY, SCALE_LADY, SCALE_LADY );
 		scene.add( model );
+
+		ladyMixer = new THREE.AnimationMixer( model );
+
+		ladyIdle = ladyMixer.clipAction( glb.animations[ 0 ] );
+		ladyIdle.play();
 
 		setLambert( model );
 
@@ -42,6 +55,21 @@ function AssetManager() {
 		setLambert( model );
 
 	});
+
+
+
+
+	//// CREATE INSTANCES
+
+	function createNewLady( pos ) {
+
+		console.log( 'create new lady at', pos );
+
+		let group;
+
+		return group;
+
+	};
 
 
 
@@ -77,7 +105,8 @@ function AssetManager() {
 
 
 	return {
-		alpinistGroup
+		alpinistGroup,
+		createNewLady
 	};
 
 

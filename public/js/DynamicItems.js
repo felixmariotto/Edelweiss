@@ -51,7 +51,7 @@ function DynamicItems() {
 					 !logicCube.tag.match( /npc-respawn/ ) &&
 					 !logicCube.tag.match( /npc-dev/ ) ) {
 
-					console.log( logicCube )
+					assetManager.createNewLady( logicCube.position );
 
 				};
 

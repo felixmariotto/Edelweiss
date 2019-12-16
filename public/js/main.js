@@ -7,6 +7,9 @@ var scene, camera, stats, input, atlas,
 
 var renderer, highRenderer, cheapRenderer ;
 
+var alpinistMixer, alpinistIdle;
+var ladyMixer, ladyIdle;
+
 var actions = [];
 
 var utils = Utils();
