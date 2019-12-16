@@ -3,24 +3,42 @@
 
 function AssetManager() {
 
-
 	const SCALE_ALPINIST = 0.1 ;
 	const SCALE_LADY = 0.1 ;
 	const SCALE_EDELWEISS = 0.1 ;
 
-	const alpinistGroup = new THREE.Group();
+	var alpinistMixers = [], alpinistIdles = [];
+	var ladyMixers = [], ladyIdles = [];
+
+	var alpinists = [];
+	var edelweisses = [];
+	var ladies = [];
+
+	addGroups( alpinists, 7 ); // unsure
+	addGroups( edelweisses, 7 ); // unsure
+	addGroups( ladies, 12 );
+
+	function addGroups( arr, groupsNumber ) {
+
+		for ( let i = 0 ; i < groupsNumber ; i++ ) {
+
+			arr.push( new THREE.Group() );
+
+		};
+
+	};
 
 
 	gltfLoader.load('https://edelweiss-game.s3.eu-west-3.amazonaws.com/models/alpinist.glb', (glb)=> {
 
 		let model = glb.scene ;
 		model.scale.set( SCALE_ALPINIST, SCALE_ALPINIST, SCALE_ALPINIST );
-		// scene.add( model );
+		scene.add( model );
 
-		alpinistMixer = new THREE.AnimationMixer( model );
+		alpinistMixers[ 0 ] = new THREE.AnimationMixer( model );
 
-		alpinistIdle = alpinistMixer.clipAction( glb.animations[ 0 ] );
-		alpinistIdle.play();
+		alpinistIdles[ 0 ] = alpinistMixers[ 0 ].clipAction( glb.animations[ 0 ] );
+		alpinistIdles[ 0 ].play();
 
 		setLambert( model );
 
@@ -32,34 +50,32 @@ function AssetManager() {
 
 	gltfLoader.load('https://edelweiss-game.s3.eu-west-3.amazonaws.com/models/lady.glb', (glb)=> {
 
-		let dummy = new THREE.Object3D();
+		let model = glb.scene ;
+		model.scale.set( SCALE_ALPINIST, SCALE_ALPINIST, SCALE_ALPINIST );
 
-		let skinnedMesh = glb.scene.getObjectByName( 'lady' ) ;
+		for ( let i = 0 ; i < ladies.length ; i++ ) {
 
-		skinnedMesh.geometry.scale( SCALE_LADY, SCALE_LADY, SCALE_LADY );
+			let newModel = THREE.SkeletonUtils.clone( model );
 
-		let material = new THREE.MeshNormalMaterial();
+			// newModel.getObjectByName( 'lady' ).copy( model.getObjectByName( 'lady' ) );
 
-		let instancedMesh = new THREE.InstancedMesh(
-			skinnedMesh.geometry,
-			new THREE.MeshLambertMaterial({
-				map: skinnedMesh.material.map,
-				side: THREE.FrontSide,
-				skinning: true
-			}),
-			12
-		);
+			newModel.position.x += ( 0.5 * i );
 
-		instancedMesh.setMatrixAt( 0, dummy.matrix );
+			var helper = new THREE.SkeletonHelper( newModel );
+			helper.material.linewidth = 3;
+			scene.add( helper );
 
-		scene.add( instancedMesh );
+			scene.add( newModel );
 
-		//
+			ladyMixers[ i ] = new THREE.AnimationMixer( newModel );
 
-		ladyMixer = new THREE.AnimationMixer( instancedMesh );
+			ladyIdles[ i ] = ladyMixers[ 0 ].clipAction( glb.animations[ 0 ] );
+			ladyIdles[ i ].play();
 
-		ladyIdle = ladyMixer.clipAction( glb.animations[ 0 ] );
-		ladyIdle.play();
+			setLambert( newModel );
+
+		};
+		
 
 	});
 
@@ -68,7 +84,7 @@ function AssetManager() {
 
 		let model = glb.scene ;
 		model.scale.set( SCALE_EDELWEISS, SCALE_EDELWEISS, SCALE_EDELWEISS );
-		// scene.add( model );
+		scene.add( model );
 
 		setLambert( model );
 
@@ -83,10 +99,6 @@ function AssetManager() {
 
 		console.log( 'create new lady at', pos );
 
-		let group;
-
-		return group;
-
 	};
 
 
@@ -96,9 +108,6 @@ function AssetManager() {
 	//// GENERAL
 
 	function setLambert( model ) {
-
-		// temp
-		model.position.set( 0, 2, 0 );
 
 		model.traverse( (obj)=> {
 
@@ -122,9 +131,27 @@ function AssetManager() {
 
 
 
+	function update( delta ) {
+
+		alpinistMixers.forEach( (mixer)=> {
+
+			mixer.update( delta );
+
+		});
+
+		ladyMixers.forEach( (mixer)=> {
+
+			mixer.update( delta );
+
+		});
+
+	};
+
+
+
 	return {
-		alpinistGroup,
-		createNewLady
+		createNewLady,
+		update
 	};
 
 
