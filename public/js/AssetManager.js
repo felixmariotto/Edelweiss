@@ -15,7 +15,7 @@ function AssetManager() {
 
 		let model = glb.scene ;
 		model.scale.set( SCALE_ALPINIST, SCALE_ALPINIST, SCALE_ALPINIST );
-		scene.add( model );
+		// scene.add( model );
 
 		alpinistMixer = new THREE.AnimationMixer( model );
 
@@ -32,9 +32,34 @@ function AssetManager() {
 
 	gltfLoader.load('https://edelweiss-game.s3.eu-west-3.amazonaws.com/models/lady.glb', (glb)=> {
 
+		let dummy = new THREE.Object3D();
+
+		let skinnedMesh = glb.scene.getObjectByName( 'lady' ) ;
+
+		skinnedMesh.geometry.scale( SCALE_LADY, SCALE_LADY, SCALE_LADY );
+
+		let material = new THREE.MeshNormalMaterial();
+
+		let instancedMesh = new THREE.InstancedMesh(
+			skinnedMesh.geometry,
+			new THREE.MeshLambertMaterial({
+				map: skinnedMesh.material.map,
+				side: THREE.FrontSide,
+				skinning: true
+			}),
+			12
+		);
+
+		instancedMesh.setMatrixAt( 0, dummy.matrix );
+
+		scene.add( instancedMesh );
+
+		/*
+		//
+
 		let model = glb.scene ;
 		model.scale.set( SCALE_LADY, SCALE_LADY, SCALE_LADY );
-		scene.add( model );
+		// scene.add( model );
 
 		ladyMixer = new THREE.AnimationMixer( model );
 
@@ -42,6 +67,7 @@ function AssetManager() {
 		ladyIdle.play();
 
 		setLambert( model );
+		*/
 
 	});
 
@@ -50,7 +76,7 @@ function AssetManager() {
 
 		let model = glb.scene ;
 		model.scale.set( SCALE_EDELWEISS, SCALE_EDELWEISS, SCALE_EDELWEISS );
-		scene.add( model );
+		// scene.add( model );
 
 		setLambert( model );
 
