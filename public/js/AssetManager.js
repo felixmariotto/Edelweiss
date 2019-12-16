@@ -57,15 +57,7 @@ function AssetManager() {
 
 			let newModel = THREE.SkeletonUtils.clone( model );
 
-			// newModel.getObjectByName( 'lady' ).copy( model.getObjectByName( 'lady' ) );
-
-			newModel.position.x += ( 0.5 * i );
-
-			var helper = new THREE.SkeletonHelper( newModel );
-			helper.material.linewidth = 3;
-			scene.add( helper );
-
-			scene.add( newModel );
+			ladies[ i ].add( newModel );
 
 			ladyMixers[ i ] = new THREE.AnimationMixer( newModel );
 
@@ -98,6 +90,24 @@ function AssetManager() {
 	function createNewLady( pos ) {
 
 		console.log( 'create new lady at', pos );
+
+		for ( ladyGroup of ladies ) {
+
+			if ( !ladyGroup.userData.isSet ) {
+
+				ladyGroup.userData.isSet = true ;
+
+				console.log( ladyGroup );
+
+				ladyGroup.position.copy( pos );
+
+				scene.add( ladyGroup );
+
+				break ;
+
+			};
+
+		};
 
 	};
 
