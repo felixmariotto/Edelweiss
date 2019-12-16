@@ -42,9 +42,21 @@ function DynamicItems() {
 
 		switch ( logicCube.type ) {
 
+
 			case 'cube-interactive' :
+
 				interactiveCubes.push( logicCube );
+
+				if ( logicCube.tag.match( /npc/ ) &&
+					 !logicCube.tag.match( /npc-respawn/ ) &&
+					 !logicCube.tag.match( /npc-dev/ ) ) {
+
+					console.log( logicCube )
+
+				};
+
 				break;
+
 
 			case 'cube-trigger' :
 				triggerCubes.push( logicCube );

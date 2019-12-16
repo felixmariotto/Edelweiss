@@ -80,6 +80,7 @@ function init() {
     mapManager = MapManager();
     optimizer = Optimizer();
     gameState = GameState();
+    assetManager = AssetManager();
 
 
     loop();

@@ -410,6 +410,11 @@ function Interaction() {
 				startDialogue( 'dev-end' );
 				break;
 
+
+			case 'npc-river' :
+				startDialogue( 'npc-river' );
+				break;
+
 		};
 
 	};
@@ -1346,7 +1351,7 @@ function Interaction() {
 			story: [
 				{ m: `Some rock walls can be climbed, like the one on your left.` },
 				{ m: `However, climbing them takes more stamina than climbing roots and branches.` },
-				{ m: `If you don't have enough stamina, consider going back to find an edelweiss.` }
+				{ m: `If you don't have enough stamina, consider going back to find another edelweiss, to have at least 4 stamina bars.` }
 			]
 		},
 
@@ -1620,6 +1625,15 @@ function Interaction() {
 				{ m: `I must tell you that I am deeply moved by your finishing Edelweiss.` },
 				{ m: 'Edelweiss is my first "true" game, and you liked it enough to find the last extra edelweiss, it really means something to me.' },
 				{ m: "If you are intereseted about my next game, visit my website : <a href='http://www.32x.io'>http://www.32x.io</a>" },
+			]
+		},
+
+
+		'npc-river' : {
+			char: dialogueChars.dad,
+			story: [
+				{ m: "I know I must climb down this wall to reach the river..." },
+				{ m: `But I'm a bit scared.` }
 			]
 		},
 
