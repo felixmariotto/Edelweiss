@@ -54,20 +54,12 @@ function AssetManager() {
 
 		scene.add( instancedMesh );
 
-		/*
 		//
 
-		let model = glb.scene ;
-		model.scale.set( SCALE_LADY, SCALE_LADY, SCALE_LADY );
-		// scene.add( model );
-
-		ladyMixer = new THREE.AnimationMixer( model );
+		ladyMixer = new THREE.AnimationMixer( instancedMesh );
 
 		ladyIdle = ladyMixer.clipAction( glb.animations[ 0 ] );
 		ladyIdle.play();
-
-		setLambert( model );
-		*/
 
 	});
 
