@@ -74,7 +74,7 @@ function loop() {
 
 
     // UPDATE LOGIC
-    /*
+
     if ( controler && cameraControl ) {
 
         ticks = Math.round( ( clockDelta / ( 1 / 60 ) ) * 2 );
@@ -88,7 +88,6 @@ function loop() {
         };
 
     };
-    */
 
 
 
