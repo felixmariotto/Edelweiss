@@ -2,9 +2,10 @@
 function init() {
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0x222222 );
+    scene.background = new THREE.Color( 0xffffff );
+    scene.fog = new THREE.FogExp2( 0xffffff, 0.05 );
 
-    camera = new THREE.PerspectiveCamera( 60, window.innerWidth/window.innerHeight, 0.05, 30 );
+    camera = new THREE.PerspectiveCamera( 60, window.innerWidth/window.innerHeight, 0.05, 23 );
 
     var ambientLight = new THREE.AmbientLight( 0xffffff, 0.48 );
 	scene.add( ambientLight );

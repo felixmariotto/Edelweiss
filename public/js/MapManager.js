@@ -6,6 +6,7 @@ function MapManager() {
 
 	const CHUNK_SIZE = 3 ;
 
+	/*
 	const CHUNK_LIST = [
 		// Y == 0
 		'x1y0', 'x0y0', 'x-0y0', 'x-1y0', 'x-2y0',
@@ -13,6 +14,11 @@ function MapManager() {
 		'x1y1', 'x0y1', 'x-0y1', 'x-1y1',
 		// Y == 2
 		'x1y2', 'x0y2', 'x-0y2', 'x-1y2'
+	];
+	*/
+
+	const CHUNK_LIST = [
+		'x0y0'
 	];
 
 
