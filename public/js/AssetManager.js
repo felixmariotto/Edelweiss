@@ -5,7 +5,9 @@ function AssetManager() {
 
 	const SCALE_ALPINIST = 0.1 ;
 	const SCALE_LADY = 0.1 ;
-	const SCALE_EDELWEISS = 0.1 ;
+	const SCALE_EDELWEISS = 0.02 ;
+
+	var currentGraph = 'mountain' ;
 
 	var alpinistMixers = [], alpinistIdles = [];
 	var ladyMixers = [], ladyIdles = [];
@@ -13,10 +15,12 @@ function AssetManager() {
 	var alpinists = [];
 	var edelweisses = [];
 	var ladies = [];
+	var bonuses = [];
 
 	addGroups( alpinists, 7 ); // unsure
 	addGroups( edelweisses, 7 ); // unsure
 	addGroups( ladies, 12 );
+	addGroups( bonuses, 6 );
 
 	function addGroups( arr, groupsNumber ) {
 
@@ -31,54 +35,63 @@ function AssetManager() {
 
 	gltfLoader.load('https://edelweiss-game.s3.eu-west-3.amazonaws.com/models/alpinist.glb', (glb)=> {
 
-		let model = glb.scene ;
-		model.scale.set( SCALE_ALPINIST, SCALE_ALPINIST, SCALE_ALPINIST );
-		scene.add( model );
-
-		alpinistMixers[ 0 ] = new THREE.AnimationMixer( model );
-
-		alpinistIdles[ 0 ] = alpinistMixers[ 0 ].clipAction( glb.animations[ 0 ] );
-		alpinistIdles[ 0 ].play();
-
-		setLambert( model );
-
-		// temp
-		model.position.x += 1 ;
+		createMultipleModels(
+			glb,
+			SCALE_ALPINIST,
+			alpinists,
+			alpinistMixers,
+			alpinistIdles
+		);
 
 	});
 
 
 	gltfLoader.load('https://edelweiss-game.s3.eu-west-3.amazonaws.com/models/lady.glb', (glb)=> {
 
-		let model = glb.scene ;
-		model.scale.set( SCALE_ALPINIST, SCALE_ALPINIST, SCALE_ALPINIST );
-
-		for ( let i = 0 ; i < ladies.length ; i++ ) {
-
-			let newModel = THREE.SkeletonUtils.clone( model );
-
-			ladies[ i ].add( newModel );
-
-			ladyMixers[ i ] = new THREE.AnimationMixer( newModel );
-
-			ladyIdles[ i ] = ladyMixers[ i ].clipAction( glb.animations[ 0 ] );
-			ladyIdles[ i ].play();
-
-			setLambert( newModel );
-
-		};
-		
+		createMultipleModels(
+			glb,
+			SCALE_LADY,
+			ladies,
+			ladyMixers,
+			ladyIdles
+		);
 
 	});
 
 
+	function createMultipleModels( glb, scale, modelsArr, mixers, actions ) {
+
+		glb.scene.scale.set( scale, scale, scale );
+
+		for ( let i = 0 ; i < modelsArr.length ; i++ ) {
+
+			let newModel = THREE.SkeletonUtils.clone( glb.scene );
+
+			modelsArr[ i ].add( newModel );
+
+			if ( mixers ) {
+
+				mixers[ i ] = new THREE.AnimationMixer( newModel );
+
+				actions[ i ] = mixers[ i ].clipAction( glb.animations[ 0 ] );
+				actions[ i ].play();
+
+			};
+
+			setLambert( newModel );
+
+		};
+
+	};
+
+
 	gltfLoader.load('https://edelweiss-game.s3.eu-west-3.amazonaws.com/models/edelweiss.glb', (glb)=> {
 
-		let model = glb.scene ;
-		model.scale.set( SCALE_EDELWEISS, SCALE_EDELWEISS, SCALE_EDELWEISS );
-		scene.add( model );
-
-		setLambert( model );
+		createMultipleModels(
+			glb,
+			SCALE_EDELWEISS,
+			edelweisses,
+		);
 
 	});
 
@@ -87,25 +100,67 @@ function AssetManager() {
 
 	//// CREATE INSTANCES
 
-	function createNewLady( pos ) {
+	function createNewLady( pos, tag ) {
 
-		console.log( 'create new lady at', pos );
+		setAssetAt( ladies, pos, tag );
 
-		for ( ladyGroup of ladies ) {
+	};
 
-			if ( !ladyGroup.userData.isSet ) {
 
-				ladyGroup.userData.isSet = true ;
+	function createNewAlpinist( pos, tag ) {
 
-				console.log( ladyGroup );
+		setAssetAt( alpinists, pos, tag );
 
-				ladyGroup.position.copy( pos );
+	};
 
-				scene.add( ladyGroup );
+
+	function createNewEdelweiss( pos, tag ) {
+
+		setAssetAt( edelweisses, pos, tag );
+
+	};
+
+
+	function createNewBonus( pos, tag ) {
+
+		setAssetAt( bonuses, pos, tag );
+
+	};
+
+
+	function setAssetAt( assetArray, pos, tag ) {
+
+		for ( asset of assetArray ) {
+
+			if ( !asset.userData.isSet ) {
+
+				asset.userData.isSet = true ;
+				asset.userData.graph = getGraphFromTag( tag );
+
+				setGroupVisibility( asset );
+
+				asset.position.copy( pos );
+
+				scene.add( asset );
 
 				break ;
 
 			};
+
+		};
+
+	};
+
+
+	function getGraphFromTag( tag ) {
+
+		if ( tag.match( /bonus-stamina-1/ ) ) {
+
+			return 'cave-A';
+
+		} else {
+
+			return 'mountain';
 
 		};
 
@@ -141,6 +196,34 @@ function AssetManager() {
 
 
 
+	function switchGraph( destination ) {
+
+		currentGraph = destination ;
+
+		edelweisses.forEach( ( assetGroup )=> {
+			setGroupVisibility( assetGroup );
+		});
+
+	};
+
+
+
+	function setGroupVisibility( assetGroup ) {
+
+		if ( assetGroup.userData.graph == currentGraph ) {
+
+			assetGroup.visible = true ;
+
+		} else {
+
+			assetGroup.visible = false ;
+
+		};
+
+	};
+
+
+
 	function update( delta ) {
 
 		alpinistMixers.forEach( (mixer)=> {
@@ -159,8 +242,15 @@ function AssetManager() {
 
 
 
+
+
+
 	return {
 		createNewLady,
+		createNewAlpinist,
+		createNewEdelweiss,
+		createNewBonus,
+		switchGraph,
 		update
 	};
 

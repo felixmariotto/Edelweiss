@@ -335,7 +335,7 @@ function GameState() {
 
 	                    sceneGraphs[ graphName ] = sceneGraph ;
 
-	                    atlas.switchGraph( graphName, gateName );
+	                    callSwitches( graphName, gateName );
 
 	                });
 
@@ -343,11 +343,21 @@ function GameState() {
 
 	        } else {
 
-	            atlas.switchGraph( graphName, gateName );
+	             callSwitches( graphName, gateName );
 
 	        };
 
         }, 220);
+
+    };
+
+
+
+    function callSwitches( graphName, gateName ) {
+
+        atlas.switchGraph( graphName, gateName );
+
+        assetManager.switchGraph( graphName );
 
     };
 
