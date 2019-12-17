@@ -63,6 +63,26 @@ function AssetManager() {
 
 			};
 
+			if ( arr == bonuses ) {
+
+				let bonus = new THREE.Mesh(
+					new THREE.ConeBufferGeometry( 0.1, 0.20, 4 ),
+					particleMaterial
+				);
+
+				let bonus2 = new THREE.Mesh(
+					new THREE.ConeBufferGeometry( 0.1, 0.2, 4 ),
+					particleMaterial
+				);
+
+				bonus.position.y = 0.1 ;
+				bonus2.position.y = - 0.1 ;
+				bonus2.rotation.x = Math.PI ;
+
+				group.add( bonus, bonus2 );
+
+			};
+
 			arr.push( group );
 
 		};
@@ -322,26 +342,39 @@ function AssetManager() {
 
 		edelweisses.forEach( (edelweissGroup)=> {
 
-			if ( edelweissGroup.userData.initPos ) {
-
-				edelweissGroup.rotation.y += 0.01 ;
-
-				edelweissGroup.position.copy( edelweissGroup.userData.initPos );
-				edelweissGroup.position.y += ( Math.sin( Date.now() / 700 ) * 0.08 );
-
-				edelweissGroup.children.forEach( (child)=> {
-
-					if ( child.userData.rotationSpeed ) {
-
-						child.rotation.y += child.userData.rotationSpeed ;
-
-					};
-
-				});
-
-			};
+			updateBonus( edelweissGroup );
 
 		});
+
+		bonuses.forEach( (bonusGroup)=> {
+
+			updateBonus( bonusGroup );
+
+		});
+
+	};
+
+
+	function updateBonus( group ) {
+
+		if ( group.userData.initPos ) {
+
+			group.rotation.y += 0.01 ;
+
+			group.position.copy( group.userData.initPos );
+			group.position.y += ( Math.sin( Date.now() / 700 ) * 0.08 );
+
+			group.children.forEach( (child)=> {
+
+				if ( child.userData.rotationSpeed ) {
+
+					child.rotation.y += child.userData.rotationSpeed ;
+
+				};
+
+			});
+
+		};
 
 	};
 
