@@ -1230,58 +1230,20 @@ function Interaction() {
 
 	var dialogueChars = {
 
-		// FAMILY
-
-		dad : {
-			name: 'Dad',
-			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-dad.png'
+		alpinist : {
+			name: 'Camper',
+			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-alpinist.png'
 		},
 
-		brother : {
-			name: 'Brother',
+		lady : {
+			name: 'Old Granny',
+			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-lady.png'
+		},
+
+		dev : {
+			name: 'dev Felix Mariotto',
 			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-brother.jpg'
-		},
-
-		// TRADE
-
-		herbalist : {
-			name: 'Herbalist',
-			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-herbalist.jpg'
-		},
-
-		herbalistFriend : {
-			name: "Herbalist's husband",
-			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-herbalist-husband.jpg'
-		},
-
-		merchant : {
-			name: 'Merchant',
-			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-merchant.jpg'
-		},
-
-		miner : {
-			name: 'Miner',
-			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-miner.jpg'
-		},
-
-		minerBoy : {
-			name: "Miner's son",
-			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-miner-boy.jpg'
-		},
-
-		// VILLAGE - MISC
-
-		gatekeeper : {
-			name: "Gatekeeper",
-			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-gatekeeper.jpg'
-		},
-
-		// CABLE- CAR
-
-		lever : {
-			name: "Cable-car station",
-			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-lever.jpg'
-		},
+		}
 
 	};
 
@@ -1312,7 +1274,7 @@ function Interaction() {
 
 
 		'npc-jump' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.lady,
 			story: [
 				{ m: `Press on ${ input.params.isTouchScreen ? 'the action button' : 'space' } to jump.` }
 			]
@@ -1320,7 +1282,7 @@ function Interaction() {
 
 
 		'npc-climb' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.lady,
 			story: [
 				{ m: `Some walls can be climbed, walk toward the wall on your right to climb it.` }
 			]
@@ -1328,7 +1290,7 @@ function Interaction() {
 
 
 		'npc-stamina' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.lady,
 			story: [
 				{ m: `You may be too weak to climb some walls... Try to find some edelweiss, they will increase your stamina and make you stronger !` },
 				{ m: `Have a look in the mine.` }
@@ -1337,7 +1299,7 @@ function Interaction() {
 
 
 		'npc-climb-jump' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.lady,
 			story: [
 				{ m: `Did you know you can jump while climbing ? Just press ${ input.params.isTouchScreen ? 'the action button' : 'space' } while climbing.` }
 			]
@@ -1345,21 +1307,21 @@ function Interaction() {
 
 
 		'npc-fall' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.lady,
 			story: [
 				{ m: `This cliff looks very high... If we fell, we would probably die.` }
 			]
 		},
 
 		'npc-jump-slip' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.lady,
 			story: [
 				{ m: `You can also jump while slipping along a wall, it's super useful when there is nowhere to climb.` }
 			]
 		},
 
 		'npc-dash' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.lady,
 			story: [
 				{ m: `Do you have Dash Gauntlets ?` },
 				{ m: `With Dash Gauntlets, you can dash on a wall by holding ${ input.params.isTouchScreen ? 'the action button' : 'space' } while climbing.` },
@@ -1368,7 +1330,7 @@ function Interaction() {
 		},
 
 		'npc-wall-medium' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.lady,
 			story: [
 				{ m: `Some rock walls can be climbed, like the one on your left.` },
 				{ m: `However, climbing them takes more stamina than climbing roots and branches.` },
@@ -1377,7 +1339,7 @@ function Interaction() {
 		},
 
 		'npc-glide' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.lady,
 			story: [
 				{ m: `Do you have a Glider ?` },
 				{ m: `With a Glider, you can glide in the air by holding ${ input.params.isTouchScreen ? 'the action button' : 'space' } while in the air.` },
@@ -1385,7 +1347,7 @@ function Interaction() {
 		},
 
 		'npc-double-jump' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.lady,
 			story: [
 				{ m: `Do you have Clouds Boots ?` },
 				{ m: `With Clouds Boots, you can jump in the air once, by pressing ${ input.params.isTouchScreen ? 'the action button' : 'space' } while in the air.` },
@@ -1393,7 +1355,7 @@ function Interaction() {
 		},
 
 		'npc-wall-hard' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.lady,
 			story: [
 				{ m: `This wall of ice can be climbed.` },
 				{ m: `However, climbing it takes a lot of stamina.` },
@@ -1411,7 +1373,7 @@ function Interaction() {
 
 
 		'npc-respawn-0' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.alpinist,
 			story: [
 				{ question: 'Hi ! Do you want to save your progression ?', answers: [
 					{ m: 'Yes', next: 'yes' },
@@ -1426,7 +1388,7 @@ function Interaction() {
 
 
 		'npc-respawn-1' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.alpinist,
 			story: [
 				{ question: 'Hi ! Do you want to save your progression ?', answers: [
 					{ m: 'Yes', next: 'yes' },
@@ -1441,7 +1403,7 @@ function Interaction() {
 
 
 		'npc-respawn-2' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.alpinist,
 			story: [
 				{ question: 'Hi ! Do you want to save your progression ?', answers: [
 					{ m: 'Yes', next: 'yes' },
@@ -1456,7 +1418,7 @@ function Interaction() {
 
 
 		'npc-respawn-3' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.alpinist,
 			story: [
 				{ question: 'Hi ! Do you want to save your progression ?', answers: [
 					{ m: 'Yes', next: 'yes' },
@@ -1471,7 +1433,7 @@ function Interaction() {
 
 
 		'npc-respawn-4' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.alpinist,
 			story: [
 				{ question: 'Hi ! Do you want to save your progression ?', answers: [
 					{ m: 'Yes', next: 'yes' },
@@ -1486,7 +1448,7 @@ function Interaction() {
 
 
 		'npc-respawn-5' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.alpinist,
 			story: [
 				{ question: 'Hi ! Do you want to save your progression ?', answers: [
 					{ m: 'Yes', next: 'yes' },
@@ -1501,7 +1463,7 @@ function Interaction() {
 
 
 		'npc-respawn-6' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.alpinist,
 			story: [
 				{ question: 'Hi ! Do you want to save your progression ?', answers: [
 					{ m: 'Yes', next: 'yes' },
@@ -1516,7 +1478,7 @@ function Interaction() {
 
 
 		'npc-respawn-7' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.alpinist,
 			story: [
 				{ question: 'Hi ! Do you want to save your progression ?', answers: [
 					{ m: 'Yes', next: 'yes' },
@@ -1531,7 +1493,7 @@ function Interaction() {
 
 
 		'npc-respawn-8' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.alpinist,
 			story: [
 				{ question: 'Hi ! Do you want to save your progression ?', answers: [
 					{ m: 'Yes', next: 'yes' },
@@ -1546,7 +1508,7 @@ function Interaction() {
 
 
 		'npc-respawn-9' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.alpinist,
 			story: [
 				{ question: 'Hi ! Do you want to save your progression ?', answers: [
 					{ m: 'Yes', next: 'yes' },
@@ -1568,7 +1530,7 @@ function Interaction() {
 		///// MISC
 
 		'dev-greeting' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.dev,
 			story: [
 				{ m: 'Ho ! A player !' },
 				{ m: 'Congratulations, you reached the top of the mountain !' },
@@ -1586,7 +1548,7 @@ function Interaction() {
 
 
 		'dev-greeting-finish' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.dev,
 			story: [
 				{ m: 'Ho ! A player !' },
 				{ m: 'Congratulations, you reached the top of the mountain !' },
@@ -1605,7 +1567,7 @@ function Interaction() {
 
 
 		'dev-main' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.dev,
 			story: [
 				{ m: "Thank you for you commitment in the game, that's encouraging for me." },
 				{ m: `Let me check your stamina... It seems that you still have ${ 9 - stamina.params.stamina } edelweiss yet to find.` },
@@ -1622,7 +1584,7 @@ function Interaction() {
 
 
 		'dev-main-finish' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.dev,
 			story: [
 				{ m: "Thank you for you commitment in the game, that's encouraging for me." },
 				{ m: `Let me check your stamina... Well, you found all the edelweiss !` },
@@ -1640,7 +1602,7 @@ function Interaction() {
 
 
 		'dev-end' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.dev,
 			story: [
 				{ m: "Hi again ! This is the real end to this game." },
 				{ m: `I must tell you that I am deeply moved by your finishing Edelweiss.` },
@@ -1651,7 +1613,7 @@ function Interaction() {
 
 
 		'npc-river' : {
-			char: dialogueChars.dad,
+			char: dialogueChars.alpinist,
 			story: [
 				{ m: "I know I must climb down this wall to reach the river..." },
 				{ m: `But I'm a bit scared.` }
