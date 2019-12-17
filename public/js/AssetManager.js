@@ -14,7 +14,9 @@ function AssetManager() {
 
 	const OFFSET_ALPINIST = new THREE.Vector3( 0, -0.5, 0 );
 	const OFFSET_LADY = new THREE.Vector3( 0, -0.5, 0 );
-	const OFFSET_EDELWEISS = new THREE.Vector3( 0, -0.5, 0 );
+	const OFFSET_EDELWEISS = new THREE.Vector3( 0, 0.1, 0 );
+
+	const particleMaterial = new THREE.MeshBasicMaterial({ color:0xffffff });
 
 	// What graph the player is currently playing in ?
 	var currentGraph = 'mountain' ;
@@ -52,11 +54,53 @@ function AssetManager() {
 
 		for ( let i = 0 ; i < groupsNumber ; i++ ) {
 
-			arr.push( new THREE.Group() );
+			let group = new THREE.Group();
+
+			if ( arr == bonuses ||
+				 arr == edelweisses ) {
+
+				addParticles( group );
+
+			};
+
+			arr.push( group );
 
 		};
 
 	};
+
+	
+
+	// create little balls spinning around bonuses
+	function addParticles( group ) {
+
+		for ( let i = 0 ; i < 26 ; i ++ ) {
+
+			let particle = new THREE.Mesh(
+				new THREE.SphereBufferGeometry( 0.03, 4, 3 ),
+				particleMaterial
+			);
+
+			let particleGroup = new THREE.Group();
+
+			let yOffset = Math.random() ;
+
+			particle.position.y += ( yOffset * 1.7 ) - 0.3 ;
+			particle.position.x += ( Math.random() * 0.1 ) + ( ( 1 - yOffset ) * 0.2 ) + 0.1 ;
+
+			particle.scale.setScalar( (1 - yOffset) + 0.1 );
+
+			particleGroup.rotation.y = Math.random() * ( Math.PI * 2 );
+			particleGroup.userData.rotationSpeed = ( Math.random() * 0.1 ) + 0.02 ;
+
+			particleGroup.add( particle );
+			group.add( particleGroup );
+
+		};
+
+	};
+
+
 
 	//// ASSETS LOADING /////
 
@@ -174,12 +218,13 @@ function AssetManager() {
 
 			if ( !asset.userData.isSet ) {
 
+				asset.position.copy( pos );
+
 				asset.userData.isSet = true ;
 				asset.userData.graph = getGraphFromTag( tag );
+				asset.userData.initPos = new THREE.Vector3().copy( pos );
 
 				setGroupVisibility( asset );
-
-				asset.position.copy( pos );
 
 				scene.add( asset );
 
@@ -272,6 +317,29 @@ function AssetManager() {
 		ladyMixers.forEach( (mixer)=> {
 
 			mixer.update( delta );
+
+		});
+
+		edelweisses.forEach( (edelweissGroup)=> {
+
+			if ( edelweissGroup.userData.initPos ) {
+
+				edelweissGroup.rotation.y += 0.01 ;
+
+				edelweissGroup.position.copy( edelweissGroup.userData.initPos );
+				edelweissGroup.position.y += ( Math.sin( Date.now() / 700 ) * 0.08 );
+
+				edelweissGroup.children.forEach( (child)=> {
+
+					if ( child.userData.rotationSpeed ) {
+
+						child.rotation.y += child.userData.rotationSpeed ;
+
+					};
+
+				});
+
+			};
 
 		});
 
