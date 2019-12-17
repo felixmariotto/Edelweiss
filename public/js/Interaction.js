@@ -446,11 +446,8 @@ function Interaction() {
 
 				stamina.incrementMaxStamina();
 
-				/*
-				setTimeout( ()=> {
-					startDialogue( 'herbalist-friend-init' );
-				}, 1100 );
-				*/
+				assetManager.deleteBonus( 'bonus-stamina-1' );
+
 			},
 
 			message : `${ stamina.params.stamina == 8 ?
@@ -467,6 +464,8 @@ function Interaction() {
 			onGet : function() {
 
 				stamina.incrementMaxStamina();
+
+				assetManager.deleteBonus( 'bonus-stamina-0' );
 
 			},
 
@@ -485,6 +484,8 @@ function Interaction() {
 
 				stamina.incrementMaxStamina();
 
+				assetManager.deleteBonus( 'bonus-stamina-2' );
+
 			},
 
 			message : `${ stamina.params.stamina == 8 ?
@@ -501,6 +502,8 @@ function Interaction() {
 			onGet : function() {
 
 				stamina.incrementMaxStamina();
+
+				assetManager.deleteBonus( 'bonus-stamina-3' );
 
 			},
 
@@ -519,6 +522,8 @@ function Interaction() {
 
 				stamina.incrementMaxStamina();
 
+				assetManager.deleteBonus( 'bonus-stamina-4' );
+
 			},
 
 			message : `${ stamina.params.stamina == 8 ?
@@ -535,6 +540,8 @@ function Interaction() {
 
 				stamina.incrementMaxStamina();
 
+				assetManager.deleteBonus( 'bonus-stamina-5' );
+
 			},
 
 			message : `${ stamina.params.stamina == 8 ?
@@ -550,6 +557,8 @@ function Interaction() {
 			onGet : function() {
 
 				stamina.incrementMaxStamina();
+
+				assetManager.deleteBonus( 'bonus-stamina-6' );
 
 			},
 
@@ -571,6 +580,8 @@ function Interaction() {
 
 				controler.upgradeSpeedDeath();
 
+				assetManager.deleteBonus( 'bonus-fall-0' );
+
 			},
 
 			message : '+ 15% resistance to fall'
@@ -584,6 +595,8 @@ function Interaction() {
 
 				controler.upgradeSpeedDeath();
 
+				assetManager.deleteBonus( 'bonus-fall-1' );
+
 			},
 
 			message : '+ 15% resistance to fall'
@@ -596,6 +609,8 @@ function Interaction() {
 			onGet : function() {
 
 				controler.upgradeSpeedDeath();
+
+				assetManager.deleteBonus( 'bonus-fall-2' );
 
 			},
 
@@ -615,6 +630,8 @@ function Interaction() {
 			onGet : function() {
 
 				controler.upgradeAcceleration();
+
+				assetManager.deleteBonus( 'bonus-climb-0' );
 				
 			},
 
@@ -628,6 +645,8 @@ function Interaction() {
 			onGet : function() {
 
 				controler.upgradeAcceleration();
+
+				assetManager.deleteBonus( 'bonus-climb-1' );
 				
 			},
 
@@ -641,6 +660,8 @@ function Interaction() {
 			onGet : function() {
 
 				controler.upgradeAcceleration();
+
+				assetManager.deleteBonus( 'bonus-climb-2' );
 				
 			},
 

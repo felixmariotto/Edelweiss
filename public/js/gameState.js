@@ -357,7 +357,7 @@ function GameState() {
 
         atlas.switchGraph( graphName, gateName );
 
-        assetManager.switchGraph( graphName );
+        assetManager.updateGraph( graphName );
 
     };
 

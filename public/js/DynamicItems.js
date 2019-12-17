@@ -51,11 +51,11 @@ function DynamicItems() {
 					 !logicCube.tag.match( /npc-respawn/ ) &&
 					 !logicCube.tag.match( /npc-dev/ ) ) {
 
-					assetManager.createNewLady( logicCube.position, logicCube.tag );
+					assetManager.createNewLady( logicCube );
 
 				} else if ( logicCube.tag.match( /npc-respawn/ ) ) {
 
-					assetManager.createNewAlpinist( logicCube.position, logicCube.tag );
+					assetManager.createNewAlpinist( logicCube );
 
 				};
 
@@ -69,12 +69,12 @@ function DynamicItems() {
 				if ( logicCube.tag &&
 					 logicCube.tag.match( /bonus-stamina/ ) ) {
 
-					assetManager.createNewEdelweiss( logicCube.position, logicCube.tag );
+					assetManager.createNewEdelweiss( logicCube );
 
 				} else if ( logicCube.tag &&
 							logicCube.tag.match( /bonus/ ) ) {
 
-					assetManager.createNewBonus( logicCube.position, logicCube.tag );
+					assetManager.createNewBonus( logicCube );
 
 				};
 

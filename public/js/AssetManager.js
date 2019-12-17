@@ -207,32 +207,35 @@ function AssetManager() {
 
 	// methods called by atlas when it loads cubes with required names
 
-	function createNewLady( pos, tag ) {
+	function createNewLady( logicCube ) {
 
-		setAssetAt( ladies, pos, tag );
-
-	};
-
-	function createNewAlpinist( pos, tag ) {
-
-		setAssetAt( alpinists, pos, tag );
+		setAssetAt( ladies, logicCube );
 
 	};
 
-	function createNewEdelweiss( pos, tag ) {
+	function createNewAlpinist( logicCube ) {
 
-		setAssetAt( edelweisses, pos, tag );
+		setAssetAt( alpinists, logicCube );
 
 	};
 
-	function createNewBonus( pos, tag ) {
+	function createNewEdelweiss( logicCube ) {
 
-		setAssetAt( bonuses, pos, tag );
+		setAssetAt( edelweisses, logicCube );
+
+	};
+
+	function createNewBonus( logicCube ) {
+
+		setAssetAt( bonuses, logicCube );
 
 	};
 
 	// Take the last free group from the right asset array, position it, and hide/show it.
-	function setAssetAt( assetArray, pos, tag ) {
+	function setAssetAt( assetArray, logicCube ) {
+
+		let pos = logicCube.position ;
+		let tag = logicCube.tag ;
 
 		for ( asset of assetArray ) {
 
@@ -241,6 +244,7 @@ function AssetManager() {
 				asset.position.copy( pos );
 
 				asset.userData.isSet = true ;
+				asset.userData.tag = tag ;
 				asset.userData.graph = getGraphFromTag( tag );
 				asset.userData.initPos = new THREE.Vector3().copy( pos );
 
@@ -302,11 +306,25 @@ function AssetManager() {
 	};
 
 	// Called by gameState to hide/show assets depending on sceneGraph
-	function switchGraph( destination ) {
+	function updateGraph( destination ) {
 
-		currentGraph = destination ;
+		if ( destination ) {
+			currentGraph = destination
+		};
+
+		alpinists.forEach( ( assetGroup )=> {
+			setGroupVisibility( assetGroup );
+		});
+
+		ladies.forEach( ( assetGroup )=> {
+			setGroupVisibility( assetGroup );
+		});
 
 		edelweisses.forEach( ( assetGroup )=> {
+			setGroupVisibility( assetGroup );
+		});
+
+		bonuses.forEach( ( assetGroup )=> {
 			setGroupVisibility( assetGroup );
 		});
 
@@ -321,6 +339,41 @@ function AssetManager() {
 		} else {
 
 			assetGroup.visible = false ;
+
+		};
+
+		if ( assetGroup.userData.isDeleted ) {
+
+			assetGroup.visible = false ;
+
+		};
+
+	};
+
+	function deleteBonus( bonusName ) {
+
+		if ( bonusName.match( /stamina/ ) ) {
+
+			checkForBonus( edelweisses );
+
+		} else {
+
+			checkForBonus( bonuses );
+
+		};
+
+		function checkForBonus( groupArr ) {
+
+			groupArr.forEach( (group)=> {
+
+				if ( group.userData.tag == bonusName ) {
+
+					group.visible = false ;
+					group.userData.isDeleted = true ;
+
+				};
+
+			});
 
 		};
 
@@ -388,8 +441,9 @@ function AssetManager() {
 		createNewAlpinist,
 		createNewEdelweiss,
 		createNewBonus,
-		switchGraph,
-		update
+		updateGraph,
+		update,
+		deleteBonus
 	};
 
 
