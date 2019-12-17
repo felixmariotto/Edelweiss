@@ -74,7 +74,7 @@ function loop() {
 
 
     // UPDATE LOGIC
-
+    /*
     if ( controler && cameraControl ) {
 
         ticks = Math.round( ( clockDelta / ( 1 / 60 ) ) * 2 );
@@ -88,6 +88,7 @@ function loop() {
         };
 
     };
+    */
 
 
 
@@ -96,8 +97,8 @@ function loop() {
     stats.update();
     if ( orbitControls ) orbitControls.update();
 
-    // if ( mixer ) mixer.update( clockDelta );
-    // if ( assetManager ) assetManager.update( clockDelta );
+    if ( mixer ) mixer.update( clockDelta );
+    if ( assetManager ) assetManager.update( clockDelta );
 
     if ( charaAnim ) charaAnim.update( clockDelta );
     if ( dynamicItems ) dynamicItems.update( clockDelta );
@@ -105,6 +106,6 @@ function loop() {
 
     
     if ( stamina ) stamina.update( loopCount % 10 == 0 );
-    // if ( mapManager ) mapManager.update( loopCount % 10 == 0 );
+    if ( mapManager ) mapManager.update( loopCount % 10 == 0 );
 
 };
