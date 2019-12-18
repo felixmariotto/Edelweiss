@@ -65,14 +65,11 @@ function loop() {
 
         for ( let i = 0 ; i < ticks ; i++ ) {
 
-            
             controler.update( clockDelta / ticks );
-
-            // console.time('update logic');
-            cameraControl.update();
-            // console.timeEnd('update logic');
             
         };
+
+        cameraControl.update();
 
     };
 
