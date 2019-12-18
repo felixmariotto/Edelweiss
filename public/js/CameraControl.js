@@ -15,7 +15,7 @@ function CameraControl( player, camera ) {
 	const DEFAULT_CAMERA_DISTANCE = 2.2 ;
 	const MIN_CAMERA_DISTANCE = 1.7 ;
 	const CAMERA_WIDTH = 0.29 ;
-	const CAMERA_TWEENING_SPEED = 0.05 ;
+	const CAMERA_TWEENING_SPEED = 0.08 ;
 
 	var backupCameraPos = new THREE.Vector3();
 	var cameraTarget = new THREE.Vector3();
@@ -179,6 +179,10 @@ function CameraControl( player, camera ) {
 
 	function update( delta ) {
 
+		/*
+		resetCameraPos();
+		return
+		*/
 
 		cameraTarget.copy( player.position );
 		cameraTarget.y += atlas.PLAYERHEIGHT / 2 ;

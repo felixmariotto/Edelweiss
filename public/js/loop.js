@@ -16,7 +16,15 @@ function loop() {
 
     clockDelta = clock.getDelta();
 
+    if ( clockDelta > 0.04 ) {
+
+        console.log( loopCount )
+
+    }
+
     requestAnimationFrame( loop );
+
+    
     
     /*
     setTimeout( function() {
@@ -30,6 +38,7 @@ function loop() {
     // highRenderer.render( scene, camera );
     // console.log(  highRenderer.info.render.calls )
 
+    
     if ( optimizer &&
          optimizer.params.level == 0 ) {
 
@@ -48,6 +57,8 @@ function loop() {
         optimizer.update( clockDelta );
 
     };
+    
+
 
     // UPDATE LOGIC
     
@@ -65,9 +76,12 @@ function loop() {
 
     };
 
+
+
     // MISC UPDATES
 
-    stats.update();
+    // stats.update();
+
     if ( orbitControls ) orbitControls.update();
 
     if ( mixer ) mixer.update( clockDelta );
@@ -76,8 +90,6 @@ function loop() {
     if ( charaAnim ) charaAnim.update( clockDelta );
     if ( dynamicItems ) dynamicItems.update( clockDelta );
     if ( input ) input.update( clockDelta );
-
-    
     if ( stamina ) stamina.update( loopCount % 10 == 0 );
     if ( mapManager ) mapManager.update( loopCount % 10 == 0 );
 
