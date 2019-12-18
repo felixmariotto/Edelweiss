@@ -15,7 +15,7 @@ function CameraControl( player, camera ) {
 	const DEFAULT_CAMERA_DISTANCE = 2.2 ;
 	const MIN_CAMERA_DISTANCE = 1.7 ;
 	const CAMERA_WIDTH = 0.29 ;
-	const CAMERA_TWEENING_SPEED = 0.05 ;
+	const CAMERA_TWEENING_SPEED = 0.1 ;
 
 	var backupCameraPos = new THREE.Vector3();
 	var cameraTarget = new THREE.Vector3();
@@ -492,7 +492,6 @@ function CameraControl( player, camera ) {
 
 
 	function dodgeCamera( rayCollision, adjDir, edges ) {
-
 
 		// 'edges' object contain the information about the edges of the tile
 		// being an obstacle on the camera path. We will use it to move the
