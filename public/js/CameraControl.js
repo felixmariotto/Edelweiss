@@ -191,9 +191,7 @@ function CameraControl( player, camera ) {
 
 		// get the scene graph stages to check
 		let stages = [
-			Math.floor( player.position.y ) -1,
-			Math.floor( player.position.y ),
-			Math.floor( player.position.y ) +1
+			Math.floor( player.position.y )
 		];
 
 
@@ -202,7 +200,7 @@ function CameraControl( player, camera ) {
 
 		testRay.direction.set( -1, 0, 0 );
 
-		let rayCollision = atlas.intersectRay( testRay, stages, true );
+		let rayCollision = atlas.intersectRay( testRay, stages, false );
 
 		let intersectionLeft = rayCollision.points ?
 											rayCollision.points[ 0 ].x :
@@ -279,13 +277,12 @@ function CameraControl( player, camera ) {
 
 		/// CAMERA DISTANCE
 
-		// scene graph stages to check fo collision with camera ray
+		// scene graph stages to check for collision with camera ray
 		stages = [
 			Math.floor( player.position.y ),
 			Math.floor( player.position.y ) +1,
 			Math.floor( player.position.y ) +2,
-			Math.floor( player.position.y ) +3,
-			Math.floor( player.position.y ) +4,
+			Math.floor( player.position.y ) +3
 		];
 
 		rayCollision = atlas.intersectRay( cameraRay, stages, true );
@@ -324,11 +321,10 @@ function CameraControl( player, camera ) {
 			stages = [
 				Math.floor( cameraWantedPos.y ),
 				Math.floor( cameraWantedPos.y ) +1,
-				Math.floor( cameraWantedPos.y ) +2,
-				Math.floor( cameraWantedPos.y ) +3,
+				Math.floor( cameraWantedPos.y ) +2
 			];
 
-			let rayCollision = atlas.intersectRay( testRay, stages );
+			let rayCollision = atlas.intersectRay( testRay, stages, true );
 
 			if ( !rayCollision.points ||
 				 !( rayCollision.points[ 0 ].distanceTo( cameraWantedPos ) < ( CAMERA_WIDTH / 2 ) ) ) {
@@ -352,19 +348,12 @@ function CameraControl( player, camera ) {
 		//////////////////////
 		/// CAMERA PATH
 
-		
-
-		
 
 		stages = [
 			Math.floor( camera.position.y ),
 			Math.floor( camera.position.y ) +1,
 			Math.floor( camera.position.y ) -1,
 		];
-
-
-
-
 
 
 		testRay.origin.copy( camera.position );

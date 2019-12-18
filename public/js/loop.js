@@ -7,18 +7,14 @@ var loopCount = 0 ;
 var ticks, clockDelta;
 
 
-// hello
 
 
 
 function loop() {
 
-
-
 	loopCount += 1 ;
 
     clockDelta = clock.getDelta();
-
 
     requestAnimationFrame( loop );
     
@@ -30,14 +26,10 @@ function loop() {
     }, 1000 / 20 );
     */
 
-
-
     // temp
     // highRenderer.render( scene, camera );
     // console.log(  highRenderer.info.render.calls )
 
-    
-    
     if ( optimizer &&
          optimizer.params.level == 0 ) {
 
@@ -48,12 +40,6 @@ function loop() {
         cheapRenderer.render( scene, camera );
 
     };
-
-    
-    
-    
-
-
 
     // If performances are low,
     // reduce graphic quality to get at least 45FPS
@@ -71,25 +57,24 @@ function loop() {
 
     };
 
-
-
     // UPDATE LOGIC
-
+    
     if ( controler && cameraControl ) {
 
         ticks = Math.round( ( clockDelta / ( 1 / 60 ) ) * 2 );
 
         for ( let i = 0 ; i < ticks ; i++ ) {
 
+            
             controler.update( clockDelta / ticks );
 
+            // console.time('update logic');
             cameraControl.update();
-
+            // console.timeEnd('update logic');
+            
         };
 
     };
-
-
 
     // MISC UPDATES
 
