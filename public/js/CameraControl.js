@@ -177,7 +177,7 @@ function CameraControl( player, camera ) {
 
 
 
-	function update( intersectRays ) {
+	function update( delta ) {
 
 
 		cameraTarget.copy( player.position );
@@ -305,11 +305,9 @@ function CameraControl( player, camera ) {
 
 		};
 
-
 		// Set the vector cameraWantedPos at the computed point
 		cameraRay.at( distCamera, cameraWantedPos );
 
-		
 		// Check if wanted position is too close from player,
 		// if yes, then make it higher
 
@@ -476,13 +474,13 @@ function CameraControl( player, camera ) {
 
 		//////////////////////
 		///  POSITION CAMERA
-		////
+		//////////////////////
 
 		backupCameraPos.copy( camera.position );
 
-		attemptCameraMove( 'x' );
-		attemptCameraMove( 'y' );
-		attemptCameraMove( 'z' );
+		attemptCameraMove( 'x', delta );
+		attemptCameraMove( 'y', delta );
+		attemptCameraMove( 'z', delta );
 
 		camera.lookAt( cameraTarget );
 
@@ -535,9 +533,9 @@ function CameraControl( player, camera ) {
 
 
 
-	function attemptCameraMove( dir ) {
+	function attemptCameraMove( dir, delta ) {
 
-		camera.position[ dir ] = utils.lerp( camera.position[ dir ], cameraWantedPos[ dir ], CAMERA_TWEENING_SPEED );
+		camera.position[ dir ] = utils.lerp( camera.position[ dir ], cameraWantedPos[ dir ], CAMERA_TWEENING_SPEED * delta );
 
 		if ( atlas.collideCamera() ) {
 

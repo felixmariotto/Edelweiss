@@ -66,10 +66,10 @@ function loop() {
         for ( let i = 0 ; i < ticks ; i++ ) {
 
             controler.update( clockDelta / ticks );
-            
+
         };
 
-        cameraControl.update();
+        cameraControl.update( clockDelta / ( 1 / 60 ) );
 
     };
 
