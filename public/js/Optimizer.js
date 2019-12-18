@@ -61,8 +61,8 @@ function Optimizer() {
 			// change renderer to display the no-antialiasing one
 			if ( params.level == 0 ) {
 
-				cheapRenderer.setPixelRatio( 1 );
-				cheapRenderer.render( scene, camera );
+				highRenderer.setPixelRatio( 1 );
+				highRenderer.render( scene, camera );
 				params.level = 1 ;
 
 			// set pixel ratio to 1, which has effect mostly on smartphones
@@ -124,8 +124,8 @@ function Optimizer() {
 			// set the high quality renderer with antialiasing
 			} else if ( params.level == 1 ) {
 
-				cheapRenderer.setPixelRatio( window.devicePixelRatio );
-				cheapRenderer.render( scene, camera );
+				highRenderer.setPixelRatio( window.devicePixelRatio );
+				highRenderer.render( scene, camera );
 				params.level = 0 ;
 
 			// set pixel ratio to the default device pixel ratio
