@@ -31,7 +31,7 @@ function loop() {
     // console.log(  highRenderer.info.render.calls )
 
     if ( optimizer &&
-         optimizer.params.level <= 1 ) {
+         optimizer.params.level == 0 ) {
 
         highRenderer.render( scene, camera );
 
