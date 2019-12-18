@@ -179,9 +179,6 @@ function CameraControl( player, camera ) {
 
 	function update( delta ) {
 
-		resetCameraPos();
-		return
-
 
 		cameraTarget.copy( player.position );
 		cameraTarget.y += atlas.PLAYERHEIGHT / 2 ;
