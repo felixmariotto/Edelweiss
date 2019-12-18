@@ -64,7 +64,7 @@ function Optimizer() {
 		// set pixel ratio to 1, which has effect mostly on smartphones
 		} else if ( params.level == 1 ) {
 
-			cheapRenderer.setPixelRatio( 1 );
+			cheapRenderer.setPixelRatio( Math.ceil( window.devicePixelRatio / 2 ) );
 			cheapRenderer.render( scene, camera );
 			params.level = 2 ;
 

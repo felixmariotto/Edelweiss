@@ -12,8 +12,6 @@ var actions = [];
 var utils = Utils();
 var easing = Easing();
 
-alert( "device pixel ratio : " + window.devicePixelRatio )
-
 
 /*
 var GUIControler = {
