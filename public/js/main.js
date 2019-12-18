@@ -51,8 +51,15 @@ function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 
-	cheapRenderer.setSize( window.innerWidth, window.innerHeight );
-    highRenderer.setSize( window.innerWidth, window.innerHeight );
+    if ( optimizer.params.mustCheap ) {
+
+        cheapRenderer.setSize( window.innerWidth, window.innerHeight );
+
+    } else {
+
+        highRenderer.setSize( window.innerWidth, window.innerHeight );
+
+    };
 
     if ( input.joystick ) {
 

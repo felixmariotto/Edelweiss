@@ -178,8 +178,7 @@ function Optimizer() {
 
 		params.mustCheap = true ;
 
-		// cheapRenderer.setSize( window.innerWidth, window.innerHeight );
-		// currentRenderer = cheapRenderer ;
+		onWindowResize()
 
 	};
 
@@ -195,8 +194,7 @@ function Optimizer() {
 
 		params.mustCheap = false ;
 
-		// cheapRenderer.setSize( window.innerWidth, window.innerHeight );
-		// currentRenderer = cheapRenderer ;
+		onWindowResize()
 
 	};
 
