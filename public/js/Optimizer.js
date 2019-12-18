@@ -61,14 +61,14 @@ function Optimizer() {
 			// change renderer to display the no-antialiasing one
 			if ( params.level == 0 ) {
 
-				switchToCheapRenderer();
+				cheapRenderer.setPixelRatio( 1 );
+				cheapRenderer.render( scene, camera );
 				params.level = 1 ;
 
 			// set pixel ratio to 1, which has effect mostly on smartphones
 			} else if ( params.level == 1 ) {
 
-				cheapRenderer.setPixelRatio( 1 );
-				cheapRenderer.render( scene, camera );
+				switchToCheapRenderer();
 				params.level = 2 ;
 
 			// Remove the shadow from the dynamic objects,
@@ -124,14 +124,14 @@ function Optimizer() {
 			// set the high quality renderer with antialiasing
 			} else if ( params.level == 1 ) {
 
-				switchToHighRenderer();
+				cheapRenderer.setPixelRatio( window.devicePixelRatio );
+				cheapRenderer.render( scene, camera );
 				params.level = 0 ;
 
 			// set pixel ratio to the default device pixel ratio
 			} else if ( params.level == 2 ) {
 
-				cheapRenderer.setPixelRatio( window.devicePixelRatio );
-				cheapRenderer.render( scene, camera );
+				switchToHighRenderer();
 				params.level = 1 ;
 
 			// enable shadows on dynamic objects
