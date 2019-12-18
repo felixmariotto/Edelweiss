@@ -11,7 +11,7 @@ function Optimizer() {
 		it will be, as there will be fewer attempts or optimization/ deoptimization
 	*/
 
-	const OPTFPS = 1 / 32 ;	// FPS rate above which optimization must occur
+	const OPTFPS = 1 / 37 ;	// FPS rate above which optimization must occur
 	const DEOPTFPS = 1 / 50 ; // FPS rate under which de-optimisation will occur
 
 	//

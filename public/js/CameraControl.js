@@ -15,7 +15,7 @@ function CameraControl( player, camera ) {
 	const DEFAULT_CAMERA_DISTANCE = 2.2 ;
 	const MIN_CAMERA_DISTANCE = 1.7 ;
 	const CAMERA_WIDTH = 0.29 ;
-	const CAMERA_TWEENING_SPEED = 0.1 ;
+	const CAMERA_TWEENING_SPEED = 0.05 ;
 
 	var backupCameraPos = new THREE.Vector3();
 	var cameraTarget = new THREE.Vector3();
@@ -179,6 +179,9 @@ function CameraControl( player, camera ) {
 
 	function update( delta ) {
 
+		resetCameraPos();
+		return
+
 
 		cameraTarget.copy( player.position );
 		cameraTarget.y += atlas.PLAYERHEIGHT / 2 ;
@@ -191,7 +194,9 @@ function CameraControl( player, camera ) {
 
 		// get the scene graph stages to check
 		let stages = [
-			Math.floor( player.position.y )
+			Math.floor( player.position.y ),
+			Math.floor( player.position.y ) + 1 ,
+			Math.floor( player.position.y ) - 1
 		];
 
 
@@ -251,7 +256,7 @@ function CameraControl( player, camera ) {
 
 
 
-		// contraint to MAX_YAW
+		// constraint to MAX_YAW
 		angle = (angle * MAX_YAW) / (Math.PI / 2) ;
 
 
