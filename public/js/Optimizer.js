@@ -14,13 +14,14 @@ function Optimizer() {
 	const OPTFPS = 1 / 32 ;	// FPS rate above which optimization must occur
 	const DEOPTFPS = 1 / 50 ; // FPS rate under which de-optimisation will occur
 
+	//
 
+	const OPT_STEP = 300 ; // ms duration of FPS sampling between each opti
+	var lastOptiTime = 0 ;
+	var samples = [];
 
-
-
-	const OPTTIME = 500 ;	// timeout before optimizing
-	const DEOPTTIME = 600 ; // timeout before de-optimizing
-
+	//
+	
 	const domWorldCheap = document.getElementById('worldCheap');
     const domWorldHigh = document.getElementById('worldHigh');
     
@@ -54,47 +55,41 @@ function Optimizer() {
     */
 	function optimize() {
 
-		if ( params.timeOpti + OPTTIME < Date.now() ) {
+		// change renderer to display the no-antialiasing one
+		if ( params.level == 0 ) {
 
-			params.timeOpti = Date.now();
+			switchToCheapRenderer();
+			params.level = 1 ;
 
-			// change renderer to display the no-antialiasing one
-			if ( params.level == 0 ) {
+		// set pixel ratio to 1, which has effect mostly on smartphones
+		} else if ( params.level == 1 ) {
 
-				switchToCheapRenderer();
-				params.level = 1 ;
+			cheapRenderer.setPixelRatio( 1 );
+			cheapRenderer.render( scene, camera );
+			params.level = 2 ;
 
-			// set pixel ratio to 1, which has effect mostly on smartphones
-			} else if ( params.level == 1 ) {
+		// Remove the shadow from the dynamic objects,
+		// and stop rendering shadows dynamically
+		} else if ( params.level == 2 ) {
 
-				cheapRenderer.setPixelRatio( 1 );
-				cheapRenderer.render( scene, camera );
-				params.level = 2 ;
+			atlas.player.group.traverse( (child)=> {
 
-			// Remove the shadow from the dynamic objects,
-			// and stop rendering shadows dynamically
-			} else if ( params.level == 2 ) {
+				if ( child.type == 'Mesh' ||
+					 child.type == 'SkinnedMesh' ) {
 
-				atlas.player.group.traverse( (child)=> {
+					child.castShadow = false ;
+					child.receiveShadow = false ;
+				};
 
-					if ( child.type == 'Mesh' ||
-						 child.type == 'SkinnedMesh' ) {
+			});
 
-						child.castShadow = false ;
-						child.receiveShadow = false ;
-					};
+			cheapRenderer.render( scene, camera );
 
-				});
+			setTimeout( ()=> {
+				cheapRenderer.shadowMap.enabled = false;
+			}, 0);
 
-				cheapRenderer.render( scene, camera );
-
-				setTimeout( ()=> {
-					cheapRenderer.shadowMap.enabled = false;
-				}, 0);
-
-		    	params.level = 3 ;
-
-			};
+	    	params.level = 3 ;
 
 		};
 
@@ -111,48 +106,41 @@ function Optimizer() {
 	*/
 	function deOptimize() {
 
-		// Respect a timeout before any attempt of de-optimizing
-		if ( params.timeOpti + DEOPTTIME < Date.now() ) {
+		// There is already no optimization occuring
+		if ( params.level == 0 ) {
 
-			params.timeOpti = Date.now();
+			return
 
-			// There is already no optimization occuring
-			if ( params.level == 0 ) {
+		// set the high quality renderer with antialiasing
+		} else if ( params.level == 1 ) {
 
-				return
+			switchToHighRenderer();
+			params.level = 0 ;
 
-			// set the high quality renderer with antialiasing
-			} else if ( params.level == 1 ) {
+		// set pixel ratio to the default device pixel ratio
+		} else if ( params.level == 2 ) {
 
-				switchToHighRenderer();
-				params.level = 0 ;
+			cheapRenderer.setPixelRatio( window.devicePixelRatio );
+			cheapRenderer.render( scene, camera );
+			params.level = 1 ;
 
-			// set pixel ratio to the default device pixel ratio
-			} else if ( params.level == 2 ) {
+		// enable shadows on dynamic objects
+		} else if ( params.level == 3 ) {
 
-				cheapRenderer.setPixelRatio( window.devicePixelRatio );
-				cheapRenderer.render( scene, camera );
-				params.level = 1 ;
+			cheapRenderer.shadowMap.enabled = true;
 
-			// enable shadows on dynamic objects
-			} else if ( params.level == 3 ) {
+			atlas.player.group.traverse( (child)=> {
 
-				cheapRenderer.shadowMap.enabled = true;
+				if ( child.type == 'Mesh' ||
+					 child.type == 'SkinnedMesh' ) {
 
-				atlas.player.group.traverse( (child)=> {
+					child.castShadow = true ;
+					child.receiveShadow = true ;
+				};
 
-					if ( child.type == 'Mesh' ||
-						 child.type == 'SkinnedMesh' ) {
+			});
 
-						child.castShadow = true ;
-						child.receiveShadow = true ;
-					};
-
-				});
-
-		    	params.level = 2 ;
-
-			};
+	    	params.level = 2 ;
 
 		};
 
@@ -197,12 +185,44 @@ function Optimizer() {
 
 
 
+
+	function update( delta ) {
+
+		if ( Date.now() > lastOptiTime + OPT_STEP ) {
+
+			lastOptiTime = Date.now();
+
+			let total = samples.reduce( ( accu, current )=> {
+				return accu + current ;
+			}, 0 );
+
+			let average = total / ( samples.length - 1 );
+			samples = [];
+
+			if ( average > OPTFPS ) {
+
+	            optimize();
+
+	        } else if ( average < DEOPTFPS ) {
+
+	        	deOptimize();
+
+	        };
+
+		} else {
+
+			samples.push( delta );
+
+		};
+
+	};
+
+
+
+
 	return {
-		optimize,
-		deOptimize,
 		params,
-		OPTFPS,
-		DEOPTFPS
+		update
 	};
 
 };

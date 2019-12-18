@@ -45,15 +45,7 @@ function loop() {
     // reduce graphic quality to get at least 45FPS
     if ( loopCount > 60 && optimizer ) {
 
-        if ( clockDelta > optimizer.OPTFPS ) {
-
-            optimizer.optimize();
-
-        } else if ( clockDelta < optimizer.DEOPTFPS ) {
-
-            optimizer.deOptimize();
-
-        };
+        optimizer.update( clockDelta );
 
     };
 
