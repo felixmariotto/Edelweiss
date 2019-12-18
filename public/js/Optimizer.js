@@ -11,8 +11,8 @@ function Optimizer() {
 		it will be, as there will be fewer attempts or optimization/ deoptimization
 	*/
 
-	const OPTFPS = 1 / 33 ;	// FPS rate above which optimization must occur
-	const DEOPTFPS = 1 / 47 ; // FPS rate under which de-optimisation will occur
+	const OPTFPS = 1 / 32 ;	// FPS rate above which optimization must occur
+	const DEOPTFPS = 1 / 50 ; // FPS rate under which de-optimisation will occur
 
 
 
@@ -173,12 +173,10 @@ function Optimizer() {
 
 		cheapRenderer.render( scene, camera );
 
-		domWorldHigh.style.display = 'none' ;
 		domWorldCheap.style.display = 'inherit';
+		domWorldHigh.style.display = 'none' ;
 
 		params.mustCheap = true ;
-
-		onWindowResize()
 
 	};
 
@@ -193,8 +191,6 @@ function Optimizer() {
 		domWorldCheap.style.display = 'none';
 
 		params.mustCheap = false ;
-
-		onWindowResize()
 
 	};
 
