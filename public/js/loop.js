@@ -16,12 +16,6 @@ function loop() {
 
     clockDelta = clock.getDelta();
 
-    if ( clockDelta > 0.04 ) {
-
-        console.log( loopCount )
-
-    }
-
     requestAnimationFrame( loop );
 
     
