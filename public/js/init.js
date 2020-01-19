@@ -8,7 +8,7 @@ function init() {
 
     camera = new THREE.PerspectiveCamera( 60, window.innerWidth/window.innerHeight, 0.05, 23 );
 
-    var ambientLight = new THREE.AmbientLight( 0xffffff, 0.48 );
+    var ambientLight = new THREE.AmbientLight( 0xffffff, 0.58 );
 	scene.add( ambientLight );
 
     stats = new Stats();
