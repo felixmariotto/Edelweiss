@@ -5,7 +5,7 @@ function MapManager() {
 
 
 	const CHUNK_SIZE = 12 ;
-	const LAST_CHUNK_ID = 9 ;
+	const LAST_CHUNK_ID = 15 ;
 
 	// Array that will contain a positive boolean on the ID
 	// corresponding to the loaded map chunks

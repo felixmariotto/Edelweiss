@@ -15,6 +15,8 @@
 - Quand le joueur commence à grimper un mur dans un angle, il faut le pousser hors de l'angle, sans quoi il switch de tile direct
 - Limiter double-saut
 - Ne lancer animation "plus-de stamina" que quand il n'y a vraiment plus de stamina, et non quand la bare s'affiche vide
+- Saut contre le mur devrait desactiver les mouvement horizontaux pendant un instant
+- Entree dans la maison du dev respawn au dernier checkpoint
 
 
 

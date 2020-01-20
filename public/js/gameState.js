@@ -367,25 +367,27 @@ function GameState() {
 
     	if ( Date.now() > enterGateTime + ENTER_GATE_DURATION ) {
 
-    		resetPlayerPos( gateTilePos );
-	    	gameState.params.isGamePaused = false ;
-
-	    	domBlackScreen.classList.remove( 'show-black-screen' );
-			domBlackScreen.classList.add( 'hide-black-screen' );
+    		show();
 
     	} else {
 
     		setTimeout( ()=> {
 
-    			resetPlayerPos( gateTilePos );
-		    	gameState.params.isGamePaused = false ;
-
-		    	domBlackScreen.classList.remove( 'show-black-screen' );
-				domBlackScreen.classList.add( 'hide-black-screen' );
+    			show();
 
     		}, (enterGateTime + ENTER_GATE_DURATION) - Date.now() );
 
     	};
+
+        function show() {
+
+            resetPlayerPos( gateTilePos );
+            gameState.params.isGamePaused = false ;
+
+            domBlackScreen.classList.remove( 'show-black-screen' );
+            domBlackScreen.classList.add( 'hide-black-screen' );
+
+        };
 
     };
 
