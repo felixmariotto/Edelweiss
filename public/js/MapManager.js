@@ -11,33 +11,64 @@ function MapManager() {
 	// corresponding to the loaded map chunks
 	var record = [];
 
+	// Can be "mountain", or "cave-A" (B,C,D,E,F,G)
+	var currentMap = 'mountain';
+
+
+
+	/*
+	Creation of groups that will contain the different maps.
+	All these groups will be added to the scene, and
+	hided/showed later on.
+	*/
+
+
+	var maps = {};
+	addMapGroup( 'cave-A' );
+	addMapGroup( 'cave-B' );
+	addMapGroup( 'cave-C' );
+	addMapGroup( 'cave-D' );
+	addMapGroup( 'cave-E' );
+	addMapGroup( 'cave-F' );
+	addMapGroup( 'cave-G' );
+	addMapGroup( 'mountain' );
+	maps.mountain.visible = true ;
+
+	function addMapGroup( groupName ) {
+
+		maps[ groupName ] = new THREE.Group();
+		maps[ groupName ].visible = false;
+		scene.add( maps[ groupName ] );
+
+	};
+
+
 
 
 
 	function update( mustFindMap ) {
 
-		if ( mustFindMap ) {
+		if ( mustFindMap &&
+			 currentMap == 'mountain' &&
+			 atlas &&
+			 atlas.player ) {
 
-			if ( atlas && atlas.player ) {
+			// Get current map chunk ID from player's z pos
+			let z = Math.floor( -atlas.player.position.z / CHUNK_SIZE ) ;
+			if ( z < 0 ) z = 0 ;
 
-				// Get current map chunk ID from player's z pos
-				let z = Math.floor( -atlas.player.position.z / CHUNK_SIZE ) ;
-				if ( z < 0 ) z = 0 ;
+			// request chunks of map near player's position
 
-				// request chunks near player's position
+			requestChunk( z );
+			requestChunk( z + 1 );
+			requestChunk( z + 2 );
+			requestChunk( z + 3 );
 
-				requestChunk( z );
-				requestChunk( z + 1 );
-				requestChunk( z + 2 );
-				requestChunk( z + 3 );
+			function requestChunk( z ) {
 
-				function requestChunk( z ) {
+				if ( z <= LAST_CHUNK_ID ) {
 
-					if ( z <= LAST_CHUNK_ID ) {
-
-						addMapChunk( z );
-
-					};
+					addMapChunk( z );
 
 				};
 
@@ -75,7 +106,7 @@ function MapManager() {
 				obj.castShadow = true ;
 				obj.receiveShadow = true ;
 				
-				scene.add( glb.scene );
+				maps.mountain.add( glb.scene );
 
 				record[ z ] = glb.scene ;
 
@@ -93,10 +124,30 @@ function MapManager() {
 
 
 
+	// Make current map disappear, and show a new map
+	function switchMap( newMapName ) {
+
+		return new Promise( (resolve, reject)=> {
+
+			maps[ currentMap ].visible = false ;
+			maps[ newMapName ].visible = true ;
+			currentMap = newMapName ;
+
+			resolve();
+
+		});
+
+	};
+
+
+
+
+
 
 
 	return {
-		update
+		update,
+		switchMap
 	};
 
 };

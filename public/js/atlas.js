@@ -189,7 +189,7 @@ function Atlas( sceneGraph ) {
 
 
 	// initialise the map
-	initMap();
+	initHelpers();
 
 
 
@@ -197,7 +197,7 @@ function Atlas( sceneGraph ) {
 	
 
 	
-	function initMap( gateName ) {
+	function initHelpers( gateName ) {
 
 
 		for ( let i of Object.keys( sceneGraph.tilesGraph ) ) {
@@ -294,7 +294,10 @@ function Atlas( sceneGraph ) {
 
 
 
-	function clearMap() {
+	/*
+	clearHelpers clear the Map of all the helpers (if any)
+	*/
+	function clearHelpers() {
 
 		return new Promise( ( resolve, reject )=> {
 
@@ -1528,21 +1531,27 @@ function Atlas( sceneGraph ) {
 
 	function switchGraph( graphName, gateName, respawn ) {
 
+		console.log( graphName );
+
 		sceneGraph = gameState.sceneGraphs[ graphName ];
 
-		clearMap().then( ()=> {
+		mapManager.switchMap( graphName ).then( ()=> {
 
-			initMap( gateName );
+			clearHelpers().then( ()=> {
 
-			if ( respawn ) {
+				initHelpers( gateName );
 
-				player.position.copy( gameState.respawnPos );
+				if ( respawn ) {
 
-			} else {
+					player.position.copy( gameState.respawnPos );
 
-				gameState.endPassGateAnim();
+				} else {
 
-			};
+					gameState.endPassGateAnim();
+
+				};
+
+			});
 
 		});
 
