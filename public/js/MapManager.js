@@ -134,6 +134,17 @@ function MapManager() {
 			maps[ newMapName ].visible = true ;
 			currentMap = newMapName ;
 
+			// change lighting according to futur map
+			if ( newMapName == 'mountain' ) {
+
+				cameraControl.showLight();
+
+			} else {
+
+				cameraControl.hideLight();
+
+			};
+
 			/*
 			if the new map is the mountain, then the map will be udpated
 			on the fly. If not, then the cave map is loaded here.

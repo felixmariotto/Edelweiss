@@ -105,6 +105,15 @@ function CameraControl( player, camera ) {
     };
 
 
+    function hideLight() {
+    	directionalLight.visible = false;
+    };
+
+    function showLight() {
+    	directionalLight.visible = true;
+    };
+
+
 
 
 
@@ -580,7 +589,9 @@ function CameraControl( player, camera ) {
 		directionalLight,
 		adaptFOV,
 		CAMERA_WIDTH,
-		resetCameraPos
+		resetCameraPos,
+		hideLight,
+		showLight
 	};
 
 };
