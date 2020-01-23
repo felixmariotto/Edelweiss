@@ -7,9 +7,10 @@ function MapManager() {
 	const CHUNK_SIZE = 12 ;
 	const LAST_CHUNK_ID = 14 ;
 
-	// Array that will contain a positive boolean on the ID
-	// corresponding to the loaded map chunks
-	var record = [];
+	// Object that will contain a positive boolean on the index
+	// corresponding to the ID of the loaded mountain map chunks,
+	// and the name of the loaded caves (cave-A...)
+	var record = {};
 
 	// Can be "mountain", or "cave-A" (B,C,D,E,F,G)
 	var currentMap = 'mountain';
@@ -21,7 +22,6 @@ function MapManager() {
 	All these groups will be added to the scene, and
 	hided/showed later on.
 	*/
-
 
 	var maps = {};
 	addMapGroup( 'cave-A' );
@@ -46,6 +46,11 @@ function MapManager() {
 
 
 
+	/*
+	Only run if the player is in the main map (mountain).
+	It loads new chunks of map to the scene along the path
+	of the player, to save loading time at startup.
+	*/
 	function update( mustFindMap ) {
 
 		if ( mustFindMap &&
@@ -66,9 +71,14 @@ function MapManager() {
 
 			function requestChunk( z ) {
 
-				if ( z <= LAST_CHUNK_ID ) {
+				if ( z <= LAST_CHUNK_ID && !record[ z ] ) {
 
-					addMapChunk( z );
+					record[ z ] = true;
+
+					console.log('load slice number ' + z );
+
+					// Load the map chunk
+					loadMap( z );
 
 				};
 
@@ -81,42 +91,32 @@ function MapManager() {
 
 
 
-	// This is called in update function of this module.
-	// Every time the player enter a new area, it download
-	// the new chunks of map and adds it to the sccene
-	function addMapChunk( z ) {
 
-		// Update record so we know that this chunks is loaded
-		if ( !record[ z ] ) {
 
-			record[ z ] = true;
 
-			console.log('load slice number ' + z );
 
-			// Load the map chunk
-			gltfLoader.load( `https://edelweiss-game.s3.eu-west-3.amazonaws.com/map/${ z }.glb`, (glb)=> {
 
-				let obj = glb.scene.children[ 0 ];
+	function loadMap( mapName ) {
 
-				obj.material = new THREE.MeshLambertMaterial({
-					map: obj.material.map,
-					side: THREE.FrontSide
-				});
+		gltfLoader.load( `https://edelweiss-game.s3.eu-west-3.amazonaws.com/map/${ mapName }.glb`, (glb)=> {
 
-				obj.castShadow = true ;
-				obj.receiveShadow = true ;
-				
-				maps.mountain.add( glb.scene );
+			let obj = glb.scene.children[ 0 ];
 
-				record[ z ] = glb.scene ;
-
-			}, null, (err)=> {
-
-				console.log( `Impossible to load file ${ z }.glb` );
-
+			obj.material = new THREE.MeshLambertMaterial({
+				map: obj.material.map,
+				side: THREE.FrontSide
 			});
 
-		};
+			obj.castShadow = true ;
+			obj.receiveShadow = true ;
+			
+			maps[ currentMap ].add( glb.scene );
+
+		}, null, (err)=> {
+
+			console.error( `Impossible to load file ${ mapName }.glb` );
+
+		});
 
 	};
 
@@ -133,7 +133,20 @@ function MapManager() {
 			maps[ newMapName ].visible = true ;
 			currentMap = newMapName ;
 
-			resolve();
+			/*
+			if the new map is the mountain, then the map will be udpated
+			on the fly. If not, then the cave map is loaded here.
+			*/
+			if ( newMapName == 'mountain' ) {
+
+				resolve();
+
+			} else {
+
+				loadMap( newMapName );
+				resolve();
+
+			};
 
 		});
 
