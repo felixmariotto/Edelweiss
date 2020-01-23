@@ -1531,7 +1531,7 @@ function Atlas( sceneGraph ) {
 
 	function switchGraph( graphName, gateName, respawn ) {
 
-		console.log( graphName );
+		console.log( "atlas switch to graph " + graphName );
 
 		sceneGraph = gameState.sceneGraphs[ graphName ];
 

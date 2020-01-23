@@ -73,10 +73,6 @@ function MapManager() {
 
 				if ( z <= LAST_CHUNK_ID && !record[ z ] ) {
 
-					record[ z ] = true;
-
-					console.log('load slice number ' + z );
-
 					// Load the map chunk
 					loadMap( z );
 
@@ -96,7 +92,7 @@ function MapManager() {
 
 
 
-	function loadMap( mapName ) {
+	function loadMap( mapName, resolve ) {
 
 		gltfLoader.load( `https://edelweiss-game.s3.eu-west-3.amazonaws.com/map/${ mapName }.glb`, (glb)=> {
 
@@ -111,6 +107,9 @@ function MapManager() {
 			obj.receiveShadow = true ;
 			
 			maps[ currentMap ].add( glb.scene );
+			record[ mapName ] = true;
+
+			if ( resolve ) resolve();
 
 		}, null, (err)=> {
 
@@ -127,6 +126,8 @@ function MapManager() {
 	// Make current map disappear, and show a new map
 	function switchMap( newMapName ) {
 
+		console.log('mapManager switch to map ' + newMapName );
+
 		return new Promise( (resolve, reject)=> {
 
 			maps[ currentMap ].visible = false ;
@@ -137,14 +138,14 @@ function MapManager() {
 			if the new map is the mountain, then the map will be udpated
 			on the fly. If not, then the cave map is loaded here.
 			*/
-			if ( newMapName == 'mountain' ) {
+			if ( newMapName == 'mountain' ||
+				 record[ newMapName ] ) {
 
 				resolve();
 
 			} else {
 
-				loadMap( newMapName );
-				resolve();
+				loadMap( newMapName, resolve );
 
 			};
 
