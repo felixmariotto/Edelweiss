@@ -1535,6 +1535,9 @@ function Atlas( sceneGraph ) {
 
 		sceneGraph = gameState.sceneGraphs[ graphName ];
 
+		// hide/show the relevant assets according to the next map
+		assetManager.updateGraph( graphName );
+
 		mapManager.switchMap( graphName ).then( ()=> {
 
 			clearHelpers().then( ()=> {

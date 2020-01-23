@@ -263,7 +263,7 @@ function GameState() {
 
 
 	// This function is called when the player fell from too high.
-	// Show a black screen, wait one second, respown, remove black screen.
+	// Show a black screen, wait one second, respawn, remove black screen.
 	function die( hasCrashed ) {
 
 		params.isDying = true ;
@@ -335,7 +335,7 @@ function GameState() {
 
 	                    sceneGraphs[ graphName ] = sceneGraph ;
 
-	                    callSwitches( graphName, gateName );
+	                    atlas.switchGraph( graphName, gateName );
 
 	                });
 
@@ -343,7 +343,7 @@ function GameState() {
 
 	        } else {
 
-	             callSwitches( graphName, gateName );
+	             atlas.switchGraph( graphName, gateName );
 
 	        };
 
@@ -353,13 +353,6 @@ function GameState() {
 
 
 
-    function callSwitches( graphName, gateName ) {
-
-        atlas.switchGraph( graphName, gateName );
-
-        assetManager.updateGraph( graphName );
-
-    };
 
 
 
