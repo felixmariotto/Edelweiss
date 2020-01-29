@@ -209,13 +209,13 @@ function GameState() {
 
     function generateWorld( file ) {
 
-        var mountainGraph = parseJSON( file );
+        var graph = parseJSON( file );
 
         // Initialize atlas with the scene graph
-        atlas = Atlas( mountainGraph );
+        atlas = Atlas( graph );
 
         // store this sceneGraph into the graphs object
-        sceneGraphs.mountain = mountainGraph ;
+        sceneGraphs.mountain = graph ;
 
     };
 

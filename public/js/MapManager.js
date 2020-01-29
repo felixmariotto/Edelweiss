@@ -31,6 +31,7 @@ function MapManager() {
 	addMapGroup( 'cave-E' );
 	addMapGroup( 'cave-F' );
 	addMapGroup( 'cave-G' );
+	addMapGroup( 'dev-home' );
 	addMapGroup( 'mountain' );
 	maps.mountain.visible = true ;
 
@@ -126,22 +127,22 @@ function MapManager() {
 	// Make current map disappear, and show a new map
 	function switchMap( newMapName ) {
 
-		console.log('mapManager switch to map ' + newMapName );
-
 		return new Promise( (resolve, reject)=> {
 
 			maps[ currentMap ].visible = false ;
 			maps[ newMapName ].visible = true ;
 			currentMap = newMapName ;
 
-			// change lighting according to futur map
+			// change lighting according to future map
 			if ( newMapName == 'mountain' ) {
 
 				cameraControl.showLight();
+				removeCaveLights();
 
 			} else {
 
 				cameraControl.hideLight();
+				createCaveLights( newMapName );
 
 			};
 
@@ -161,6 +162,49 @@ function MapManager() {
 			};
 
 		});
+
+	};
+
+
+
+	var caveLights = [];
+
+	function createCaveLights( graphName ) {
+
+		var graph = gameState.sceneGraphs[ graphName ].cubesGraph;
+
+		for (let i = 0 ; i < graph.length ; i++ ) {
+
+			if ( !graph[ i ] ) continue ;
+
+			graph[ i ].forEach( ( cube )=> {
+
+				if ( cube.tag && cube.tag.match( /cave-/ ) ) {
+
+					var pos = cube.position ;
+
+					var light = new THREE.PointLight( 0xffffff, 1, 10 );
+					light.position.set( pos.x, pos.y, pos.z );
+					scene.add( light );
+					caveLights.push( light );
+
+				};
+
+			});
+
+		};
+
+	};
+
+	function removeCaveLights() {
+
+		caveLights.forEach( ( light )=> {
+
+			scene.remove( light );
+
+		});
+
+		caveLights = [];
 
 	};
 

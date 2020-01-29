@@ -199,7 +199,6 @@ function Atlas( sceneGraph ) {
 	
 	function initHelpers( gateName ) {
 
-
 		for ( let i of Object.keys( sceneGraph.tilesGraph ) ) {
 
 			if ( !sceneGraph.tilesGraph[i] ) continue
@@ -1530,8 +1529,6 @@ function Atlas( sceneGraph ) {
 
 
 	function switchGraph( graphName, gateName, respawn ) {
-
-		console.log( "atlas switch to graph " + graphName );
 
 		sceneGraph = gameState.sceneGraphs[ graphName ];
 

@@ -17,7 +17,7 @@
 - Ne lancer animation "plus-de stamina" que quand il n'y a vraiment plus de stamina, et non quand la bare s'affiche vide
 - Saut contre le mur devrait desactiver les mouvement horizontaux pendant un instant
 - Entree dans la maison du dev respawn au dernier checkpoint
-
+- Quand le joueur longe le plan de limite dans une cave, il passe parfois de l'autre coté du plan et tombe
 
 
 

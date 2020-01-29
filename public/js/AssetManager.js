@@ -308,8 +308,6 @@ function AssetManager() {
 	// Called by gameState to hide/show assets depending on sceneGraph
 	function updateGraph( destination ) {
 
-		console.log('update assets')
-
 		if ( destination ) {
 			currentGraph = destination
 		};

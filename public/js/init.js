@@ -3,7 +3,7 @@ function init() {
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color( 0xffffff );
-    scene.fog = new THREE.FogExp2( 0xffffff, 0.05 );
+    scene.fog = new THREE.FogExp2( 0xd7cbb1, 0.06 );
     // scene.overrideMaterial = new THREE.MeshBasicMaterial({ color: 0x555555 });
 
     camera = new THREE.PerspectiveCamera( 60, window.innerWidth/window.innerHeight, 0.05, 35.5 );
@@ -11,10 +11,24 @@ function init() {
     var ambientLight = new THREE.AmbientLight( 0xffffff, 0.48 );
 	scene.add( ambientLight );
 
+    //cubemap
+    var path = 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/skybox/';
+    var format = '.jpg';
+    var urls = [
+        path + 'px' + format, path + 'nx' + format,
+        path + 'py' + format, path + 'ny' + format,
+        path + 'pz' + format, path + 'nz' + format
+    ];
+
+    var reflectionCube = new THREE.CubeTextureLoader().load( urls );
+    reflectionCube.format = THREE.RGBFormat;
+
     stats = new Stats();
     document.body.appendChild( stats.dom );
     stats.dom.style.right = '0px' ;
     stats.dom.style.left = 'auto' ;
+
+    scene.background = reflectionCube;
 
 
 
