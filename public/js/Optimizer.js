@@ -16,7 +16,7 @@ function Optimizer() {
 
 	//
 
-	const OPT_STEP = 500 ; // ms duration of FPS sampling between each opti
+	const OPT_STEP = 1000 ; // ms duration of FPS sampling between each opti
 	var lastOptiTime = 0 ;
 	var samples = [];
 
@@ -37,6 +37,7 @@ function Optimizer() {
 		1 -> disable FXAA
 		2 -> set pixel ratio to devidePixelRatio / 2 (unnoticable on smartphone)
 		3 -> remove shadows
+		3 -> bring camera's far plane nearer
 
     */
 
@@ -90,6 +91,13 @@ function Optimizer() {
 
 	    	params.level = 3 ;
 
+		} else if ( params.level == 3 ) {
+
+			camera.far = 11.5 ;
+			camera.updateProjectionMatrix();
+
+			params.level = 4 ;
+
 		};
 
 	};
@@ -139,6 +147,13 @@ function Optimizer() {
 			});
 
 	    	params.level = 2 ;
+
+		} else if ( params.level == 4 ) {
+
+			camera.far = 23.5 ;
+			camera.updateProjectionMatrix();
+
+			params.level = 3 ;
 
 		};
 
