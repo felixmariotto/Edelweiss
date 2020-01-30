@@ -49,6 +49,7 @@ function init() {
         antialias: false
     });
     
+
     cheapRenderer.setPixelRatio( window.devicePixelRatio );
     cheapRenderer.setSize( window.innerWidth, window.innerHeight );
     cheapRenderer.shadowMap.enabled = true ;
@@ -58,13 +59,28 @@ function init() {
 
     highRenderer = new THREE.WebGLRenderer({
         canvas: document.getElementById('worldHigh'),
-        antialias: true
+        /* antialias: true */
     });
+
+    highRenderer.autoClear = false;
     highRenderer.setPixelRatio( window.devicePixelRatio );
     highRenderer.setSize( window.innerWidth, window.innerHeight );
     highRenderer.shadowMap.enabled = true ;
-    // highRenderer.gammaOutput = true;
-    // highRenderer.gammaFactor = 2.2;
+
+    var renderPass = new THREE.RenderPass( scene, camera );
+
+    //
+
+    fxaaPass = new THREE.ShaderPass( THREE.FXAAShader );
+
+    var pixelRatio = highRenderer.getPixelRatio();
+
+    fxaaPass.material.uniforms[ 'resolution' ].value.x = 1 / ( window.innerWidth * pixelRatio );
+    fxaaPass.material.uniforms[ 'resolution' ].value.y = 1 / ( window.innerHeight * pixelRatio );
+
+    composer = new THREE.EffectComposer( highRenderer );
+    composer.addPass( renderPass );
+    composer.addPass( fxaaPass );
 
     /////
 

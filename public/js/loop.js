@@ -36,7 +36,9 @@ function loop() {
     if ( optimizer &&
          optimizer.params.level == 0 ) {
 
-        highRenderer.render( scene, camera );
+        composer.render();
+
+        // highRenderer.render( scene, camera );
 
     } else {
 

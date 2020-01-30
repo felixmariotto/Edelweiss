@@ -5,7 +5,7 @@ var scene, camera, stats, input, atlas,
     dynamicItems, textureLoader, fileLoader, mapManager,
     optimizer, gameState, feedback, assetManager ;
 
-var renderer, highRenderer, cheapRenderer ;
+var renderer, highRenderer, cheapRenderer, composer ;
 
 var actions = [];
 
