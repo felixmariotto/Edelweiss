@@ -16,7 +16,7 @@ function Optimizer() {
 
 	//
 
-	const OPT_STEP = 1000 ; // ms duration of FPS sampling between each opti
+	const OPT_STEP = 400 ; // ms duration of FPS sampling between each opti
 	var lastOptiTime = 0 ;
 	var samples = [];
 
