@@ -190,6 +190,8 @@ function Optimizer() {
 			let average = total / ( samples.length - 1 );
 			samples = [];
 
+			/*
+
 			if ( average > OPTFPS ) {
 
 	            optimize();
@@ -203,6 +205,16 @@ function Optimizer() {
 	        	console.log( 'de-opti' );
 
 	        };
+
+	        */
+
+	        // TEMP
+
+	        optimize();
+
+	        console.log( 'opti' );
+
+
 
 		} else {
 
