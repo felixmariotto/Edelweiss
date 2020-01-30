@@ -32,17 +32,20 @@ function loop() {
     // highRenderer.render( scene, camera );
     // console.log(  highRenderer.info.render.calls )
 
-    
+    renderer.render( scene, camera );
+    // composer.render();
+    /*
     if ( optimizer &&
          optimizer.params.level == 0 ) {
 
         composer.render();
 
-    } else {
+    } else if ( optimizer ) {
 
         renderer.render( scene, camera );
 
     };
+    */
 
     // If performances are low,
     // reduce graphic quality to get at least 45FPS
