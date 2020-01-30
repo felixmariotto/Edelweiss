@@ -36,36 +36,12 @@ function init() {
     //   RENDERERS
     /////////////////////
 
-    /*
-    There is two renderers, one quite demending for the
-    GPU, and one cheaper. highRenderer is the default,
-    but if low FPS is detected in the render loop, we
-    switch to cheapRenderer.
-    */
+    renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('world') });
 
-
-    cheapRenderer = new THREE.WebGLRenderer({
-        canvas: document.getElementById('worldCheap'),
-        antialias: false
-    });
-    
-
-    cheapRenderer.setPixelRatio( window.devicePixelRatio );
-    cheapRenderer.setSize( window.innerWidth, window.innerHeight );
-    cheapRenderer.shadowMap.enabled = true ;
-    
-
-    ////////////////
-
-    highRenderer = new THREE.WebGLRenderer({
-        canvas: document.getElementById('worldHigh'),
-        /* antialias: true */
-    });
-
-    highRenderer.autoClear = false;
-    highRenderer.setPixelRatio( window.devicePixelRatio );
-    highRenderer.setSize( window.innerWidth, window.innerHeight );
-    highRenderer.shadowMap.enabled = true ;
+    renderer.autoClear = false;
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.shadowMap.enabled = true ;
 
     var renderPass = new THREE.RenderPass( scene, camera );
 
@@ -73,12 +49,12 @@ function init() {
 
     fxaaPass = new THREE.ShaderPass( THREE.FXAAShader );
 
-    var pixelRatio = highRenderer.getPixelRatio();
+    var pixelRatio = renderer.getPixelRatio();
 
     fxaaPass.material.uniforms[ 'resolution' ].value.x = 1 / ( window.innerWidth * pixelRatio );
     fxaaPass.material.uniforms[ 'resolution' ].value.y = 1 / ( window.innerHeight * pixelRatio );
 
-    composer = new THREE.EffectComposer( highRenderer );
+    composer = new THREE.EffectComposer( renderer );
     composer.addPass( renderPass );
     composer.addPass( fxaaPass );
 

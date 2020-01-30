@@ -38,11 +38,9 @@ function loop() {
 
         composer.render();
 
-        // highRenderer.render( scene, camera );
-
     } else {
 
-        cheapRenderer.render( scene, camera );
+        renderer.render( scene, camera );
 
     };
 

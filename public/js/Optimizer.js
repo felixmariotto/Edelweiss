@@ -16,7 +16,7 @@ function Optimizer() {
 
 	//
 
-	const OPT_STEP = 1000 ; // ms duration of FPS sampling between each opti
+	const OPT_STEP = 500 ; // ms duration of FPS sampling between each opti
 	var lastOptiTime = 0 ;
 	var samples = [];
 
@@ -34,7 +34,7 @@ function Optimizer() {
 
 	The levels of optimization :
 		0 -> No optimization
-		1 -> cheapRenderer instead of highRenderer (only diff: no antialias)
+		1 -> disable FXAA
 		2 -> set pixel ratio to devidePixelRatio / 2 (unnoticable on smartphone)
 		3 -> remove shadows
 
@@ -55,17 +55,16 @@ function Optimizer() {
     */
 	function optimize() {
 
-		// change renderer to display the no-antialiasing one
+		// Will disable FXAA
 		if ( params.level == 0 ) {
 
-			switchToCheapRenderer();
 			params.level = 1 ;
 
 		// set pixel ratio to 1, which has effect mostly on smartphones
 		} else if ( params.level == 1 ) {
 
-			cheapRenderer.setPixelRatio( Math.ceil( window.devicePixelRatio / 2 ) );
-			cheapRenderer.render( scene, camera );
+			renderer.setPixelRatio( Math.ceil( window.devicePixelRatio / 2 ) );
+			renderer.render( scene, camera );
 			params.level = 2 ;
 
 		// Remove the shadow from the dynamic objects,
@@ -83,10 +82,10 @@ function Optimizer() {
 
 			});
 
-			cheapRenderer.render( scene, camera );
+			renderer.render( scene, camera );
 
 			setTimeout( ()=> {
-				cheapRenderer.shadowMap.enabled = false;
+				renderer.shadowMap.enabled = false;
 			}, 0);
 
 	    	params.level = 3 ;
@@ -111,23 +110,22 @@ function Optimizer() {
 
 			return
 
-		// set the high quality renderer with antialiasing
+		// enable FXAA
 		} else if ( params.level == 1 ) {
 
-			switchToHighRenderer();
 			params.level = 0 ;
 
 		// set pixel ratio to the default device pixel ratio
 		} else if ( params.level == 2 ) {
 
-			cheapRenderer.setPixelRatio( window.devicePixelRatio );
-			cheapRenderer.render( scene, camera );
+			renderer.setPixelRatio( window.devicePixelRatio );
+			renderer.render( scene, camera );
 			params.level = 1 ;
 
 		// enable shadows on dynamic objects
 		} else if ( params.level == 3 ) {
 
-			cheapRenderer.shadowMap.enabled = true;
+			renderer.shadowMap.enabled = true;
 
 			atlas.player.group.traverse( (child)=> {
 
@@ -154,33 +152,6 @@ function Optimizer() {
 	//////////////////////////////
 	///    GENERAL FUNCTIONS
 	//////////////////////////////
-
-
-
-	function switchToCheapRenderer() {
-
-		cheapRenderer.render( scene, camera );
-
-		domWorldCheap.style.display = 'inherit';
-		domWorldHigh.style.display = 'none' ;
-
-		params.mustCheap = true ;
-
-	};
-
-
-
-
-	function switchToHighRenderer() {
-
-		highRenderer.render( scene, camera );
-
-		domWorldHigh.style.display = 'inherit' ;
-		domWorldCheap.style.display = 'none';
-
-		params.mustCheap = false ;
-
-	};
 
 
 

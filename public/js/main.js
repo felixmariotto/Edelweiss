@@ -5,7 +5,7 @@ var scene, camera, stats, input, atlas,
     dynamicItems, textureLoader, fileLoader, mapManager,
     optimizer, gameState, feedback, assetManager ;
 
-var renderer, highRenderer, cheapRenderer, composer ;
+var renderer, composer ;
 
 var actions = [];
 
@@ -49,8 +49,7 @@ function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 
-	cheapRenderer.setSize( window.innerWidth, window.innerHeight );
-    highRenderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( window.innerWidth, window.innerHeight );
 
     if ( input.joystick ) {
 
