@@ -16,7 +16,7 @@ function Optimizer() {
 
 	//
 
-	const OPT_STEP = 300 ; // ms duration of FPS sampling between each opti
+	const OPT_STEP = 1000 ; // ms duration of FPS sampling between each opti
 	var lastOptiTime = 0 ;
 	var samples = [];
 
@@ -185,6 +185,11 @@ function Optimizer() {
 
 
 
+	/*
+	update will sample the current frame's delta, then when it's time
+	to decide if an opti/de-opti is needed, it decides over an average of
+	the sampled deltas.
+	*/
 
 	function update( delta ) {
 
@@ -203,9 +208,13 @@ function Optimizer() {
 
 	            optimize();
 
+	            console.log( 'opti' );
+
 	        } else if ( average < DEOPTFPS ) {
 
 	        	deOptimize();
+
+	        	console.log( 'de-opti' );
 
 	        };
 

@@ -5,7 +5,7 @@ function MapManager() {
 
 
 	const CHUNK_SIZE = 12 ;
-	const LAST_CHUNK_ID = 14 ;
+	const LAST_CHUNK_ID = 13 ;
 
 	// Object that will contain a positive boolean on the index
 	// corresponding to the ID of the loaded mountain map chunks,

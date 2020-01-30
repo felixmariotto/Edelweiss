@@ -18,7 +18,7 @@
 - Saut contre le mur devrait desactiver les mouvement horizontaux pendant un instant
 - Entree dans la maison du dev respawn au dernier checkpoint
 - Quand le joueur longe le plan de limite dans une cave, il passe parfois de l'autre coté du plan et tombe
-
+- Quand le joueur sors d'une gate puis re-rentre, parfois deux maps sont superposées l'une sur l'autre. Une fois que le bug a eu lieu, la map "parasite" est définitivement présente dans le scène.
 
 
 
