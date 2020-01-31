@@ -60,8 +60,6 @@ function init() {
 
     /////
 
-    THREE.Cache.enabled = true;
-
 
     /////////////////////
     ///   MISC

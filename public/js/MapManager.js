@@ -107,7 +107,7 @@ function MapManager() {
 			obj.castShadow = true ;
 			obj.receiveShadow = true ;
 			
-			maps[ currentMap ].add( glb.scene );
+			// maps[ currentMap ].add( glb.scene );
 			record[ mapName ] = true;
 
 			if ( resolve ) resolve();
