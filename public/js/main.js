@@ -5,7 +5,7 @@ var scene, camera, stats, input, atlas,
     dynamicItems, textureLoader, fileLoader, mapManager,
     optimizer, gameState, feedback, assetManager ;
 
-var renderer, composer ;
+var renderer, composer, fxaaPass ;
 
 var actions = [];
 
@@ -50,6 +50,17 @@ function onWindowResize() {
 	camera.updateProjectionMatrix();
 
     renderer.setSize( window.innerWidth, window.innerHeight );
+
+    //
+
+    composer.setSize( window.innerWidth, window.innerHeight );
+
+    var pixelRatio = renderer.getPixelRatio();
+
+    fxaaPass.material.uniforms[ 'resolution' ].value.x = 1 / ( window.innerWidth * pixelRatio );
+    fxaaPass.material.uniforms[ 'resolution' ].value.y = 1 / ( window.innerHeight * pixelRatio );
+
+    //
 
     if ( input.joystick ) {
 

@@ -60,6 +60,8 @@ function init() {
 
     /////
 
+    THREE.Cache.enabled = true;
+
 
     /////////////////////
     ///   MISC
@@ -76,9 +78,7 @@ function init() {
     textureLoader = new THREE.TextureLoader();
     fileLoader = new THREE.FileLoader()
 
-
-    // TEMP
-    // datGUI = new dat.GUI();
+    //
 
 
     input = Input();
