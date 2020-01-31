@@ -29,7 +29,7 @@ function loop() {
     */
 
     // temp
-    console.log( renderer.info.render.calls )
+    // console.log( renderer.info.render.calls )
 
     if ( optimizer &&
          optimizer.params.level == 0 ) {
@@ -77,7 +77,7 @@ function loop() {
     if ( orbitControls ) orbitControls.update();
 
     if ( mixer ) mixer.update( clockDelta );
-    if ( assetManager ) assetManager.update( clockDelta );
+    // if ( assetManager ) assetManager.update( clockDelta );
 
     if ( charaAnim ) charaAnim.update( clockDelta );
     if ( dynamicItems ) dynamicItems.update( clockDelta );
