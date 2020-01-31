@@ -27,11 +27,11 @@
 
 - Limiter double-saut
 
-- Créer animation loading sur l'écran de chargement entre deux maps
-
 - Réécrire les textes de PNJs, et refaire leur images
 
 - Coder analytics
+
+- Show characters and bonuses where they don't yet appear
 
 
 
