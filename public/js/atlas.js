@@ -446,7 +446,7 @@ function Atlas( sceneGraph ) {
 
 			let model = glb.scene ;
 			model.scale.set( SCALECHARA, SCALECHARA, SCALECHARA );
-			charaGroup.add( model );
+			// charaGroup.add( model );
 
 
 			model.traverse( (obj)=> {
