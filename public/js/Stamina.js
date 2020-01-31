@@ -42,12 +42,18 @@ function Stamina() {
         params.maxStamina = gauges.length ; 
 
         // Make the "new" section blink (in fact, the first one).
-        let sections = document.querySelectorAll( '.stamina-section' );
-        sections[ 0 ].classList.remove( 'show-stamina' );
-        setTimeout( ()=> {
-            sections[ 0 ].classList.add( 'show-stamina' );
-        }, 100);
+        if ( clock.elapsedTime > 5 ) {
 
+            let sections = document.querySelectorAll( '.stamina-section' );
+
+            sections[ 0 ].classList.remove( 'show-stamina' );
+
+            setTimeout( ()=> {
+                sections[ 0 ].classList.add( 'show-stamina' );
+            }, 100);
+
+        };
+        
     };
 
 
