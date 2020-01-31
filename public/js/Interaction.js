@@ -450,9 +450,7 @@ function Interaction() {
 
 			},
 
-			message : `${ stamina.params.stamina == 8 ?
-						'+ 1 Stamina <br>This was the last edelweiss ! <br>Go back to the peak !' :
-						'+ 1 Stamina' }`
+			message : '+ 1 Stamina'
 		},
 
 
@@ -469,9 +467,7 @@ function Interaction() {
 
 			},
 
-			message : `${ stamina.params.stamina == 8 ?
-						'+ 1 Stamina <br>This was the last edelweiss ! <br>Go back to the peak !' :
-						'+ 1 Stamina' }`
+			message : '+ 1 Stamina'
 		},
 
 
@@ -488,9 +484,7 @@ function Interaction() {
 
 			},
 
-			message : `${ stamina.params.stamina == 8 ?
-						'+ 1 Stamina <br>This was the last edelweiss ! <br>Go back to the peak !' :
-						'+ 1 Stamina' }`
+			message : '+ 1 Stamina'
 		},
 
 
@@ -507,9 +501,7 @@ function Interaction() {
 
 			},
 
-			message : `${ stamina.params.stamina == 8 ?
-						'+ 1 Stamina <br>This was the last edelweiss ! <br>Go back to the peak !' :
-						'+ 1 Stamina' }`
+			message : '+ 1 Stamina'
 		},
 
 
@@ -526,9 +518,7 @@ function Interaction() {
 
 			},
 
-			message : `${ stamina.params.stamina == 8 ?
-						'+ 1 Stamina <br>This was the last edelweiss ! <br>Go back to the peak !' :
-						'+ 1 Stamina' }`
+			message : '+ 1 Stamina'
 		},
 
 
@@ -544,9 +534,7 @@ function Interaction() {
 
 			},
 
-			message : `${ stamina.params.stamina == 8 ?
-						'+ 1 Stamina <br>This was the last edelweiss ! <br>Go back to the peak !' :
-						'+ 1 Stamina' }`
+			message : '+ 1 Stamina'
 		},
 
 
@@ -562,9 +550,7 @@ function Interaction() {
 
 			},
 
-			message : `${ stamina.params.stamina == 8 ?
-						'+ 1 Stamina <br>This was the last edelweiss ! <br>Go back to the peak !' :
-						'+ 1 Stamina' }`
+			message : '+ 1 Stamina'
 		},
 
 
@@ -685,7 +671,7 @@ function Interaction() {
 
 			},
 
-			message : 'You found the Dash Gauntlets ! <br>You can now dash when you are on a wall !'
+			message : 'You found the Dash Ability ! <br>You can now dash while climbing !'
 
 		},
 
@@ -701,7 +687,7 @@ function Interaction() {
 
 			},
 
-			message : 'You found the Glider ! <br>You can now glide in the air !'
+			message : 'You found the Gliding Ability ! <br>You can now glide in the air !'
 
 		},
 
@@ -717,7 +703,7 @@ function Interaction() {
 
 			},
 
-			message : 'You found the Cloud Boots ! <br>You can now jump once in the air !'
+			message : 'You found the Double-Jump Ability ! <br>You can now jump once in the air !'
 
 		},
 
@@ -811,6 +797,7 @@ function Interaction() {
 		// Hide joystick div
 
 		document.getElementById('joystick-container').style.display = 'inherit' ;
+		document.getElementById('action-button').style.display = 'inherit' ;
 
 		// Dialogue UI animations
 
@@ -849,6 +836,7 @@ function Interaction() {
 		// Hide joystick div
 
 		document.getElementById('joystick-container').style.display = 'none' ;
+		document.getElementById('action-button').style.display = 'none' ;
 
 
 		//// Dialogue UI animations 
@@ -1281,7 +1269,7 @@ function Interaction() {
 		'npc-jump' : {
 			char: dialogueChars.lady,
 			story: [
-				{ m: `Press on ${ input.params.isTouchScreen ? 'the action button' : 'space' } to jump.` }
+				{ m: `Press on space or the action button to jump.` }
 			]
 		},
 
@@ -1298,7 +1286,7 @@ function Interaction() {
 			char: dialogueChars.lady,
 			story: [
 				{ m: `You may be too weak to climb some walls... Try to find some edelweiss, they will increase your stamina and make you stronger !` },
-				{ m: `Have a look in the mine.` }
+				{ m: `Have a look into the mine.` }
 			]
 		},
 
@@ -1306,7 +1294,7 @@ function Interaction() {
 		'npc-climb-jump' : {
 			char: dialogueChars.lady,
 			story: [
-				{ m: `Did you know you can jump while climbing ? Just press ${ input.params.isTouchScreen ? 'the action button' : 'space' } while climbing.` }
+				{ m: `Did you know you can jump while climbing ? Just press space or the action button while climbing.` }
 			]
 		},
 
@@ -1328,9 +1316,9 @@ function Interaction() {
 		'npc-dash' : {
 			char: dialogueChars.lady,
 			story: [
-				{ m: `Do you have Dash Gauntlets ?` },
-				{ m: `With Dash Gauntlets, you can dash on a wall by holding ${ input.params.isTouchScreen ? 'the action button' : 'space' } while climbing.` },
-				{ m: `When you gathered enough energy, point in the direction you want to dash, then release ${ input.params.isTouchScreen ? 'the action button' : 'space' }.` },
+				{ m: `Did you find the Dash Ability ?` },
+				{ m: `You can dash on a wall by holding space or the action button while climbing.` },
+				{ m: `When you gathered enough energy, point in the direction you want to dash, then release space or the action button.` },
 			]
 		},
 
@@ -1346,16 +1334,16 @@ function Interaction() {
 		'npc-glide' : {
 			char: dialogueChars.lady,
 			story: [
-				{ m: `Do you have a Glider ?` },
-				{ m: `With a Glider, you can glide in the air by holding ${ input.params.isTouchScreen ? 'the action button' : 'space' } while in the air.` },
+				{ m: `Do you have a the Gliding Ability ?` },
+				{ m: `You can glide in the air by holding space or the action button while in the air, after a jump for instance.` },
 			]
 		},
 
 		'npc-double-jump' : {
 			char: dialogueChars.lady,
 			story: [
-				{ m: `Do you have Clouds Boots ?` },
-				{ m: `With Clouds Boots, you can jump in the air once, by pressing ${ input.params.isTouchScreen ? 'the action button' : 'space' } while in the air.` },
+				{ m: `Do you have the Double-Jump ability ?` },
+				{ m: `With it you can jump in the air once, by pressing space or the action button while in the air.` },
 			]
 		},
 
@@ -1539,7 +1527,7 @@ function Interaction() {
 			story: [
 				{ m: 'Ho ! A player !' },
 				{ m: 'Congratulations, you reached the top of the mountain !' },
-				{ m: `Let me check your stamina... It seems that you still have ${ 9 - stamina.params.stamina } edelweiss yet to find.` },
+				{ m: `Let me check your stamina... It seems that you still have some edelweiss yet to find.` },
 				{ question: 'Do you want to save your progression ?', answers: [
 					{ m: 'Yes', next: 'yes' },
 					{ m: 'No', next: 'no' }
@@ -1558,12 +1546,12 @@ function Interaction() {
 				{ m: 'Ho ! A player !' },
 				{ m: 'Congratulations, you reached the top of the mountain !' },
 				{ m: `Let me check your stamina... Waw ! You found all the edelweiss !` },
-				{ m: `You are ready to finish the game.`  },
+				{ m: "As it looks like you appreciate my games, be sure to stay tuned for the next release on <a target='_blank' href='https://twitter.com/felix_mariotto'>https://twitter.com/felix_mariotto</a>" },
 				{ question: `Do you want to save your progression ?`, answers: [
 					{ m: 'Yes', next: 'yes' },
 					{ m: 'No', next: 'no' }
 				] },
-				{ label: 'yes', m: 'Your progression is saved, see you up there !', onCall: ()=> {
+				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
 					gameState.setSavedPosition( 10 );
 				}, end: true },
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
@@ -1575,7 +1563,7 @@ function Interaction() {
 			char: dialogueChars.dev,
 			story: [
 				{ m: "Thank you for you commitment in the game, that's encouraging for me." },
-				{ m: `Let me check your stamina... It seems that you still have ${ 9 - stamina.params.stamina } edelweiss yet to find.` },
+				{ m: `Let me check your stamina... It seems that you still have some edelweiss yet to find.` },
 				{ question: 'Do you want to save your progression ?', answers: [
 					{ m: 'Yes', next: 'yes' },
 					{ m: 'No', next: 'no' }
@@ -1593,12 +1581,12 @@ function Interaction() {
 			story: [
 				{ m: "Thank you for you commitment in the game, that's encouraging for me." },
 				{ m: `Let me check your stamina... Well, you found all the edelweiss !` },
-				{ m: "You are now ready to finish the game." },
+				{ m: "As it looks like you appreciate my games, be sure to stay tuned for the next release on <a target='_blank' href='https://twitter.com/felix_mariotto'>https://twitter.com/felix_mariotto</a>" },
 				{ question: 'Do you want to save your progression ?', answers: [
 					{ m: 'Yes', next: 'yes' },
 					{ m: 'No', next: 'no' }
 				] },
-				{ label: 'yes', m: 'Your progression is saved, see you up there !', onCall: ()=> {
+				{ label: 'yes', m: 'Your progression is saved, see you soon !', onCall: ()=> {
 					gameState.setSavedPosition( 10 );
 				}, end: true },
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
@@ -1606,22 +1594,12 @@ function Interaction() {
 		},
 
 
-		'dev-end' : {
-			char: dialogueChars.dev,
-			story: [
-				{ m: "Hi again ! This is the real end to this game." },
-				{ m: `I must tell you that I am deeply moved by your finishing Edelweiss.` },
-				{ m: 'Edelweiss is my first "true" game, and you liked it enough to find the last extra edelweiss, it really means something to me.' },
-				{ m: "If you are intereseted about my next game, visit my website : <a href='http://www.32x.io'>http://www.32x.io</a>" },
-			]
-		},
-
-
 		'npc-river' : {
-			char: dialogueChars.alpinist,
+			char: dialogueChars.lady,
 			story: [
-				{ m: "I know I must climb down this wall to reach the river..." },
-				{ m: `But I'm a bit scared.` }
+				{ m: "Are you wondering how to get down this cliff ?" },
+				{ m: "You just have to climb down the roots just in front of me." },
+				{ m: "I did that a lot, back in the days..." }
 			]
 		},
 

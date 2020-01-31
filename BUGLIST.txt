@@ -25,11 +25,15 @@
 
 - Limiter double-saut
 
-- Réécrire les textes de PNJs, et refaire leur images
-
 - Coder analytics
 
-- Show characters and bonuses where they don't yet appear
+- Show characters and bonuses where they don't yet appear, and make them disappear when taken
+
+- Cacher le bouton action pendant les dialogues
+
+- Quand joueur saute en longeant un slipping-wall, il glissera contre le mur en retombant => appliquer un léger décallage dans ce cas de figure
+
+- Elargir la shadow-map
 
 
 
@@ -54,7 +58,7 @@
 
 - Ajouter de la musique
 
-
+- Faire la ménage dans l'écriture de la distribution des bonus, le moteur de mouvement de cubes
 
 
 
