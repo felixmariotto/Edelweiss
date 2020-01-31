@@ -669,6 +669,8 @@ function Interaction() {
 
 				controler.permission.dash = true ;
 
+				assetManager.deleteBonus( 'bonus-dash' );
+
 			},
 
 			message : 'You found the Dash Ability ! <br>You can now dash while climbing !'
@@ -685,6 +687,8 @@ function Interaction() {
 
 				controler.permission.gliding = true ;
 
+				assetManager.deleteBonus( 'bonus-glider' );
+
 			},
 
 			message : 'You found the Gliding Ability ! <br>You can now glide in the air !'
@@ -700,6 +704,8 @@ function Interaction() {
 			onGet : function() {
 
 				controler.permission.infinityJump = true ;
+
+				assetManager.deleteBonus( 'bonus-boots' );
 
 			},
 

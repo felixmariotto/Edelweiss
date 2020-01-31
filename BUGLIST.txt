@@ -27,11 +27,11 @@
 
 - Coder analytics
 
-- Show characters and bonuses where they don't yet appear, and make them disappear when taken
-
 - Quand joueur saute en longeant un slipping-wall, il glissera contre le mur en retombant => appliquer un léger décallage dans ce cas de figure
 
 - Elargir la shadow-map, ou la réactualiser
+
+- Faire mourrir au contact de l'eau
 
 
 
@@ -59,6 +59,8 @@
 - Faire la ménage dans l'écriture de la distribution des bonus, le moteur de mouvement de cubes
 
 - Ajouter un plan sous les toits de chaque maison, sinon on voit le ciel c'est moche
+
+- Ne pas sauter quand clique pour effacer un message genre '+1 stamina'
 
 
 

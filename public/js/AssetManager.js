@@ -45,10 +45,10 @@ function AssetManager() {
 
 
 	// Create one group per iteration, before the assets is loaded/created
-	addGroups( alpinists, 7 ); // unsure
-	addGroups( edelweisses, 7 ); // unsure
+	addGroups( alpinists, 10 );
+	addGroups( edelweisses, 6 );
 	addGroups( ladies, 12 );
-	addGroups( bonuses, 6 );
+	addGroups( bonuses, 9 );
 
 	function addGroups( arr, groupsNumber ) {
 
