@@ -7,43 +7,66 @@
 //////////////////////////////////
 
 
-- Ombrer le visage de l'héroine smooth
-- Ne pas respawn à point de départ, sinon le joueur va re-chercher l'edelweiss ( respawn devant pnj mine )
-- Controler : empêcher de grimper si direction est perpendiculaire au mur ( super chiant quand on saute le long d'un mur )
-- Créer une animation de charge pour le dash
-- Créer une animation de dépense de stamina, pour tout ce qui coûte de la stamina
-- Quand le joueur commence à grimper un mur dans un angle, il faut le pousser hors de l'angle, sans quoi il switch de tile direct
-- Limiter double-saut
-- Ne lancer animation "plus-de stamina" que quand il n'y a vraiment plus de stamina, et non quand la bare s'affiche vide
-- Saut contre le mur devrait desactiver les mouvement horizontaux pendant un instant
-- Entree dans la maison du dev respawn au dernier checkpoint
-- Quand le joueur longe le plan de limite dans une cave, il passe parfois de l'autre coté du plan et tombe
+
+
+
+
+///////////// URGENT
+
+- empecher de changer de tile depuis un mur grimpable à un mur non grimpable
+
+- réparer le dash up quand le joueur passe un bord : pour l'instant, l'animation haulUp se lance par erreur
+
+- stop blinking last stamina bars when game starts
+
 - Quand le joueur sors d'une gate puis re-rentre, parfois deux maps sont superposées l'une sur l'autre. Une fois que le bug a eu lieu, la map "parasite" est définitivement présente dans le scène.
 
+- Quand le joueur longe le plan de limite dans une cave, il passe parfois de l'autre coté du plan et tombe
+
+- Créer une animation de charge et une animation de direction pour le dash
+
+- Limiter double-saut
+
+- Créer animation loading sur l'écran de chargement entre deux maps
+
+- Réécrire les textes de PNJs, et refaire leur images
+
+- Coder analytics
 
 
 
 
 
-/////////////////////////////
-///    SCHEDULE
-/////////////////////////////
 
+///////////// NOT URGENT
 
-/////  PART 4 : VARIOUS IMPROVMENTS ABOVE //////
-
-///// PART 5 : ART /////
-
-- Draw characters
-- Model map
-
-
-
-///// PART 6 : POLISHING /////
-
-- shadows blinking on low grade devices because of optimisation
-- empecher switch tile on limit tiles
 - animation climb down right is bugged
-- regression with animation when dashing up a ledge : animation haulUp, then continue dash
-- stop blinking stamina bars when game starts
+
 - joueur ne doit pas etre capable de grimper quand il tombe suffisament vite pour mourrir si il tombait sur le sol
+
+- Dans Google Chrome sur mon HTC, quand on charge la page une seconde fois, les performance sont bien pire.
+
+- Ombrer le visage de l'héroine smooth
+
+- Ne pas respawn à point de départ, sinon le joueur va re-chercher l'edelweiss ( respawn devant pnj mine )
+
+- Ne lancer animation "plus-de stamina" (+ colorisation rouge) que quand il n'y a vraiment plus de stamina, et non quand la bare s'affiche vide
+
+- Refaire un bel écran titre
+
+- Ajouter de la musique
+
+
+
+
+
+
+
+
+
+//////////// NOT SURE
+
+- Saut contre le mur devrait desactiver les mouvement horizontaux pendant un instant
+
+- Entree dans la maison du dev respawn au dernier checkpoint
+

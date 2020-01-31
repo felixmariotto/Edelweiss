@@ -25,11 +25,11 @@ function DynamicItems() {
 	///// INIT
 
 
-	var spriteMap = textureLoader.load( "https://edelweiss-game.s3.eu-west-3.amazonaws.com/sprites/bubble.png" );
+	var spriteMap = textureLoader.load( "https://edelweiss-game.s3.eu-west-3.amazonaws.com/assets/bubble.png" );
 	var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap, color: 0xffffff } );
 	
 	sprite = new THREE.Sprite( spriteMaterial );
-	sprite.scale.set( 0.6, 0.4, 0.6 );
+	sprite.scale.set( 0.3, 0.6, 1 );
 	sprite.position.y = 0.6 ;
 
 	interactionSign.add( sprite )
