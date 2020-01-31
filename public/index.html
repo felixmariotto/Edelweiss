@@ -526,13 +526,17 @@
             flex-direction: column-reverse;
         }
 
-            #char-img {
+            #char-img-cont {
                 position: absolute;
                 width: 100%;
                 max-width: 75vw;
                 bottom: 0px;
                 right: 0px;
             }
+
+                .char-img {
+                    width: 100%;
+                }
 
             .show-char {
                 animation: show_char 0.3s ease-out 1 forwards;
@@ -631,7 +635,15 @@
 
     <div id="char-container">
         
-        <img id="char-img" src="">
+        <div id="char-img-cont">
+            
+            <img class="char-img" id="img-camper" src="https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-alpinist.png">
+
+            <img class="char-img" id="img-lady" src="https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-lady.png">
+
+            <img class="char-img" id="img-dev" src="https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-dev.png">
+
+        </div>
 
     </div>
 

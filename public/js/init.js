@@ -28,7 +28,7 @@ function init() {
     stats.dom.style.right = '0px' ;
     stats.dom.style.left = 'auto' ;
 
-    // scene.background = reflectionCube;
+    scene.background = reflectionCube;
 
 
 

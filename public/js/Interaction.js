@@ -16,7 +16,7 @@ function Interaction() {
 	const domCharName = document.getElementById('talker-name-container');
 
 	const domChar = document.getElementById('char-container');
-	const domCharImg = document.getElementById('char-img');
+	const domCharImgCont = document.getElementById('char-img-cont');
 
 	const domOverlay = document.getElementById('overlay');
 
@@ -837,7 +837,7 @@ function Interaction() {
 
 
 
-	// SHOW THE TALK UI
+	// SHOW THE DISCUSSION UI
 	function showDialogueUI( dialogueName ) {
 
 		let dialogueChar = dialogues[ dialogueName ].char ;
@@ -851,12 +851,17 @@ function Interaction() {
 		document.getElementById('joystick-container').style.display = 'none' ;
 
 
-		// Dialogue UI animations 
+		//// Dialogue UI animations 
+
+		// hide all character pictures, then show the talking character picture
+		document.getElementById( "img-camper" ).style.display = "none" ;
+		document.getElementById( "img-lady" ).style.display = "none" ;
+		document.getElementById( "img-dev" ).style.display = "none" ;
+		document.getElementById( dialogueChar.domID ).style.display = "inherit" ;
 
 		domOverlay.style.display = 'inherit' ;
 
 		domCharName.innerHTML = dialogueChar.name ;
-		domCharImg.src = dialogueChar.url ;
 
 		domTalkContainer.classList.remove( 'hide-talk' );
 		domTalkContainer.classList.add( 'show-talk' );
@@ -1232,17 +1237,17 @@ function Interaction() {
 
 		alpinist : {
 			name: 'Camper',
-			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-alpinist.png'
+			domID: 'img-camper'
 		},
 
 		lady : {
 			name: 'Old Granny',
-			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-lady.png'
+			domID: 'img-lady'
 		},
 
 		dev : {
 			name: 'dev Felix Mariotto',
-			url: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/char-pictures/char-picture-brother.jpg'
+			domID: 'img-dev'
 		}
 
 	};
