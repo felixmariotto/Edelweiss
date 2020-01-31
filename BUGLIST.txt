@@ -58,6 +58,8 @@
 
 - Faire la ménage dans l'écriture de la distribution des bonus, le moteur de mouvement de cubes
 
+- Ajouter un plan sous les toits de chaque maison, sinon on voit le ciel c'est moche
+
 
 
 

@@ -72,7 +72,7 @@ function loop() {
 
     // MISC UPDATES
 
-    stats.update();
+    // stats.update();
 
     if ( orbitControls ) orbitControls.update();
 

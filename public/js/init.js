@@ -23,12 +23,19 @@ function init() {
     var reflectionCube = new THREE.CubeTextureLoader().load( urls );
     reflectionCube.format = THREE.RGBFormat;
 
+    scene.background = reflectionCube;
+
+
+    //
+
+    /*
     stats = new Stats();
     document.body.appendChild( stats.dom );
     stats.dom.style.right = '0px' ;
     stats.dom.style.left = 'auto' ;
+    */
 
-    scene.background = reflectionCube;
+    
 
 
 
