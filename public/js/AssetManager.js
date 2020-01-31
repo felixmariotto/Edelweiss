@@ -172,7 +172,7 @@ function AssetManager() {
 
 			let newModel = THREE.SkeletonUtils.clone( glb.scene );
 
-			// modelsArr[ i ].add( newModel );
+			modelsArr[ i ].add( newModel );
 
 			if ( mixers ) {
 
