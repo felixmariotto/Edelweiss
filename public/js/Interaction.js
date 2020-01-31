@@ -207,6 +207,13 @@ function Interaction() {
 				gameState.switchMapGraph( 'cave-11' );
 				break;
 
+
+			///// MISC
+
+			case 'water' :
+                gameState.die();
+				break;
+
 		};
 
 	};
