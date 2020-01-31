@@ -72,12 +72,12 @@ function loop() {
 
     // MISC UPDATES
 
-    // stats.update();
+    stats.update();
 
     if ( orbitControls ) orbitControls.update();
 
     if ( mixer ) mixer.update( clockDelta );
-    // if ( assetManager ) assetManager.update( clockDelta );
+    if ( assetManager ) assetManager.update( clockDelta );
 
     if ( charaAnim ) charaAnim.update( clockDelta );
     if ( dynamicItems ) dynamicItems.update( clockDelta );
