@@ -31,8 +31,6 @@ function Input() {
 
     var touches = {};
 
-    var touchTime;
-
     var blockAction = false ;
 
     var joystick, domCross, moveVec, joystickAngle, joystickState ;
@@ -234,22 +232,6 @@ function Input() {
 
 
 
-    ////
-
-
-    // Set touchTime with Date.now(), so we can know the length of touch later
-
-    domCharContainer.addEventListener( 'touchstart', (e)=> {
-
-        touchTime = Date.now();
-
-    });
-
-    domTalkContainer.addEventListener( 'touchstart', (e)=> {
-
-        touchTime = Date.now();
-
-    });
 
 
 
@@ -260,8 +242,8 @@ function Input() {
 
     domCharContainer.addEventListener( 'touchend', (e)=> {
 
-        if ( Date.now() < touchTime + 70 &&
-             !interaction.questionTree.isQuestionAsked ) {
+        if ( !interaction.questionTree.isQuestionAsked &&
+             interaction.isInDialogue() ) {
 
             interaction.requestNextLine();
 
@@ -271,8 +253,8 @@ function Input() {
 
     domTalkContainer.addEventListener( 'touchend', (e)=> {
 
-        if ( Date.now() < touchTime + 70 &&
-             !interaction.questionTree.isQuestionAsked ) {
+        if ( !interaction.questionTree.isQuestionAsked &&
+             interaction.isInDialogue() ) {
 
             interaction.requestNextLine();
 
