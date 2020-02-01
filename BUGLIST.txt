@@ -31,8 +31,6 @@
 
 - Elargir la shadow-map, ou la réactualiser
 
-- Faire mourrir au contact de l'eau
-
 
 
 
@@ -61,6 +59,8 @@
 - Ajouter un plan sous les toits de chaque maison, sinon on voit le ciel c'est moche
 
 - Ne pas sauter quand clique pour effacer un message genre '+1 stamina'
+
+- Faire animation poussière pour contact avec wall-fall
 
 
 
