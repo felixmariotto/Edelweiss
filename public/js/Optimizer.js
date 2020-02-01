@@ -11,8 +11,8 @@ function Optimizer() {
 		it will be, as there will be fewer attempts or optimization/ deoptimization
 	*/
 
-	const OPTFPS = 1 / 37 ;	// FPS rate above which optimization must occur
-	const DEOPTFPS = 1 / 50 ; // FPS rate under which de-optimisation will occur
+	const OPTFPS = 1 / 28 ;	// FPS rate above which optimization must occur
+	const DEOPTFPS = 1 / 53 ; // FPS rate under which de-optimisation will occur
 
 	//
 
@@ -29,18 +29,6 @@ function Optimizer() {
     	level: 0,
     	timeOpti: Date.now() // last time an optimisation was done
     };
-
-    /*
-
-	The levels of optimization :
-		0 -> No optimization
-		1 -> disable FXAA
-		2 -> set pixel ratio to devidePixelRatio / 2 (unnoticable on smartphone)
-		3 -> remove shadows
-		3 -> bring camera's far plane nearer
-
-    */
-
 
 
 
@@ -192,13 +180,13 @@ function Optimizer() {
 
 	            optimize();
 
-	            console.log( 'opti' );
+	            // console.log( 'opti' );
 
 	        } else if ( average < DEOPTFPS ) {
 
 	        	deOptimize();
 
-	        	console.log( 'de-opti' );
+	        	// console.log( 'de-opti' );
 
 	        };
 

@@ -13,13 +13,6 @@
 
 ///////////// URGENT
 
-- empecher de changer de tile depuis un mur grimpable à un mur non grimpable
-
-- réparer le dash up quand le joueur passe un bord : pour l'instant, l'animation haulUp se lance par erreur
-
-- Quand le joueur sors d'une gate puis re-rentre, parfois deux maps sont superposées l'une sur l'autre. Une fois que le bug a eu lieu, la map "parasite" est définitivement présente dans le scene.
-
-- Quand le joueur longe le plan de limite dans une cave, il passe parfois de l'autre coté du plan et tombe
 
 - Créer une animation de charge et une animation de direction pour le dash
 
@@ -29,12 +22,20 @@
 
 - Quand joueur saute en longeant un slipping-wall, il glissera contre le mur en retombant => appliquer un léger décallage dans ce cas de figure
 
+- réparer le dash up quand le joueur passe un bord : pour l'instant, l'animation haulUp se lance par erreur
+
+- Quand le joueur longe le plan de limite dans une cave, il passe parfois de l'autre coté du plan et tombe
+
+- empecher de changer de tile depuis un mur grimpable à un mur non grimpable
+
 
 
 
 
 
 ///////////// NOT URGENT
+
+- Quand le joueur sors d'une gate puis re-rentre, parfois deux maps sont superposées l'une sur l'autre. Une fois que le bug a eu lieu, la map "parasite" est définitivement présente dans le scene.
 
 - animation climb down right is bugged
 
