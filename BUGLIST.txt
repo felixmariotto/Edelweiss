@@ -31,6 +31,8 @@
 
 - Elargir la shadow-map, ou la réactualiser
 
+- Bug quand le joueur appuit sur space répétitivement pendant un dialogue
+
 
 
 

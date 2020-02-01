@@ -67,7 +67,7 @@ function CameraControl( player, camera ) {
 	////////////////////
 
 
-	var directionalLight = addShadowedLight( 2.4, 7.8, 2.6, 0xffffff, 0.85 );
+	var directionalLight = addShadowedLight( 3, 25, 14, 0xffffff, 0.85 );
     group.add( directionalLight );
     group.add( directionalLight.target );
 
@@ -80,14 +80,14 @@ function CameraControl( player, camera ) {
         directionalLight.position.set( x, y, z );
         directionalLight.castShadow = true;
 
-        var d = 8;
+        var d = 10;
 
         directionalLight.shadow.camera.left = -d;
         directionalLight.shadow.camera.right = d;
         directionalLight.shadow.camera.top = d;
         directionalLight.shadow.camera.bottom = -d;
-        directionalLight.shadow.camera.near = 5;
-        directionalLight.shadow.camera.far = 18;
+        directionalLight.shadow.camera.near = 0.1;
+        directionalLight.shadow.camera.far = 50;
         directionalLight.shadow.mapSize.width = 1024;
         directionalLight.shadow.mapSize.height = 1024;
         directionalLight.shadow.bias = -0;
@@ -187,6 +187,8 @@ function CameraControl( player, camera ) {
 
 
 	function update( delta ) {
+
+		group.position.copy( player.position )
 
 		/*
 		resetCameraPos();
