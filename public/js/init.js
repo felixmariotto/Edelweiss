@@ -4,7 +4,7 @@ function init() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color( 0xffffff );
     scene.fog = new THREE.FogExp2( 0xd7cbb1, 0.06 );
-    // scene.overrideMaterial = new THREE.MeshBasicMaterial({ color: 0x555555 });
+    scene.overrideMaterial = new THREE.MeshBasicMaterial({ color: 0x555555 });
 
     camera = new THREE.PerspectiveCamera( 60, window.innerWidth/window.innerHeight, 0.01, 23.5 );
 

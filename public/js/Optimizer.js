@@ -83,8 +83,6 @@ function Optimizer() {
 
 			});
 
-			renderer.render( scene, camera );
-
 			setTimeout( ()=> {
 				renderer.shadowMap.enabled = false;
 			}, 0);

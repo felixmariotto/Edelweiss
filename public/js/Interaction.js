@@ -914,7 +914,8 @@ function Interaction() {
 	// SHOW DIALOGUE UI
 	function startDialogue( dialogueName ) {
 
-		if ( lastDialogueDate < Date.now() - DIALOGUEBREAKTIME ) {
+		if ( lastDialogueDate < Date.now() - DIALOGUEBREAKTIME &&
+			 !isInDialogue() ) {
 
 			showDialogueUI( dialogueName );
 
@@ -952,6 +953,8 @@ function Interaction() {
 	// If there was no question asked, it prints the next statement
 	// or end the dialogue.
 	function requestNextLine() {
+
+		if ( isInAnim ) return
 
 		if ( questionTree.isQuestionAsked ) {
 
