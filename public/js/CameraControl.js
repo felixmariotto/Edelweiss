@@ -80,7 +80,7 @@ function CameraControl( player, camera ) {
         directionalLight.position.set( x, y, z );
         directionalLight.castShadow = true;
 
-        var d = 10;
+        var d = 7;
 
         directionalLight.shadow.camera.left = -d;
         directionalLight.shadow.camera.right = d;
@@ -188,12 +188,8 @@ function CameraControl( player, camera ) {
 
 	function update( delta ) {
 
-		group.position.copy( player.position )
-
-		/*
-		resetCameraPos();
-		return
-		*/
+		group.position.copy( player.position );
+		group.position.z -= 5 ;
 
 		cameraTarget.copy( player.position );
 		cameraTarget.y += atlas.PLAYERHEIGHT / 2 ;
