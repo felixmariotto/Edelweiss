@@ -29,8 +29,6 @@
 
 - Quand joueur saute en longeant un slipping-wall, il glissera contre le mur en retombant => appliquer un léger décallage dans ce cas de figure
 
-- Elargir la shadow-map, ou la réactualiser
-
 - Bug quand le joueur appuit sur space répétitivement pendant un dialogue
 
 
