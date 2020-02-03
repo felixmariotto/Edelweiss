@@ -74,6 +74,8 @@ function MapManager() {
 
 				if ( z <= LAST_CHUNK_ID && !record[ z ] ) {
 
+					record[ z ] = true ;
+
 					// Load the map chunk
 					loadMap( z );
 
@@ -95,7 +97,11 @@ function MapManager() {
 
 	function loadMap( mapName, resolve ) {
 
+		console.log('loadMap call : ' + mapName)
+
 		gltfLoader.load( `https://edelweiss-game.s3.eu-west-3.amazonaws.com/map/${ mapName }.glb`, (glb)=> {
+
+			// console.log( '///// MAP LOADED : ' + mapName );
 
 			let obj = glb.scene.children[ 0 ];
 

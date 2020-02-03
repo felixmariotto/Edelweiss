@@ -165,6 +165,8 @@ function Optimizer() {
 
 	function update( delta ) {
 
+		console.log( params.level )
+
 		if ( Date.now() > lastOptiTime + OPT_STEP ) {
 
 			lastOptiTime = Date.now();
