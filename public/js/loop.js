@@ -28,8 +28,19 @@ function loop() {
     }, 1000 / 20 );
     */
 
-    // temp
-    // console.log( renderer.info.render.calls )
+
+
+
+    // If performances are low,
+    // reduce graphic quality to get at least 45FPS
+    if ( loopCount > 60 && optimizer ) {
+
+        optimizer.update( clockDelta );
+
+    };
+
+
+
 
     if ( optimizer &&
          optimizer.params.level == 0 ) {
@@ -42,13 +53,6 @@ function loop() {
 
     };
 
-    // If performances are low,
-    // reduce graphic quality to get at least 45FPS
-    if ( loopCount > 60 && optimizer ) {
-
-        optimizer.update( clockDelta );
-
-    };
     
 
 
