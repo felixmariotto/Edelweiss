@@ -31,7 +31,6 @@
 
 ///////////// NOT URGENT
 
-- Quand le joueur sors d'une gate puis re-rentre, parfois deux maps sont superposées l'une sur l'autre. Une fois que le bug a eu lieu, la map "parasite" est définitivement présente dans le scene.
 
 - animation climb down right is bugged
 
