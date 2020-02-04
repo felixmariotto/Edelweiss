@@ -156,7 +156,7 @@ function Controler( player ) {
 
     function startAction( name, duration, endVec, startAngle, endAngle ) {
 
-        // Check that the final position of the action will no be in a cube
+        // Check that the final p osition of the action will no be in a cube
 
         let startVec = new THREE.Vector3().copy( player.position );
 
@@ -1002,6 +1002,14 @@ function Controler( player ) {
         xCollision = atlas.collidePlayerWalls( currentDirection );
 
 
+        if ( xCollision.xPoint ) {
+            player.position.x = xCollision.xPoint ;
+        };
+
+        if ( xCollision.zPoint ) {
+            player.position.z = xCollision.zPoint ;
+        };
+
 
         // INWARD ANGLE SWITCH ACTION
         if ( !state.isDashing &&
@@ -1011,85 +1019,107 @@ function Controler( player ) {
              contactDirection != xCollision.direction &&
              player.position.y > xCollision.minHeight ) {
     
-    
             let x, z ;
-            
 
-            // Set one axis from the direction of the final tile
-            switch ( xCollision.direction ) {
+            // blick switching, because we don't want the player to be able
+            // to swith to a non-climbable tile.
+            if ( xCollision.majorWallType == 'wall-slip' ) {
 
-                case 'right' :
-                    x = player.position.x ;
-                    finalAnimationAngle = Math.PI / 2 ;
-                    if ( contactDirection == 'up' ) {
-                        z = player.position.z + DISTANCEINTERNALSWITCH;
-                    } else {
-                        z = player.position.z - DISTANCEINTERNALSWITCH;
-                    };
-                    break;
+                console.log('handle case')
 
-                case 'left' :
-                    x = player.position.x ;
-                    finalAnimationAngle = -Math.PI / 2 ;
-                    if ( contactDirection == 'up' ) {
-                        z = player.position.z + DISTANCEINTERNALSWITCH;
-                    } else {
-                        z = player.position.z - DISTANCEINTERNALSWITCH;
-                    };
-                    break;
+                switch ( xCollision.direction ) {
 
-                case 'up' :
-                    z = player.position.z ;
-                    finalAnimationAngle = Math.PI ;
-                    if ( contactDirection == 'right' ) {
-                        x = player.position.x - DISTANCEINTERNALSWITCH;
-                    } else {
-                        x = player.position.x + DISTANCEINTERNALSWITCH;
-                    };
-                    break;
+                    case 'right' :
+                        player.position.x -= 0.01 ;
+                        break;
 
-                case 'down' :
-                    z = player.position.z ;
-                    finalAnimationAngle = 0 ;
-                    if ( contactDirection == 'right' ) {
-                        x = player.position.x - DISTANCEINTERNALSWITCH;
-                    } else {
-                        x = player.position.x + DISTANCEINTERNALSWITCH;
-                    };
-                    break;
+                    case 'left' :
+                        player.position.x += 0.01 ;
+                        break;
+
+                    case 'up' :
+                        player.position.z += 0.01 ;
+                        break;
+
+                    case 'down' :
+                        player.position.z += 0.01 ;
+                        break;
+
+                };
+
+                // this object needs refresh after this teleporting
+                xCollision = atlas.collidePlayerWalls( currentDirection );
+
+            // make player switch tile inward
+            } else {
+
+                // Set one axis from the direction of the final tile
+                switch ( xCollision.direction ) {
+
+                    case 'right' :
+                        x = player.position.x ;
+                        finalAnimationAngle = Math.PI / 2 ;
+                        if ( contactDirection == 'up' ) {
+                            z = player.position.z + DISTANCEINTERNALSWITCH;
+                        } else {
+                            z = player.position.z - DISTANCEINTERNALSWITCH;
+                        };
+                        break;
+
+                    case 'left' :
+                        x = player.position.x ;
+                        finalAnimationAngle = -Math.PI / 2 ;
+                        if ( contactDirection == 'up' ) {
+                            z = player.position.z + DISTANCEINTERNALSWITCH;
+                        } else {
+                            z = player.position.z - DISTANCEINTERNALSWITCH;
+                        };
+                        break;
+
+                    case 'up' :
+                        z = player.position.z ;
+                        finalAnimationAngle = Math.PI ;
+                        if ( contactDirection == 'right' ) {
+                            x = player.position.x - DISTANCEINTERNALSWITCH;
+                        } else {
+                            x = player.position.x + DISTANCEINTERNALSWITCH;
+                        };
+                        break;
+
+                    case 'down' :
+                        z = player.position.z ;
+                        finalAnimationAngle = 0 ;
+                        if ( contactDirection == 'right' ) {
+                            x = player.position.x - DISTANCEINTERNALSWITCH;
+                        } else {
+                            x = player.position.x + DISTANCEINTERNALSWITCH;
+                        };
+                        break;
+
+                };
+
+
+                let endVec = new THREE.Vector3(
+                    x,
+                    player.position.y,
+                    z
+                );
+
+                startAction(
+                    'switchInward',
+                    SWITCHTILEDURATION,
+                    endVec,
+                    charaAnim.group.rotation.y,
+                    finalAnimationAngle
+                );
 
             };
-
-
-            let endVec = new THREE.Vector3(
-                x,
-                player.position.y,
-                z
-            );
-
-            startAction(
-                'switchInward',
-                SWITCHTILEDURATION,
-                endVec,
-                charaAnim.group.rotation.y,
-                finalAnimationAngle
-            );
-
 
         };
 
 
         contactDirection = xCollision.direction ;
         contactType = xCollision.majorWallType ;
-
-
-        if ( xCollision.xPoint ) {
-            player.position.x = xCollision.xPoint ;
-        };
-
-        if ( xCollision.zPoint ) {
-            player.position.z = xCollision.zPoint ;
-        };
 
 
         if ( xCollision.majorWallType &&
