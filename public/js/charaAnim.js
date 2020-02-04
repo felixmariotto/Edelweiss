@@ -2,7 +2,6 @@
 
 function CharaAnim( player ) {
 
-
 	var glider;
 
     const group = player.charaGroup ;
@@ -147,6 +146,17 @@ function CharaAnim( player ) {
 
 
     var moveSpeedRatio ;
+
+
+
+
+
+    /*
+    Creation of animation of stamina charge, that will be placed
+    within the character group inside the scene. They will be
+    hided, and showed when the player charges a dash
+    */
+    var chargeGroup = new THREE.Group();
 
 
 

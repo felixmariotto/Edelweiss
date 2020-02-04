@@ -1125,13 +1125,12 @@ function Controler( player ) {
 
             // Here we detect if the player is going toward the edge
             // of a climbable tile, so that we can trigger some special
-            // actions, like hauling to player up an edge, or
+            // actions, like hauling the player up an edge, or
             // switch direction
             if ( !state.isDashing &&
                  xCollision.majorWallType != 'wall-slip' &&
                  xCollision.majorWallType != 'wall-fall' &&
                  xCollision.majorWallType != 'wall-limit') {
-
 
                 // switch on -X
                 if ( xCollision.minX > player.position.x ) {
@@ -1332,16 +1331,18 @@ function Controler( player ) {
 
 
 
-            // This is used just a few lines higher by the functions
-            // that trigger special animations.
-            // It haul the player on top of an edge
+            /*
+            Handle hauling up a ledge
+            */
             function haul() {
-
 
                 if ( xCollision.maxHeight > player.position.y + (HAULLLOWLIMIT * atlas.PLAYERHEIGHT) &&
                      xCollision.maxHeight < player.position.y + (HAULTOPLIMIT * atlas.PLAYERHEIGHT) &&
                      speedUp < 0.4 ) {
 
+                    // cancel the hypotetic ongoing dashing
+                    state.isDashing = false ;
+                    dashTime = undefined ;
 
                     switch (contactDirection) {
 
