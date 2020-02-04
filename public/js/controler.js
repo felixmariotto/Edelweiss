@@ -1016,16 +1016,14 @@ function Controler( player ) {
              contactDirection &&
              contactType != 'wall-slip' &&
              xCollision.direction &&
-             contactDirection != xCollision.direction &&
-             player.position.y > xCollision.minHeight ) {
+             contactDirection != xCollision.direction /* &&
+             player.position.y >= xCollision.minHeight */ ) {
     
             let x, z ;
 
             // blick switching, because we don't want the player to be able
             // to swith to a non-climbable tile.
             if ( xCollision.majorWallType == 'wall-slip' ) {
-
-                console.log('handle case')
 
                 switch ( xCollision.direction ) {
 
