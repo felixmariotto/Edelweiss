@@ -97,21 +97,25 @@ function MapManager() {
 
 	function loadMap( mapName, resolve ) {
 
-		console.log('loadMap call : ' + mapName)
-
 		gltfLoader.load( `https://edelweiss-game.s3.eu-west-3.amazonaws.com/map/${ mapName }.glb`, (glb)=> {
 
 			// console.log( '///// MAP LOADED : ' + mapName );
 
-			let obj = glb.scene.children[ 0 ];
+			glb.scene.traverse( (child)=> {
 
-			obj.material = new THREE.MeshLambertMaterial({
-				map: obj.material.map,
-				side: THREE.FrontSide
+				if ( child.material ) {
+
+					child.material = new THREE.MeshLambertMaterial({
+						map: child.material.map,
+						side: THREE.FrontSide
+					});
+
+					child.castShadow = true ;
+					child.receiveShadow = true ;
+
+				};
+
 			});
-
-			obj.castShadow = true ;
-			obj.receiveShadow = true ;
 			
 			maps[ currentMap ].add( glb.scene );
 			record[ mapName ] = true;
