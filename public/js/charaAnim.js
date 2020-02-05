@@ -157,7 +157,30 @@ function CharaAnim( player ) {
     hided, and showed when the player charges a dash
     */
     var chargeGroup = new THREE.Group();
+    chargeGroup.visible = false ;
+    group.add( chargeGroup );
 
+    var chargeCubes = [];
+
+    for ( let i = 0 ; i < 20 ; i++ ) {
+
+        var geometry = new THREE.BoxBufferGeometry( 0.03, 0.03, 0.03 );
+        var material = new THREE.MeshBasicMaterial( {color: 0x2fde2c} );
+        var cube = new THREE.Mesh( geometry, material );
+
+        cube.position.y = ( Math.random() * 0.35 ) + 0.1 ;
+        cube.position.x = ( Math.random() * 0.15 ) + 0.05 ;
+
+        chargeCubes.push( cube );
+
+        let group = new THREE.Group();
+
+        group.rotation.y = Math.random() * ( Math.PI * 2 );
+
+        chargeGroup.add( group );
+        group.add( cube );
+
+    };
 
 
 
@@ -169,8 +192,29 @@ function CharaAnim( player ) {
 
         moveSpeedRatio = delta / ( 1 / 60 ) ;
 
+        
+        // update the dash charging animation
 
-    	// handle the hittingGround action, that make averything
+        if ( currentState == 'chargingDash' ) {
+
+            chargeGroup.visible = true ;
+
+            chargeGroup.children.forEach( (child)=> {
+                child.rotation.y += 0.06 ;
+            });
+
+            chargeCubes.forEach( (mesh)=> {
+                mesh.scale.setScalar( (Math.sin(Date.now() / 20) * 0.2) + 0.7 );
+            });
+
+        } else {
+
+            chargeGroup.visible = false ;
+
+        };
+
+
+    	// handle the hittingGround action, that makes everything
     	// standby until it's played
     	if ( currentState == 'hittingGround' &&
     		 actions.hitGround.time > ( actions.hitGround._clip.duration * 0.7 ) ) {
