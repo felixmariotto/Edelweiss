@@ -756,6 +756,9 @@ function Controler( player ) {
                             Math.PI / 2,
                             -Math.PI / 2
                         );
+
+                        currentDirection = -Math.PI / 2 ;
+                        HORIZMOVEVECT.set( -SPEED, 0, 0 ); 
                     };
 
                     // ledge on the left
@@ -772,6 +775,9 @@ function Controler( player ) {
                             -Math.PI / 2,
                             Math.PI / 2
                         );
+
+                        currentDirection = Math.PI / 2 ;
+                        HORIZMOVEVECT.set( SPEED, 0, 0 ); 
                     };
 
                     // ledge on the front
@@ -788,6 +794,9 @@ function Controler( player ) {
                             Math.PI,
                             0
                         );
+
+                        currentDirection = 0 ;
+                        HORIZMOVEVECT.set( 0, 0, SPEED ); 
                     };
 
                     // ledge on the back
@@ -804,6 +813,9 @@ function Controler( player ) {
                             0,
                             Math.PI
                         );
+
+                        currentDirection = Math.PI ;
+                        HORIZMOVEVECT.set( 0, 0, -SPEED ); 
                     };
 
                 };
@@ -1459,19 +1471,63 @@ function Controler( player ) {
 
                 case 'wall-slip' :
 
-                    // set slipping speed
+                    // Make player slip along the wall
                     if ( speedUp <= 0 &&
                          typeof yCollision.point == 'undefined' &&
                          !state.isGliding ) {
 
-                        speedUp = SLIPSPEED ;
+                        /*
+                        We check if the character is looking at the wall.
+                        If not, the player probably doesn't intend to slip on this wall.
+                        If yes, then slipping is triggered.
+                        */
 
-                        // Clamp inertia during slipping so the fall is quite straight
-                        inertia = Math.min( inertia, MAXSLIPINERTIA ) ;
+                        if ( state.isSlipping ) {
 
-                        climbSpeedFactor = SLIPWALLFACTOR ;
+                            speedUp = SLIPSPEED ;
 
-                        state.isSlipping = true ;
+                            // Clamp inertia during slipping so the fall is quite straight
+                            inertia = Math.min( inertia, MAXSLIPINERTIA ) ;
+
+                            climbSpeedFactor = SLIPWALLFACTOR ;
+
+                        } else {
+
+                            let mustOffset = true ;
+
+                            // is character looking at the RIGHT ?
+                            if ( currentDirection > Math.PI / 4 &&
+                                 currentDirection < ( Math.PI / 4 ) * 3 ) {
+
+                                if ( contactDirection == 'right' ) mustOffset = false ;
+
+                            // is character looking at the LEFT ?
+                            } else if ( currentDirection < -Math.PI / 4 &&
+                                        currentDirection > ( -Math.PI / 4 ) * 3 ) {
+
+                                if ( contactDirection == 'left' ) mustOffset = false ;
+
+                            // is character looking FORWARD ?
+                            } else if ( currentDirection < Math.PI / 4 &&
+                                        currentDirection > -Math.PI / 4 ) {
+
+                                if ( contactDirection == 'down' ) mustOffset = false ;
+
+                            // is character looking at the BACKWARD ?
+                            } else if ( currentDirection > ( Math.PI / 4 ) * 3 ||
+                                        currentDirection < ( -Math.PI / 4 ) * 3 ) {
+
+                                if ( contactDirection == 'up' ) mustOffset = false ;
+
+                            };
+
+                            if ( !mustOffset ) {
+
+                                state.isSlipping = true ;
+
+                            };
+
+                        };
 
                     } else {
 

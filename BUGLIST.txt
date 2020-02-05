@@ -20,8 +20,6 @@
 
 - Coder analytics
 
-- Quand joueur saute en longeant un slipping-wall, il glissera contre le mur en retombant => appliquer un léger décallage dans ce cas de figure
-
 - Quand le joueur longe le plan de limite dans une cave, il passe parfois de l'autre coté du plan et tombe
 
 
