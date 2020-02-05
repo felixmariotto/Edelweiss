@@ -20,6 +20,8 @@
 
 - Coder analytics
 
+- Corriger joystick dans Safari
+
 
 
 
