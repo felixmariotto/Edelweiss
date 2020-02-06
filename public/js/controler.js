@@ -2033,7 +2033,7 @@ function Controler( player ) {
 
     function setMoveAngle( requestMove, requestedDir ) {
 
-        if ( requestedDir == Math.PI ) alert('direction OK')
+        alert('set move angle')
 
         requestedMove = requestMove ;
 
