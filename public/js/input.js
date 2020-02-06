@@ -139,13 +139,13 @@ function Input() {
                 moveKeys.push( 'joystick' );
             };
 
-            if ( joystick.deltaY() < 0 ) alert( 'delta < 0' );
-
             // Set the vector we will measure the angle of with the
             // virtual joystick's position deltas
             moveVec.set( joystick.deltaY(), joystick.deltaX() );
 
             joystickAngle = ( Math.round( ( moveVec.angle() / 6 ) * 4 ) / 4 ) * ( Math.PI * 2 ) ;
+
+            if ( joystickAngle == Math.PI ) alert('pointing upward')
 
             if ( joystickState != joystickAngle ) {
 
