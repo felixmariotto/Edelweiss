@@ -18,15 +18,7 @@
 
 - Coder analytics
 
-- Corriger erreur resizing sur safari
-
-- Bouton action disparait apres dialogue
-
-- trouver un moyen de proposer la vibration sur non-safari
-
 - Ameliorer l'optimisation pour les low-CPU
-
-- ralentir l'accéleration pour faciliter le haulDown
 
 
 
