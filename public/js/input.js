@@ -68,6 +68,8 @@ function Input() {
             stickRadius : STICK_TRAVEL_RADIUS
         });
 
+        api.joystick = joystick ;
+
         params.isTouchScreen = true ;
 
     };
@@ -534,15 +536,15 @@ function Input() {
 
 
 
-
-
-
-    return {
+    var api = {
         params,
         moveKeys,
         update,
         initJoystick,
         blockPressAction
     };
+
+
+    return api ;
 
 };
