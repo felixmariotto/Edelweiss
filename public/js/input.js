@@ -145,8 +145,6 @@ function Input() {
 
             joystickAngle = ( Math.round( ( moveVec.angle() / 6 ) * 4 ) / 4 ) * ( Math.PI * 2 ) ;
 
-            if ( joystickAngle == Math.PI ) alert('pointing upward')
-
             if ( joystickState != joystickAngle ) {
 
                 window.navigator.vibrate( 20 );
