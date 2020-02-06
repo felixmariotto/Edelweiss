@@ -63,7 +63,7 @@ function Input() {
             baseElement : domBase,
             stationaryBase : true,
             baseX : 90,
-            baseY : window.innerHeight - 90,
+            baseY :  200, /* window.innerHeight - 90, */
             limitStickTravel: true,
             stickRadius : STICK_TRAVEL_RADIUS
         });
