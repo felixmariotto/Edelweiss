@@ -22,7 +22,6 @@
 
 - Ameliorer l'optimisation pour les low-CPU
 
-- Wait for loading of character and first chunk of map to allow starting the game
 
 
 

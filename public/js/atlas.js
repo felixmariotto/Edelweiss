@@ -285,7 +285,7 @@ function Atlas() {
 
 		};
 
-		gameState.die();
+		if ( !gateName ) gameState.die();
 
 	};
 

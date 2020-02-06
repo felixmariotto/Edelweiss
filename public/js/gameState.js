@@ -13,8 +13,11 @@ function GameState() {
 
 	const domStartMenu = document.getElementById('start-menu');
     const domStartButton = document.getElementById('start-button');
+    const domStartLoaded = document.getElementById( 'start-loaded' );
+    const domStartBack = document.getElementById('start-background');
+
     const domTitleBackground = document.getElementById('title-background');
-    const domTitleContainer = document.getElementById('title-container');
+    const domTitle = document.getElementById('title');
 
     const domJSONLoader = document.getElementById('json-loader');
 	const domLoadMap = document.getElementById('gui');
@@ -45,7 +48,7 @@ function GameState() {
 	var enterGateTime ;
 	const ENTER_GATE_DURATION = 300;
 
-
+    var loadingFinished = false;
 
 
 
@@ -70,7 +73,9 @@ function GameState() {
 
     domStartButton.addEventListener( 'touchstart', (e)=> {
 
-        startGame( true );
+        if ( loadingFinished ) {
+            startGame( true );
+        };
 
     });
     
@@ -78,12 +83,61 @@ function GameState() {
 
     domStartButton.addEventListener( 'click', (e)=> {
 
-        startGame();
+        if ( loadingFinished ) {
+            startGame();
+        };
 
     });
 
 
 
+
+
+
+
+    // LOADING MANAGER
+
+    THREE.DefaultLoadingManager.onStart = function ( url, itemsLoaded, itemsTotal ) {
+
+        // console.log( `${ (itemsLoaded / itemsTotal) * 100 }%` )
+        // console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+        updateLoadingBar( (itemsLoaded / itemsTotal) * 100 );
+    };
+
+    THREE.DefaultLoadingManager.onLoad = function ( ) {
+
+        // console.log( 'Loading Complete!');
+        unlockStartButton();
+
+    };
+
+
+    THREE.DefaultLoadingManager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
+
+        // console.log( `${ (itemsLoaded / itemsTotal) * 100 }%` )
+        // console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+        updateLoadingBar( (itemsLoaded / itemsTotal) * 100 );
+    };
+
+
+    function updateLoadingBar( percent ) {
+
+        domStartLoaded.style.width = percent + '%' ;
+
+        if ( percent >= 100 ) {
+            unlockStartButton();
+        };
+
+    };
+
+
+    function unlockStartButton() {
+
+        domStartButton.style.color = "#111111" ;
+        domStartLoaded.style.backgroundColor = "#111111" ;
+        loadingFinished = true ;
+
+    };
 
 
 
@@ -100,7 +154,7 @@ function GameState() {
 
 	} else {
 
-		domStartMenu.style.display = 'inherit';
+		domStartMenu.style.display = 'flex';
 
 		fileLoader.load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/mountain.json', ( file )=> {
 
@@ -153,7 +207,7 @@ function GameState() {
 
         domStartMenu.style.display = 'none' ;
         domTitleBackground.style.display = 'none' ;
-        domTitleContainer.style.display = 'none' ;
+        domTitle.style.display = 'none' ;
 
         domStaminaBar.style.display = 'flex' ;
 
@@ -635,9 +689,24 @@ function GameState() {
         };
 
     };
-	
 
 
+
+    function update( mustUpdate ) {
+
+        if ( !mustUpdate ) return ;
+
+        if ( !loadingFinished ) {
+
+            if ( domStartLoaded.clientWidth / domStartBack.clientWidth < 0.3 ) {
+
+                domStartLoaded.style.width = ( domStartLoaded.clientWidth + 1 ) + 'px' ;
+
+            };
+
+        };
+
+    };
 
 
 
@@ -654,7 +723,8 @@ function GameState() {
         respawnPos,
         gateTilePos,
         endPassGateAnim,
-        setSavedPosition
+        setSavedPosition,
+        update
 	};
 
 };

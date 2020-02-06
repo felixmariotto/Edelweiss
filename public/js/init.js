@@ -25,29 +25,6 @@ function init() {
 
     scene.background = reflectionCube;
 
-    //
-
-    THREE.DefaultLoadingManager.onStart = function ( url, itemsLoaded, itemsTotal ) {
-
-        console.log( `${ (itemsLoaded / itemsTotal) * 100 }%` )
-        // console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
-
-    };
-
-    THREE.DefaultLoadingManager.onLoad = function ( ) {
-
-        console.log( 'Loading Complete!');
-
-    };
-
-
-    THREE.DefaultLoadingManager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
-
-        console.log( `${ (itemsLoaded / itemsTotal) * 100 }%` )
-        // console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
-
-    };
-
 
     //
 
