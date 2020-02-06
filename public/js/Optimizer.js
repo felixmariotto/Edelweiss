@@ -16,7 +16,7 @@ function Optimizer() {
 
 	//
 
-	const OPT_STEP = 400 ; // ms duration of FPS sampling between each opti
+	const OPT_STEP = 800 ; // ms duration of FPS sampling between each opti
 	var lastOptiTime = 0 ;
 	var samples = [];
 
@@ -27,10 +27,16 @@ function Optimizer() {
     
     var params = {
     	level: 0,
+    	levelPerfs: [],
     	timeOpti: Date.now() // last time an optimisation was done
     };
 
-
+    for ( let i = 0 ; i < 5 ; i ++ ) {
+    	params.levelPerfs[ i ] = {
+    		samples: 0,
+    		average: undefined
+    	};
+    };
 
 
 
@@ -163,7 +169,7 @@ function Optimizer() {
 
 	function update( delta ) {
 
-		// console.log( params.level )
+		console.log( params.level )
 
 		if ( Date.now() > lastOptiTime + OPT_STEP ) {
 
@@ -176,20 +182,35 @@ function Optimizer() {
 			let average = total / ( samples.length - 1 );
 			samples = [];
 
-			if ( average > OPTFPS ) {
+			let perf = params.levelPerfs[ params.level ];
 
-	            optimize();
+			if ( average < DEOPTFPS ) {
 
-	            // console.log( 'opti' );
+	            deOptimize();
 
-	        } else if ( average < DEOPTFPS ) {
+	        } else if ( params.level !== 0 &&
+	        	        average >= ( params.levelPerfs[ params.level - 1 ].average - 0.015 ) ) {
 
-	        	deOptimize();
+	        	console.log( 'de-opt because useless' );
+	        	console.log( params.levelPerfs )
+	            deOptimize();
 
-	        	// console.log( 'de-opti' );
+	        } else if ( average > OPTFPS &&
+	        			params.level != 4 &&
+	        			( average <= ( params.levelPerfs[ params.level + 1 ].average + 0.015 ) ||
+	        			  params.levelPerfs[ params.level + 1 ].samples < 3 ) ) {
+
+	        	console.log( average <= ( params.levelPerfs[ params.level + 1 ].average + 0.015 ) &&
+	        			  params.levelPerfs[ params.level + 1 ].samples < 3 )
+	        	optimize();
 
 	        };
 
+	        // update performance records
+	        perf.average = perf.average ?
+	        					( ( perf.average * perf.samples ) + average ) / ( perf.samples + 1 ) :
+	        					average ; 
+	        perf.samples ++ ;
 
 
 		} else {
