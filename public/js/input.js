@@ -147,7 +147,7 @@ function Input() {
 
             if ( joystickState != joystickAngle ) {
 
-                window.navigator.vibrate( 20 );
+                // window.navigator.vibrate( 20 );
 
                 joystickState = joystickAngle ;
 

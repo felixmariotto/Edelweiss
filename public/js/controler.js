@@ -2033,8 +2033,6 @@ function Controler( player ) {
 
     function setMoveAngle( requestMove, requestedDir ) {
 
-        alert('set move angle')
-
         requestedMove = requestMove ;
 
         if ( typeof requestedDir != 'undefined' ) {
