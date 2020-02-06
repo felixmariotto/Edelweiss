@@ -52,7 +52,7 @@ function Input() {
         domCross.id = 'cross' ;
         domCross.style.top = `${ window.innerHeight - 127.5 }px` ;
 
-        // document.getElementById('joystick-container').appendChild( domCross );
+        document.getElementById('joystick-container').appendChild( domCross );
 
         // get joystick angle
         moveVec = new THREE.Vector2(); // vec moved by joystick
@@ -60,10 +60,10 @@ function Input() {
         joystick = new VirtualJoystick({
             container : document.getElementById('joystick-container'),
             stickElement : domStick,
-            baseElement : domBase,
+            baseElement : domBase, 
             stationaryBase : true,
             baseX : 90,
-            baseY :  200, /* window.innerHeight - 90, */
+            baseY :  window.innerHeight - 90,
             limitStickTravel: true,
             stickRadius : STICK_TRAVEL_RADIUS
         });
