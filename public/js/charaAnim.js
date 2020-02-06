@@ -160,13 +160,14 @@ function CharaAnim( player ) {
     chargeGroup.visible = false ;
     group.add( chargeGroup );
 
+    var dashMaterial = new THREE.MeshBasicMaterial( {color: 0x2fde2c} );
+
     var chargeCubes = [];
 
     for ( let i = 0 ; i < 20 ; i++ ) {
 
         var geometry = new THREE.BoxBufferGeometry( 0.03, 0.03, 0.03 );
-        var material = new THREE.MeshBasicMaterial( {color: 0x2fde2c} );
-        var cube = new THREE.Mesh( geometry, material );
+        var cube = new THREE.Mesh( geometry, dashMaterial );
 
         cube.position.y = ( Math.random() * 0.35 ) + 0.1 ;
         cube.position.x = ( Math.random() * 0.15 ) + 0.05 ;
@@ -182,23 +183,39 @@ function CharaAnim( player ) {
 
     };
 
+    /*
+    Direction pointer animation, to tell the player where
+    they are going to dash toward
+    */
 
+    let pointerContainer = new THREE.Group();
+    pointerContainer.visible = false ;
+
+    let pointer = new THREE.Mesh(
+        new THREE.ConeBufferGeometry( 0.1, 0.23, 4 ),
+        dashMaterial
+    );
+
+    pointer.rotation.x -= Math.PI / 2 ;
+
+    var pointerTarget = new THREE.Vector3();
+    
+    pointerContainer.add( pointer );
+    scene.add( pointerContainer );
 
 
 
 
     function update( delta ) {
 
-
         moveSpeedRatio = delta / ( 1 / 60 ) ;
 
-        
         // update the dash charging animation
 
         if ( currentState == 'chargingDash' ) {
 
             chargeGroup.visible = true ;
-
+            
             chargeGroup.children.forEach( (child)=> {
                 child.rotation.y += 0.06 ;
             });
@@ -207,9 +224,34 @@ function CharaAnim( player ) {
                 mesh.scale.setScalar( (Math.sin(Date.now() / 20) * 0.2) + 0.7 );
             });
 
+            /*
+            Point Animation
+            we don't want to show a pointer if the player is
+            charging without pointing to a direction
+            */
+            if ( input.moveKeys.length > 0 ) {
+
+                pointerContainer.visible = true ;
+
+                pointerTarget.copy( player.position );
+                pointerTarget.y += 0.35 ;
+                pointerContainer.position.copy( pointerTarget );
+
+                pointerContainer.position.addScaledVector( controler.dashVec, 0.4 );
+                pointerContainer.lookAt( pointerTarget );
+
+                pointer.scale.setScalar( (Math.sin(Date.now() / 100) * 0.15) + 0.8 );
+
+            } else {
+
+                pointerContainer.visible = false ;
+
+            };
+
         } else {
 
             chargeGroup.visible = false ;
+            pointerContainer.visible = false ;
 
         };
 

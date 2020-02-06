@@ -2100,7 +2100,8 @@ function Controler( player ) {
         setMoveAngle,
         setSpeedUp,
         upgradeAcceleration,
-        upgradeSpeedDeath
+        upgradeSpeedDeath,
+        dashVec
     };
 
 };

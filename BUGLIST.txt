@@ -14,13 +14,15 @@
 ///////////// URGENT
 
 
-- Créer une animation de charge et une animation de direction pour le dash
-
 - Limiter double-saut
 
 - Coder analytics
 
 - Corriger joystick dans Safari
+
+- Ameliorer l'optimisation pour les low-CPU
+
+- Wait for loading of character and first chunk of map to allow starting the game
 
 
 
