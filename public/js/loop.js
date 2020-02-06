@@ -57,7 +57,7 @@ function loop() {
 
     // UPDATE LOGIC
     
-    if ( controler && cameraControl ) {
+    if ( controler && cameraControl && atlas.getSceneGraph() ) {
 
         ticks = Math.round( ( clockDelta / ( 1 / 60 ) ) * 2 );
 

@@ -2,9 +2,10 @@
 
  
 
-function Atlas( sceneGraph ) {
+function Atlas() {
 
 
+	var sceneGraph ;
 
 	const PLAYERHEIGHT = 0.62 ;
 	const PLAYERWIDTH = 0.3 ;
@@ -29,7 +30,6 @@ function Atlas( sceneGraph ) {
 
 
 	var startPos = new THREE.Vector3();
-	var player ;
 
 	var planes = [];
 
@@ -179,19 +179,18 @@ function Atlas( sceneGraph ) {
 
 
 
-
-
-
-
     //////////////////////
     ///     INIT
     //////////////////////
 
+    function init( obj ) {
 
-	// initialise the map
-	initHelpers();
+    	sceneGraph = obj ;
 
+    	// initialise the map
+		initHelpers();
 
+    };
 
 
 	
@@ -285,6 +284,8 @@ function Atlas( sceneGraph ) {
 			});
 
 		};
+
+		gameState.die();
 
 	};
 
@@ -1576,10 +1577,7 @@ function Atlas( sceneGraph ) {
 
 
 
-
-
-
-	return {
+	var api = {
 		getSceneGraph,
 		collidePlayerGrounds,
 		collidePlayerWalls,
@@ -1593,8 +1591,13 @@ function Atlas( sceneGraph ) {
 		startPos,
 		collideCamera,
 		adjTileExists,
-		switchGraph
+		switchGraph,
+		init
 	};
+
+
+
+	return api ;
 
 
 };

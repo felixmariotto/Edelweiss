@@ -208,6 +208,8 @@ function CharaAnim( player ) {
 
     function update( delta ) {
 
+        if ( Object.keys( actions ).length == 0 ) return
+
         moveSpeedRatio = delta / ( 1 / 60 ) ;
 
         // update the dash charging animation

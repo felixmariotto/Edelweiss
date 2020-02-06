@@ -212,7 +212,7 @@ function GameState() {
         var graph = parseJSON( file );
 
         // Initialize atlas with the scene graph
-        atlas = Atlas( graph );
+        atlas.init( graph );
 
         // store this sceneGraph into the graphs object
         sceneGraphs.mountain = graph ;
