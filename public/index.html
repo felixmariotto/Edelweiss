@@ -108,22 +108,14 @@
 
 
 
-        #title-container {
+        #title {
             position: fixed;
             top: 80px;
             left: 50%;
+            max-width: 90%;
             margin: -50px;
             transform: translate( calc( -50% + 50px ) );
-            text-align: center;
         }
-
-            #title {
-                font-size: calc( 100% + 4.5vh );
-            }
-
-            #author {
-                font-size: calc( 100% + 1.8vh );
-            }
 
         #start-menu {
             position: fixed;
@@ -692,10 +684,7 @@
         <button id='start-button'>Start</button>
     </div>
 
-    <div id="title-container">
-        <h1 id="title">Edelweiss</h1>
-        <h2 id="author">By Félix Mariotto</h2>
-    </div>
+    <img id="title" src="https://edelweiss-game.s3.eu-west-3.amazonaws.com/assets/title.png">
     
 
 
