@@ -59,8 +59,8 @@ function Input() {
 
         joystick = new VirtualJoystick({
             container : document.getElementById('joystick-container'),
-            /* stickElement : domStick,
-            baseElement : domBase, */
+            stickElement : domStick,
+            baseElement : domBase,
             stationaryBase : true,
             baseX : 90,
             baseY :  200, /* window.innerHeight - 90, */

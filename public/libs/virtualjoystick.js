@@ -31,6 +31,8 @@ var VirtualJoystick	= function(opts)
 		this._baseEl.style.left		= (this._baseX - this._baseEl.width /2)+"px";
 		this._baseEl.style.top		= (this._baseY - this._baseEl.height/2)+"px";
 	}
+
+	alert( (this._baseX - this._baseEl.width /2)+"px" );
     
 	this._transform	= this._useCssTransform ? this._getTransformProperty() : false;
 	this._has3d	= this._check3D();
