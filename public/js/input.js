@@ -120,21 +120,6 @@ function Input() {
              ( Math.abs( joystick.deltaX() ) > 10 ||
                Math.abs( joystick.deltaY() ) > 10 ) ) {
 
-            /*
-            // vibrate when max radius is reached
-            dist = Math.abs( joystick.deltaX() ) + Math.abs( joystick.deltaY() ) ;
-
-            if ( lastDistance < STICK_TRAVEL_RADIUS &&
-                 dist > STICK_TRAVEL_RADIUS ) {
-
-                window.navigator.vibrate( 20 );
-            };
-
-            lastDistance = dist ;
-            */
-
-            //
-
             if ( moveKeys.length == 0 ) {
                 moveKeys.push( 'joystick' );
             };
@@ -150,7 +135,7 @@ function Input() {
                 if ( window.navigator.vibrate) {
 
                     window.navigator.vibrate( 20 );
-                    
+
                 };
 
                 joystickState = joystickAngle ;
@@ -204,7 +189,11 @@ function Input() {
         domActionButton.style.opacity = '1.0' ;
         domActionButton.classList.remove( 'release-button' );
         domActionButton.classList.add( 'push-button' );
-        window.navigator.vibrate( 20 );
+        if ( window.navigator.vibrate) {
+
+            window.navigator.vibrate( 20 );
+            
+        };
 
     });
 
@@ -230,7 +219,11 @@ function Input() {
         domActionButton.style.opacity = '0.5' ;
         domActionButton.classList.remove( 'push-button' );
         domActionButton.classList.add( 'release-button' );
-        window.navigator.vibrate( 20 );
+        if ( window.navigator.vibrate) {
+
+            window.navigator.vibrate( 20 );
+            
+        };
 
     });
 
