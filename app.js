@@ -69,14 +69,17 @@ io.on( 'connection', async (client)=> {
 	// create a row
 
 	var clientID;
+	var startTime = Date.now();
 
 	postgresClient = await POOL.connect();
 
 	postgresClient.query( `INSERT INTO analytics (
 							environment,
+							game_version,
 							timestamp
 						   ) VALUES (
 						    '${ process.env.ENVIRONMENT }',
+						    '${ process.env.VERSION || 'undefined' }',
 						    NOW()
 						   ) RETURNING id` ).then( (value)=> {
 
@@ -87,12 +90,6 @@ io.on( 'connection', async (client)=> {
 	postgresClient.release();
 
 	//
-
-	client.on( 'test', ( message )=> {
-
-		console.log( 'message received : ', message );
-
-	});
 
 	client.on( 'init', async (message)=> {
 
@@ -107,9 +104,19 @@ io.on( 'connection', async (client)=> {
 
 	});
 
+	//
+
 	client.on( 'disconnect', ()=> {
 
 		console.log( `User ${ client.id } disconnected` );
+
+		postgresClient = await POOL.connect();
+
+		postgresClient.query( `UPDATE analytics SET
+								duration = '${ Date.now() - startTime }'
+							   WHERE id = ${ clientID }` );
+
+		postgresClient.release();
 
 	});
 

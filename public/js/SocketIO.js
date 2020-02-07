@@ -13,11 +13,6 @@ function SocketIO() {
 		browser_version: uaResult.browser.version
 	});
 
-
-
-
-	socket.emit( 'test', [ 'place', 'date' ] );
-
 	
 
 
