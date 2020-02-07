@@ -88,7 +88,7 @@ io.on( 'connection', async (client)=> {
 
 	});
 
-	client.on( 'init', (message)=> {
+	client.on( 'init', async (message)=> {
 
 		postgresClient = await POOL.connect();
 
