@@ -68,6 +68,8 @@ io.on( 'connection', async (client)=> {
 
 	// create a row
 
+	var clientID;
+
 	postgresClient = await POOL.connect();
 
 	postgresClient.query( `INSERT INTO analytics (
@@ -76,7 +78,11 @@ io.on( 'connection', async (client)=> {
 						   ) VALUES (
 						    '${ process.env.ENVIRONMENT }',
 						    NOW()
-						   )` );
+						   ) RETURNING id` ).then( (value)=> {
+
+							console.log( 'returned value : ', value )
+
+						   });
 
 	postgresClient.release();
 
