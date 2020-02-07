@@ -87,6 +87,7 @@ function init() {
     //
 
 
+    socketIO = SocketIO();
     atlas = Atlas();
     input = Input();
     stamina = Stamina();

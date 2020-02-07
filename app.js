@@ -1,7 +1,7 @@
 
 const express = require('express');
 const path = require('path');
-const app = express();
+const socketIO = require('socket.io');
 const PORT = process.env.PORT || 5050;
 
 const { Pool } = require('pg');
@@ -11,9 +11,18 @@ const pool = new Pool({
 });
 
 
-app.use(express.static('public'));
 
-app
+
+
+/////////////////
+///  APP
+/////////////////
+
+
+const app = express()
+
+	.use(express.static('public'))
+
     .get('/', (req, res)=> {
         res.sendFile(path.join(__dirname + '/public/index.html'));
     })
@@ -38,3 +47,36 @@ app
     .listen(PORT, ()=> {
         console.log('App listening on port ' + PORT);
     })
+
+
+
+
+
+
+
+
+//////////////////
+///  SOCKET.IO
+//////////////////
+
+
+const io = socketIO( app );
+
+io.on( 'connection', (client)=> {
+
+	console.log( `User ${ client.id } connected` );
+
+	client.on( 'test', ( message )=> {
+
+		console.log( 'message received : ', message );
+
+	});
+
+	client.on( 'disconnect', ()=> {
+
+		console.log( `User ${ client.id } disconnected` );
+
+	});
+
+})
+
