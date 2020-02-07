@@ -100,13 +100,9 @@ io.on( 'connection', async (client)=> {
 
 		postgresClient = await POOL.connect();
 
-		postgresClient.query( `INSERT INTO analytics (
-								browser,
-								browser_version
-							   ) VALUES (
-							    '${ message.browser }',
-							    '${ message.browser_version }'
-							   )` );
+		postgresClient.query( `UPDATE analytics SET
+								browser = '${ message.browser }',
+								browser_version = '${ message.browser_version }' ` );
 
 		postgresClient.release();
 
