@@ -53,12 +53,12 @@ function Optimizer() {
 		// Will disable FXAA
 		if ( params.level == 0 ) {
 
+			renderer.setPixelRatio( 1 );
 			params.level = 1 ;
 
 		// set pixel ratio to 1, which has effect mostly on smartphones
 		} else if ( params.level == 1 ) {
 
-			renderer.setPixelRatio( 1 );
 			params.level = 2 ;
 
 		// Remove the shadow from the dynamic objects,
@@ -112,12 +112,12 @@ function Optimizer() {
 		// enable FXAA
 		} else if ( params.level == 1 ) {
 
+			renderer.setPixelRatio( window.devicePixelRatio );
 			params.level = 0 ;
 
 		// set pixel ratio to the default device pixel ratio
 		} else if ( params.level == 2 ) {
 
-			renderer.setPixelRatio( window.devicePixelRatio );
 			params.level = 1 ;
 
 		// enable shadows on dynamic objects

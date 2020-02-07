@@ -42,7 +42,7 @@ function loop() {
 
 
     if ( optimizer &&
-         optimizer.params.level == 0 ) {
+         optimizer.params.level <= 1 ) {
 
         composer.render();
 
