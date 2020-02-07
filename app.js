@@ -5,7 +5,7 @@ const socketIO = require('socket.io');
 const PORT = process.env.PORT || 5050;
 
 const { Pool } = require('pg');
-const pool = new Pool({
+const POOL = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: true
 });
@@ -62,9 +62,23 @@ const app = express()
 
 const io = socketIO( app );
 
-io.on( 'connection', (client)=> {
+io.on( 'connection', async (client)=> {
 
 	console.log( `User ${ client.id } connected` );
+
+	// create a row
+
+	postgresClient = await POOL.connect();
+
+	postgresClient.query( `INSERT INTO analytics (
+							environment
+						   ) VALUES (
+						   '${ process.env.ENVIRONMENT }'
+						   )` );
+
+	postgresClient.release();
+
+	//
 
 	client.on( 'test', ( message )=> {
 
