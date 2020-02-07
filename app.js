@@ -25,7 +25,7 @@ app
 	      const client = await pool.connect()
 	      const result = await client.query('SELECT * FROM analytics');
 	      const results = { 'results': (result) ? result.rows : null};
-	      res.render('pages/db', results );
+	      res.send( results );
 	      client.release();
 	    } catch (err) {
 	      console.error(err);
