@@ -3,7 +3,7 @@ var scene, camera, stats, input, atlas,
     orbitControls, controler, clock, datGUI, charaAnim,
     gltfLoader, mixer, cameraControl, stamina, interaction,
     dynamicItems, textureLoader, fileLoader, mapManager,
-    socketIO, optimizer, gameState, feedback, assetManager ;
+    socketIO, optimizer, uaParser, gameState, feedback, assetManager ;
 
 var renderer, composer, fxaaPass ;
 

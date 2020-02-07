@@ -87,6 +87,7 @@ function init() {
     //
 
 
+    uaParser = new UAParser();
     socketIO = SocketIO();
     atlas = Atlas();
     input = Input();

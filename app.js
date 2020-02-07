@@ -74,8 +74,8 @@ io.on( 'connection', async (client)=> {
 							environment,
 							timestamp
 						   ) VALUES (
-						   '${ process.env.ENVIRONMENT }',
-						   NOW()
+						    '${ process.env.ENVIRONMENT }',
+						    NOW()
 						   )` );
 
 	postgresClient.release();
@@ -85,6 +85,22 @@ io.on( 'connection', async (client)=> {
 	client.on( 'test', ( message )=> {
 
 		console.log( 'message received : ', message );
+
+	});
+
+	client.on( 'init', (message)=> {
+
+		postgresClient = await POOL.connect();
+
+		postgresClient.query( `INSERT INTO analytics (
+								browser,
+								browser_version
+							   ) VALUES (
+							    '${ message.browser }',
+							    '${ message.browser_version }'
+							   )` );
+
+		postgresClient.release();
 
 	});
 

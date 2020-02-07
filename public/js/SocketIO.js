@@ -4,12 +4,24 @@
 
 function SocketIO() {
 
+	var uaResult = uaParser.getResult();
+
 	var socket = io();
+
+	socket.emit( 'init', {
+		browser: uaResult.browser.name,
+		browser_version: uaResult.browser.version
+	});
+
+
+
 
 	socket.emit( 'test', [ 'place', 'date' ] );
 
+	
 
 
+	/*
 	// Set a global variable ownID, which is a unique ID that the
 	// player will keep during all the session, accross all the games.
 	// When the server send information to the two players of a game,
@@ -25,5 +37,6 @@ function SocketIO() {
 	function sendObstacleDamage( id, damage ) {
 		socket.emit( 'obstacleDamaged', id, damage );
 	};
+	*/
 
 };
