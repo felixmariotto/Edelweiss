@@ -169,7 +169,7 @@ function Optimizer() {
 
 	function update( delta ) {
 
-		if ( params.level != 1 ) {
+		if ( params.level != 2 ) {
 
 			optimize();
 
