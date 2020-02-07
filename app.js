@@ -80,9 +80,7 @@ io.on( 'connection', async (client)=> {
 						    NOW()
 						   ) RETURNING id` ).then( (value)=> {
 
-							clientID = value.rows[ 0 ].id;
-							console.log( 'clientID = ' + clientID );
-							console.log( 'typeof clientID = ' + typeof clientID );
+							clientID = value.rows[ 0 ].id ; // clientID is a number
 
 						   });
 
@@ -102,7 +100,8 @@ io.on( 'connection', async (client)=> {
 
 		postgresClient.query( `UPDATE analytics SET
 								browser = '${ message.browser }',
-								browser_version = '${ message.browser_version }' ` );
+								browser_version = '${ message.browser_version }'
+							   WHERE id = ${ clientID }` );
 
 		postgresClient.release();
 
