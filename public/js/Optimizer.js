@@ -27,6 +27,7 @@ function Optimizer() {
     
     var params = {
     	level: 0,
+    	attempts: [ 0, 0, 0, 0, 0 ], // holds the number of failed attempt to set the optimization at given level
     	timeOpti: Date.now() // last time an optimisation was done
     };
 
@@ -175,6 +176,11 @@ function Optimizer() {
 
 		// console.log( params.level )
 
+		// We don't want neither to optimize or to sample the performance
+		// inside the caves, because it would necessarily be better,
+		// and lead to uneven randering and opti/deopti
+		if ( mapManager.params.currentMap != 'mountain' ) return ;
+
 		if ( Date.now() > lastOptiTime + optStep ) {
 
 			lastOptiTime = Date.now();
@@ -197,12 +203,15 @@ function Optimizer() {
 			let average = total / ( samples.length - 1 );
 			samples = [];
 
-			if ( average < DEOPTFPS ) {
+			if ( average < DEOPTFPS &&
+				 params.level != 0 &&
+				 params.attempts[ params.level - 1 ] <= 2 ) {
 
 	            deOptimize();
 
 	        } else if ( average > OPTFPS ) {
 
+	        	params.attempts[ params.level ] ++ ; // record the failure of the current opti level
 	        	optimize();
 
 	        };

@@ -13,7 +13,9 @@ function MapManager() {
 	var record = {};
 
 	// Can be "mountain", or "cave-A" (B,C,D,E,F,G)
-	var currentMap = 'mountain';
+	var params = {
+		currentMap: "mountain"
+	};
 
 
 
@@ -55,7 +57,7 @@ function MapManager() {
 	function update( mustFindMap ) {
 
 		if ( mustFindMap &&
-			 currentMap == 'mountain' &&
+			 params.currentMap == 'mountain' &&
 			 atlas &&
 			 atlas.player ) {
 
@@ -117,7 +119,7 @@ function MapManager() {
 
 			});
 			
-			maps[ currentMap ].add( glb.scene );
+			maps[ params.currentMap ].add( glb.scene );
 			record[ mapName ] = true;
 
 			if ( resolve ) resolve();
@@ -139,9 +141,9 @@ function MapManager() {
 
 		return new Promise( (resolve, reject)=> {
 
-			maps[ currentMap ].visible = false ;
+			maps[ params.currentMap ].visible = false ;
 			maps[ newMapName ].visible = true ;
-			currentMap = newMapName ;
+			params.currentMap = newMapName ;
 
 			// change lighting according to future map
 			if ( newMapName == 'mountain' ) {
@@ -226,7 +228,8 @@ function MapManager() {
 
 	return {
 		update,
-		switchMap
+		switchMap,
+		params
 	};
 
 };
