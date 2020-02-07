@@ -106,7 +106,7 @@ io.on( 'connection', async (client)=> {
 
 	//
 
-	client.on( 'disconnect', ()=> {
+	client.on( 'disconnect', async ()=> {
 
 		console.log( `User ${ client.id } disconnected` );
 
