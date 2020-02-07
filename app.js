@@ -74,7 +74,8 @@ io.on( 'connection', async (client)=> {
 							environment,
 							timestamp
 						   ) VALUES (
-						   '${ process.env.ENVIRONMENT }'
+						   '${ process.env.ENVIRONMENT }',
+						   NOW()
 						   )` );
 
 	postgresClient.release();
