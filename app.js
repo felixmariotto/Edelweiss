@@ -80,7 +80,9 @@ io.on( 'connection', async (client)=> {
 						    NOW()
 						   ) RETURNING id` ).then( (value)=> {
 
-							console.log( 'returned value : ', value )
+							clientID = value.rows[ 0 ].id;
+							console.log( 'clientID = ' + clientID );
+							console.log( 'typeof clientID = ' + typeof clientID );
 
 						   });
 
