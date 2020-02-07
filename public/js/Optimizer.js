@@ -162,19 +162,6 @@ function Optimizer() {
 
 	function update( delta ) {
 
-		/*
-		if ( params.level != 2 ) {
-
-			optimize();
-
-		} else {
-
-			return ;
-
-		};
-		*/
-
-		// console.log( params.level )
 
 		// We don't want neither to optimize or to sample the performance
 		// inside the caves, because it would necessarily be better,
@@ -185,19 +172,16 @@ function Optimizer() {
 
 			lastOptiTime = Date.now();
 
-			if ( optStep < 6400 ) {
+			if ( optStep < 3200 ) {
 
 				optStep *= 2 ;
-				console.log('doubled !')
-
-			} else {
-
-				console.log( 'optStep is maxed at ' + optStep );
 
 			};
 
 			let total = samples.reduce( ( accu, current )=> {
+
 				return accu + current ;
+				
 			}, 0 );
 
 			let average = total / ( samples.length - 1 );
