@@ -16,7 +16,7 @@ function Optimizer() {
 
 	//
 
-	const OPT_STEP = 800 ; // ms duration of FPS sampling between each opti
+	var optStep = 50 ; // ms duration of FPS sampling between each opti
 	var lastOptiTime = 0 ;
 	var samples = [];
 
@@ -27,15 +27,7 @@ function Optimizer() {
     
     var params = {
     	level: 0,
-    	levelPerfs: [],
     	timeOpti: Date.now() // last time an optimisation was done
-    };
-
-    for ( let i = 0 ; i < 5 ; i ++ ) {
-    	params.levelPerfs[ i ] = {
-    		samples: 0,
-    		average: undefined
-    	};
     };
 
 
@@ -169,6 +161,7 @@ function Optimizer() {
 
 	function update( delta ) {
 
+		/*
 		if ( params.level != 2 ) {
 
 			optimize();
@@ -178,12 +171,24 @@ function Optimizer() {
 			return ;
 
 		};
+		*/
 
 		// console.log( params.level )
 
-		if ( Date.now() > lastOptiTime + OPT_STEP ) {
+		if ( Date.now() > lastOptiTime + optStep ) {
 
 			lastOptiTime = Date.now();
+
+			if ( optStep < 6400 ) {
+
+				optStep *= 2 ;
+				console.log('doubled !')
+
+			} else {
+
+				console.log( 'optStep is maxed at ' + optStep );
+
+			};
 
 			let total = samples.reduce( ( accu, current )=> {
 				return accu + current ;
@@ -192,36 +197,15 @@ function Optimizer() {
 			let average = total / ( samples.length - 1 );
 			samples = [];
 
-			let perf = params.levelPerfs[ params.level ];
-
 			if ( average < DEOPTFPS ) {
 
 	            deOptimize();
 
-	        } else if ( params.level !== 0 &&
-	        	        average >= ( params.levelPerfs[ params.level - 1 ].average - 0.015 ) ) {
+	        } else if ( average > OPTFPS ) {
 
-	        	console.log( 'de-opt because useless' );
-	        	console.log( params.levelPerfs )
-	            deOptimize();
-
-	        } else if ( average > OPTFPS &&
-	        			params.level != 4 &&
-	        			( average <= ( params.levelPerfs[ params.level + 1 ].average + 0.015 ) || 
-	        			  params.levelPerfs[ params.level + 1 ].samples < 3 ) ) {
-
-	        	console.log( average <= ( params.levelPerfs[ params.level + 1 ].average + 0.015 ) &&
-	        			  params.levelPerfs[ params.level + 1 ].samples < 3 )
 	        	optimize();
 
 	        };
-
-	        // update performance records
-	        perf.average = perf.average ?
-	        					( ( perf.average * perf.samples ) + average ) / ( perf.samples + 1 ) :
-	        					average ; 
-	        perf.samples ++ ;
-
 
 		} else {
 
