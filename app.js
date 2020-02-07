@@ -31,7 +31,7 @@ const app = express()
 
     .get('/db', async (req, res) => {
 	    try {
-	      const client = await pool.connect()
+	      const client = await POOL.connect()
 	      const result = await client.query('SELECT * FROM analytics');
 	      const results = { 'results': (result) ? result.rows : null};
 	      res.send( results );
@@ -71,7 +71,8 @@ io.on( 'connection', async (client)=> {
 	postgresClient = await POOL.connect();
 
 	postgresClient.query( `INSERT INTO analytics (
-							environment
+							environment,
+							timestamp
 						   ) VALUES (
 						   '${ process.env.ENVIRONMENT }'
 						   )` );
