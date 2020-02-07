@@ -810,7 +810,7 @@ function Interaction() {
 		// Hide joystick div
 
 		document.getElementById('joystick-container').style.display = 'inherit' ;
-		if ( input.isTouchScreen ) {
+		if ( input.params.isTouchScreen ) {
 			document.getElementById('action-button').style.display = 'inherit' ;
 		};
 

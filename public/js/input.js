@@ -60,13 +60,15 @@ function Input() {
         joystick = new VirtualJoystick({
             container : document.getElementById('joystick-container'),
             stickElement : domStick,
-            baseElement : domBase,
+            baseElement : domBase, 
             stationaryBase : true,
             baseX : 90,
-            baseY : window.innerHeight - 90,
+            baseY :  window.innerHeight - 90,
             limitStickTravel: true,
             stickRadius : STICK_TRAVEL_RADIUS
         });
+
+        api.joystick = joystick ;
 
         params.isTouchScreen = true ;
 
@@ -120,21 +122,6 @@ function Input() {
              ( Math.abs( joystick.deltaX() ) > 10 ||
                Math.abs( joystick.deltaY() ) > 10 ) ) {
 
-            /*
-            // vibrate when max radius is reached
-            dist = Math.abs( joystick.deltaX() ) + Math.abs( joystick.deltaY() ) ;
-
-            if ( lastDistance < STICK_TRAVEL_RADIUS &&
-                 dist > STICK_TRAVEL_RADIUS ) {
-
-                window.navigator.vibrate( 20 );
-            };
-
-            lastDistance = dist ;
-            */
-
-            //
-
             if ( moveKeys.length == 0 ) {
                 moveKeys.push( 'joystick' );
             };
@@ -147,7 +134,11 @@ function Input() {
 
             if ( joystickState != joystickAngle ) {
 
-                window.navigator.vibrate( 20 );
+                if ( window.navigator.vibrate) {
+
+                    window.navigator.vibrate( 20 );
+
+                };
 
                 joystickState = joystickAngle ;
 
@@ -200,7 +191,11 @@ function Input() {
         domActionButton.style.opacity = '1.0' ;
         domActionButton.classList.remove( 'release-button' );
         domActionButton.classList.add( 'push-button' );
-        window.navigator.vibrate( 20 );
+        if ( window.navigator.vibrate) {
+
+            window.navigator.vibrate( 20 );
+            
+        };
 
     });
 
@@ -226,7 +221,11 @@ function Input() {
         domActionButton.style.opacity = '0.5' ;
         domActionButton.classList.remove( 'push-button' );
         domActionButton.classList.add( 'release-button' );
-        window.navigator.vibrate( 20 );
+        if ( window.navigator.vibrate) {
+
+            window.navigator.vibrate( 20 );
+            
+        };
 
     });
 
@@ -537,15 +536,15 @@ function Input() {
 
 
 
-
-
-
-    return {
+    var api = {
         params,
         moveKeys,
         update,
         initJoystick,
         blockPressAction
     };
+
+
+    return api ;
 
 };

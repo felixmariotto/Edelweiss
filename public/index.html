@@ -170,8 +170,10 @@
 
         #joystick-container {
             height: 100vh;
-            width: 60vw;
+            width: 100vw;
             display: none;
+            -webkit-user-select : none;
+            -moz-user-select    : none;
         }
 
         #base {
@@ -267,12 +269,13 @@
 
 
 
-        .world {
+        #world {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
+            background-color: pink;
         }
 
         #gui {
@@ -647,7 +650,7 @@
 
     <!-- General Game UI -->
 
-    <canvas class="world" id="world"></canvas>
+    <canvas id="world"></canvas>
 
     <div id="stamina-bar"></div>
 

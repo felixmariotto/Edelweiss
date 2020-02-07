@@ -458,7 +458,7 @@ function Controler( player ) {
                 
             } else { // on ground
 
-                inertia = inertia + ( 0.06 * moveSpeedRatio ) ;
+                inertia = inertia + ( 0.04 * moveSpeedRatio ) ;
 
             };
 

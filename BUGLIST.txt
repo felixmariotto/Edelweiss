@@ -18,10 +18,7 @@
 
 - Coder analytics
 
-- Corriger joystick dans Safari
-
 - Ameliorer l'optimisation pour les low-CPU
-
 
 
 
@@ -56,6 +53,8 @@
 - Faire animation poussière pour contact avec wall-fall
 
 - Modifier Optimizer pour qu'il annule l'optimisation GPU quand ca n'a aucun effet sur le frame rate.
+
+- Pause un peu plus longue quand le joueur meurt
 
 
 
