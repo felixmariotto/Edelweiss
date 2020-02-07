@@ -169,7 +169,17 @@ function Optimizer() {
 
 	function update( delta ) {
 
-		console.log( params.level )
+		if ( params.level != 2 ) {
+
+			optimize();
+
+		} else {
+
+			return ;
+
+		};
+
+		// console.log( params.level )
 
 		if ( Date.now() > lastOptiTime + OPT_STEP ) {
 
@@ -197,7 +207,7 @@ function Optimizer() {
 
 	        } else if ( average > OPTFPS &&
 	        			params.level != 4 &&
-	        			( average <= ( params.levelPerfs[ params.level + 1 ].average + 0.015 ) ||
+	        			( average <= ( params.levelPerfs[ params.level + 1 ].average + 0.015 ) || 
 	        			  params.levelPerfs[ params.level + 1 ].samples < 3 ) ) {
 
 	        	console.log( average <= ( params.levelPerfs[ params.level + 1 ].average + 0.015 ) &&
