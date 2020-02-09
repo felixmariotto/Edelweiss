@@ -72,6 +72,8 @@ function Input() {
 
         params.isTouchScreen = true ;
 
+        socketIO.sendIsTouchScreen();
+
     };
 
 

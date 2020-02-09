@@ -108,7 +108,19 @@ io.on( 'connection', async (client)=> {
 
 	client.on( 'death', async (message)=> {
 
-		console.log('message death received : ', message);
+		var postgresClient = await POOL.connect();
+
+		postgresClient.query( `UPDATE analytics
+							   SET deaths = array_append( deaths, '${ message }' )
+							   WHERE id = ${ clientID }` );
+
+		postgresClient.release();
+
+	});
+
+	//
+
+	client.on( 'touchscreen', async ()=> {
 
 		var postgresClient = await POOL.connect();
 
@@ -124,12 +136,10 @@ io.on( 'connection', async (client)=> {
 
 	client.on( 'opti', async (message)=> {
 
-		console.log('message opti received : ', message);
-
 		var postgresClient = await POOL.connect();
 
 		postgresClient.query( `UPDATE analytics
-							   SET opti_levels = array_append( opti_levels, '${ message }' )
+							   SET touchscreen = true
 							   WHERE id = ${ clientID }` );
 
 		postgresClient.release();

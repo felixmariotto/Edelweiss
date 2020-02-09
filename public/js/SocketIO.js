@@ -41,6 +41,11 @@ function SocketIO() {
 
 	};
 
+
+	function sendIsTouchScreen() {
+		socket.emit( 'touchscreen' );
+	};
+
 	
 
 
@@ -64,7 +69,8 @@ function SocketIO() {
 
 	return {
 		sendDeath,
-		sendOptiLevel
+		sendOptiLevel,
+		sendIsTouchScreen
 	};
 
 };
