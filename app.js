@@ -113,7 +113,7 @@ io.on( 'connection', async (client)=> {
 		var postgresClient = await POOL.connect();
 
 		postgresClient.query( `UPDATE analytics
-							   SET deaths = array_append( deaths, ${ message } )
+							   SET deaths = array_append( deaths, '${ message }' )
 							   WHERE id = ${ clientID }` );
 
 		postgresClient.release();
@@ -129,7 +129,7 @@ io.on( 'connection', async (client)=> {
 		var postgresClient = await POOL.connect();
 
 		postgresClient.query( `UPDATE analytics
-							   SET opti_levels = array_append( opti_levels, ${ message } )
+							   SET opti_levels = array_append( opti_levels, '${ message }' )
 							   WHERE id = ${ clientID }` );
 
 		postgresClient.release();
