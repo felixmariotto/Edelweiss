@@ -63,7 +63,7 @@ const io = socketIO( app );
 
 io.on( 'connection', async (client)=> {
 
-	console.log( client.handshake.address.slice( 5, -1 ) );
+	console.log( client.handshake.address.slice( 7, -1 ) );
 
 	console.log( `User ${ client.id } connected` );
 
