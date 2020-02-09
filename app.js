@@ -64,7 +64,7 @@ const io = socketIO( app );
 
 io.on( 'connection', async (client)=> {
 
-	var ip = socket.handshake.headers["x-forwarded-for"] ;
+	var ip = client.handshake.headers["x-forwarded-for"] ;
 
 	console.log( 'ip : ' + ip );
 
