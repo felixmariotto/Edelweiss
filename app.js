@@ -64,11 +64,15 @@ const io = socketIO( app );
 
 io.on( 'connection', async (client)=> {
 
-	var ip = client.handshake.address.slice( 7, -1 ) ;
+	var ip = socket.handshake.headers["x-forwarded-for"] ;
 
-	console.log( ip );
+	console.log( 'ip : ' + ip );
 
-	var geo = geoip.lookup( ip );
+	var sliced = ip.split(",")[0];
+
+	console.log( 'sliced : ' + sliced );
+
+	var geo = geoip.lookup( sliced );
 
 	console.log( geo );
 
