@@ -14,25 +14,20 @@ function SocketIO() {
 	});
 
 
-	function sendDeath( timestamp, position ) {
+	function sendDeath() {
 
-		socket.emit( 'death', {
-			timestamp,
-			position
-		});
+		var data = Date.now().toString() + ':' + JSON.toString( atlas.position );
+
+		socket.emit( 'death', data );
 
 	};
 
 
-	function sendOptiLevel( timestamp, level ) {
+	function sendOptiLevel() {
 
-		console.log( 'timestamp : ' + typeof timestamp )
-		console.log( 'level : ' + typeof level )
+		var data = Date.now().toString() + ':' + JSON.toString( optimizer.params.level );
 
-		socket.emit( 'opti', {
-			timestamp,
-			level
-		});
+		socket.emit( 'opti', data );
 
 	};
 

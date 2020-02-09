@@ -321,13 +321,7 @@ function GameState() {
 	function die( hasCrashed ) {
 
         if ( atlas.player && atlas.player.position ) {
-
-            socketIO.sendDeath( Date.now(), JSON.stringify({
-                x: atlas.player.position.x.toFixed(),
-                y: atlas.player.position.y.toFixed(),
-                z: atlas.player.position.z.toFixed()
-            }));
-
+            socketIO.sendDeath();
         };
 
 		params.isDying = true ;
