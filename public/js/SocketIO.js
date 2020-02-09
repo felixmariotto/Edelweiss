@@ -18,7 +18,11 @@ function SocketIO() {
 
 		var data = JSON.stringify({
 			t: Date.now(),
-			p: atlas.player.position
+			p: {
+				x: atlas.player.position.x.toFixed(1),
+				y: atlas.player.position.y.toFixed(1),
+				z: atlas.player.position.z.toFixed(1)
+			}
 		});
 
 		socket.emit( 'death', data );
