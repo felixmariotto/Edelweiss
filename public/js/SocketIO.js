@@ -13,6 +13,26 @@ function SocketIO() {
 		browser_version: uaResult.browser.version
 	});
 
+
+	function sendDeath( timestamp, position ) {
+
+		socket.emit( 'death', {
+			timestamp,
+			position
+		});
+
+	};
+
+
+	function sendOptiLevel( level ) {
+
+		socket.emit( 'opti', {
+			timestamp,
+			position
+		});
+
+	};
+
 	
 
 
@@ -33,5 +53,10 @@ function SocketIO() {
 		socket.emit( 'obstacleDamaged', id, damage );
 	};
 	*/
+
+	return {
+		sendDeath,
+		sendOptiLevel
+	};
 
 };

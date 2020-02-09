@@ -192,11 +192,13 @@ function Optimizer() {
 				 params.attempts[ params.level - 1 ] <= 2 ) {
 
 	            deOptimize();
+	        	socketIO.sendOptiLevel( Date.now(), params.level );
 
 	        } else if ( average > OPTFPS ) {
 
 	        	params.attempts[ params.level ] ++ ; // record the failure of the current opti level
 	        	optimize();
+	        	socketIO.sendOptiLevel( Date.now(), params.level );
 
 	        };
 

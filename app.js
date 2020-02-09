@@ -71,7 +71,7 @@ io.on( 'connection', async (client)=> {
 	var clientID;
 	var startTime = Date.now();
 
-	postgresClient = await POOL.connect();
+	var postgresClient = await POOL.connect();
 
 	postgresClient.query( `INSERT INTO analytics (
 							environment,
@@ -93,7 +93,7 @@ io.on( 'connection', async (client)=> {
 
 	client.on( 'init', async (message)=> {
 
-		postgresClient = await POOL.connect();
+		var postgresClient = await POOL.connect();
 
 		postgresClient.query( `UPDATE analytics SET
 								browser = '${ message.browser }',
@@ -106,14 +106,42 @@ io.on( 'connection', async (client)=> {
 
 	//
 
+	client.on( 'death', async (message)=> {
+
+		var postgresClient = await POOL.connect();
+
+		postgresClient.query( `UPDATE analytics SET
+								deaths || '{${ message.timestamp }, ${ message.timestamp }}'
+							   WHERE id = ${ clientID }` );
+
+		postgresClient.release();
+
+	});
+
+	//
+
+	client.on( 'opti', async (message)=> {
+
+		var postgresClient = await POOL.connect();
+
+		postgresClient.query( `UPDATE analytics SET
+								opti_levels || '{${ message.timestamp }, ${ message.position }}'
+							   WHERE id = ${ clientID }` );
+
+		postgresClient.release();
+
+	});
+
+	//
+
 	client.on( 'disconnect', async ()=> {
 
 		console.log( `User ${ client.id } disconnected` );
 
-		postgresClient = await POOL.connect();
+		var postgresClient = await POOL.connect();
 
 		postgresClient.query( `UPDATE analytics SET
-								duration = '${ Date.now() - startTime }'
+								opti_levels = '${ Date.now() - startTime }'
 							   WHERE id = ${ clientID }` );
 
 		postgresClient.release();
