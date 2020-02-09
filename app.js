@@ -111,7 +111,7 @@ io.on( 'connection', async (client)=> {
 		var postgresClient = await POOL.connect();
 
 		postgresClient.query( `UPDATE analytics SET
-								deaths || '{${ message.timestamp }, ${ message.timestamp }}'
+								deaths = deaths || '{${ message.timestamp }, ${ message.timestamp }}'
 							   WHERE id = ${ clientID }` );
 
 		postgresClient.release();
@@ -125,7 +125,7 @@ io.on( 'connection', async (client)=> {
 		var postgresClient = await POOL.connect();
 
 		postgresClient.query( `UPDATE analytics SET
-								opti_levels || '{${ message.timestamp }, ${ message.position }}'
+								opti_levels = opti_levels || '{${ message.timestamp }, ${ message.position }}'
 							   WHERE id = ${ clientID }` );
 
 		postgresClient.release();
@@ -141,7 +141,7 @@ io.on( 'connection', async (client)=> {
 		var postgresClient = await POOL.connect();
 
 		postgresClient.query( `UPDATE analytics SET
-								opti_levels = '${ Date.now() - startTime }'
+								duration = '${ Date.now() - startTime }'
 							   WHERE id = ${ clientID }` );
 
 		postgresClient.release();
