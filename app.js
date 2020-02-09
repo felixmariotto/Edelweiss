@@ -108,6 +108,8 @@ io.on( 'connection', async (client)=> {
 
 	client.on( 'death', async (message)=> {
 
+		console.log('message death received : ', message);
+
 		var postgresClient = await POOL.connect();
 
 		postgresClient.query( `UPDATE analytics SET
@@ -121,6 +123,8 @@ io.on( 'connection', async (client)=> {
 	//
 
 	client.on( 'opti', async (message)=> {
+
+		console.log('message opti received : ', message);
 
 		var postgresClient = await POOL.connect();
 
