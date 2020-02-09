@@ -64,6 +64,8 @@ const io = socketIO( app );
 
 io.on( 'connection', async (client)=> {
 
+	console.log( client.handshake.address );
+
 	console.log( `User ${ client.id } connected` );
 
 	// create a row
