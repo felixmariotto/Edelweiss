@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const socketIO = require('socket.io');
 const PORT = process.env.PORT || 5050;
+var geoip = require('geoip-lite');
 
 const { Pool } = require('pg');
 const POOL = new Pool({
@@ -63,7 +64,11 @@ const io = socketIO( app );
 
 io.on( 'connection', async (client)=> {
 
-	console.log( client.handshake.address.slice( 7, -1 ) );
+	var ip = client.handshake.address.slice( 7, -1 ) ;
+
+	var geo = geoip.lookup( ip );
+
+	console.log( geo );
 
 	console.log( `User ${ client.id } connected` );
 
