@@ -16,7 +16,10 @@ function SocketIO() {
 
 	function sendDeath() {
 
-		var data = Date.now().toString() + ':' + JSON.toString( atlas.position );
+		var data = JSON.stringify({
+			t: Date.now(),
+			p: atlas.player.position
+		});
 
 		socket.emit( 'death', data );
 
@@ -25,7 +28,10 @@ function SocketIO() {
 
 	function sendOptiLevel() {
 
-		var data = Date.now().toString() + ':' + JSON.toString( optimizer.params.level );
+		var data = JSON.stringify({
+			t: Date.now(),
+			p: optimizer.params.level
+		});
 
 		socket.emit( 'opti', data );
 
