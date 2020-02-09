@@ -24,7 +24,7 @@ function SocketIO() {
 	};
 
 
-	function sendOptiLevel( level ) {
+	function sendOptiLevel( timestamp, level ) {
 
 		socket.emit( 'opti', {
 			timestamp,
