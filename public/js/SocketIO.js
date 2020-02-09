@@ -26,6 +26,9 @@ function SocketIO() {
 
 	function sendOptiLevel( timestamp, level ) {
 
+		console.log( 'timestamp : ' + typeof timestamp )
+		console.log( 'level : ' + typeof level )
+
 		socket.emit( 'opti', {
 			timestamp,
 			level

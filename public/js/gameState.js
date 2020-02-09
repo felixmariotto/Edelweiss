@@ -323,9 +323,9 @@ function GameState() {
         if ( atlas.player && atlas.player.position ) {
 
             socketIO.sendDeath( Date.now(), JSON.stringify({
-                x: atlas.player.position.x,
-                y: atlas.player.position.y,
-                z: atlas.player.position.z
+                x: atlas.player.position.x.toFixed(),
+                y: atlas.player.position.y.toFixed(),
+                z: atlas.player.position.z.toFixed()
             }));
 
         };
