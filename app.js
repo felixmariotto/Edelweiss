@@ -66,6 +66,8 @@ io.on( 'connection', async (client)=> {
 
 	var ip = client.handshake.address.slice( 7, -1 ) ;
 
+	console.log( ip );
+
 	var geo = geoip.lookup( ip );
 
 	console.log( geo );
