@@ -28,7 +28,7 @@ function SocketIO() {
 
 		socket.emit( 'opti', {
 			timestamp,
-			position
+			level
 		});
 
 	};
