@@ -320,11 +320,15 @@ function GameState() {
 	// Show a black screen, wait one second, respawn, remove black screen.
 	function die( hasCrashed ) {
 
-        socketIO.sendDeath( Date.now(), JSON.stringify({
-            x: player.position.x,
-            y: player.position.y,
-            z: player.position.z
-        }));
+        if ( atlas.player && atlas.player.position ) {
+
+            socketIO.sendDeath( Date.now(), JSON.stringify({
+                x: player.position.x,
+                y: player.position.y,
+                z: player.position.z
+            }));
+
+        };
 
 		params.isDying = true ;
 		if ( hasCrashed ) params.isCrashing = true ;
