@@ -64,17 +64,9 @@ const io = socketIO( app );
 
 io.on( 'connection', async (client)=> {
 
-	var ip = client.handshake.headers["x-forwarded-for"] ;
+	var ip = client.handshake.headers["x-forwarded-for"].split(",")[0] ;
 
-	console.log( 'ip : ' + ip );
-
-	var sliced = ip.split(",")[0];
-
-	console.log( 'sliced : ' + sliced );
-
-	var geo = geoip.lookup( sliced );
-
-	console.log( geo );
+	var geo = geoip.lookup( ip );
 
 	console.log( `User ${ client.id } connected` );
 
@@ -88,11 +80,15 @@ io.on( 'connection', async (client)=> {
 	postgresClient.query( `INSERT INTO analytics (
 							environment,
 							game_version,
-							timestamp
+							timestamp,
+							ip,
+							country
 						   ) VALUES (
 						    '${ process.env.ENVIRONMENT }',
 						    '${ process.env.VERSION || 'undefined' }',
-						    NOW()
+						    NOW(),
+						    '${ ip }',
+						    '${ geo.country }'
 						   ) RETURNING id` ).then( (value)=> {
 
 							clientID = value.rows[ 0 ].id ; // clientID is a number
