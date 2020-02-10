@@ -64,7 +64,7 @@ const io = socketIO( app );
 
 io.on( 'connection', async (client)=> {
 
-	var lang = .handshake.headers['accept-language'];
+	var lang = client.handshake.headers['accept-language'];
 
 	console.log( 'lang = ' + lang );
 
