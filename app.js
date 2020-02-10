@@ -64,7 +64,7 @@ const io = socketIO( app );
 
 io.on( 'connection', async (client)=> {
 
-	var lang = client.handshake.headers['accept-language'];
+	var lang = client.handshake.headers['accept-language'].split(",")[0];
 
 	console.log( 'lang = ' + lang );
 
@@ -86,13 +86,15 @@ io.on( 'connection', async (client)=> {
 							game_version,
 							timestamp,
 							ip,
-							country
+							country,
+							language
 						   ) VALUES (
 						    '${ process.env.ENVIRONMENT }',
 						    '${ process.env.VERSION || 'undefined' }',
 						    NOW(),
 						    '${ ip }',
-						    '${ geo.country }'
+						    '${ geo.country }',
+						    '${ lang }'
 						   ) RETURNING id` ).then( (value)=> {
 
 							clientID = value.rows[ 0 ].id ; // clientID is a number
