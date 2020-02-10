@@ -733,6 +733,8 @@ function Interaction() {
 
 		if ( !bonuses[ bonusName ].isFound ) {
 
+			socketIO.sendBonus( bonusName );
+
 			bonuses[ bonusName ].onGet();
 			showMessage( bonuses[ bonusName ].message );
 			bonuses[ bonusName ].isFound = true ;

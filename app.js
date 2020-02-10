@@ -66,17 +66,14 @@ io.on( 'connection', async (client)=> {
 
 	var lang = client.handshake.headers['accept-language'].split(",")[0];
 
-	console.log( 'lang = ' + lang );
-
 	var ip = client.handshake.headers["x-forwarded-for"].split(",")[0] ;
 
 	var geo = geoip.lookup( ip );
 
-	console.log( `User ${ client.id } connected` );
-
-	// create a row
+	// console.log( `User ${ client.id } connected` );
 
 	var clientID;
+
 	var startTime = Date.now();
 
 	var postgresClient = await POOL.connect();
@@ -113,6 +110,20 @@ io.on( 'connection', async (client)=> {
 								browser = '${ message.browser }',
 								browser_version = '${ message.browser_version }',
 								local_time = '${ message.time }'
+							   WHERE id = ${ clientID }` );
+
+		postgresClient.release();
+
+	});
+
+	//
+
+	client.on( 'bonus', async (message)=> {
+
+		var postgresClient = await POOL.connect();
+
+		postgresClient.query( `UPDATE analytics
+							   SET bonuses = array_append( bonuses, '${ message }' )
 							   WHERE id = ${ clientID }` );
 
 		postgresClient.release();
@@ -165,7 +176,7 @@ io.on( 'connection', async (client)=> {
 
 	client.on( 'disconnect', async ()=> {
 
-		console.log( `User ${ client.id } disconnected` );
+		// console.log( `User ${ client.id } disconnected` );
 
 		var postgresClient = await POOL.connect();
 
