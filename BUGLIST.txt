@@ -8,6 +8,34 @@
 
 
 
+//////// ARTISTS CONTACTED
+
+- field rotation - mail
+- igneous flame - insta
+- AK
+- Brendon Moeller
+- Ave Air
+- Bvadub
+- Cora Zea
+- DreamScaper
+
+
+
+///// NO CONCACTED
+
+- Strom => licence
+- August wilhelmsson => licence
+- Ed Hamilton => probably quite old, last album in 1998, no contact
+- Ambient Solle => impossible to find
+- Allana Johnson => impossible to find
+- Emblemic X => no contact
+- Empty Space => no contact
+- Eric Withacre => superstar, no point
+- Eriks Esenvalds => superstar, no point
+
+
+
+
 
 
 
@@ -15,6 +43,14 @@
 
 
 - Limiter double-saut
+
+- Limiter dash
+
+- Ajouter icones limites dash / glide / jump
+
+- Ajouter lianes la ou ca manque juste avant le dash
+
+- Exiger d'avoir l'energie pour executer une capacite
 
 - Coder analytics
 
