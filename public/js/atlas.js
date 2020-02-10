@@ -188,7 +188,7 @@ function Atlas() {
     	sceneGraph = obj ;
 
     	// initialise the map
-		initHelpers();
+		initHelpers( 'init' );
 
     };
 
@@ -285,7 +285,7 @@ function Atlas() {
 
 		};
 
-		if ( !gateName ) gameState.die();
+		if ( gateName == 'init' ) gameState.die();
 
 	};
 
