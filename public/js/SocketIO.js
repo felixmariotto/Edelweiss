@@ -65,8 +65,8 @@ function SocketIO() {
 
 	return {
 		sendDeath,
-		sendOptiLevel,,
-		sendBonus
+		sendOptiLevel,
+		sendBonus,
 		sendIsTouchScreen
 	};
 
