@@ -4,6 +4,9 @@
 
 function SocketIO() {
 
+	var time = new Date();
+	time = time.toTimeString();
+
 	var uaResult = uaParser.getResult();
 
 	var socket = io();
@@ -11,7 +14,7 @@ function SocketIO() {
 	socket.emit( 'init', {
 		browser: uaResult.browser.name,
 		browser_version: uaResult.browser.version,
-		time: new Date()
+		time
 	});
 
 
