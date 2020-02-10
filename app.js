@@ -64,6 +64,10 @@ const io = socketIO( app );
 
 io.on( 'connection', async (client)=> {
 
+	var lang = .handshake.headers['accept-language'];
+
+	console.log( 'lang = ' + lang );
+
 	var ip = client.handshake.headers["x-forwarded-for"].split(",")[0] ;
 
 	var geo = geoip.lookup( ip );
