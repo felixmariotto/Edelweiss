@@ -919,6 +919,8 @@ function Interaction() {
 		if ( lastDialogueDate < Date.now() - DIALOGUEBREAKTIME &&
 			 !isInDialogue() ) {
 
+			socketIO.sendDialogue( dialogueName );
+
 			showDialogueUI( dialogueName );
 
 			currentDialogue = dialogueName ;

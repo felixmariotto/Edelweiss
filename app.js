@@ -132,6 +132,20 @@ io.on( 'connection', async (client)=> {
 
 	//
 
+	client.on( 'dialogue', async (message)=> {
+
+		var postgresClient = await POOL.connect();
+
+		postgresClient.query( `UPDATE analytics
+							   SET dialogues = array_append( dialogues, '${ message }' )
+							   WHERE id = ${ clientID }` );
+
+		postgresClient.release();
+
+	});
+
+	//
+
 	client.on( 'death', async (message)=> {
 
 		var postgresClient = await POOL.connect();

@@ -57,6 +57,17 @@ function SocketIO() {
 
 	};
 
+	function sendDialogue( dialogueName ) {
+
+		var data = JSON.stringify({
+			t: Date.now(),
+			d: dialogueName
+		});
+
+		socket.emit( 'dialogue', data );
+
+	};
+
 
 	function sendIsTouchScreen() {
 		socket.emit( 'touchscreen' );
@@ -67,6 +78,7 @@ function SocketIO() {
 		sendDeath,
 		sendOptiLevel,
 		sendBonus,
+		sendDialogue,
 		sendIsTouchScreen
 	};
 
