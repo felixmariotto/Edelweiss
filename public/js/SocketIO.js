@@ -10,7 +10,8 @@ function SocketIO() {
 
 	socket.emit( 'init', {
 		browser: uaResult.browser.name,
-		browser_version: uaResult.browser.version
+		browser_version: uaResult.browser.version,
+		time: new Date();
 	});
 
 

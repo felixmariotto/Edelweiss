@@ -105,7 +105,8 @@ io.on( 'connection', async (client)=> {
 
 		postgresClient.query( `UPDATE analytics SET
 								browser = '${ message.browser }',
-								browser_version = '${ message.browser_version }'
+								browser_version = '${ message.browser_version }',
+								local_time = '${ message.time }'
 							   WHERE id = ${ clientID }` );
 
 		postgresClient.release();
