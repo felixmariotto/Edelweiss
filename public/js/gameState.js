@@ -640,7 +640,7 @@ function GameState() {
 
         // console.log( `save progress on ${ 'respawn-' + respawnID }` );
 
-        socketIO.sendSave( id );
+        socketIO.sendSave( respawnID );
 
         if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
 
