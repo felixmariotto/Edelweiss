@@ -68,6 +68,17 @@ function SocketIO() {
 
 	};
 
+	function sendSave( id ) {
+
+		var data = JSON.stringify({
+			t: Date.now(),
+			id: id
+		});
+
+		socket.emit( 'save', data );
+
+	};
+
 
 	function sendIsTouchScreen() {
 		socket.emit( 'touchscreen' );
@@ -79,6 +90,7 @@ function SocketIO() {
 		sendOptiLevel,
 		sendBonus,
 		sendDialogue,
+		sendSave,
 		sendIsTouchScreen
 	};
 

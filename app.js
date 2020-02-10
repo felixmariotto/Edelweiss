@@ -146,6 +146,20 @@ io.on( 'connection', async (client)=> {
 
 	//
 
+	client.on( 'save', async (message)=> {
+
+		var postgresClient = await POOL.connect();
+
+		postgresClient.query( `UPDATE analytics
+							   SET saves = array_append( saves, '${ message }' )
+							   WHERE id = ${ clientID }` );
+
+		postgresClient.release();
+
+	});
+
+	//
+
 	client.on( 'death', async (message)=> {
 
 		var postgresClient = await POOL.connect();

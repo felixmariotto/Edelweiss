@@ -638,7 +638,9 @@ function GameState() {
 
     function setSavedPosition( respawnID ) {
 
-        console.log( `save progress on ${ 'respawn-' + respawnID }` );
+        // console.log( `save progress on ${ 'respawn-' + respawnID }` );
+
+        socketIO.sendSave( id );
 
         if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
 
