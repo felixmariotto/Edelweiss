@@ -11,10 +11,14 @@ function SocketIO() {
 
 	var socket = io('http://edelweiss.32x.io');
 
-	socket.emit( 'init', {
-		browser: uaResult.browser.name,
-		browser_version: uaResult.browser.version,
-		time
+	io.on('connect', (socket)=> {
+
+		socket.emit( 'init', {
+			browser: uaResult.browser.name,
+			browser_version: uaResult.browser.version,
+			time
+		});
+
 	});
 
 
