@@ -11,7 +11,7 @@ function SocketIO() {
 
 	var socket = io('http://edelweiss.32x.io');
 
-	io.on('connect', (socket)=> {
+	socket.on('connect', ()=> {
 
 		socket.emit( 'init', {
 			browser: uaResult.browser.name,
