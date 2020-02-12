@@ -9,7 +9,7 @@ function SocketIO() {
 
 	var uaResult = uaParser.getResult();
 
-	var socket = io('http://edelweiss.32x.io');
+	var socket = io('https://edelweiss.32x.io');
 
 	socket.on('connect', ()=> {
 
