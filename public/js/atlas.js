@@ -1541,6 +1541,8 @@ function Atlas() {
 		// hide/show the relevant assets according to the next map
 		assetManager.updateGraph( graphName );
 
+		soundMixer.switchGraph( graphName );
+
 		mapManager.switchMap( graphName ).then( ()=> {
 
 			clearHelpers().then( ()=> {

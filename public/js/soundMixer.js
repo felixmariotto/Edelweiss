@@ -38,6 +38,7 @@ function SoundMixer() {
 	}
 
 	var sfxs = [];
+	var sfxCanPlay = true ;
 
 	var listener;
 	var audioLoader = new THREE.AudioLoader();
@@ -129,9 +130,30 @@ function SoundMixer() {
 	};
 
 
+	function switchGraph( graphName ) {
+
+		if ( graphName == 'mountain' ) {
+
+			sfxCanPlay = true ;
+
+		} else {
+
+			sfxCanPlay = false ;
+
+			for ( let sound of sfxs ) {
+
+				sound.stop();
+
+			};
+
+		};
+
+	};
+
+
 	function update( mustCheck ) {
 
-		if ( mustCheck ) {
+		if ( mustCheck && sfxCanPlay ) {
 
 			for ( let sound of sfxs ) {
 
@@ -157,7 +179,8 @@ function SoundMixer() {
 	return {
 		start,
 		setMusic,
-		update
+		update,
+		switchGraph
 	};
 
 };
