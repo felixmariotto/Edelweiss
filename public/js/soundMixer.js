@@ -6,28 +6,38 @@ function SoundMixer() {
 
 	var currentMusic = 0 ;
 
+	const SFXURL = 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/sfx/' ;
+
+	const MUSIC_URL = "https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/music/" ;
+
 	const URLS = {
-		AK_Pulses: "https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/music/AK+-+Pulses.ogg",
-		AndrewOdd_Elysium: "https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/music/Andrew+Odd+-+Elysium.ogg",
-		KylePreston_BrknPhoto: "https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/music/Kyle+Preston+-+Broken+Photosynthesis.ogg",
-		SimonBainton_Hurtstone: "https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/music/Simon+Bainton+-+Hurtstone.ogg",
-		SimonBainton_Porlock: "https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/music/Simon+Bainton+-+Porlock.ogg",
-		SimonBainton_Tankah: "https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/music/Simon+Bainton+-+Tankah.ogg",
-		StromNoir_Hollow: "https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/music/Strom+Noir+-+Hollow.ogg",
-		StromNoir_WinterDay: "https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/music/Strom+Noir+-+Such+a+Beautiful+Winter+Day.ogg",
-		StromNoir_Spring: "https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/music/Strom+Noir+-+The+beginning+of+spring.ogg",
-		TobiasHellkvist_HearYou: "https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/music/Tobias+Hellkvist+-+Where+No+One+Can+Hear+You.ogg"
+		AK_Pulses: "AK+-+Pulses.ogg",
+		AndrewOdd_Elysium: "Andrew+Odd+-+Elysium.ogg",
+		KylePreston_BrknPhoto: "Kyle+Preston+-+Broken+Photosynthesis.ogg",
+		SimonBainton_Hurtstone: "Simon+Bainton+-+Hurtstone.ogg",
+		SimonBainton_Porlock: "Simon+Bainton+-+Porlock.ogg",
+		SimonBainton_Tankah: "Simon+Bainton+-+Tankah.ogg",
+		StromNoir_Hollow: "Strom+Noir+-+Hollow.ogg",
+		StromNoir_WinterDay: "Strom+Noir+-+Such+a+Beautiful+Winter+Day.ogg",
+		StromNoir_Spring: "Strom+Noir+-+The+beginning+of+spring.ogg",
+		TobiasHellkvist_HearYou: "Tobias+Hellkvist+-+Where+No+One+Can+Hear+You.ogg"
 	};
 
 	const TRACKS = [
-		URLS.AK_Pulses,
-		URLS.AndrewOdd_Elysium,
-		URLS.KylePreston_BrknPhoto
+		MUSIC_URL + URLS.AK_Pulses,
+		MUSIC_URL + URLS.AndrewOdd_Elysium,
+		MUSIC_URL + URLS.KylePreston_BrknPhoto
 	];
 
-	const SFXS = {
-		river: 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/sfx/river.ogg'
-	};
+	const SFX_PARAMS = {
+		faint_waves: {
+			volume: 0.7,
+			distance: 3,
+			maxDistance: 10
+		}
+	}
+
+	var sfxs = [];
 
 	var listener;
 	var audioLoader = new THREE.AudioLoader();
@@ -86,16 +96,24 @@ function SoundMixer() {
 		var sound = new THREE.PositionalAudio( listener );
 
 		// load a sound and set it as the PositionalAudio object's buffer
-		audioLoader.load( SFXS[ sfxName ], function( buffer ) {
+		audioLoader.load( SFXURL + sfxName + '.ogg' , function( buffer ) {
+
 			sound.setBuffer( buffer );
-			sound.setRefDistance( 5 );
-			sound.play();
+
+			sound.setRefDistance( SFX_PARAMS[ sfxName ].distance );
+			sound.setVolume( SFX_PARAMS[ sfxName ].volume );
+			sound.maxDistance = SFX_PARAMS[ sfxName ].maxDistance
+
 			sound.setLoop( true );
+			sound.play();
+			
 		});
 
 		sound.position.copy( position );
 
 		scene.add( sound );
+
+		sfxs.push( sound );
 
     };
 
@@ -111,9 +129,35 @@ function SoundMixer() {
 	};
 
 
+	function update( mustCheck ) {
+
+		if ( mustCheck ) {
+
+			for ( let sound of sfxs ) {
+
+				// Check that the sound emitter is in the range to be heard
+
+				if ( sound.position.distanceTo( camera.position ) > sound.maxDistance ) {
+
+					if ( sound.isPlaying ) sound.stop();
+
+				} else {
+
+					if ( !sound.isPlaying ) sound.play();
+
+				};
+
+			};
+
+		};
+
+	};
+
+
 	return {
 		start,
-		setMusic
+		setMusic,
+		update
 	};
 
 };
