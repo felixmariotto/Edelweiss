@@ -630,6 +630,7 @@
     <script src="js/feedbackClient.js"></script>
     <script src="js/AssetManager.js"></script>
     <script src="js/SocketIO.js"></script>
+    <script src="js/soundMixer.js"></script>
 
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
@@ -644,7 +645,12 @@
 
 <body>
 
-    <a href=""></a>
+
+    <audio loop id="music" preload="auto" style="display: none">
+      <source src="https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/music/AK+-+Pulses.ogg" type="audio/ogg">
+    </audio>
+
+
 
 
     <script src="js/main.js"></script>

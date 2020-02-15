@@ -98,6 +98,7 @@ function init() {
     optimizer = Optimizer();
     gameState = GameState();
     assetManager = AssetManager();
+    soundMixer = SoundMixer();
 
 
     loop();

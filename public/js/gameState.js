@@ -7,7 +7,7 @@ function GameState() {
 
 
 
-	const DEVELOPMENT_LAYOUT = false ;
+	const DEVELOPMENT_LAYOUT = true ;
 
 
 
@@ -205,6 +205,10 @@ function GameState() {
 
 	function startGame( isTouchScreen ) {
 
+        console.log('coucou')
+
+        document.getElementById('music').play();
+
         domStartMenu.style.display = 'none' ;
         domTitleBackground.style.display = 'none' ;
         domTitle.style.display = 'none' ;
@@ -267,6 +271,8 @@ function GameState() {
 
         // Initialize atlas with the scene graph
         atlas.init( graph );
+
+        console.log( graph )
 
         // store this sceneGraph into the graphs object
         sceneGraphs.mountain = graph ;

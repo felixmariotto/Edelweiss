@@ -625,8 +625,8 @@ function Atlas() {
 							logicCube.position.y - ( (CUBEWIDTH * logicCube.scale.y ) / 2) > ( player.position.y + PLAYERHEIGHT ) ||
 							logicCube.position.y + ( (CUBEWIDTH * logicCube.scale.y ) / 2) < player.position.y ) ) {
 
-
-						if ( logicCube.type != 'cube-trigger' ) {
+						if ( logicCube.type != 'cube-trigger' &&
+							 logicCube.type != 'cube-trigger-invisible' ) {
 
 							///////////////////////////////////////////////////////
 							// Set cubeCollision.point from the cube coordinates
@@ -670,9 +670,13 @@ function Atlas() {
 							cubeCollision.point[ collisionSortArr[1] ] = player.position[ collisionSortArr[1] ] ;
 							cubeCollision.point[ collisionSortArr[2] ] = player.position[ collisionSortArr[2] ] ;
 
-						} else {
+						} else if ( logicCube.type == 'cube-trigger' ) {
 
 							interaction.trigger( logicCube.tag );
+
+						} else if ( logicCube.type == 'cube-trigger-invisible' ) {
+
+							soundMixer.setMusic( logicCube.tag );
 
 						};
 
