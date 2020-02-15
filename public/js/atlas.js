@@ -626,7 +626,8 @@ function Atlas() {
 							logicCube.position.y + ( (CUBEWIDTH * logicCube.scale.y ) / 2) < player.position.y ) ) {
 
 						if ( logicCube.type != 'cube-trigger' &&
-							 logicCube.type != 'cube-trigger-invisible' ) {
+							 logicCube.type != 'cube-trigger-invisible' &&
+							 logicCube.type != 'cube-anchor' ) {
 
 							///////////////////////////////////////////////////////
 							// Set cubeCollision.point from the cube coordinates
