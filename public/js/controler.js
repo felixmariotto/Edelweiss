@@ -76,7 +76,7 @@ function Controler( player ) {
     const EASYWALLFACTOR = 0.8 ; // speed
     const MEDIUMWALLFACTOR = 0.6 ; // speed
     const HARDWALLFACTOR = 0.5 ; // speed
-    var climbSpeedFactor;
+    var climbSpeedFactor = SLIPWALLFACTOR ;
     var accelerationLevel = 0 ;
     var climbAcceleration = 1 ; // This is used for climbing faster after the player unlocked bonuses
     var CLIMBSPEED = 0.022 ;
@@ -539,6 +539,8 @@ function Controler( player ) {
                     CLIMBVEC.applyAxisAngle( axis, angle );
 
                     player.position.addScaledVector( CLIMBVEC, climbSpeedFactor * climbAcceleration );
+
+                    if ( Number.isNaN( player.position.x ) ) console.log( climbAcceleration )
 
                     // This part is to allow the player to go down the wall when they
                     // touch the ground
@@ -1813,6 +1815,7 @@ function Controler( player ) {
             charaAnim.fall();
 
         };
+
 
 
 
