@@ -4,29 +4,31 @@ function SoundMixer() {
 
 	var domMusic = document.getElementById('music');
 
-	var currentMusic = 0 ;
+	var currentMusic;
+	var lastMusicSet;
+	var musicVolume = 0 ;
 
 	const SFXURL = 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/sfx/' ;
 
 	const MUSIC_URL = "https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/music/" ;
 
-	const URLS = {
-		AK_Pulses: "AK+-+Pulses.ogg",
-		AndrewOdd_Elysium: "Andrew+Odd+-+Elysium.ogg",
-		KylePreston_BrknPhoto: "Kyle+Preston+-+Broken+Photosynthesis.ogg",
-		SimonBainton_Hurtstone: "Simon+Bainton+-+Hurtstone.ogg",
-		SimonBainton_Porlock: "Simon+Bainton+-+Porlock.ogg",
-		SimonBainton_Tankah: "Simon+Bainton+-+Tankah.ogg",
-		StromNoir_Hollow: "Strom+Noir+-+Hollow.ogg",
-		StromNoir_WinterDay: "Strom+Noir+-+Such+a+Beautiful+Winter+Day.ogg",
-		StromNoir_Spring: "Strom+Noir+-+The+beginning+of+spring.ogg",
-		TobiasHellkvist_HearYou: "Tobias+Hellkvist+-+Where+No+One+Can+Hear+You.ogg"
+	const TRACKS_URLS = {
+		AK_Pulses: MUSIC_URL + "AK+-+Pulses.ogg",
+		AndrewOdd_Elysium: MUSIC_URL + "Andrew+Odd+-+Elysium.ogg",
+		KylePreston_BrknPhoto: MUSIC_URL + "Kyle+Preston+-+Broken+Photosynthesis.ogg",
+		SimonBainton_Hurtstone: MUSIC_URL + "Simon+Bainton+-+Hurtstone.ogg",
+		SimonBainton_Porlock: MUSIC_URL + "Simon+Bainton+-+Porlock.ogg",
+		SimonBainton_Tankah: MUSIC_URL + "Simon+Bainton+-+Tankah.ogg",
+		StromNoir_Hollow: MUSIC_URL + "Strom+Noir+-+Hollow.ogg",
+		StromNoir_WinterDay: MUSIC_URL + "Strom+Noir+-+Such+a+Beautiful+Winter+Day.ogg",
+		StromNoir_Spring: MUSIC_URL + "Strom+Noir+-+The+beginning+of+spring.ogg",
+		TobiasHellkvist_HearYou: MUSIC_URL + "Tobias+Hellkvist+-+Where+No+One+Can+Hear+You.ogg"
 	};
 
-	const TRACKS = [
-		MUSIC_URL + URLS.AK_Pulses,
-		MUSIC_URL + URLS.AndrewOdd_Elysium,
-		MUSIC_URL + URLS.KylePreston_BrknPhoto
+	const TRACKS_ORDER = [
+		TRACKS_URLS.StromNoir_WinterDay,
+		TRACKS_URLS.SimonBainton_Tankah,
+		TRACKS_URLS.TobiasHellkvist_HearYou
 	];
 
 	const SFX_PARAMS = {
@@ -98,25 +100,37 @@ function SoundMixer() {
 	var listener;
 	var audioLoader = new THREE.AudioLoader();
 
+
+
+
+
+
     
-    
+    function setMusic( musicName ) {
 
+		if ( musicName != 'track-' + currentMusic ) {
 
-    function setMusicSrc( musicID ) {
+			let musicID = musicName.slice( -1 );
 
-    	domMusic.src = TRACKS[ musicID ] ;
-    	domMusic.load();
-    	domMusic.play();
-    	domMusic.volume = 0.7 ;
+			domMusic.src = TRACKS_ORDER[ musicID ] ;
+	    	domMusic.load();
+	    	domMusic.play();
 
-    	currentMusic = musicID ;
+	    	currentMusic = musicID ;
 
-    };
+		} else {
+
+			lastMusicSet = Date.now();
+
+		};
+
+	};
+
 
 
     function start() {
 
-    	// setMusicSrc( 1 );
+    	setMusic( 'track-0' );
 
     	listener = new THREE.AudioListener();
 		camera.add( listener );
@@ -144,6 +158,7 @@ function SoundMixer() {
 		};
 
     };
+
 
 
     function createSFX( sfxName, position ) {
@@ -184,16 +199,6 @@ function SoundMixer() {
     };
 
 
-	function setMusic( musicName ) {
-
-		if ( musicName != 'track-' + currentMusic ) {
-
-			setMusicSrc( musicName.slice( -1 ) );
-
-		};
-
-	};
-
 
 	function switchGraph( graphName ) {
 
@@ -205,11 +210,7 @@ function SoundMixer() {
 
 			sfxCanPlay = false ;
 
-			console.log( sfxs );
-
 			for ( let sound of sfxs ) {
-
-				console.log( sound )
 
 				if ( sound.isPlaying ) sound.stop();
 
@@ -220,7 +221,21 @@ function SoundMixer() {
 	};
 
 
-	function update( mustCheck ) {
+	function update( mustCheck, delta ) {
+
+		let speedRatio = delta / ( 1 / 60 ) ;
+
+		if ( lastMusicSet + 80 < Date.now() ) {
+
+			musicVolume = Math.max( 0, musicVolume - ( 0.008 * speedRatio ) );
+
+		} else {
+
+			musicVolume = Math.min( 1, musicVolume + ( 0.008 * speedRatio ) );
+
+		};
+
+		domMusic.volume = musicVolume ;
 
 		if ( mustCheck && sfxCanPlay ) {
 
@@ -237,8 +252,6 @@ function SoundMixer() {
 					if ( !sound.isPlaying ) {
 
 						sound.play();
-
-						console.log( sound.sfxName );
 
 					};
 

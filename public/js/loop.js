@@ -88,6 +88,9 @@ function loop() {
     if ( stamina ) stamina.update( loopCount % 10 == 0 );
     if ( mapManager ) mapManager.update( loopCount % 10 == 0 );
     if ( gameState ) gameState.update( loopCount % 15 == 0 );
-    if ( !gameState.params.isGamePaused && soundMixer ) soundMixer.update( loopCount % 15 == 0 );
+    
+    if ( !gameState.params.isGamePaused && soundMixer ) {
+        soundMixer.update( loopCount % 15 == 0, clockDelta );
+    };
 
 };
