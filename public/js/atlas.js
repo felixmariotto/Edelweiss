@@ -20,7 +20,7 @@ function Atlas() {
 	const NEEDPLAYERBOX = false ; // specifically allow player box helper
     const NEEDARROW = false ; // arrows showing player direction
     const NEEDTILES = false ; // add the tiles helpers
-    const NEEDCUBES = false ;
+    const NEEDCUBES = true ;
     const NEEDPLANES = false ; // show helpers for limit planes
     const NEED_WATER_HELPER = false ;
 
@@ -111,6 +111,16 @@ function Atlas() {
 
 	const TRIGGERCUBEMAT = new THREE.MeshLambertMaterial({
 		color: 0x276b00
+	});
+
+	const INVTRIGGERCUBEMAT = new THREE.MeshLambertMaterial({
+		color: 0x276b00,
+		transparent: true,
+		opacity: 0.5
+	});
+
+	const ANCHORCUBEMAT = new THREE.MeshLambertMaterial({
+		color: 0xfc0703
 	});
 
 
@@ -587,109 +597,145 @@ function Atlas() {
 		checkStage( Math.floor( player.position.y ) - 1 );
 		checkStage( Math.floor( player.position.y ) - 2 );
 		checkStage( Math.floor( player.position.y ) - 3 );
+		checkInvisibleCubes();
+
+		return cubeCollision
+
+	};
 
 
-		function checkStage( stage ) {
-
-			if ( sceneGraph.cubesGraph[ stage ] ) {
-
-				// loop through the group of tiles at the same height as the player
-				sceneGraph.cubesGraph[ stage ].forEach( (logicCube, i)=> {
 
 
-					///////////////////////////////
-					///  INTERACTIVE CUBE RANGE
-					///////////////////////////////
+	function checkInvisibleCubes() {
 
-					if ( logicCube.type == 'cube-interactive' ) {
-						
-						if ( utils.distanceVecs( logicCube.position, player.position ) < INTERACTIVECUBERANGE ) {
+		sceneGraph.cubesGraph.forEach( (stage)=> {
 
-							cubeCollision.inRange = true ;
-							cubeCollision.tag = logicCube.tag ;
+			if ( !stage ) return
 
-						};
+			stage.forEach( (logicCube)=> {
 
-					};
+				if ( logicCube.type == 'cube-trigger-invisible' ) {
 
+					
 
-					/////////////////////////
-					//	GENERAL COLLISION
-					/////////////////////////
+					if ( cubeCollides( logicCube ) ) {
 
-					// check for X Z collision
-					if ( !( logicCube.position.x - ( (CUBEWIDTH * logicCube.scale.x ) / 2) > ( player.position.x + ( PLAYERWIDTH / 2 ) ) ||
-							logicCube.position.z - ( (CUBEWIDTH * logicCube.scale.z ) / 2) > ( player.position.z + ( PLAYERWIDTH / 2 ) ) ||
-							logicCube.position.x + ( (CUBEWIDTH * logicCube.scale.x ) / 2) < ( player.position.x - ( PLAYERWIDTH / 2 ) ) ||
-							logicCube.position.z + ( (CUBEWIDTH * logicCube.scale.z ) / 2) < ( player.position.z - ( PLAYERWIDTH / 2 ) ) ||
-							logicCube.position.y - ( (CUBEWIDTH * logicCube.scale.y ) / 2) > ( player.position.y + PLAYERHEIGHT ) ||
-							logicCube.position.y + ( (CUBEWIDTH * logicCube.scale.y ) / 2) < player.position.y ) ) {
-
-						if ( logicCube.type != 'cube-trigger' &&
-							 logicCube.type != 'cube-trigger-invisible' &&
-							 logicCube.type != 'cube-anchor' ) {
-
-							///////////////////////////////////////////////////////
-							// Set cubeCollision.point from the cube coordinates
-							///////////////////////////////////////////
-
-							cubeCollision.point = {};
-
-							// X DIR
-							if ( logicCube.position.x > player.position.x ) {
-								cubeCollision.point.x = Math.min( player.position.x, logicCube.position.x - ( (CUBEWIDTH * logicCube.scale.x ) / 2 ) - (PLAYERWIDTH / 2) - CUBE_INTERSECTION_OFFSET );
-							} else {
-								cubeCollision.point.x = Math.max( player.position.x, logicCube.position.x + ( (CUBEWIDTH * logicCube.scale.x ) / 2 ) + (PLAYERWIDTH / 2) + CUBE_INTERSECTION_OFFSET );
-							};
-
-							// Z DIR
-							if ( logicCube.position.z > player.position.z ) {
-								cubeCollision.point.z = Math.min( player.position.z, logicCube.position.z - ( (CUBEWIDTH * logicCube.scale.z ) / 2 ) - (PLAYERWIDTH / 2) - CUBE_INTERSECTION_OFFSET );
-							} else {
-								cubeCollision.point.z = Math.max( player.position.z, logicCube.position.z + ( (CUBEWIDTH * logicCube.scale.z ) / 2 ) + (PLAYERWIDTH / 2) + CUBE_INTERSECTION_OFFSET );
-							};
-
-							// Y DIR
-							if ( logicCube.position.y > player.position.y + ( PLAYERHEIGHT / 2 ) ) {
-								cubeCollision.point.y = Math.min( player.position.y, logicCube.position.y - ( (CUBEWIDTH * logicCube.scale.y ) / 2 ) - PLAYERHEIGHT - CUBE_INTERSECTION_OFFSET );
-							} else {
-								cubeCollision.point.y = Math.max( player.position.y, logicCube.position.y + ( (CUBEWIDTH * logicCube.scale.y ) / 2 ) + CUBE_INTERSECTION_OFFSET );
-							};
-
-
-							/// All this mess is to get cubeCollision.point value which
-							// is the closest from player.position values, then clamp
-							// the other two to player.position values.
-
-							collisionSortArr.sort( (a, b)=> {
-
-								return Math.abs( cubeCollision.point[a] - player.position[a] ) -
-									   Math.abs( cubeCollision.point[b] - player.position[b] )
-
-							});
-
-							cubeCollision.point[ collisionSortArr[1] ] = player.position[ collisionSortArr[1] ] ;
-							cubeCollision.point[ collisionSortArr[2] ] = player.position[ collisionSortArr[2] ] ;
-
-						} else if ( logicCube.type == 'cube-trigger' ) {
-
-							interaction.trigger( logicCube.tag );
-
-						} else if ( logicCube.type == 'cube-trigger-invisible' ) {
-
-							soundMixer.setMusic( logicCube.tag );
-
-						};
+						soundMixer.setMusic( logicCube.tag );
 
 					};
 
-				});
+				};
 
-			};
+			});
+
+		});
+
+	};
+
+
+
+
+	function checkStage( stage ) {
+
+		if ( sceneGraph.cubesGraph[ stage ] ) {
+
+			// loop through the group of tiles at the same height as the player
+			sceneGraph.cubesGraph[ stage ].forEach( (logicCube, i)=> {
+
+
+				///////////////////////////////
+				///  INTERACTIVE CUBE RANGE
+				///////////////////////////////
+
+				if ( logicCube.type == 'cube-interactive' ) {
+					
+					if ( utils.distanceVecs( logicCube.position, player.position ) < INTERACTIVECUBERANGE ) {
+
+						cubeCollision.inRange = true ;
+						cubeCollision.tag = logicCube.tag ;
+
+					};
+
+				};
+
+				/////////////////////////
+				//	GENERAL COLLISION
+				/////////////////////////
+
+				// check for X Z collision
+				if ( cubeCollides( logicCube ) ) {
+
+					if ( logicCube.type != 'cube-trigger' &&
+						 logicCube.type != 'cube-trigger-invisible' &&
+						 logicCube.type != 'cube-anchor' ) {
+
+						///////////////////////////////////////////////////////
+						// Set cubeCollision.point from the cube coordinates
+						///////////////////////////////////////////
+
+						cubeCollision.point = {};
+
+						// X DIR
+						if ( logicCube.position.x > player.position.x ) {
+							cubeCollision.point.x = Math.min( player.position.x, logicCube.position.x - ( (CUBEWIDTH * logicCube.scale.x ) / 2 ) - (PLAYERWIDTH / 2) - CUBE_INTERSECTION_OFFSET );
+						} else {
+							cubeCollision.point.x = Math.max( player.position.x, logicCube.position.x + ( (CUBEWIDTH * logicCube.scale.x ) / 2 ) + (PLAYERWIDTH / 2) + CUBE_INTERSECTION_OFFSET );
+						};
+
+						// Z DIR
+						if ( logicCube.position.z > player.position.z ) {
+							cubeCollision.point.z = Math.min( player.position.z, logicCube.position.z - ( (CUBEWIDTH * logicCube.scale.z ) / 2 ) - (PLAYERWIDTH / 2) - CUBE_INTERSECTION_OFFSET );
+						} else {
+							cubeCollision.point.z = Math.max( player.position.z, logicCube.position.z + ( (CUBEWIDTH * logicCube.scale.z ) / 2 ) + (PLAYERWIDTH / 2) + CUBE_INTERSECTION_OFFSET );
+						};
+
+						// Y DIR
+						if ( logicCube.position.y > player.position.y + ( PLAYERHEIGHT / 2 ) ) {
+							cubeCollision.point.y = Math.min( player.position.y, logicCube.position.y - ( (CUBEWIDTH * logicCube.scale.y ) / 2 ) - PLAYERHEIGHT - CUBE_INTERSECTION_OFFSET );
+						} else {
+							cubeCollision.point.y = Math.max( player.position.y, logicCube.position.y + ( (CUBEWIDTH * logicCube.scale.y ) / 2 ) + CUBE_INTERSECTION_OFFSET );
+						};
+
+
+						/// All this mess is to get cubeCollision.point value which
+						// is the closest from player.position values, then clamp
+						// the other two to player.position values.
+
+						collisionSortArr.sort( (a, b)=> {
+
+							return Math.abs( cubeCollision.point[a] - player.position[a] ) -
+								   Math.abs( cubeCollision.point[b] - player.position[b] )
+
+						});
+
+						cubeCollision.point[ collisionSortArr[1] ] = player.position[ collisionSortArr[1] ] ;
+						cubeCollision.point[ collisionSortArr[2] ] = player.position[ collisionSortArr[2] ] ;
+
+					} else if ( logicCube.type == 'cube-trigger' ) {
+
+						interaction.trigger( logicCube.tag );
+
+					};
+
+				};
+
+			});
 
 		};
 
-		return cubeCollision
+	};
+
+
+
+
+	function cubeCollides( logicCube ) {
+
+		return !( logicCube.position.x - ( (CUBEWIDTH * logicCube.scale.x ) / 2) > ( player.position.x + ( PLAYERWIDTH / 2 ) ) ||
+				  logicCube.position.z - ( (CUBEWIDTH * logicCube.scale.z ) / 2) > ( player.position.z + ( PLAYERWIDTH / 2 ) ) ||
+				  logicCube.position.x + ( (CUBEWIDTH * logicCube.scale.x ) / 2) < ( player.position.x - ( PLAYERWIDTH / 2 ) ) ||
+				  logicCube.position.z + ( (CUBEWIDTH * logicCube.scale.z ) / 2) < ( player.position.z - ( PLAYERWIDTH / 2 ) ) ||
+				  logicCube.position.y - ( (CUBEWIDTH * logicCube.scale.y ) / 2) > ( player.position.y + PLAYERHEIGHT ) ||
+				  logicCube.position.y + ( (CUBEWIDTH * logicCube.scale.y ) / 2) < player.position.y )
 
 	};
 
@@ -1415,8 +1461,14 @@ function Atlas() {
 			case 'cube-trigger' :
 				return TRIGGERCUBEMAT ;
 
+			case 'cube-trigger-invisible' :
+				return INVTRIGGERCUBEMAT ;
+
+			case 'cube-anchor' :
+				return ANCHORCUBEMAT ;
+
 			default :
-				console.error('cannot get material');
+				console.error('cannot get material for ' + type );
 				break;
 
 		};

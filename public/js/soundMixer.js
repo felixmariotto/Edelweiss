@@ -28,7 +28,10 @@ function SoundMixer() {
 	const TRACKS_ORDER = [
 		TRACKS_URLS.StromNoir_WinterDay,
 		TRACKS_URLS.SimonBainton_Tankah,
-		TRACKS_URLS.TobiasHellkvist_HearYou
+		TRACKS_URLS.TobiasHellkvist_HearYou,
+		TRACKS_URLS.AndrewOdd_Elysium,
+		TRACKS_URLS.KylePreston_BrknPhoto
+
 	];
 
 	const SFX_PARAMS = {
@@ -130,7 +133,7 @@ function SoundMixer() {
 
     function start() {
 
-    	setMusic( 'track-0' );
+    	// setMusic( 'track-0' );
 
     	listener = new THREE.AudioListener();
 		camera.add( listener );
