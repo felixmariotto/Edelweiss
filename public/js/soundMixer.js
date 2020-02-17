@@ -231,14 +231,14 @@ function SoundMixer() {
 		let speedRatio = delta / ( 1 / 60 ) ;
 
 		// fade out
-		if ( lastMusicSet + 80 < Date.now() && !sfxCanPlay ) {
+		if ( lastMusicSet + 80 < Date.now() && sfxCanPlay ) {
 
-			musicVolume = Math.max( 0, musicVolume - ( 0.008 * speedRatio ) );
+			musicVolume = Math.max( 0, musicVolume - ( 0.004 * speedRatio ) );
 
 		// fade in
 		} else {
 
-			musicVolume = Math.min( 1, musicVolume + ( 0.008 * speedRatio ) );
+			musicVolume = Math.min( 1, musicVolume + ( 0.004 * speedRatio ) );
 
 		};
 
