@@ -30,8 +30,8 @@ function SoundMixer() {
 		TRACKS_URLS.SimonBainton_Tankah,
 		TRACKS_URLS.TobiasHellkvist_HearYou,
 		TRACKS_URLS.AndrewOdd_Elysium,
-		TRACKS_URLS.KylePreston_BrknPhoto
-
+		TRACKS_URLS.KylePreston_BrknPhoto,
+		TRACKS_URLS.SimonBainton_Hurtstone
 	];
 
 	const SFX_PARAMS = {
@@ -213,6 +213,8 @@ function SoundMixer() {
 
 			sfxCanPlay = false ;
 
+			setMusic( 'track-5' );
+
 			for ( let sound of sfxs ) {
 
 				if ( sound.isPlaying ) sound.stop();
@@ -228,10 +230,12 @@ function SoundMixer() {
 
 		let speedRatio = delta / ( 1 / 60 ) ;
 
-		if ( lastMusicSet + 80 < Date.now() ) {
+		// fade out
+		if ( lastMusicSet + 80 < Date.now() && !sfxCanPlay ) {
 
 			musicVolume = Math.max( 0, musicVolume - ( 0.008 * speedRatio ) );
 
+		// fade in
 		} else {
 
 			musicVolume = Math.min( 1, musicVolume + ( 0.008 * speedRatio ) );
