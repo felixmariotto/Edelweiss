@@ -34,6 +34,9 @@ function SoundMixer() {
 		TRACKS_URLS.SimonBainton_Hurtstone
 	];
 
+	// hold the times of each music to set it when change back to it.
+	var MUSIC_TIMES = [ 0, 0, 0, 0, 0, 0 ];
+
 	const SFX_PARAMS = {
 		faint_waves: {
 			volume: 0.8,
@@ -113,13 +116,19 @@ function SoundMixer() {
 
 		if ( musicName != 'track-' + currentMusic ) {
 
+			if ( typeof currentMusic != 'undefined' ) {
+
+				MUSIC_TIMES[ currentMusic ] = domMusic.currentTime;
+
+			};
+
 			let musicID = musicName.slice( -1 );
+			currentMusic = musicID ;
 
 			domMusic.src = TRACKS_ORDER[ musicID ] ;
 	    	domMusic.load();
+	    	domMusic.currentTime = MUSIC_TIMES[ currentMusic ];
 	    	domMusic.play();
-
-	    	currentMusic = musicID ;
 
 		} else {
 
