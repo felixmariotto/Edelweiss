@@ -20,7 +20,7 @@ function Atlas() {
 	const NEEDPLAYERBOX = false ; // specifically allow player box helper
     const NEEDARROW = false ; // arrows showing player direction
     const NEEDTILES = false ; // add the tiles helpers
-    const NEEDCUBES = true ;
+    const NEEDCUBES = false ;
     const NEEDPLANES = false ; // show helpers for limit planes
     const NEED_WATER_HELPER = false ;
 

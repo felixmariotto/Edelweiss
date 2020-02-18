@@ -7,9 +7,7 @@ function GameState() {
 
 
 
-	const DEVELOPMENT_LAYOUT = true ;
-
-
+	const DEVELOPMENT_LAYOUT = false ;
 
 	const domStartMenu = document.getElementById('start-menu');
     const domStartButton = document.getElementById('start-button');

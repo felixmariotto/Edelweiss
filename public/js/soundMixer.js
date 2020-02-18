@@ -44,7 +44,7 @@ function SoundMixer() {
 
 	const SFX_PARAMS = {
 		faint_waves: {
-			volume: 0.8,
+			volume: 1,
 			distance: 1,
 			maxDistance: 12
 		},
@@ -65,11 +65,6 @@ function SoundMixer() {
 			distance: 1,
 			maxDistance: 4,
 			playSpeedVarying: 0.1
-		},
-		swallow: {
-			volume: 0.45,
-			distance: 1,
-			maxDistance: 14
 		},
 		robin: {
 			volume: 0.7,
