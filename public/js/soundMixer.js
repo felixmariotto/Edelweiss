@@ -6,7 +6,12 @@ function SoundMixer() {
 
 	var currentMusic;
 	var lastMusicSet;
+	var isInAnimation;
 	var musicVolume = 0 ;
+
+	const FAST_FADE_SPEED = 0.15 ;
+	const NORMAL_FADE_SPEED = 0.004 ;
+	var fadeSpeed = NORMAL_FADE_SPEED ;
 
 	const SFXURL = 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/sounds/sfx/' ;
 
@@ -94,9 +99,10 @@ function SoundMixer() {
 			maxDistance: 15
 		},
 		gust: {
-			volume: 0.9,
-			distance: 1,
-			maxDistance: 20
+			volume: 1.3,
+			distance: 1.1,
+			maxDistance: 20,
+			playSpeedVarying: 0.1
 		}
 	}
 
@@ -214,6 +220,8 @@ function SoundMixer() {
 
 	function switchGraph( graphName ) {
 
+		console.log('switch')
+
 		if ( graphName == 'mountain' ) {
 
 			sfxCanPlay = true ;
@@ -240,14 +248,15 @@ function SoundMixer() {
 		let speedRatio = delta / ( 1 / 60 ) ;
 
 		// fade out
-		if ( lastMusicSet + 80 < Date.now() && sfxCanPlay ) {
+		if ( (lastMusicSet + 80 < Date.now() && sfxCanPlay) ||
+			 isInAnimation ) {
 
-			musicVolume = Math.max( 0, musicVolume - ( 0.004 * speedRatio ) );
+			musicVolume = Math.max( 0, musicVolume - ( fadeSpeed * speedRatio ) );
 
 		// fade in
 		} else {
 
-			musicVolume = Math.min( 1, musicVolume + ( 0.004 * speedRatio ) );
+			musicVolume = Math.min( 1, musicVolume + ( fadeSpeed * speedRatio ) );
 
 		};
 
@@ -280,11 +289,38 @@ function SoundMixer() {
 	};
 
 
+	function animStart() {
+
+		isInAnimation = true ;
+
+		fadeSpeed = FAST_FADE_SPEED ;
+
+		musicVolume = Math.max( 0, musicVolume - fadeSpeed );
+
+		domMusic.volume = musicVolume ;
+	};
+
+
+	function animEnd() {
+
+		isInAnimation = false ;
+
+		musicVolume = 0 ;
+
+		domMusic.volume = musicVolume ;
+
+		fadeSpeed = NORMAL_FADE_SPEED ;
+
+	};
+
+
 	return {
 		start,
 		setMusic,
 		update,
-		switchGraph
+		switchGraph,
+		animStart,
+		animEnd
 	};
 
 };

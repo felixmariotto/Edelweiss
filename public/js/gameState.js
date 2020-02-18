@@ -332,6 +332,8 @@ function GameState() {
 		domBlackScreen.classList.remove( 'hide-black-screen' );
 		domBlackScreen.classList.add( 'show-black-screen' );
 
+        soundMixer.animStart();
+
         setTimeout( ()=> {
 
             if ( atlas.getSceneGraph() != sceneGraphs.mountain ) {
@@ -346,6 +348,8 @@ function GameState() {
 
 			charaAnim.respawn();
 
+            soundMixer.animEnd();
+
 			atlas.player.position.copy( respawnPos );
 			cameraControl.resetCameraPos();
 
@@ -357,7 +361,7 @@ function GameState() {
 			domBlackScreen.classList.remove( 'show-black-screen' );
 			domBlackScreen.classList.add( 'hide-black-screen' );
 
-		}, 850);
+		}, 1500);
 
 	};
 
@@ -375,6 +379,8 @@ function GameState() {
         params.isGamePaused = true ;
 
     	let graphName = getDestinationFromGate( gateName ) ;
+
+        soundMixer.animStart();
 
     	domBlackScreen.classList.remove( 'hide-black-screen' );
 		domBlackScreen.classList.add( 'show-black-screen' );
@@ -397,6 +403,8 @@ function GameState() {
 
 	                    atlas.switchGraph( graphName, gateName );
 
+                        soundMixer.animEnd();
+
 	                });
 
 	            };
@@ -404,6 +412,8 @@ function GameState() {
 	        } else {
 
 	             atlas.switchGraph( graphName, gateName );
+
+                 soundMixer.animEnd();
 
 	        };
 
