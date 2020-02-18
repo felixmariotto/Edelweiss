@@ -108,60 +108,117 @@
 
 
 
-        #title {
-            max-height: 50px; 
-        }
+        
 
         #start-menu {
             position: fixed;
+            display: none;
+            flex-direction: column;
+            justify-content: space-evenly;
             top: 50%;
             left: 50%;
             transform: translate( -50%, -50% );
-            display: none;
-            flex-direction: column;
-            background-color: red;
+            width: calc( 100vw - 50px );
+            height: calc( 100vh - 50px );
         }
+
+            #title-image-container {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+                #title {
+                    max-height: 50px; 
+                }
 
             #menu-element {
                 display: flex;
                 flex-direction: row;
+                justify-content: space-evenly;
             }
 
-            .menu-subelement {
-                display: flex;
-                padding: 25px 20px 25px 20px;
-                text-align: center;
-                flex-direction: column;
-                background-color: white;
-                border-radius: 4px;
-                border-width: 1px;
-                border-style: solid;
-                border-color: #111111
-            }
+            @media screen and (max-width: 620px) {
 
-            #start-button {
-                display: inline-block;
-                font-size: calc( 100% + 1.5vh );
-                border-style: solid;
-                border-width: 1px;
-                border-color: #111111;
-                border-radius: 4px;
-                padding: 15px;
-                color: #d7dee3;
-                background-color: #f2f6f9;
-                cursor: pointer;
-            }
-
-                #start-background {
-                    background-color: #d7dee3;
-                    height: 10px;
+                #menu-element {
+                    flex-direction: column;
                 }
 
-                    #start-loaded {
-                        background-color: green;
-                        height: 10px;
-                        width: 0;
+                #menu-element>div {
+                    left: 50%;
+                    transform: translateX( -50% );
+                }
+
+                #credits {
+                    margin-top: 20px;
+                }
+
+            }
+
+                .menu-subelement {
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-evenly;
+                    padding: 15px 10px 15px 10px;
+                    text-align: center;
+                    background-color: white;
+                    max-width: 220px;
+                    border-radius: 4px;
+                    border-width: 1px;
+                    border-style: solid;
+                    border-color: #111111
+                }
+
+                    .section-title {
+                        font-size: 1.3em;
                     }
+
+                    #start-button {
+                        display: inline-block;
+                        font-size: 1.6em;
+                        border-style: solid;
+                        border-width: 1px;
+                        border-color: #111111;
+                        border-radius: 4px;
+                        padding: 15px;
+                        color: #d7dee3;
+                        background-color: #f2f6f9;
+                        cursor: pointer;
+                    }
+
+                        #start-background {
+                            background-color: #d7dee3;
+                            height: 10px;
+                        }
+
+                            #start-loaded {
+                                background-color: green;
+                                height: 10px;
+                                width: 0;
+                            }
+
+                    #creator {
+                        text-align: center;
+                    }
+
+                    .musician {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        margin: 2px;
+                    }
+
+                        .about-button {
+                            background-color: #f2f6f9;
+                            text-decoration: none;
+                            color: black;
+                            padding: 3px;
+                            margin-left: 5px;
+                            border-style: solid;
+                            border-width: 1px;
+                            border-radius: 4px;
+                            font-size: 0.7em;
+                        }
 
 
 
@@ -733,7 +790,13 @@
 
     <div id="start-menu">
 
-        <img id="title" src="https://edelweiss-game.s3.eu-west-3.amazonaws.com/assets/title.png">
+        <div id="title-image-container">
+
+            <img id="title" src="https://edelweiss-game.s3.eu-west-3.amazonaws.com/assets/title.png">
+            <br>
+            a game by Felix Mariotto
+
+        </div>
 
         <div id="menu-element">
             
@@ -750,23 +813,48 @@
 
                 <br>
 
-                <a class="github-button" href="https://github.com/felixmariotto/Edelweiss" data-size="large" aria-label="Star felixmariotto/Edelweiss on GitHub"> code on Github</a>
+                <div id="creator">
+                    
+                    <a class="github-button" href="https://github.com/felixmariotto/Edelweiss" data-size="large" aria-label="Star felixmariotto/Edelweiss on GitHub"> code on Github</a>
 
-                <a href="https://twitter.com/felix_mariotto?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Twitter</a>
+                    <br>
+
+                    <a href="https://twitter.com/felix_mariotto?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Twitter</a>
+
+                </div>
 
             </div>
 
-            <div class="menu-subelement">
-            
-                <p>Game created by Felix Mariotto</p>
+            <div class="menu-subelement" id="credits">
 
-                <p>Music credit</p>
+                <span class="section-title">Music :</span>
 
-                <p>Music credit</p>
+                <br>
 
-                <p>Music credit</p>
+                <p class="musician">
+                    Strom Noir
+                    <a class="about-button" href="https://stromnoir.bandcamp.com/">about</a>
+                </p>
 
-                <p>Music credit</p>
+                <p class="musician">
+                    Simon Bainton
+                    <a class="about-button" href="https://simonbainton.bandcamp.com/">about</a>
+                </p>
+
+                <p class="musician">
+                    Tobias Hellkvist
+                    <a class="about-button" href="http://www.tobiashellkvist.com">about</a>
+                </p>
+
+                <p class="musician">
+                    Andrew Odd
+                    <a class="about-button" href="https://soundcloud.com/andrewodd/">about</a>
+                </p>
+
+                <p class="musician">
+                    Kyle Preston
+                    <a class="about-button" href="https://www.kylepreston.com">about</a>
+                </p>
 
             </div>
 
