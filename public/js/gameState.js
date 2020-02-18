@@ -15,7 +15,6 @@ function GameState() {
     const domStartBack = document.getElementById('start-background');
 
     const domTitleBackground = document.getElementById('title-background');
-    const domTitle = document.getElementById('title');
 
     const domJSONLoader = document.getElementById('json-loader');
 	const domLoadMap = document.getElementById('gui');
@@ -207,7 +206,6 @@ function GameState() {
 
         domStartMenu.style.display = 'none' ;
         domTitleBackground.style.display = 'none' ;
-        domTitle.style.display = 'none' ;
 
         domStaminaBar.style.display = 'flex' ;
 

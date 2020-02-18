@@ -109,12 +109,7 @@
 
 
         #title {
-            position: fixed;
-            top: 80px;
-            left: 50%;
-            max-width: 90%;
-            margin: -50px;
-            transform: translate( calc( -50% + 50px ) );
+            max-height: 50px; 
         }
 
         #start-menu {
@@ -122,16 +117,27 @@
             top: 50%;
             left: 50%;
             transform: translate( -50%, -50% );
-            padding: 25px 20px 25px 20px;
             display: none;
-            text-align: center;
             flex-direction: column;
-            background-color: white;
-            border-radius: 4px;
-            border-width: 1px;
-            border-style: solid;
-            border-color: #111111
+            background-color: red;
         }
+
+            #menu-element {
+                display: flex;
+                flex-direction: row;
+            }
+
+            .menu-subelement {
+                display: flex;
+                padding: 25px 20px 25px 20px;
+                text-align: center;
+                flex-direction: column;
+                background-color: white;
+                border-radius: 4px;
+                border-width: 1px;
+                border-style: solid;
+                border-color: #111111
+            }
 
             #start-button {
                 display: inline-block;
@@ -727,25 +733,51 @@
 
     <div id="start-menu">
 
-        <div>
-            <div id='start-button'>
-                Start
-                <div id="start-background">
-                    <div id="start-loaded"></div>
+        <img id="title" src="https://edelweiss-game.s3.eu-west-3.amazonaws.com/assets/title.png">
+
+        <div id="menu-element">
+            
+            <div class="menu-subelement">
+
+                <div>
+                    <div id='start-button'>
+                        Start
+                        <div id="start-background">
+                            <div id="start-loaded"></div>
+                        </div>
+                    </div>
                 </div>
+
+                <br>
+
+                <a class="github-button" href="https://github.com/felixmariotto/Edelweiss" data-size="large" aria-label="Star felixmariotto/Edelweiss on GitHub"> code on Github</a>
+
+                <a href="https://twitter.com/felix_mariotto?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Twitter</a>
+
             </div>
+
+            <div class="menu-subelement">
+            
+                <p>Game created by Felix Mariotto</p>
+
+                <p>Music credit</p>
+
+                <p>Music credit</p>
+
+                <p>Music credit</p>
+
+                <p>Music credit</p>
+
+            </div>
+
         </div>
-
-        <br>
-
-        <a class="github-button" href="https://github.com/felixmariotto/Edelweiss" data-size="large" aria-label="Star felixmariotto/Edelweiss on GitHub"> code on Github</a>
-
-        <a href="https://twitter.com/felix_mariotto?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Twitter</a>
 
     </div>
 
 
-    <img id="title" src="https://edelweiss-game.s3.eu-west-3.amazonaws.com/assets/title.png">
+
+
+    
     
 
 
