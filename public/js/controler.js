@@ -124,6 +124,8 @@ function Controler( player ) {
     var glidingCount = 0 ;
     var hasGlided = false ;
 
+    var hasDoubledJumped = false;
+
     const DASHTIME = 300 ; // ms necessary to charge a dash
     const DASHTIMEINCREMENT = 0.05 ; // dash speed
     const DASHDISTANCE = 0.21 ;
@@ -677,7 +679,7 @@ function Controler( player ) {
 
         
         // atlas compute the position of the player according
-        // to the horizontal obstacles in the scene.
+        // to the vertical obstacles in the scene.
         yCollision = atlas.collidePlayerGrounds() ;
 
 
@@ -694,6 +696,7 @@ function Controler( player ) {
         // There is a collision with the ground
         if ( yCollision.point != undefined ) {
 
+            hasDoubledJumped = false ;
             
             if ( state.isFlying &&
                  !state.isClimbing &&
@@ -1526,6 +1529,7 @@ function Controler( player ) {
                             if ( !mustOffset ) {
 
                                 state.isSlipping = true ;
+                                hasDoubledJumped = false ;
 
                             };
 
@@ -1714,6 +1718,8 @@ function Controler( player ) {
         function setClimbingState( isClimbing ) {
 
             if ( isClimbing ) {
+
+                hasDoubledJumped = false ;
 
                 state.isClimbing = true ;
                 state.isFlying = false ;
@@ -1942,10 +1948,14 @@ function Controler( player ) {
 
         // JUMP
         // Here we check that the player can jump because they are on a wall
-        if ( ( ( permission.infinityJump && state.isFlying ) ||
+        if ( ( ( permission.infinityJump && state.isFlying && !hasDoubledJumped ) ||
                state.isClimbing ) &&
               hitGroundRecovering <= 0 &&
               stamina.params.stamina > 0 ) {
+
+            if ( state.isFlying ) {
+                hasDoubledJumped = true ;
+            };
 
             // Animate the jump
             charaAnim.jump();
