@@ -9,6 +9,27 @@ function SocketIO() {
 
 	var uaResult = uaParser.getResult();
 
+	var playerInfo;
+
+	function joinGame( id, pass, name ) {
+
+		playerInfo = {
+
+			id, pass, name
+
+		};
+
+		setInterval( function() {
+
+			charaAnim.getPlayerState( playerInfo );
+
+			socket.emit( 'playerInfo', playerInfo );
+
+		}, 300 );
+
+	}
+
+
 	var socket = io('https://edelweiss.32x.io');
 
 	socket.on('connect', ()=> {
@@ -83,6 +104,13 @@ function SocketIO() {
 
 	};
 
+	function onPlayerUpdates( handler ) {
+		socket.on( 'playerInfo', handler );
+	}
+
+	function onPlayerDisconnects( handler ) {
+		socket.on( 'playerLeft', handler );
+	}
 
 	function sendIsTouchScreen() {
 		socket.emit( 'touchscreen' );
@@ -90,6 +118,9 @@ function SocketIO() {
 
 
 	return {
+		joinGame,
+		onPlayerUpdates,
+		onPlayerDisconnects,
 		sendDeath,
 		sendOptiLevel,
 		sendBonus,

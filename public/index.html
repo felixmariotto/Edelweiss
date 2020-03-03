@@ -124,6 +124,7 @@
 
             #title-image-container {
                 text-align: center;
+                margin-top: auto;
                 margin-bottom: 20px;
             }
 
@@ -137,37 +138,59 @@
                 justify-content: space-evenly;
             }
 
-            @media screen and (max-width: 620px) {
-
-                #menu-element {
-                    flex-direction: column;
-                }
-
-                #menu-element>div {
-                    left: 50%;
-                    transform: translateX( -50% );
-                }
-
-                #credits {
-                    margin-top: 20px;
-                }
-
+            #menu-element > div {
+                display: flex;
+                flex-direction: column;
             }
 
-                .menu-subelement {
-                    position: relative;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-evenly;
-                    padding: 15px 10px 15px 10px;
-                    text-align: center;
-                    background-color: white;
-                    max-width: 220px;
-                    border-radius: 4px;
-                    border-width: 1px;
-                    border-style: solid;
-                    border-color: #111111
-                }
+            .input {
+                width: 250px;
+                border: 1px solid #111;
+                border-radius: 4px;
+                margin-bottom: 30px;
+                white-space: nowrap;
+            }
+
+            .input input, .input button {
+                border: none;
+            }
+            .input button {
+                height: 24px;
+                background-color: transparent;
+                background-image: url(assets/redo-alt-solid.svg);
+                background-size: auto 75%;
+                background-repeat: no-repeat;
+                background-position: 35% 60%;
+                outline: none !important;
+                cursor: pointer;
+            }
+            .input input {
+                height: 28px;
+                width: 200px;
+                font-size: 20px;
+                border-right: 1px solid #111;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                margin: 0 1px; padding: 2px 0 0 5px;
+            }
+
+            #credits {
+                text-align: center;
+                margin-top: auto;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+            }
+
+            /* show the credits as long as we can, but if we cant - just dont: */
+
+            @media screen and ( max-height: 400px ) {
+                #credits { display: none; }
+            }
+
+            #credits > div:first-child {
+                max-width: 250px;
+            }
 
                     .section-title {
                         font-size: 1.3em;
@@ -196,29 +219,6 @@
                                 height: 10px;
                                 width: 0;
                             }
-
-                    #creator {
-                        text-align: center;
-                    }
-
-                    .musician {
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: space-between;
-                        margin: 2px;
-                    }
-
-                        .about-button {
-                            background-color: #f2f6f9;
-                            text-decoration: none;
-                            color: black;
-                            padding: 3px;
-                            margin-left: 5px;
-                            border-style: solid;
-                            border-width: 1px;
-                            border-radius: 4px;
-                            font-size: 0.7em;
-                        }
 
 
 
@@ -695,10 +695,6 @@
     <script src="js/SocketIO.js"></script>
     <script src="js/soundMixer.js"></script>
 
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-
-    <script async defer src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
 </head>
 
 
@@ -799,11 +795,19 @@
         </div>
 
         <div id="menu-element">
-            
-            <div class="menu-subelement">
 
                 <div>
-                    <div id='start-button'>
+                    Your display name:
+                    <div class="input">
+                        <input autocomplete="off" id="game-name" maxlength="15" placeholder="(for multiplayer)" onclick="this.select()"></input><button
+                            onclick="this.previousSibling.value = utils.randomDisplayName()">&nbsp;</button>
+                    </div>
+                    Your game pass:
+                    <div class="input">
+                        <input autocomplete="off" id="game-pass" maxlength="15" placeholder="(for multiplayer)" onclick="this.select()"></input><button
+                            onclick="this.previousSibling.value = utils.randomString()">&nbsp;</button>
+                    </div>
+                    <div id="start-button">
                         Start
                         <div id="start-background">
                             <div id="start-loaded"></div>
@@ -811,50 +815,33 @@
                     </div>
                 </div>
 
-                <br>
+        </div>
 
-                <div id="creator">
-                    
-                    <a class="github-button" href="https://github.com/felixmariotto/Edelweiss" data-size="large" aria-label="Star felixmariotto/Edelweiss on GitHub"> code on Github</a>
+        <div id="credits">
 
-                    <br>
-
-                    <a href="https://twitter.com/felix_mariotto?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Twitter</a>
-
-                </div>
-
-            </div>
-
-            <div class="menu-subelement" id="credits">
+            <div>
 
                 <span class="section-title">Music :</span>
 
                 <br>
 
-                <p class="musician">
-                    Strom Noir
-                    <a class="about-button" href="https://stromnoir.bandcamp.com/">about</a>
-                </p>
+                <a target="_blank" href="https://stromnoir.bandcamp.com/">Strom Noir</a>,
+                <a target="_blank" href="https://simonbainton.bandcamp.com/">Simon Bainton</a>,
+                <a target="_blank" href="http://www.tobiashellkvist.com/">Tobias Hellkvist</a>,
+                <a target="_blank" href="https://soundcloud.com/andrewodd/">Andrew Odd</a>,
+                <a target="_blank" href="https://www.kylepreston.com/">Kyle Preston</a>
 
-                <p class="musician">
-                    Simon Bainton
-                    <a class="about-button" href="https://simonbainton.bandcamp.com/">about</a>
-                </p>
+            </div><div>
 
-                <p class="musician">
-                    Tobias Hellkvist
-                    <a class="about-button" href="http://www.tobiashellkvist.com">about</a>
-                </p>
+                <span class="section-title">Code :</span>
 
-                <p class="musician">
-                    Andrew Odd
-                    <a class="about-button" href="https://soundcloud.com/andrewodd/">about</a>
-                </p>
+                <br>
 
-                <p class="musician">
-                    Kyle Preston
-                    <a class="about-button" href="https://www.kylepreston.com">about</a>
-                </p>
+                <a target="_blank" href="https://twitter.com/intent/follow?screen_name=felix_mariotto">Felix Mariotto</a>
+
+                <br>
+
+                <a href="https://github.com/felixmariotto/Edelweiss#readme"><img src="https://github.com/favicon.ico" alt="GitHub" /></a>
 
             </div>
 

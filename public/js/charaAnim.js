@@ -2,9 +2,12 @@
 
 function CharaAnim( player ) {
 
-	var glider;
-
+    const actions = player.actions ;
     const group = player.charaGroup ;
+
+    // get the glider object, and give it to the animation
+    // module, the hide it from the scene.
+    const glider = group.getObjectByName( 'glider' ); glider.visible = false;
 
 
     // this variable stock the state waiting to be played
@@ -16,7 +19,18 @@ function CharaAnim( player ) {
 
     // This is called when atlas finished loading all the assets.
     // It configures every action.
-    function initActions() {
+
+    for ( let i in actions ) {
+        actions[ i ].setEffectiveWeight( 0 );
+    };
+
+    // set start action to 1 ;
+    actions.idle.setEffectiveWeight( 1 );
+
+    // activate the glider animation, because anyway
+    // the glider is not visible when not in use
+    actions.gliderAction.setEffectiveWeight( 1 );
+
 
     	climbingActions = [
     		actions.climbUp,
@@ -66,8 +80,6 @@ function CharaAnim( player ) {
         setLoopOnce( actions.dashRight );
         setLoopOnce( actions.dashDownLeft );
         setLoopOnce( actions.dashDownRight );
-
-    };
 
 
     function setLoopOnce( action ) {
@@ -211,6 +223,24 @@ function CharaAnim( player ) {
         if ( Object.keys( actions ).length == 0 ) return
 
         moveSpeedRatio = delta / ( 1 / 60 ) ;
+
+        if( player.target ) {
+
+            var d = player.position.distanceTo( player.target );
+
+            if( ( 0.2 > d ) || ( d > 2.0 ) ) {
+
+                player.position.copy( player.target );
+
+            } else {
+
+                var k = 0.1 * moveSpeedRatio; k /= (1 + k);
+
+                player.position.multiplyScalar( 1 - k ).addScaledVector( player.target, k );
+
+            }
+
+        }
 
         // update the dash charging animation
 
@@ -785,12 +815,51 @@ function CharaAnim( player ) {
 
 
 
+    // setting 'climbing' and 'dashing' states requires these parameters
 
+    var currentFaceDirection = '', currentMoveDirection = 0, currentSpeed = 0;
 
+    function getPlayerState( data ) {
 
-    function setGlider( gliderMesh ) {
-    	glider = gliderMesh ;
-    	glider.visible = false ;
+        // position
+
+        data.x = player.position.x;
+        data.y = player.position.y;
+        data.z = player.position.z;
+
+        // rotation
+
+        data.r = group.rotation.y;
+
+        // animation
+
+        data.a = currentState;
+        data.f = currentFaceDirection;
+        data.m = currentMoveDirection;
+        data.s = currentSpeed;
+
+    };
+
+    function setPlayerState( data ) {
+
+        ( player.target || player.position ).set( data.x, data.y, data.z );
+
+        group.rotation.y = data.r;
+
+        switch( data.a ) {
+            case 'climbing':
+                climb( data.f || undefined, data.m, data.s );
+                break;
+            case 'dashing':
+                dash( data.f || undefined, data.m );
+                break;
+            case 'hittingGround':
+                hitGround();
+                break;
+            default:
+                setState( data.a );
+                break;
+        }
     };
 
 
@@ -802,12 +871,19 @@ function CharaAnim( player ) {
 
     
     function climb( faceDirection, moveDirection, speed ) {
+        currentFaceDirection = faceDirection || '';
+        currentMoveDirection = moveDirection;
+        currentSpeed = speed;
+
     	setState( 'climbing' );
         setClimbBalance( faceDirection, moveDirection, speed );
     };
 
 
     function dash( faceDirection, moveDirection ) {
+        currentFaceDirection = faceDirection || '';
+        currentMoveDirection = moveDirection;
+
         setDashBalance( faceDirection, moveDirection );
         // We set the dashing state after, because we want
         // the dash balance to be set only when the dashing
@@ -902,8 +978,8 @@ function CharaAnim( player ) {
 
 
     return {
-    	setGlider,
-    	initActions,
+        getPlayerState,
+        setPlayerState,
     	update,
         setCharaRot,
         group,

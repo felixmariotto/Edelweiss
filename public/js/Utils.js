@@ -139,7 +139,61 @@ function Utils() {
 
 
 
+    // This function returns placeholder display name from https://www.youtube.com/watch?v=gzBZFArR4mc list.
+
+    const names = [
+        'DragonKiller75', 'DragonDeesNuts', 'Sug_Madic',
+        'Phil_Mcrackin', 'Ice_Wallow_Come', 'Come_Stayin', 'Pen15'
+    ];
+
+    var nameIndex = Math.floor( names.length * Math.random() );
+
+    function randomDisplayName() {
+
+        return names[ nameIndex++ % names.length ];
+
+    };
+
+
+
+
+
+    // This function returns short random string.
+
+    const bytes = new Uint8Array( 15 );
+
+    function randomString() {
+
+        crypto.getRandomValues( bytes );
+
+        return Array.prototype.map.call( bytes, function (x) {
+
+            return x.toString( 36 )
+
+        } ).join( '' ).substr( 0, 15 );
+
+    };
+
+
+
+
+
+    // This function returns certain numeric hash of the string (we want the
+    // result % 4 to be evenly distributed when passed randomString output).
+    function stringHash( s ) {
+
+        return s.charCodeAt( 0 ) + s.charCodeAt( 1 );
+
+    };
+
+
+
+
+
     return {
+        randomDisplayName,
+        randomString,
+        stringHash,
         toPiRange,
         lerpAngles,
         minDiffRadians,

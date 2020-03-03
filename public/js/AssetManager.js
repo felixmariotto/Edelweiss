@@ -10,6 +10,7 @@ function AssetManager() {
 	// assets constants
 	const SCALE_ALPINIST = 0.1 ;
 	const SCALE_LADY = 0.08 ;
+	const SCALE_CHAR = 0.075 ;
 	const SCALE_EDELWEISS = 0.02 ;
 
 	const OFFSET_ALPINIST = new THREE.Vector3( 0, -0.5, 0 );
@@ -24,13 +25,21 @@ function AssetManager() {
 	// Hold one mixer and one action per asset iteration
 	var alpinistMixers = [], alpinistIdles = [];
 	var ladyMixers = [], ladyIdles = [];
+	var charMixers = [], charActions = [];
 
 	// Asset groups arrays
 	var alpinists = [];
 	var edelweisses = [];
 	var ladies = [];
 	var bonuses = [];
+	var characters = [];
 
+	var charSkins = [
+		textureLoader.load( 'assets/models/hero-2.png' ),
+		textureLoader.load( 'assets/models/hero-3.png' ),
+		textureLoader.load( 'assets/models/hero-4.png' ),
+		null
+	];
 
 
 
@@ -49,6 +58,7 @@ function AssetManager() {
 	addGroups( edelweisses, 7 );
 	addGroups( ladies, 12 );
 	addGroups( bonuses, 9 );
+	addGroups( characters, 4 );
 
 	function addGroups( arr, groupsNumber ) {
 
@@ -161,14 +171,34 @@ function AssetManager() {
 
 	});
 
+	var charGlb;
+
+	gltfLoader.load('https://edelweiss-game.s3.eu-west-3.amazonaws.com/hero.glb', (glb)=> {
+
+		charGlb = glb;
+
+		const body = glb.scene.getObjectByName( 'hero001' );
+		if ( body ) charSkins[ 3 ] = body.material.map;
+
+		createMultipleModels(
+			glb,
+			SCALE_CHAR,
+			null,
+			characters,
+			charMixers,
+			charActions
+		);
+
+	});
+
 	// Create iterations of the same loaded asset. nasty because of skeletons.
 	// Hopefully THREE.SkeletonUtils.clone() is able to clone skeletons correctly.
 	function createMultipleModels( glb, scale, offset, modelsArr, mixers, actions ) {
 
 		glb.scene.scale.set( scale, scale, scale );
-		glb.scene.position.add( offset );
+		if ( offset ) glb.scene.position.add( offset );
 
-		for ( let i = 0 ; i < modelsArr.length ; i++ ) {
+		for ( let i = mixers ? mixers.length : 0 ; i < modelsArr.length ; i++ ) {
 
 			let newModel = THREE.SkeletonUtils.clone( glb.scene );
 
@@ -178,8 +208,10 @@ function AssetManager() {
 
 				mixers[ i ] = new THREE.AnimationMixer( newModel );
 
-				actions[ i ] = mixers[ i ].clipAction( glb.animations[ 0 ] );
-				actions[ i ].play();
+				actions[ i ] = { };
+				for ( let clip of glb.animations ) {
+					actions[ i ][ clip.name ] = mixers[ i ].clipAction( clip ).play();
+				}
 
 			};
 
@@ -193,8 +225,114 @@ function AssetManager() {
 
 
 
+	const textCanvas = document.createElement( 'canvas' );
+	textCanvas.height = 34;
+
+	function createCharacterLabel( text ) {
+
+		const ctx = textCanvas.getContext( '2d' );
+		const font = '24px grobold';
+
+		ctx.font = font;
+		textCanvas.width = Math.ceil( ctx.measureText( text ).width + 16 );
+
+		ctx.font = font;
+		ctx.strokeStyle = '#222';
+		ctx.lineWidth = 8;
+		ctx.lineJoin = 'miter';
+		ctx.miterLimit = 3;
+		ctx.strokeText( text, 8, 26 );
+		ctx.fillStyle = 'white';
+		ctx.fillText( text, 8, 26 );
+
+		const spriteMap = new THREE.Texture( ctx.getImageData( 0, 0, textCanvas.width, textCanvas.height ) );
+		spriteMap.minFilter = THREE.LinearFilter;
+		spriteMap.generateMipmaps = false;
+		spriteMap.needsUpdate = true;
+
+		const sprite = new THREE.Sprite( new THREE.SpriteMaterial( { map: spriteMap } ) );
+		sprite.scale.set( 0.12 * textCanvas.width / textCanvas.height, 0.12, 1 );
+		sprite.position.y = 0.7 ;
+
+		return sprite;
+	}
 
 
+
+	function createCharacter( skinIndex, displayName ) {
+
+		for ( let i = 0; i < characters.length; i++ ) {
+
+			if ( !characters[ i ].userData.isUsed ) {
+				  characters[ i ].userData.isUsed = true;
+
+				// assign character skin
+				let skin = charSkins[ skinIndex % charSkins.length ];
+				if( skin ) {
+					let body = characters[ i ].getObjectByName( 'hero001' );
+					if( body ) {
+						body.material.map = skin;
+					}
+				}
+
+				// set up charater display name
+				if( displayName ) {
+					characters[ i ].add( createCharacterLabel( displayName ) );
+				}
+
+				// return both the character and its actions
+				return {
+					model : characters[ i ], actions : charActions[ i ]
+				}
+			}
+
+		}
+
+		// if here, we have exhausted all the characters - make some more
+
+		addGroups( characters, 2 );
+
+		createMultipleModels(
+			charGlb,
+			SCALE_CHAR,
+			null,
+			characters,
+			charMixers,
+			charActions
+		);
+
+		return createCharacter( skinIndex, displayName );
+	};
+
+
+	function releaseCharacter( model ) {
+
+		model.userData.isUsed = false;
+
+		const label = model.getObjectByProperty( 'type', 'Sprite' );
+		if ( label ) model.remove( label ) && label.material.map.dispose();
+
+	};
+
+
+	function toggleCharacterShadows( enabled ) {
+
+		for ( let character of characters ) {
+
+			character.traverse( function (child) {
+
+				if ( child.type == 'Mesh' ||
+					 child.type == 'SkinnedMesh' ) {
+
+					child.castShadow = enabled ;
+					child.receiveShadow = enabled ;
+				};
+
+			});
+
+		};
+
+	};
 
 
 
@@ -237,7 +375,7 @@ function AssetManager() {
 		let pos = logicCube.position ;
 		let tag = logicCube.tag ;
 
-		for ( asset of assetArray ) {
+		for ( let asset of assetArray ) {
 
 			if ( !asset.userData.isSet ) {
 
@@ -381,29 +519,35 @@ function AssetManager() {
 
 	function update( delta ) {
 
-		alpinistMixers.forEach( (mixer)=> {
+		for ( let mixer of alpinistMixers ) {
 
 			mixer.update( delta );
 
-		});
+		}
 
-		ladyMixers.forEach( (mixer)=> {
+		for ( let mixer of ladyMixers ) {
 
 			mixer.update( delta );
 
-		});
+		}
 
-		edelweisses.forEach( (edelweissGroup)=> {
+		for ( let mixer of charMixers ) {
+
+			mixer.update( delta );
+
+		}
+
+		for ( let edelweissGroup of edelweisses ) {
 
 			updateBonus( edelweissGroup );
 
-		});
+		}
 
-		bonuses.forEach( (bonusGroup)=> {
+		for ( let bonusGroup of bonuses ) {
 
 			updateBonus( bonusGroup );
 
-		});
+		}
 
 	};
 
@@ -417,7 +561,7 @@ function AssetManager() {
 			group.position.copy( group.userData.initPos );
 			group.position.y += ( Math.sin( Date.now() / 700 ) * 0.08 );
 
-			group.children.forEach( (child)=> {
+			for ( let child of group.children ) {
 
 				if ( child.userData.rotationSpeed ) {
 
@@ -425,7 +569,7 @@ function AssetManager() {
 
 				};
 
-			});
+			};
 
 		};
 
@@ -437,6 +581,9 @@ function AssetManager() {
 
 
 	return {
+		createCharacter,
+		releaseCharacter,
+		toggleCharacterShadows,
 		createNewLady,
 		createNewAlpinist,
 		createNewEdelweiss,

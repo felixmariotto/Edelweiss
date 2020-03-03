@@ -10,9 +10,6 @@ function Input() {
 
     const STICK_TRAVEL_RADIUS = 50 ;
 
-    const domWorldCheap = document.getElementById('worldCheap');
-    const domWorldHigh = document.getElementById('worldHigh');
-
     const domCharContainer = document.getElementById('char-container');
     const domTalkContainer = document.getElementById('talk-container');
     const domTalkSubcontainer = document.getElementById('talk-subcontainer');

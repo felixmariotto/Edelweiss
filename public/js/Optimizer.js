@@ -21,9 +21,6 @@ function Optimizer() {
 	var samples = [];
 
 	//
-	
-	const domWorldCheap = document.getElementById('worldCheap');
-    const domWorldHigh = document.getElementById('worldHigh');
     
     var params = {
     	level: 0,
@@ -58,16 +55,7 @@ function Optimizer() {
 		// and stop rendering shadows dynamically
 		} else if ( params.level == 2 ) {
 
-			atlas.player.group.traverse( (child)=> {
-
-				if ( child.type == 'Mesh' ||
-					 child.type == 'SkinnedMesh' ) {
-
-					child.castShadow = false ;
-					child.receiveShadow = false ;
-				};
-
-			});
+			assetManager.toggleCharacterShadows( false );
 
 			setTimeout( ()=> {
 				renderer.shadowMap.enabled = false;
@@ -118,16 +106,7 @@ function Optimizer() {
 
 			renderer.shadowMap.enabled = true;
 
-			atlas.player.group.traverse( (child)=> {
-
-				if ( child.type == 'Mesh' ||
-					 child.type == 'SkinnedMesh' ) {
-
-					child.castShadow = true ;
-					child.receiveShadow = true ;
-				};
-
-			});
+			assetManager.toggleCharacterShadows( true );
 
 	    	params.level = 2 ;
 

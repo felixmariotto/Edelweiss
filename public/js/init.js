@@ -75,7 +75,9 @@ function init() {
 
     clock = new THREE.Clock();
 
-    gltfLoader = new THREE.GLTFLoader();
+    var manager = new THREE.LoadingManager();
+
+    gltfLoader = new THREE.GLTFLoader(manager);
     var dracoLoader = new THREE.DRACOLoader();
 
     dracoLoader.setDecoderPath( 'libs/draco/' )
@@ -86,21 +88,61 @@ function init() {
 
     //
 
-
-    uaParser = new UAParser();
-    socketIO = SocketIO();
-    atlas = Atlas();
-    input = Input();
-    stamina = Stamina();
-    interaction = Interaction();
-    dynamicItems = DynamicItems();
-    mapManager = MapManager();
-    optimizer = Optimizer();
-    gameState = GameState();
     assetManager = AssetManager();
-    soundMixer = SoundMixer();
 
+    //
 
-    loop();
+    var updateCharacters = function( data ) {
+
+        var animation = characterAnimations[ data.id ];
+        if(!animation) {
+            var character = assetManager.createCharacter( utils.stringHash( data.id ), data.name );
+            character.model.name = data.id; // for removal
+            scene.add( character.model );
+
+            animation = CharaAnim( {
+                actions: character.actions,
+                charaGroup: character.model,
+                target: new THREE.Vector3(),
+                position: character.model.position
+            } );
+
+            characterAnimations[ data.id ] = animation;
+        }
+
+        animation.setPlayerState( data );
+    };
+
+    var removeCharacters = function( id ) {
+
+        var group = scene.getObjectByName( id );
+        if( group ) scene.remove( group ) && assetManager.releaseCharacter( group );
+
+        delete characterAnimations[ id ];
+
+    };
+
+    //
+
+    manager.onLoad = function() {
+        manager.onLoad = function() {};
+
+        uaParser = new UAParser();
+        socketIO = SocketIO();
+        atlas = Atlas();
+        input = Input();
+        stamina = Stamina();
+        interaction = Interaction();
+        dynamicItems = DynamicItems();
+        mapManager = MapManager();
+        optimizer = Optimizer();
+        gameState = GameState();
+        soundMixer = SoundMixer();
+
+        socketIO.onPlayerUpdates( updateCharacters );
+        socketIO.onPlayerDisconnects( removeCharacters );
+
+        loop();
+    };
 
 };
