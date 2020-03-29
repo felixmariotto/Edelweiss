@@ -82,10 +82,12 @@ function loop() {
     if ( input ) input.update( clockDelta );
     if ( stamina ) stamina.update( loopCount % 10 == 0 );
     if ( mapManager ) mapManager.update( loopCount % 10 == 0 );
-    if ( gameState ) gameState.update( loopCount % 15 == 0 );
+    if ( gameState ) {
+         gameState.update( loopCount % 15 == 0 );
     
-    if ( !gameState.params.isGamePaused && soundMixer ) {
-        soundMixer.update( loopCount % 15 == 0, clockDelta );
+         if ( !gameState.params.isGamePaused ) {
+              if ( soundMixer ) soundMixer.update( loopCount % 15 == 0, clockDelta );
+              if ( atlas ) atlas.debugUpdate( loopCount % 15 == 0 );
+         }
     };
-
 };
