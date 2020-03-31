@@ -29,7 +29,7 @@ function SocketIO() {
 
 	};
 
-	var socket = io('http://edelweiss.32x.io');
+	var socket = io( /* 'http://edelweiss.32x.io' */ 'http://edelweiss-stage.herokuapp.com');
 
 	socket.on('connect', ()=> {
 
@@ -44,7 +44,6 @@ function SocketIO() {
 
 	function onPlayerUpdates( handler ) {
 		socket.on( 'playerInfo', handler );
-		console.log('coucou')
 	};
 
 

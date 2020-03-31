@@ -45,8 +45,6 @@ const app = express()
 
 const io = socketIO( app );
 
-var games = {};
-
 io.on( 'connection', async (client)=> {
 
 	var lang = client.handshake.headers['accept-language'].split(",")[0];
@@ -189,24 +187,23 @@ io.on( 'connection', async (client)=> {
 
 	client.on('playerInfo', (message)=> {
 
-		if ( !games[ message.pass ] ) {
-
-			games[ message.pass ] = {
-
-				players: [ client.id ]
-
-			};
-
-			io.sockets.sockets[ client.id ].join( message.pass );
-
-		} else if ( games[ message.pass ].players.indexOf( client.id ) === -1 ) {
-
-			games[ message.pass ].players.push( client.id );
+		// Check if a socket io room with the name of the requested game
+		// does not exist. If not, it is created.
+		// Also check if room exist but the client is not inside.
+		// If not, it is added inside.
+		if ( client.rooms.indexOf( message.pass ) === -1 ||
+			 io.sockets.manager.rooms['/' + message.pass].indexOf( client.id ) === -1 ) {
 
 			io.sockets.sockets[ client.id ].join( message.pass );
 
 		};
 
+		// record the ID created on client side.
+		// when the client quit, its game ID will be broadcasted to
+		// every other player in the same room.
+		client.gameId = message.id ;
+
+		// broadcast player position to every player in the same socket io "room"
 		client.broadcast.to( message.pass ).emit( 'playerInfo', message );
 
 	});
@@ -217,23 +214,11 @@ io.on( 'connection', async (client)=> {
 
 		// console.log( `User ${ client.id } disconnected` );
 
-		//
+		client.rooms.forEach((room)=> {
 
-		for ( let gameID of Object.keys( games ) ) {
+			console.log(room);
 
-			let game = games[ gameID ];
-
-			game.players.splice(
-						game.players.indexOf( client.id ),
-						1 );
-
-			if ( game.players.length == 0 ) {
-
-				delete games[ gameID ];
-
-			};
-
-		};
+		});
 
 		//
 

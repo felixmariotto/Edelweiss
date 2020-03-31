@@ -2,16 +2,17 @@
 function init() {
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0xffffff );
     scene.fog = new THREE.FogExp2( 0xd7cbb1, 0.06 );
-    scene.overrideMaterial = new THREE.MeshBasicMaterial({ color: 0x555555 });
 
     camera = new THREE.PerspectiveCamera( 60, window.innerWidth/window.innerHeight, 0.01, 23.5 );
 
+    // a directional light is later added on the CameraControl module,
+    // since this latter will follow the camera movements
     var ambientLight = new THREE.AmbientLight( 0xffffff, 0.48 );
 	scene.add( ambientLight );
 
-    //cubemap
+    // CUBEMAP
+
     var path = 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/skybox/';
     var format = '.jpg';
     var urls = [
@@ -25,22 +26,8 @@ function init() {
 
     scene.background = reflectionCube;
 
-
-    //
-
-    /*
-    stats = new Stats();
-    document.body.appendChild( stats.dom );
-    stats.dom.style.right = '0px' ;
-    stats.dom.style.left = 'auto' ;
-    */
-
-    
-
-
-
     /////////////////////
-    //   RENDERERS
+    //   RENDERER
     /////////////////////
 
     renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('world') });
@@ -49,9 +36,8 @@ function init() {
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.shadowMap.enabled = true ;
-    // renderer.shadowMap.type = THREE.PCFSoftShadowMap ;
 
-    //
+    // anti-aliasing setup
 
     var renderPass = new THREE.RenderPass( scene, camera );
 
@@ -65,8 +51,6 @@ function init() {
     composer = new THREE.EffectComposer( renderer );
     composer.addPass( renderPass );
     composer.addPass( fxaaPass );
-
-    /////
 
     /////////////////////
     ///   MISC
@@ -94,20 +78,24 @@ function init() {
     var updateCharacters = function( data ) {
 
         var animation = characterAnimations[ data.id ];
-        if(!animation) {
+
+        // Handle the case when a new player is sending their data.
+        // A new character will be added to the scene.
+        if ( !animation ) {
+
             var character = assetManager.createCharacter( utils.stringHash( data.id ), data.name );
             character.model.name = data.id; // for removal
             scene.add( character.model );
 
-            animation = CharaAnim( {
+            animation = CharaAnim({
                 actions: character.actions,
                 charaGroup: character.model,
                 target: new THREE.Vector3(),
                 position: character.model.position
-            } );
+            });
 
             characterAnimations[ data.id ] = animation;
-        }
+        };
 
         animation.setPlayerState( data );
     };
@@ -115,6 +103,7 @@ function init() {
     var removeCharacters = function( id ) {
 
         var group = scene.getObjectByName( id );
+        
         if( group ) scene.remove( group ) && assetManager.releaseCharacter( group );
 
         delete characterAnimations[ id ];

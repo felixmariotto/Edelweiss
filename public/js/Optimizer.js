@@ -1,9 +1,5 @@
 
-
-
-
 function Optimizer() {
-
 
 	/*
 		These two constants define in what range of FPS the game
@@ -30,9 +26,6 @@ function Optimizer() {
     	attempts: [ 0, 0, 0, 0, 0 ], // holds the number of failed attempt to set the optimization at given level
     	timeOpti: Date.now() // last time an optimisation was done
     };
-
-
-
 
     /*
 		optimize is called by the loop everytime the frame rate
@@ -76,9 +69,6 @@ function Optimizer() {
 		};
 
 	};
-
-
-
 
 	/*
 		deOptimize is called by the loop every time the frame rate
@@ -125,16 +115,9 @@ function Optimizer() {
 	};
 
 
-
-
-
-
 	//////////////////////////////
 	///    GENERAL FUNCTIONS
 	//////////////////////////////
-
-
-
 
 	/*
 	update will sample the current frame's delta, then when it's time
@@ -143,7 +126,6 @@ function Optimizer() {
 	*/
 
 	function update( delta ) {
-
 
 		// We don't want neither to optimize or to sample the performance
 		// inside the caves, because it would necessarily be better,
@@ -192,8 +174,7 @@ function Optimizer() {
 
 	};
 
-
-
+	//
 
 	return {
 		params,
