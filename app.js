@@ -72,7 +72,7 @@ io.on( 'connection', async (client)=> {
 
 	var geo = geoip.lookup( ip );
 
-	// console.log( `User ${ client.id } connected` );
+	console.log( `User ${ client.id } connected` );
 
 	var clientID;
 
