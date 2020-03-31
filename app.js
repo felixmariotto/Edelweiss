@@ -202,9 +202,11 @@ io.on( 'connection', async (client)=> {
 
 	//
 
-	client.on( 'disconnect', async ()=> {
+	client.on( 'disconnect', async (message)=> {
 
 		console.log('///////////////////////////////////////:')
+
+		console.log(message)
 
 		console.log( `User ${ client.id } disconnected` );
 
