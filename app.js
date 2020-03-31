@@ -191,8 +191,10 @@ io.on( 'connection', async (client)=> {
 		// does not exist. If not, it is created.
 		// Also check if room exist but the client is not inside.
 		// If not, it is added inside.
-		if ( client.rooms.indexOf( message.pass ) === -1 ||
-			 io.sockets.manager.rooms['/' + message.pass].indexOf( client.id ) === -1 ) {
+		if ( client.rooms &&
+			 client.rooms.indexOf &&
+			 ( client.rooms.indexOf( message.pass ) === -1 ||
+			   io.sockets.manager.rooms['/' + message.pass].indexOf( client.id ) === -1 ) ) {
 
 			io.sockets.sockets[ client.id ].join( message.pass );
 
