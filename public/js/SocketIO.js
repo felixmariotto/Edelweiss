@@ -9,7 +9,27 @@ function SocketIO() {
 
 	var uaResult = uaParser.getResult();
 
-	var socket = io('https://edelweiss.32x.io');
+	var playerInfo;
+
+	function joinGame( id, pass, name ) {
+
+		playerInfo = {
+
+			id, pass, name
+
+		};
+
+		setInterval( function() {
+
+			charaAnim.getPlayerState( playerInfo );
+
+			socket.emit( 'playerInfo', playerInfo );
+
+		}, 300 );
+
+	};
+
+	var socket = io('http://http://edelweiss-stage.herokuapp.com');
 
 	socket.on('connect', ()=> {
 
@@ -20,6 +40,16 @@ function SocketIO() {
 		});
 
 	});
+
+
+	function onPlayerUpdates( handler ) {
+		socket.on( 'playerInfo', handler );
+	};
+
+
+	function onPlayerDisconnects( handler ) {
+		socket.on( 'playerLeft', handler );
+	};
 
 
 	function sendDeath() {
@@ -90,6 +120,9 @@ function SocketIO() {
 
 
 	return {
+		joinGame,
+		onPlayerUpdates,
+		onPlayerDisconnects,
 		sendDeath,
 		sendOptiLevel,
 		sendBonus,

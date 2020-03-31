@@ -115,7 +115,7 @@ function Controler( player ) {
 
     // player permission
     var permission = {
-        gliding: false,
+        gliding: true,
         infinityJump: false,
         dash: false
     };

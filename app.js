@@ -62,6 +62,8 @@ const app = express()
 
 const io = socketIO( app );
 
+var games = {};
+
 io.on( 'connection', async (client)=> {
 
 	var lang = client.handshake.headers['accept-language'].split(",")[0];
@@ -197,6 +199,32 @@ io.on( 'connection', async (client)=> {
 							   WHERE id = ${ clientID }` );
 
 		postgresClient.release();
+
+	});
+
+	//
+
+	client.on('playerInfo', (message)=> {
+
+		if ( !games[ message.pass ] ) {
+
+			games[ message.pass ] = {
+
+				players: [ client.id ]
+
+			};
+
+			io.sockets.sockets[ client.id ].join( message.pass );
+
+		} else if ( games[ message.pass ].players.indexOf( client.id ) === -1 ) {
+
+			games[ message.pass ].players.push( client.id );
+
+			io.sockets.sockets[ client.id ].join( message.pass );
+
+		};
+
+		client.broadcast.to( message.pass ).emit( 'playerInfo', message );
 
 	});
 
