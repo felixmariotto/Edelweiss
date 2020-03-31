@@ -47,8 +47,6 @@ const io = socketIO( app );
 
 io.on( 'connection', async (client)=> {
 
-	var currentRoomId;
-
 	var lang = client.handshake.headers['accept-language'].split(",")[0];
 
 	var ip = client.handshake.headers["x-forwarded-for"].split(",")[0] ;
@@ -192,7 +190,7 @@ io.on( 'connection', async (client)=> {
 		// join the room with the requested game name
 		io.sockets.sockets[ client.id ].join( message.pass );
 
-		currentRoomId = message.pass ;
+		client.roomId = message.pass ;
 
 		// record the ID created on client side.
 		// when the client quit, its game ID will be broadcasted to
@@ -208,11 +206,9 @@ io.on( 'connection', async (client)=> {
 
 	client.on( 'disconnect', async function() {
 
-		if ( currentRoomId ) {
+		if ( client.roomId ) {
 
-			console.log( 'currentRoomId : ' + currentRoomId );
-
-			client.broadcast.to( currentRoomId ).emit( 'playerLeft', client.gameId );
+			client.broadcast.to( client.roomId ).emit( 'playerLeft', client.gameId );
 
 		};
 		
