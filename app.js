@@ -192,13 +192,14 @@ io.on( 'connection', async (client)=> {
 		// Also check if room exist but the client is not inside.
 		// If not, it is added inside.
 		if ( client.rooms &&
-			 client.rooms.indexOf &&
 			 ( client.rooms.indexOf( message.pass ) === -1 ||
 			   io.sockets.manager.rooms['/' + message.pass].indexOf( client.id ) === -1 ) ) {
 
 			io.sockets.sockets[ client.id ].join( message.pass );
 
 		};
+
+		console.log( message );
 
 		// record the ID created on client side.
 		// when the client quit, its game ID will be broadcasted to
@@ -216,11 +217,17 @@ io.on( 'connection', async (client)=> {
 
 		// console.log( `User ${ client.id } disconnected` );
 
-		client.rooms.forEach((room)=> {
+		if ( client.rooms ) {
 
-			console.log(room);
+			for ( let room of Object.keys(client.rooms) ) {
 
-		});
+				console.log(room);
+
+				client.broadcast.to( room ).emit( 'playerLeft' );
+
+			};
+
+		};
 
 		//
 
