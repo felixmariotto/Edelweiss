@@ -202,20 +202,20 @@ io.on( 'connection', async (client)=> {
 
 	//
 
-	client.on( 'disconnect', async (message)=> {
+	client.on( 'disconnect', async function() {
 
 		console.log('///////////////////////////////////////:')
 
-		console.log(message)
-
 		console.log( `User ${ client.id } disconnected` );
 
-		if ( client.rooms ) {
+		 var rooms = Object.keys( self.rooms );
 
-			console.log( 'client.rooms = true' );
-			console.log(client.rooms)
+		if ( rooms ) {
 
-			for ( let room of Object.keys(client.rooms) ) {
+			console.log( 'rooms : ' );
+			console.log( rooms)
+
+			for ( let room of Object.keys( rooms ) ) {
 
 				console.log('room i = ' + room);
 
