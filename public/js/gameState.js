@@ -220,11 +220,16 @@ function GameState() {
 
         params.isGamePaused = false ;
 
-        setTimeout( ()=> {
+        const gamePass = document.getElementById( 'game-pass' ).value.substr( 0, 15 );
 
-            // feedback.showMessage();
+        if ( gamePass ) {
 
-        });
+            socketIO.joinGame(
+                atlas.player.id, gamePass,
+                document.getElementById( 'game-name' ).value.substr( 0, 15 ) || ( 'Anon ' + atlas.player.id.substr(0, 5) )
+            );
+
+        }
 
     };
 

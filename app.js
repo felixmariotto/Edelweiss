@@ -189,6 +189,8 @@ io.on( 'connection', async (client)=> {
 
 	client.on('playerInfo', (message)=> {
 
+		console.log('RECEIVED INFO')
+
 		if ( !games[ message.pass ] ) {
 
 			games[ message.pass ] = {
@@ -206,6 +208,8 @@ io.on( 'connection', async (client)=> {
 			io.sockets.sockets[ client.id ].join( message.pass );
 
 		};
+
+		console.log('will emit this : ', message );
 
 		client.broadcast.to( message.pass ).emit( 'playerInfo', message );
 
