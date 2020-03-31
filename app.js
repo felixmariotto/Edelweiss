@@ -210,7 +210,8 @@ io.on( 'connection', async (client)=> {
 
 		if ( client.rooms ) {
 
-			console.log( 'client.rooms = true' )
+			console.log( 'client.rooms = true' );
+			console.log(client.rooms)
 
 			for ( let room of Object.keys(client.rooms) ) {
 
