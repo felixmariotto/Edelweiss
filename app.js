@@ -196,6 +196,8 @@ io.on( 'connection', async (client)=> {
 			 ( client.rooms.indexOf( message.pass ) === -1 ||
 			   io.sockets.manager.rooms['/' + message.pass].indexOf( client.id ) === -1 ) ) {
 
+			console.log('attempt to put client in room ' + message.pass );
+
 			io.sockets.sockets[ client.id ].join( message.pass );
 
 		};
@@ -222,7 +224,7 @@ io.on( 'connection', async (client)=> {
 
 				console.log(room);
 
-				client.broadcast.to( room ).emit( 'playerLeft' );
+				client.broadcast.to( room ).emit( 'playerLeft', client.gameId );
 
 			};
 
