@@ -225,7 +225,8 @@ function GameState() {
         if ( gamePass ) {
 
             socketIO.joinGame(
-                atlas.player.id, gamePass,
+                atlas.player.id,
+                gamePass,
                 document.getElementById( 'game-name' ).value.substr( 0, 15 ) || ( 'Anon ' + atlas.player.id.substr(0, 5) )
             );
 
@@ -346,8 +347,6 @@ function GameState() {
         }, 250 );
 
 		setTimeout( ()=> {
-
-			charaAnim.respawn();
 
             soundMixer.animEnd();
 

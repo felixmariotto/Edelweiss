@@ -139,11 +139,11 @@ function init() {
         gameState = GameState();
         soundMixer = SoundMixer();
 
-        // socketIO.onPlayerUpdates( updateCharacters );
-        // socketIO.onPlayerDisconnects( removeCharacters );
+        socketIO.onPlayerUpdates( updateCharacters );
+        socketIO.onPlayerDisconnects( removeCharacters );
 
         loop();
-        
+
     };
 
 };

@@ -10,6 +10,8 @@ var renderer, composer, fxaaPass ;
 
 var actions = [];
 
+var characterAnimations = {};
+
 var utils = Utils();
 var easing = Easing();
 

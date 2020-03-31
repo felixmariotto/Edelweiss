@@ -407,6 +407,16 @@ function CharaAnim( player ) {
 
     		return
 		};
+
+        if ( newState == 'dying' ) {
+
+            if ( currentState == 'dying' ) return
+
+            setTimeout( ()=> {
+                setState( 'respawn' );
+            }, 1500 );
+
+        };
 		
 		if ( currentState == "dying" && newState != 'respawn' ) {
 			return
