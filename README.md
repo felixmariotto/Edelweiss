@@ -1,8 +1,8 @@
 # Edelweiss
 
-**Open source webGL game made with three.js**
+## Open source webGL game made with three.js
 
-**Play online here : https://felixmariotto.itch.io/edelweiss**
+## Play online here : https://felixmariotto.itch.io/edelweiss
 
 ![Screenshot of Edelweiss](https://edelweiss-game.s3.eu-west-3.amazonaws.com/assets/teaser1.gif)
 ![Screenshot of Edelweiss](https://edelweiss-game.s3.eu-west-3.amazonaws.com/assets/teaser2.gif)
@@ -30,3 +30,7 @@ This game is light, but I still wanted to optimize loading time by loading map t
 Check out my previous game [The Temple of Doom](https://github.com/felixmariotto/Temple_Of_Doom)
 
 Follow me on Github or Itch.io for more upcoming games
+
+# Big thanks to Makc for creating a multiplayer mod
+
+It is now merged into this repo, but you can find his fork here : https://github.com/makc/Edelweiss
