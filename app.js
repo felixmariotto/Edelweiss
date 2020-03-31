@@ -208,7 +208,7 @@ io.on( 'connection', async (client)=> {
 
 		console.log( `User ${ client.id } disconnected` );
 
-		 var rooms = Object.keys( self.rooms );
+		var rooms = Object.keys( this.rooms );
 
 		if ( rooms ) {
 
