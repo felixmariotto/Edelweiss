@@ -192,14 +192,13 @@ io.on( 'connection', async (client)=> {
 		// Also check if room exist but the client is not inside.
 		// If not, it is added inside.
 		if ( client.rooms &&
+			 client.rooms.indexOf &&
 			 ( client.rooms.indexOf( message.pass ) === -1 ||
 			   io.sockets.manager.rooms['/' + message.pass].indexOf( client.id ) === -1 ) ) {
 
 			io.sockets.sockets[ client.id ].join( message.pass );
 
 		};
-
-		console.log( message );
 
 		// record the ID created on client side.
 		// when the client quit, its game ID will be broadcasted to
