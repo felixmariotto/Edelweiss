@@ -28,23 +28,6 @@ const app = express()
         res.sendFile(path.join(__dirname + '/public/index.html'));
     })
 
-
-
-    .get('/db', async (req, res) => {
-	    try {
-	      const client = await POOL.connect()
-	      const result = await client.query('SELECT * FROM analytics');
-	      const results = { 'results': (result) ? result.rows : null};
-	      res.send( results );
-	      client.release();
-	    } catch (err) {
-	      console.error(err);
-	      res.send("Error " + err);
-	    }
-	  })
-
-
-
     .listen(PORT, ()=> {
         console.log('App listening on port ' + PORT);
     })
@@ -72,7 +55,7 @@ io.on( 'connection', async (client)=> {
 
 	var geo = geoip.lookup( ip );
 
-	console.log( `User ${ client.id } connected` );
+	// console.log( `User ${ client.id } connected` );
 
 	var clientID;
 
@@ -233,6 +216,26 @@ io.on( 'connection', async (client)=> {
 	client.on( 'disconnect', async ()=> {
 
 		// console.log( `User ${ client.id } disconnected` );
+
+		//
+
+		for ( let gameID of Object.keys( games ) ) {
+
+			let game = games[ gameID ];
+
+			game.players.splice(
+						game.players.indexOf( client.id ),
+						1 );
+
+			if ( game.players.length == 0 ) {
+
+				delete games[ gameID ];
+
+			};
+
+		};
+
+		//
 
 		var postgresClient = await POOL.connect();
 

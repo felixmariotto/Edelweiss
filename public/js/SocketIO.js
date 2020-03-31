@@ -44,6 +44,7 @@ function SocketIO() {
 
 	function onPlayerUpdates( handler ) {
 		socket.on( 'playerInfo', handler );
+		console.log('coucou')
 	};
 
 
