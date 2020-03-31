@@ -29,7 +29,7 @@ function SocketIO() {
 
 	};
 
-	var socket = io( /* 'http://edelweiss.32x.io' */ 'http://edelweiss-stage.herokuapp.com');
+	var socket = io( 'http://edelweiss.32x.io' /* 'http://edelweiss-stage.herokuapp.com' */ );
 
 	socket.on('connect', ()=> {
 
