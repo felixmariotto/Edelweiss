@@ -204,13 +204,17 @@ io.on( 'connection', async (client)=> {
 
 	client.on( 'disconnect', async ()=> {
 
-		// console.log( `User ${ client.id } disconnected` );
+		console.log('///////////////////////////////////////:')
+
+		console.log( `User ${ client.id } disconnected` );
 
 		if ( client.rooms ) {
 
+			console.log( 'client.rooms = true' )
+
 			for ( let room of Object.keys(client.rooms) ) {
 
-				console.log(room);
+				console.log('room i = ' + room);
 
 				client.broadcast.to( room ).emit( 'playerLeft', client.gameId );
 
