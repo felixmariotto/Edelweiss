@@ -73,7 +73,7 @@ function init() {
 
     assetManager = AssetManager();
 
-    //
+    // event handlers for multiplayer
 
     var updateCharacters = function( data ) {
 
@@ -101,8 +101,6 @@ function init() {
     };
 
     var removeCharacters = function( id ) {
-
-        console.log('player ' + id + ' left')
 
         var group = scene.getObjectByName( id );
 

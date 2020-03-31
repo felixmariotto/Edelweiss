@@ -206,6 +206,8 @@ io.on( 'connection', async (client)=> {
 
 	client.on( 'disconnect', async function() {
 
+		// broadcast the disconnection information to the other
+		// players of the same room
 		if ( client.roomId ) {
 
 			client.broadcast.to( client.roomId ).emit( 'playerLeft', client.gameId );
