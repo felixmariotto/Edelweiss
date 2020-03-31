@@ -102,8 +102,10 @@ function init() {
 
     var removeCharacters = function( id ) {
 
+        console.log('player ' + id + ' left')
+
         var group = scene.getObjectByName( id );
-        
+
         if( group ) scene.remove( group ) && assetManager.releaseCharacter( group );
 
         delete characterAnimations[ id ];

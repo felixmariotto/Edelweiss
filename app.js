@@ -187,28 +187,8 @@ io.on( 'connection', async (client)=> {
 
 	client.on('playerInfo', (message)=> {
 
-		// Check if a socket io room with the name of the requested game
-		// does not exist. If not, it is created.
-		// Also check if room exist but the client is not inside.
-		// If not, it is added inside.
-		if ( client.rooms ) {
-
-			console.log( client.rooms );
-			console.log( Object.keys( client.rooms ) );
-
-			for ( let room of Object.keys( client.rooms ) ) {
-
-				/*
-				if ( client.rooms.indexOf( message.pass ) === -1 ||
-			   			io.sockets.manager.rooms['/' + message.pass].indexOf( client.id ) === -1 )
-				*/
-			}
-
-			console.log('attempt to put client in room ' + message.pass );
-
-			io.sockets.sockets[ client.id ].join( message.pass );
-
-		};
+		// join the room with the requested game name
+		io.sockets.sockets[ client.id ].join( message.pass );
 
 		// record the ID created on client side.
 		// when the client quit, its game ID will be broadcasted to
