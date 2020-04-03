@@ -22,6 +22,8 @@ function AssetManager() {
 	// What graph the player is currently playing in ?
 	var currentGraph = 'mountain' ;
 
+	var charGlb;
+
 	// will be used to add a label at the top of the hero if multiplayer
 	const textCanvas = document.createElement( 'canvas' );
 	textCanvas.height = 34;
@@ -166,6 +168,8 @@ function AssetManager() {
 	});
 
 	gltfLoader.load('https://edelweiss-game.s3.eu-west-3.amazonaws.com/hero.glb', (glb)=> {
+
+		charGlb = glb;
 
 		createMultipleModels(
 			glb,
