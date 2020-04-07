@@ -939,9 +939,9 @@ function Controler( player ) {
 
         hasCollidedCube = false ;
 
-        setPlayerFromCubes();
+        setPlayerFromCubes(0);
 
-        function setPlayerFromCubes() {
+        function setPlayerFromCubes(count) {
 
             cubeCollision = atlas.collidePlayerCubes();
 
@@ -973,7 +973,7 @@ function Controler( player ) {
                     cubeCollision.point.z
                 );
 
-                setPlayerFromCubes();
+                if ( count < 7 ) setPlayerFromCubes( count + 1 );
 
             };
 
