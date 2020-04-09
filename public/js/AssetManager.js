@@ -13,8 +13,6 @@ function AssetManager() {
 	const SCALE_CHAR = 0.075 ;
 	const SCALE_EDELWEISS = 0.02 ;
 
-	const OFFSET_ALPINIST = new THREE.Vector3( 0, -0.5, 0 );
-	const OFFSET_LADY = new THREE.Vector3( 0, -0.5, 0 );
 	const OFFSET_EDELWEISS = new THREE.Vector3( 0, 0.1, 0 );
 
 	const particleMaterial = new THREE.MeshBasicMaterial({ color:0xffffff });
@@ -135,7 +133,7 @@ function AssetManager() {
 		createMultipleModels(
 			glb,
 			SCALE_ALPINIST,
-			OFFSET_ALPINIST,
+			null,
 			alpinists,
 			alpinistMixers,
 			alpinistIdles
@@ -148,7 +146,7 @@ function AssetManager() {
 		createMultipleModels(
 			glb,
 			SCALE_LADY,
-			OFFSET_LADY,
+			null,
 			ladies,
 			ladyMixers,
 			ladyIdles
@@ -334,13 +332,13 @@ function AssetManager() {
 
 	function createNewLady( logicCube ) {
 
-		setAssetAt( ladies, logicCube );
+		setAssetAt( ladies, logicCube, true, 0.45 );
 
 	};
 
 	function createNewAlpinist( logicCube ) {
 
-		setAssetAt( alpinists, logicCube );
+		setAssetAt( alpinists, logicCube, true, 0.6 );
 
 	};
 
@@ -357,7 +355,7 @@ function AssetManager() {
 	};
 
 	// Take the last free group from the right asset array, position it, and hide/show it.
-	function setAssetAt( assetArray, logicCube ) {
+	function setAssetAt( assetArray, logicCube, floor, bubbleOffset ) {
 
 		let pos = logicCube.position ;
 		let tag = logicCube.tag ;
@@ -368,10 +366,22 @@ function AssetManager() {
 
 				asset.position.copy( pos );
 
+				if ( floor ) {
+					asset.position.y = Math.floor( asset.position.y );
+
+					// patch the cube position itself to get the
+					// exclamation mark sign positioned properly
+
+					pos.y = Math.floor( pos.y ) + bubbleOffset;
+				}
+
 				asset.userData.isSet = true ;
 				asset.userData.tag = tag ;
 				asset.userData.graph = getGraphFromTag( tag );
-				asset.userData.initPos = new THREE.Vector3().copy( pos );
+
+				// anchor for bonus floating animation
+
+				asset.userData.initPos = asset.position.clone();
 
 				setGroupVisibility( asset );
 
