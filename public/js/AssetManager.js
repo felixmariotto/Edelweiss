@@ -417,9 +417,20 @@ function AssetManager() {
 
 				obj.material = new THREE.MeshLambertMaterial({
 					map: obj.material.map,
-					side: THREE.FrontSide,
-					skinning: true
+					side: obj.material.side,
+					skinning: obj.material.skinning
 				});
+
+				// fix self-shadows on double-sided materials
+
+				obj.material.onBeforeCompile = function(stuff) {
+					var chunk = THREE.ShaderChunk.shadowmap_pars_fragment
+						.split ('z += shadowBias')
+						.join ('z += shadowBias - 0.001');
+					stuff.fragmentShader = stuff.fragmentShader
+						.split ('#include <shadowmap_pars_fragment>')
+						.join (chunk);
+				};
 
 				obj.castShadow = true ;
 				obj.receiveShadow = true ;
