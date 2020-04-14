@@ -3,9 +3,6 @@
 function CameraControl( player, camera ) {
 
 
-	const ORBITCONTROLS = false ;
-
-
 	var group = new THREE.Group();
 	scene.add( group );
 
@@ -134,18 +131,7 @@ function CameraControl( player, camera ) {
 
 
 
-	if ( ORBITCONTROLS ) {
-
-		//// OrbitControl part for test
-		orbitControls = new THREE.OrbitControls( camera, document.querySelector('#joystick-container') );
-		orbitControls.screenSpacePanning = true ;
-	    orbitControls.keys = [];
-
-	} else {
-
-		scene.add( camera );
-
-	};
+	scene.add( camera );
 
 
 

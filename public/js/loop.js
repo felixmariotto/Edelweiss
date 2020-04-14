@@ -75,15 +75,10 @@ function loop() {
 
     // MISC UPDATES
 
-    // stats.update();
-
-    if ( orbitControls ) orbitControls.update();
-
     for ( let key in characterAnimations ) characterAnimations[ key ].update( clockDelta );
     if ( assetManager ) assetManager.update( clockDelta );
 
     if ( charaAnim ) charaAnim.update( clockDelta );
-    if ( dynamicItems ) dynamicItems.update( clockDelta );
     if ( input ) input.update( clockDelta );
     if ( stamina ) stamina.update( loopCount % 10 == 0 );
     if ( mapManager ) mapManager.update( loopCount % 10 == 0 );
