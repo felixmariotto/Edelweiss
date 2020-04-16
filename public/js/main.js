@@ -1,6 +1,6 @@
 
-var scene, camera, stats, input, atlas,
-    orbitControls, controler, clock, datGUI, charaAnim,
+var scene, camera, input, atlas,
+    controler, clock, charaAnim,
     gltfLoader, mixer, cameraControl, stamina, interaction,
     dynamicItems, textureLoader, fileLoader, mapManager,
     socketIO, optimizer, uaParser, gameState,

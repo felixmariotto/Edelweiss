@@ -7,17 +7,12 @@ function GameState() {
 
 
 
-	const DEVELOPMENT_LAYOUT = false ;
-
 	const domStartMenu = document.getElementById('start-menu');
     const domStartButton = document.getElementById('start-button');
     const domStartLoaded = document.getElementById( 'start-loaded' );
     const domStartBack = document.getElementById('start-background');
 
     const domTitleBackground = document.getElementById('title-background');
-
-    const domJSONLoader = document.getElementById('json-loader');
-	const domLoadMap = document.getElementById('gui');
 
 	const domStaminaBar = document.getElementById('stamina-bar');
 
@@ -50,22 +45,6 @@ function GameState() {
 
 
 	//////// EVENTS
-
-
-	domJSONLoader.addEventListener('click', ()=> {
-
-        domJSONLoader.blur();
-
-    });
-
-
-
-    domJSONLoader.addEventListener('change', (e)=> {
-
-        loadJSON(e);
-
-    });
-
 
 
     domStartButton.addEventListener( 'touchstart', (e)=> {
@@ -145,21 +124,9 @@ function GameState() {
 
 	//// LAYOUT INIT
 
-	if ( DEVELOPMENT_LAYOUT ) {
+	domStartMenu.style.display = 'flex';
 
-		domLoadMap.style.display = 'inherit';
-
-	} else {
-
-		domStartMenu.style.display = 'flex';
-
-		fileLoader.load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/mountain.json', ( file )=> {
-
-            generateWorld( file );
-
-        });
-
-	};
+	fileLoader.load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/mountain.json', generateWorld);
 
 
 
