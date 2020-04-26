@@ -1,14 +1,6 @@
 
-
-
-
-
 var loopCount = 0 ;
 var ticks, clockDelta;
-
-
-
-
 
 function loop() {
 

@@ -1,7 +1,5 @@
 
-
 function Stamina() {
-
 
     const domBar = document.getElementById('stamina-bar');
 
@@ -16,15 +14,12 @@ function Stamina() {
 
     var gauges = [];
 
-
-
     //// INIT
 
     // Create a stamina section for each level
     for ( let i=0 ; i < STARTSTAMINA ; i++ ) {
         incrementMaxStamina();
     };
-
 
     function incrementMaxStamina() {
 
@@ -56,12 +51,7 @@ function Stamina() {
         
     };
 
-
-
-
-
-
-
+    //
 
     function update( mustUpdateDom ) {
 
@@ -73,15 +63,9 @@ function Stamina() {
 
     };
 
-
-
-
-
-
     ///////////////////////////
     // DOM STAMINA BAR UPDATE
     ///////////////////////////
-
 
     function updateDom() {
 
@@ -97,16 +81,9 @@ function Stamina() {
 
     };
 
-
-
-
-
-
-
     /////////////////////////////////
     ///  STAMINA LEVEL OPERATIONS
     /////////////////////////////////
-
 
     // Called by the controler module when player make movements
     function reduceStamina( factor, update ) {
@@ -151,9 +128,6 @@ function Stamina() {
 
     };
 
-
-
-
     // Called by Controler when the user is on the ground,
     // so the user regain all their stamina and can start
     // climbing again
@@ -177,11 +151,7 @@ function Stamina() {
 
     };
 
-
-
-
-
-
+    //
 
     return {
         params,

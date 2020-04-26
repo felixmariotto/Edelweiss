@@ -1,10 +1,5 @@
 
-
-
 function Interaction() {
-
-
-
 
 	const domTalkContainer = document.getElementById('talk-container');
 	var isInAnim = false ;
@@ -30,29 +25,19 @@ function Interaction() {
 
 	const DIALOGUEBREAKTIME = 1000 ; // time in ms to wait between dialogues
 
-
-
 	questionTree = {
 		isQuestionAsked: false,
 		currentChoice: 0,
 		answers: []
 	};
 
-
-
 	function isInDialogue() {
 		return currentDialogue ? true : false ;
 	};
 
-
-
-
-
 	///////////////////////////////
 	///	   TRIGGERS  (BONUS, ETC..)
 	///////////////////////////////
-
-
 
 	function trigger( agentName ) {
 
@@ -143,8 +128,6 @@ function Interaction() {
 				break;
 
 
-
-
 			/// CAVES
 
 			// village
@@ -218,59 +201,9 @@ function Interaction() {
 
 	};
 
-
-
-
-
-
-
-
-	///////////////////////////
-	///     INTERACTIONS
-	///////////////////////////
-
-
-	// Hold the current "state of relationship" with each NPC
-	// ex : Did the player already talk to Dad about the key ?
-	var dialogueStates = {
-
-		dad: 'init',
-		// waiting-thread
-		// give-permission
-		// general
-
-		brother: 'init',
-
-		herbalist: 'init',
-		// waiting-sage
-
-		merchant: 'init',
-		// wait-key
-		// give-thread
-		// general
-
-		miner: 'init',
-		// give-key
-		// general
-
-		gatekeeper : 'init',
-		// warning
-
-		minerBoy : 'init',
-		// general
-
-		cable1 : 'init',
-		// use
-
-	};
-
-
-
-
-
-
-
-
+	////////////////////
+	///  INTERACTIONS
+	////////////////////
 
 	function interactWith( agentName ) {
 
@@ -322,10 +255,6 @@ function Interaction() {
 				startDialogue( 'npc-double-jump' );
 				break;
 
-				
-
-
-
 			///// NPC RESPAWN
 
 			case 'npc-respawn-0' :
@@ -376,8 +305,6 @@ function Interaction() {
 				startDialogue( 'npc-respawn-9' );
 				break;
 
-
-
 			///// MISC
 
 			case 'npc-dev' :
@@ -412,7 +339,6 @@ function Interaction() {
 
 				break;
 
-
 			case 'npc-dev-end' :
 				startDialogue( 'dev-end' );
 				break;
@@ -426,23 +352,13 @@ function Interaction() {
 
 	};
 
-
-
-
-
-
-
-
-
 	/////////////////////////////
 	///    BONUSES MANAGEMENT
 	/////////////////////////////
 
-
 	var bonuses = {
 
-
-		///////// STAMINA
+		/// STAMINA
 
 		// grotte
 		'stamina-1' : {
@@ -460,8 +376,6 @@ function Interaction() {
 			message : '+ 1 Stamina'
 		},
 
-
-
 		'stamina-0' : {
 
 			isFound: false,
@@ -476,8 +390,6 @@ function Interaction() {
 
 			message : '+ 1 Stamina'
 		},
-
-
 
 		'stamina-2' : {
 
@@ -494,8 +406,6 @@ function Interaction() {
 			message : '+ 1 Stamina'
 		},
 
-
-
 		'stamina-3' : {
 
 			isFound: false,
@@ -510,8 +420,6 @@ function Interaction() {
 
 			message : '+ 1 Stamina'
 		},
-
-
 
 		'stamina-4' : {
 
@@ -528,7 +436,6 @@ function Interaction() {
 			message : '+ 1 Stamina'
 		},
 
-
 		'stamina-5' : {
 
 			isFound: false,
@@ -544,7 +451,6 @@ function Interaction() {
 			message : '+ 1 Stamina'
 		},
 
-
 		'stamina-6' : {
 
 			isFound: false,
@@ -559,9 +465,6 @@ function Interaction() {
 
 			message : '+ 1 Stamina'
 		},
-
-
-
 
 		////// FALL BONUS (increase speed to death)
 
@@ -610,10 +513,6 @@ function Interaction() {
 			message : '+ 15% resistance to fall'
 		},
 
-
-
-
-
 		////// CLIMB BONUS (climb faster)
 
 		'climb-0' : {
@@ -661,12 +560,7 @@ function Interaction() {
 			message : '+ 15% climbing speed'
 		},
 
-
-
-
-
 		/////// ITEMS
-
 
 		'bonus-dash' : {
 
@@ -684,8 +578,6 @@ function Interaction() {
 
 		},
 
-
-
 		'bonus-glider' : {
 
 			isFound: false,
@@ -702,8 +594,6 @@ function Interaction() {
 
 		},
 
-
-
 		'bonus-boots' : {
 
 			isFound: false,
@@ -718,16 +608,11 @@ function Interaction() {
 
 			message : 'You found the Double-Jump Ability ! <br>You can now jump once in the air !'
 
-		},
-
-
+		}
 
 	};
 
-
-
-
-
+	//
 
 	function getBonus( bonusName ) {
 
@@ -741,24 +626,9 @@ function Interaction() {
 
 	};
 
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
 	///////////////////////////
 	///	   MESSAGES UI
 	///////////////////////////
-
 
 	function showMessage( message ) {
 
@@ -777,6 +647,7 @@ function Interaction() {
 
 	};
 
+	//
 
 	function hideMessage() {
 
@@ -784,21 +655,9 @@ function Interaction() {
 
 	};
 
-
-
-
-
-
-
-
-
-
 	///////////////////////
 	///    DIALOGUE UI
 	///////////////////////
-
-
-
 
 	// HIDE THE TALK UI
 	function hideDialogueUI() {
@@ -835,9 +694,6 @@ function Interaction() {
 		}, 300);
 
 	};
-
-
-
 
 	// SHOW THE DISCUSSION UI
 	function showDialogueUI( dialogueName ) {
@@ -884,32 +740,9 @@ function Interaction() {
 
 	};
 
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
 	///////////////////////////
 	///    DIALOGUE FUNCTIONS
 	///////////////////////////
-
-
 
 	// SHOW DIALOGUE UI
 	function startDialogue( dialogueName ) {
@@ -928,8 +761,6 @@ function Interaction() {
 
 	};
 
-
-
 	// HIDE DIALOGUE UI
 	function endDialogue() {
 
@@ -943,9 +774,6 @@ function Interaction() {
 		lastDialogueDate = Date.now();
 
 	};
-
-
-
 
 	// Called by the input module when user press space.
 	// First it check if there was a question asked, then print
@@ -999,9 +827,6 @@ function Interaction() {
 
 	};
 
-
-
-
 	// print next statement OR question
 	function executeDialogue() {
 
@@ -1027,10 +852,6 @@ function Interaction() {
 
 	};
 
-
-
-
-
 	// Print the line's message and execute any onCall
 	// function in the line's parameters
 	function executeLine( line ) {
@@ -1045,16 +866,9 @@ function Interaction() {
 
 	};
 
-
-
-
-
-
 	//////////////////
 	///   ANSWERS
 	//////////////////
-
-
 
 	// This is called by the input module,
 	// it set which answer is chosen by the player to
@@ -1093,10 +907,6 @@ function Interaction() {
 
 	};
 
-
-
-
-
 	// Add blinking class to the dom element of the chosen
 	// answer, so that the user knows which answer they are
 	// about to choose.
@@ -1117,9 +927,7 @@ function Interaction() {
 
 	};
 
-
-
-
+	//
 
 	function printAnswerNext() {
 
@@ -1150,10 +958,6 @@ function Interaction() {
 		};
 		
 	};
-
-
-
-
 
 	// Show the answer container in the dom dialogue UI.
 	// Setup the question tree and create one dom element
@@ -1202,9 +1006,6 @@ function Interaction() {
 
 	};
 
-
-
-
 	// Clean and hide the dom answer container
 	function clearQuestion() {
 
@@ -1222,22 +1023,9 @@ function Interaction() {
 
 	};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-	///////////////////////////////
-	///		DIALOGUES CHARACTERS
-	///////////////////////////////
+	////////////////////////////
+	///  DIALOGUES CHARACTERS
+	////////////////////////////
 
 	var dialogueChars = {
 
@@ -1258,31 +1046,13 @@ function Interaction() {
 
 	};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	///////////////////////////
 	///    DIALOGUES TREES
 	///////////////////////////
 
-
-
 	var dialogues = {
 
-
 		///// TUTORIALS
-
 
 		'npc-jump' : {
 			char: dialogueChars.lady,
@@ -1291,14 +1061,12 @@ function Interaction() {
 			]
 		},
 
-
 		'npc-climb' : {
 			char: dialogueChars.lady,
 			story: [
 				{ m: `Some walls can be climbed, walk toward the wall on your right to climb it.` }
 			]
 		},
-
 
 		'npc-stamina' : {
 			char: dialogueChars.lady,
@@ -1308,14 +1076,12 @@ function Interaction() {
 			]
 		},
 
-
 		'npc-climb-jump' : {
 			char: dialogueChars.lady,
 			story: [
 				{ m: `Did you know you can jump while climbing ? Just press space or the action button while climbing.` }
 			]
 		},
-
 
 		'npc-fall' : {
 			char: dialogueChars.lady,
@@ -1374,14 +1140,7 @@ function Interaction() {
 			]
 		},
 
-
-
-
-
-
-
 		////// NPC RESPAWN
-
 
 		'npc-respawn-0' : {
 			char: dialogueChars.alpinist,
@@ -1397,7 +1156,6 @@ function Interaction() {
 			]
 		},
 
-
 		'npc-respawn-1' : {
 			char: dialogueChars.alpinist,
 			story: [
@@ -1411,7 +1169,6 @@ function Interaction() {
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]
 		},
-
 
 		'npc-respawn-2' : {
 			char: dialogueChars.alpinist,
@@ -1427,7 +1184,6 @@ function Interaction() {
 			]
 		},
 
-
 		'npc-respawn-3' : {
 			char: dialogueChars.alpinist,
 			story: [
@@ -1441,7 +1197,6 @@ function Interaction() {
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]
 		},
-
 
 		'npc-respawn-4' : {
 			char: dialogueChars.alpinist,
@@ -1457,7 +1212,6 @@ function Interaction() {
 			]
 		},
 
-
 		'npc-respawn-5' : {
 			char: dialogueChars.alpinist,
 			story: [
@@ -1471,7 +1225,6 @@ function Interaction() {
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]
 		},
-
 
 		'npc-respawn-6' : {
 			char: dialogueChars.alpinist,
@@ -1487,7 +1240,6 @@ function Interaction() {
 			]
 		},
 
-
 		'npc-respawn-7' : {
 			char: dialogueChars.alpinist,
 			story: [
@@ -1501,7 +1253,6 @@ function Interaction() {
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]
 		},
-
 
 		'npc-respawn-8' : {
 			char: dialogueChars.alpinist,
@@ -1517,7 +1268,6 @@ function Interaction() {
 			]
 		},
 
-
 		'npc-respawn-9' : {
 			char: dialogueChars.alpinist,
 			story: [
@@ -1531,12 +1281,6 @@ function Interaction() {
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]
 		},
-
-
-
-
-
-
 
 		///// MISC
 
@@ -1557,7 +1301,6 @@ function Interaction() {
 			]
 		},
 
-
 		'dev-greeting-finish' : {
 			char: dialogueChars.dev,
 			story: [
@@ -1576,7 +1319,6 @@ function Interaction() {
 			]
 		},
 
-
 		'dev-main' : {
 			char: dialogueChars.dev,
 			story: [
@@ -1592,7 +1334,6 @@ function Interaction() {
 				{ label: 'no', m: 'Ho ? OK...', end: true  }
 			]
 		},
-
 
 		'dev-main-finish' : {
 			char: dialogueChars.dev,
@@ -1611,7 +1352,6 @@ function Interaction() {
 			]
 		},
 
-
 		'npc-river' : {
 			char: dialogueChars.lady,
 			story: [
@@ -1620,12 +1360,6 @@ function Interaction() {
 				{ m: "I did that a lot, back in the days..." }
 			]
 		},
-
-		
-
-
-
-
 
 		///// EXAMPLE
 
@@ -1648,21 +1382,7 @@ function Interaction() {
 
 	};
 
-
-
-
-	
-
-
-
-	
-
-
-
-
-
-
-
+	//
 
 	return {
 		interactWith,

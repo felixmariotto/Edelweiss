@@ -1,11 +1,8 @@
 
-
 function CameraControl( player, camera ) {
-
 
 	var group = new THREE.Group();
 	scene.add( group );
-
 
 	const MAX_YAW = 0.2 ;
 	const CAMERA_DIRECTION = new THREE.Vector3( 0, 0.4, 1 ).normalize();
@@ -49,26 +46,13 @@ function CameraControl( player, camera ) {
 		new THREE.Vector3( 1, 1, 0 )
 	);
 
-
-	// TEMP
-	camera.position.set( 0, 1.1, 3.5 );
-	camera.lookAt( 0, 0, 0 );
-
-
-
-
-
-
-	////////////////////
-	/////    LIGHT
-	////////////////////
-
+	/////////////
+	///  LIGHT
+	/////////////
 
 	var directionalLight = addShadowedLight( 3, 25, 7, 0xffffff, 0.85 );
     group.add( directionalLight );
     group.add( directionalLight.target );
-
-
 
     function addShadowedLight( x, y, z, color, intensity ) {
 
@@ -89,18 +73,8 @@ function CameraControl( player, camera ) {
         directionalLight.shadow.mapSize.height = 1024;
         directionalLight.shadow.bias = -0;
 
-        /*
-        var helper = new THREE.DirectionalLightHelper( directionalLight, 5 );
-        scene.add( helper );
-
-    	helper = new THREE.CameraHelper( directionalLight.shadow.camera );
-        scene.add( helper );
-        helper.matrixAutoUpdate = true ;
-        */
-
         return directionalLight;
     };
-
 
     function hideLight() {
     	directionalLight.visible = false;
@@ -110,31 +84,15 @@ function CameraControl( player, camera ) {
     	directionalLight.visible = true;
     };
 
-
-
-
-
-
-
-
-
-
-
-    ////////////////
-	/////   INIT
-	////////////////
-
+    ///////////
+	/// INIT
+	///////////
 
 	adaptFOV();
 
 	resetCameraPos();
 
-
-
 	scene.add( camera );
-
-
-
 
 	// Set the FOV depending on wether the display
 	// is horizontal or vertical
@@ -156,21 +114,9 @@ function CameraControl( player, camera ) {
 
 	};
 
-
-
-
-
-
-
-
-
-
-
 	////////////////////////
 	///   UPDATE
 	//////////////////////
-
-
 
 	function update( delta ) {
 
@@ -180,9 +126,9 @@ function CameraControl( player, camera ) {
 		cameraTarget.copy( player.position );
 		cameraTarget.y += atlas.PLAYERHEIGHT / 2 ;
 
-
-		///////////////////////////////////////////////////////////////
-		////// GET INTERSECTION POINTS ON RIGHT AND LEFT OF PLAYER
+		//////////////////////////////////////////////////////////
+		/// GET INTERSECTION POINTS ON RIGHT AND LEFT OF PLAYER
+		//////////////////////////////////////////////////////////
 
 		testRay.origin.copy( cameraTarget );
 
@@ -192,8 +138,6 @@ function CameraControl( player, camera ) {
 			Math.floor( player.position.y ) + 1 ,
 			Math.floor( player.position.y ) - 1
 		];
-
-
 
 		/// LEFT
 
@@ -205,8 +149,6 @@ function CameraControl( player, camera ) {
 											rayCollision.points[ 0 ].x :
 											false ;
 
-
-
 		/// RIGHT
 
 		testRay.direction.set( 1, 0, 0 );
@@ -217,10 +159,9 @@ function CameraControl( player, camera ) {
 											rayCollision.points[ 0 ].x :
 											false ;
 
-
-
-		///////////////////////////////
+		/////////////////////////
 		/// ANGLE OF CAMERA RAY
+		/////////////////////////
 
 		if ( intersectionLeft === false &&
 			 intersectionRight === false ) {
@@ -248,19 +189,12 @@ function CameraControl( player, camera ) {
 		// a radian angle between -1.57 and 1.57 is computed from the ratio
 		let angle = Math.asin( (leftRightRatio * 2) -1 );
 
-
-
 		// constraint to MAX_YAW
-		angle = (angle * MAX_YAW) / (Math.PI / 2) ;
+		angle = (angle * MAX_YAW) / (Math.PI / 2);
 
-
-
-
-
-
-		/////////////////////////////////////////
+		///////////////////////////
 		/// INTERSECT CAMERA RAY
-
+		///////////////////////////
 
 		// The computed angle is applied to the ray we use
 		// to position the camera
@@ -272,7 +206,6 @@ function CameraControl( player, camera ) {
 			cameraRayAxis,
 			-angle
 		);
-
 
 		/// CAMERA DISTANCE
 
@@ -334,24 +267,15 @@ function CameraControl( player, camera ) {
 
 		};
 
-
-
-
-
-
-
-
-
-		//////////////////////
+		//////////////////
 		/// CAMERA PATH
-
+		//////////////////
 
 		stages = [
 			Math.floor( camera.position.y ),
 			Math.floor( camera.position.y ) +1,
 			Math.floor( camera.position.y ) -1,
 		];
-
 
 		testRay.origin.copy( camera.position );
 
@@ -465,12 +389,6 @@ function CameraControl( player, camera ) {
 
 		};
 		
-
-
-
-		
-		
-
 		//////////////////////
 		///  POSITION CAMERA
 		//////////////////////
@@ -485,8 +403,7 @@ function CameraControl( player, camera ) {
 
 	};
 
-
-
+	//
 
 	function dodgeCamera( rayCollision, adjDir, edges ) {
 
@@ -529,8 +446,7 @@ function CameraControl( player, camera ) {
 
 	};
 
-
-
+	//
 
 	function attemptCameraMove( dir, delta ) {
 
@@ -544,12 +460,7 @@ function CameraControl( player, camera ) {
 
 	};
 
-
-
-
-
-
-
+	//
 
 	function resetCameraPos() {
 
@@ -559,14 +470,7 @@ function CameraControl( player, camera ) {
 
 	};
 
-
-
-
-
-
-
-
-
+	//
 
 	return {
 		update,

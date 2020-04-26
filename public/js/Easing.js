@@ -1,5 +1,4 @@
 
-
 function Easing() {
 
 	return {
@@ -32,4 +31,3 @@ function Easing() {
 	};
 
 };
-

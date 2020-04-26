@@ -1,25 +1,13 @@
 
-
 function DynamicItems() {
-
-
-
-	
 
 	var interactionSign = new THREE.Group(); // will contain the sign sprite
 	interactionSign.visible = false ;
 	scene.add( interactionSign );
 	
-
 	var interactiveCubes = [];
 
-
-
-
-
-
-	///// INIT
-
+	// INIT
 
 	var spriteMap = textureLoader.load( "https://edelweiss-game.s3.eu-west-3.amazonaws.com/assets/bubble.png" );
 	var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap, color: 0xffffff } );
@@ -30,14 +18,12 @@ function DynamicItems() {
 
 	interactionSign.add( sprite )
 
-
-
+	//
 
 	// Add a cube to the three arrays containing cubes to interact with
 	function addCube( logicCube ) {
 
 		switch ( logicCube.type ) {
-
 
 			case 'cube-interactive' :
 
@@ -78,22 +64,9 @@ function DynamicItems() {
 
 	};
 
-
-
-
-
-
-
-
-
-
-
-
-
 	////////////////////////
 	///  INTERACTION SIGN
 	////////////////////////
-
 
 	function showInteractionSign( tag ) {
 
@@ -111,7 +84,7 @@ function DynamicItems() {
 
 	};
 
-
+	//
 
 	function clearInteractionSign() {
 
@@ -119,13 +92,12 @@ function DynamicItems() {
 
 	};
 
-
-
-
+	//
 
 	return {
 		showInteractionSign,
 		clearInteractionSign,
 		addCube
 	};
+
 };

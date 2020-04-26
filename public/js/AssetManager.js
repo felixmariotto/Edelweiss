@@ -1,10 +1,10 @@
 
-
 /*
 	AssetManager keeps track of all the special assets like animated NPCs and bonuses.
 	At initialisation, it create groups that will hold the loaded assets once loading is done.
 	AssetManager is able to hide/show the groups when gameState tells it to change of graph.
 */
+
 function AssetManager() {
 
 	// assets constants
@@ -242,6 +242,8 @@ function AssetManager() {
 
 	};
 
+	//
+
 	function createCharacter( skinIndex, displayName ) {
 
 		for ( let i = 0; i < characters.length; i++ ) {
@@ -288,6 +290,7 @@ function AssetManager() {
 		return createCharacter( skinIndex, displayName );
 	};
 
+	//
 
 	function releaseCharacter( model ) {
 
@@ -298,6 +301,7 @@ function AssetManager() {
 
 	};
 
+	//
 
 	function toggleCharacterShadows( enabled ) {
 
@@ -317,12 +321,6 @@ function AssetManager() {
 		};
 
 	};
-
-
-
-
-
-
 
 	/////////////////////
 	///  INSTANCES SETUP
@@ -410,9 +408,6 @@ function AssetManager() {
 
 	};
 
-
-
-
 	///////////////
 	//// GENERAL
 	///////////////
@@ -476,6 +471,8 @@ function AssetManager() {
 
 	};
 
+	//
+
 	function setGroupVisibility( assetGroup ) {
 
 		if ( assetGroup.userData.graph == currentGraph ) {
@@ -495,6 +492,8 @@ function AssetManager() {
 		};
 
 	};
+
+	//
 
 	function deleteBonus( bonusName ) {
 
@@ -524,6 +523,8 @@ function AssetManager() {
 		};
 
 	};
+
+	//
 
 	function update( delta ) {
 
@@ -559,6 +560,7 @@ function AssetManager() {
 
 	};
 
+	//
 
 	function updateBonus( group ) {
 
@@ -583,10 +585,7 @@ function AssetManager() {
 
 	};
 
-
-
-
-
+	//
 
 	return {
 		createCharacter,
@@ -600,7 +599,5 @@ function AssetManager() {
 		update,
 		deleteBonus
 	};
-
-
 
 };

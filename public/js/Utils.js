@@ -90,7 +90,6 @@ function Utils() {
 
     };
 
-
     /* MAKC */
 
     // This function returns placeholder display name from https://www.youtube.com/watch?v=gzBZFArR4mc list.

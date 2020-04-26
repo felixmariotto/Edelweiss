@@ -28,7 +28,7 @@ function Input() {
 
     var joystick, domCross, moveVec, joystickAngle, joystickState ;
 
-    //// JOYSTICK
+    /// JOYSTICK
 
     function initJoystick() {
 
@@ -323,7 +323,7 @@ function Input() {
 
         if ( gameState.params.isGamePaused ) {
 
-            console.log( 'navigate in menu' );
+            // console.log( 'navigate in menu' );
 
         } else if ( interaction.isInDialogue() ) {
 
@@ -423,7 +423,7 @@ function Input() {
 
         if ( gameState.params.isGamePaused ) {
 
-            console.log( 'validate in menu' );
+            // console.log( 'validate in menu' );
 
         } else if ( interaction.isInDialogue() ) {
 

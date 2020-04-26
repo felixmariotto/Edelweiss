@@ -114,7 +114,6 @@ function Optimizer() {
 
 	};
 
-
 	//////////////////////////////
 	///    GENERAL FUNCTIONS
 	//////////////////////////////
@@ -124,7 +123,6 @@ function Optimizer() {
 	to decide if an opti/de-opti is needed, it decides over an average of
 	the sampled deltas.
 	*/
-
 	function update( delta ) {
 
 		// We don't want neither to optimize or to sample the performance

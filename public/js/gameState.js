@@ -1,11 +1,5 @@
 
-
-
-
-
 function GameState() {
-
-
 
 	const domStartMenu = document.getElementById('start-menu');
     const domStartButton = document.getElementById('start-button');
@@ -20,8 +14,6 @@ function GameState() {
 	const domActionButton = document.getElementById('action-button');
 
 	const domBlackScreen = document.getElementById('black-screen');
-
-
 
     // will hold the sceneGraphs of the caves as well
     var sceneGraphs = {
@@ -42,10 +34,7 @@ function GameState() {
 
     var loadingFinished = false;
 
-
-
-	//////// EVENTS
-
+	/// EVENTS
 
     domStartButton.addEventListener( 'touchstart', (e)=> {
 
@@ -54,8 +43,6 @@ function GameState() {
         };
 
     });
-    
-
 
     domStartButton.addEventListener( 'click', (e)=> {
 
@@ -64,12 +51,6 @@ function GameState() {
         };
 
     });
-
-
-
-
-
-
 
     // LOADING MANAGER
 
@@ -87,7 +68,6 @@ function GameState() {
 
     };
 
-
     THREE.DefaultLoadingManager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
 
         // console.log( `${ (itemsLoaded / itemsTotal) * 100 }%` )
@@ -95,6 +75,7 @@ function GameState() {
         updateLoadingBar( (itemsLoaded / itemsTotal) * 100 );
     };
 
+    //
 
     function updateLoadingBar( percent ) {
 
@@ -106,6 +87,7 @@ function GameState() {
 
     };
 
+    //
 
     function unlockStartButton() {
 
@@ -115,14 +97,7 @@ function GameState() {
 
     };
 
-
-
-
-
-
-
-
-	//// LAYOUT INIT
+	/// LAYOUT INIT
 
 	domStartMenu.style.display = 'flex';
 
@@ -138,13 +113,7 @@ function GameState() {
 
     });
 
-
-
-
-
-
-
-
+    //
 
     function debugLoadGraph( graphData, graphName ) {
 
@@ -201,6 +170,7 @@ function GameState() {
         } );
     };
 
+    //
 
     document.querySelector( '#json-load input' ).onchange = function( event ) {
 
@@ -230,10 +200,7 @@ function GameState() {
 
     };
 
-
-
-    ///// STARTING THE GAME
-
+    /// STARTING THE GAME
 
 	function startGame( isTouchScreen ) {
 
@@ -269,12 +236,9 @@ function GameState() {
 
     };
 
-
-
 	/////////////////////
     ///   IMPORT JSON
     /////////////////////
-
 
     var hashTable = {
         true: '$t',
@@ -298,8 +262,6 @@ function GameState() {
         'cube-trigger': '$o'
     };
 
-
-
 	function parseJSON( file ) {
 
         let data = lzjs.decompress( file );
@@ -316,7 +278,7 @@ function GameState() {
         return JSON.parse( data ) ;
     };
 
-
+    //
 
     document.getElementById( 'json-save' ).onclick = function() {
 
@@ -345,30 +307,9 @@ function GameState() {
         }
     };
 
-
-
-
-
-    
-
-
-
-
-
-    
-
-
-
-
-    
-
-
-
-
-
-
-
-
+    ///////////////////////
+    /// GENERAL FUNCTIONS
+    ///////////////////////
 
 	// This function is called when the player fell from too high.
 	// Show a black screen, wait one second, respawn, remove black screen.
@@ -398,6 +339,8 @@ function GameState() {
 
     };
 
+    //
+
 	function respawn() {
 
         charaAnim.respawn();
@@ -416,12 +359,7 @@ function GameState() {
 
 	};
 
-
-
-
-
-
-
+    //
 
     function switchMapGraph( gateName ) {
 
@@ -472,10 +410,7 @@ function GameState() {
 
     };
 
-
-
-
-
+    //
 
     function endPassGateAnim() {
 
@@ -505,11 +440,7 @@ function GameState() {
 
     };
 
-
-
-
-
-
+    //
 
     function resetPlayerPos( vec ) {
 
@@ -519,13 +450,7 @@ function GameState() {
 
     };
 
-
-
-
-
-
-
-
+    //
 
     function getDestinationFromGate( gateName ) {
 
@@ -557,7 +482,7 @@ function GameState() {
 
     			};
 
-            // gauntlet
+            // dash
             case 'cave-2' :
 
                 if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
@@ -687,17 +612,11 @@ function GameState() {
 
                 };
     			
-
     	};
 
     };
 
-
-
-
-
-
-
+    //
 
     function setSavedPosition( respawnID ) {
 
@@ -721,7 +640,7 @@ function GameState() {
 
                 });
 
-            }
+            };
 
         } else {
 
@@ -755,7 +674,7 @@ function GameState() {
 
     };
 
-
+    //
 
     function update( mustUpdate ) {
 
@@ -773,11 +692,7 @@ function GameState() {
 
     };
 
-
-
-
-
-
+    //
 
 	return {
 		die,

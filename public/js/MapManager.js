@@ -1,8 +1,5 @@
 
-
 function MapManager() {
-
-
 
 	const CHUNK_SIZE = 12 ;
 	const LAST_CHUNK_ID = 13 ;
@@ -16,8 +13,6 @@ function MapManager() {
 	var params = {
 		currentMap: "mountain"
 	};
-
-
 
 	/*
 	Creation of groups that will contain the different maps.
@@ -44,10 +39,6 @@ function MapManager() {
 		scene.add( maps[ groupName ] );
 
 	};
-
-
-
-
 
 	/*
 	Only run if the player is in the main map (mountain).
@@ -89,13 +80,7 @@ function MapManager() {
 
 	};
 
-
-
-
-
-
-
-
+	//
 
 	function loadMap( mapName, resolve ) {
 
@@ -133,10 +118,6 @@ function MapManager() {
 		});
 
 	};
-
-
-
-
 
 	// Make current map disappear, and show a new map
 	function switchMap( newMapName ) {
@@ -181,7 +162,7 @@ function MapManager() {
 
 	};
 
-
+	//
 
 	var caveLights = [];
 
@@ -212,6 +193,8 @@ function MapManager() {
 
 	};
 
+	//
+
 	function removeCaveLights() {
 
 		caveLights.forEach( ( light )=> {
@@ -224,11 +207,7 @@ function MapManager() {
 
 	};
 
-
-
-
-
-
+	//
 
 	return {
 		update,
