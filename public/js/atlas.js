@@ -1369,7 +1369,7 @@ function Atlas() {
 						document.getElementById( 'destinations' ).style.display = 'none';
 					} else
 
-					fileLoader.load( 'assets/map/' + graphName + '.json', function( graphText ) {
+					fileLoader.load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/' + graphName + '.json', function( graphText ) {
 						gameState.debugLoadGraph( graphText, graphName );
 
 						document.getElementById( 'destinations' ).style.display = 'none';
