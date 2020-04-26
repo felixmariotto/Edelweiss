@@ -35,14 +35,14 @@ Follow me on Github or Itch.io for more upcoming games
 
 If you fancy extending the game, I'm up to merge your work, as I already did with Makc multiplayer and debug mods.
 
-If you feel more like correcting a few bug here and there, here is a wishlist :
-- fix hero animation climb-down-right
+If you feel more like correcting a few bugs here and there, here is a wishlist :
+- fix hero climb-down-right animation
 - shade characters faces smooth
-- if player die, got the first edelweiss, but didn't save their progress yet, respawn in front of the first cave instead of the starting point of the game
-- add movements sounds (climbing, footstep...)
+- if the player dies, got the first edelweiss, but didn't save their progress yet, respawn them in front of the first cave instead of the starting point of the game
+- add movement sounds (climbing, footstep...)
 - add powerup sounds
 - add tweening for the reduction of the stamina bar
-- let the player jumb 0.2s after they start falling, to reduce frustration of missing the ledge
+- let the player jump 0.2s after they start falling, to reduce frustration of missing the ledge
 - add a plane under the roofs of the houses, because one can see the sky from the bottom now
 - close the tents models openings
 - add dust animation when player fall because of a fall-tile
