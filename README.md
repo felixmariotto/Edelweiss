@@ -31,6 +31,32 @@ Check out my previous game [The Temple of Doom](https://github.com/felixmariotto
 
 Follow me on Github or Itch.io for more upcoming games
 
-# Big thanks to Makc for creating a multiplayer mod
+# Contributing
 
-It is now merged into this repo, but you can find his fork here : https://github.com/makc/Edelweiss
+If you fancy extending the game, I'm up to merge your work, as I already did with Makc multiplayer and debug mods.
+
+If you feel more like correcting a few bug here and there, here is a wishlist :
+- fix hero animation climb-down-right
+- shade characters faces smooth
+- if player die, got the first edelweiss, but didn't save their progress yet, respawn in front of the first cave instead of the starting point of the game
+- add movements sounds (climbing, footstep...)
+- add powerup sounds
+- add tweening for the reduction of the stamina bar
+- let the player jumb 0.2s after they start falling, to reduce frustration of missing the ledge
+- add a plane under the roofs of the houses, because one can see the sky from the bottom now
+- close the tents models openings
+- add dust animation when player fall because of a fall-tile
+- fix issue of joystick position with Galaxy S9+ (chrome for android)
+
+# Big thanks to Makc for contributing !
+
+He made :
+- The multiplayer feature
+- The debug and live-map-editing features, that you can access by typing these commands into your browser's console while playing the game :
+```javascript
+atlas.debug() // show the physical assets used for collision while you play
+atlas.player.showHelpers() // show a helper for the player's direction
+controler.permissions.airborne // cheat code for flying freely with the glider
+```
+
+You can find his fork here : https://github.com/makc/Edelweiss

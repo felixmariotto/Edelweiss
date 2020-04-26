@@ -202,15 +202,11 @@ function SoundMixer() {
 
 		});
 
-		
-
     };
 
     //
 
 	function switchGraph( graphName ) {
-
-		console.log('switch')
 
 		if ( graphName == 'mountain' ) {
 
