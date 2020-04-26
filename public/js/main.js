@@ -55,6 +55,6 @@ window.addEventListener( 'resize', ()=> {
             input.joystick._baseEl.style.top = 
                 `${ world.clientHeight - ( 90 + ( input.joystick._baseEl.clientHeight / 2 ) ) }px` ;
 
-        }
-    }
-};
+        };
+    };
+});

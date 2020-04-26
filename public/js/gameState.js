@@ -166,17 +166,26 @@ function GameState() {
             // try to place the player on the ground
 
             var pos;
-            for ( let tilesGraphStage of sceneGraph.tilesGraph )
-                if ( tilesGraphStage && !pos )
-                    for ( let logicTile of tilesGraphStage )
+
+            for ( let tilesGraphStage of sceneGraph.tilesGraph ) {
+
+                if ( tilesGraphStage && !pos ) {
+
+                    for ( let logicTile of tilesGraphStage ) {
+
                         if ( /ground-s/.test( logicTile.type ) ) {
+
                             pos = new THREE.Vector3 (
                                 (logicTile.points[0].x + logicTile.points[1].x) / 2,
                                 (logicTile.points[0].y + logicTile.points[1].y) / 2,
                                 (logicTile.points[0].z + logicTile.points[1].z) / 2
                             );
+
                             break;
-                        }
+                        };
+                    };
+                };
+            };
 
             resetPlayerPos( pos );
 
@@ -387,7 +396,7 @@ function GameState() {
 
                 setTimeout( respawn, 1300 );
 
-            }
+            };
 
         }, 250 );
 
@@ -395,19 +404,19 @@ function GameState() {
 
 	function respawn() {
 
-            charaAnim.respawn();
-            soundMixer.animEnd();
+        charaAnim.respawn();
+        soundMixer.animEnd();
 
-			atlas.player.position.copy( respawnPos );
-			cameraControl.resetCameraPos();
+		atlas.player.position.copy( respawnPos );
+		cameraControl.resetCameraPos();
 
-			controler.setSpeedUp( 0 );
+		controler.setSpeedUp( 0 );
 
-            params.isCrashing = false ;
-            params.isDying = false ;
+        params.isCrashing = false ;
+        params.isDying = false ;
 
-			domBlackScreen.classList.remove( 'show-black-screen' );
-			domBlackScreen.classList.add( 'hide-black-screen' );
+		domBlackScreen.classList.remove( 'show-black-screen' );
+		domBlackScreen.classList.add( 'hide-black-screen' );
 
 	};
 
