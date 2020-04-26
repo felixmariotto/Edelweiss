@@ -3,22 +3,11 @@ const express = require('express');
 const path = require('path');
 const socketIO = require('socket.io');
 const PORT = process.env.PORT || 5050;
-var geoip = require('geoip-lite');
-
-const { Pool } = require('pg');
-const POOL = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true
-});
 
 
-
-
-
-/////////////////
+///////////
 ///  APP
-/////////////////
-
+///////////
 
 const app = express()
 
@@ -33,12 +22,6 @@ const app = express()
     })
 
 
-
-
-
-
-
-
 //////////////////
 ///  SOCKET.IO
 //////////////////
@@ -46,144 +29,6 @@ const app = express()
 const io = socketIO( app );
 
 io.on( 'connection', async (client)=> {
-
-	var lang = client.handshake.headers['accept-language'].split(",")[0];
-
-	var ip = client.handshake.headers["x-forwarded-for"].split(",")[0] ;
-
-	var geo = geoip.lookup( ip );
-
-	// console.log( `User ${ client.id } connected` );
-
-	var clientID;
-
-	var startTime = Date.now();
-
-	var postgresClient = await POOL.connect();
-
-	postgresClient.query( `INSERT INTO analytics (
-							environment,
-							game_version,
-							timestamp,
-							ip,
-							country,
-							language
-						   ) VALUES (
-						    '${ process.env.ENVIRONMENT }',
-						    '${ process.env.VERSION || 'undefined' }',
-						    NOW(),
-						    '${ ip }',
-						    '${ geo.country }',
-						    '${ lang }'
-						   ) RETURNING id` ).then( (value)=> {
-
-							clientID = value.rows[ 0 ].id ; // clientID is a number
-
-						   });
-
-	postgresClient.release();
-
-	//
-
-	client.on( 'init', async (message)=> {
-
-		var postgresClient = await POOL.connect();
-
-		postgresClient.query( `UPDATE analytics SET
-								browser = '${ message.browser }',
-								browser_version = '${ message.browser_version }',
-								local_time = '${ message.time }'
-							   WHERE id = ${ clientID }` );
-
-		postgresClient.release();
-
-	});
-
-	//
-
-	client.on( 'bonus', async (message)=> {
-
-		var postgresClient = await POOL.connect();
-
-		postgresClient.query( `UPDATE analytics
-							   SET bonuses = array_append( bonuses, '${ message }' )
-							   WHERE id = ${ clientID }` );
-
-		postgresClient.release();
-
-	});
-
-	//
-
-	client.on( 'dialogue', async (message)=> {
-
-		var postgresClient = await POOL.connect();
-
-		postgresClient.query( `UPDATE analytics
-							   SET dialogues = array_append( dialogues, '${ message }' )
-							   WHERE id = ${ clientID }` );
-
-		postgresClient.release();
-
-	});
-
-	//
-
-	client.on( 'save', async (message)=> {
-
-		var postgresClient = await POOL.connect();
-
-		postgresClient.query( `UPDATE analytics
-							   SET saves = array_append( saves, '${ message }' )
-							   WHERE id = ${ clientID }` );
-
-		postgresClient.release();
-
-	});
-
-	//
-
-	client.on( 'death', async (message)=> {
-
-		var postgresClient = await POOL.connect();
-
-		postgresClient.query( `UPDATE analytics
-							   SET deaths = array_append( deaths, '${ message }' )
-							   WHERE id = ${ clientID }` );
-
-		postgresClient.release();
-
-	});
-
-	//
-
-	client.on( 'touchscreen', async ()=> {
-
-		var postgresClient = await POOL.connect();
-
-		postgresClient.query( `UPDATE analytics
-							   SET touchscreen = true
-							   WHERE id = ${ clientID }` );
-
-		postgresClient.release();
-
-	});
-
-	//
-
-	client.on( 'opti', async (message)=> {
-
-		var postgresClient = await POOL.connect();
-
-		postgresClient.query( `UPDATE analytics
-							   SET opti_levels = array_append( opti_levels, '${ message }' )
-							   WHERE id = ${ clientID }` );
-
-		postgresClient.release();
-
-	});
-
-	//
 
 	client.on('playerInfo', (message)=> {
 
@@ -204,7 +49,7 @@ io.on( 'connection', async (client)=> {
 
 	//
 
-	client.on( 'disconnect', async function() {
+	client.on( 'disconnect', async ()=> {
 
 		// broadcast the disconnection information to the other
 		// players of the same room
@@ -213,19 +58,7 @@ io.on( 'connection', async (client)=> {
 			client.broadcast.to( client.roomId ).emit( 'playerLeft', client.gameId );
 
 		};
-		
-
-		//
-
-		var postgresClient = await POOL.connect();
-
-		postgresClient.query( `UPDATE analytics SET
-								duration = '${ Date.now() - startTime }'
-							   WHERE id = ${ clientID }` );
-
-		postgresClient.release();
 
 	});
 
 })
-

@@ -733,8 +733,6 @@ function Interaction() {
 
 		if ( !bonuses[ bonusName ].isFound ) {
 
-			socketIO.sendBonus( bonusName );
-
 			bonuses[ bonusName ].onGet();
 			showMessage( bonuses[ bonusName ].message );
 			bonuses[ bonusName ].isFound = true ;
@@ -918,8 +916,6 @@ function Interaction() {
 
 		if ( lastDialogueDate < Date.now() - DIALOGUEBREAKTIME &&
 			 !isInDialogue() ) {
-
-			socketIO.sendDialogue( dialogueName );
 
 			showDialogueUI( dialogueName );
 

@@ -374,10 +374,6 @@ function GameState() {
 	// Show a black screen, wait one second, respawn, remove black screen.
 	function die( hasCrashed ) {
 
-        if ( atlas.player && atlas.player.position ) {
-            socketIO.sendDeath();
-        };
-
 		params.isDying = true ;
 		if ( hasCrashed ) params.isCrashing = true ;
 
@@ -704,10 +700,6 @@ function GameState() {
 
 
     function setSavedPosition( respawnID ) {
-
-        // console.log( `save progress on ${ 'respawn-' + respawnID }` );
-
-        socketIO.sendSave( respawnID );
 
         if ( atlas.getSceneGraph() == sceneGraphs.mountain ) {
 

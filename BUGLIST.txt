@@ -1,87 +1,9 @@
 
-
-
-
-/////////////////////////////////
+//////////////////////////
 ///		BUG  &  FIXES
-//////////////////////////////////
+//////////////////////////
 
 
-
-//////// ARTISTS CONTACTED
-
-- field rotation - mail
-- igneous flame - insta
-- AK
-- Brendon Moeller
-- Ave Air
-- Bvadub
-- Cora Zea
-- DreamScaper
-- Gavin Luke
-- Goldmund
-- Good Weather for an Earthstrike
-- The Humble Bee + Off The Sky
-- South Dakota Chorale
-- Kyle Preston
-- Lucho Ripley
-- Poemme ( Angela Klimek )
-- Simon Baiton
-- Strom Noir
-
-
-
-
-
-
-///// NOT CONTACTED
-
-- Strom => licence
-- August wilhelmsson => licence
-- Ed Hamilton => probably quite old, last album in 1998, no contact
-- Ambient Solle => impossible to find
-- Allana Johnson => impossible to find
-- Emblemic X => no contact
-- Empty Space => no contact
-- Eric Withacre => superstar, no point
-- Eriks Esenvalds => superstar, no point
-- Estelle Blanca => no contact
-- Ghost of Summer => no contact
-- Helios => licence
-- Hong Kong Atmosphere => no contact
-- Mehdi Teyt => no contact
-- Mylo Heart => no contact
-- Opus Monik => no contact
-
-
-
-
-
-
-
-
-
-///////////// URGENT
-
-
-- Limiter double-saut
-
-- Limiter dash
-
-- Ajouter icones limites dash / glide / jump
-
-- Ajouter lianes la ou ca manque juste avant le dash
-
-- Exiger d'avoir l'energie pour executer une capacite
-
-- Coder analytics
-
-
-
-
-
-
-///////////// NOT URGENT
 
 
 - animation climb down right is bugged
@@ -111,18 +33,3 @@
 - Modifier Optimizer pour qu'il annule l'optimisation GPU quand ca n'a aucun effet sur le frame rate.
 
 - Pause un peu plus longue quand le joueur meurt
-
-
-
-
-
-
-
-//////////// NOT SURE
-
-- Saut contre le mur devrait desactiver les mouvement horizontaux pendant un instant
-
-- Entree dans la maison du dev respawn au dernier checkpoint
-
-- Quand le joueur longe le plan de limite dans une cave, il passe parfois de l'autre coté du plan et tombe ( pas capable de reproduire ? )
-
