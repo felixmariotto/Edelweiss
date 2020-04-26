@@ -48,7 +48,7 @@ If you feel more like correcting a few bug here and there, here is a wishlist :
 - add dust animation when player fall because of a fall-tile
 - fix issue of joystick position with Galaxy S9+ (chrome for android)
 
-# Big thanks to Makc for contributing !
+# Big thanks to [Makc](https://github.com/makc) for contributing !
 
 He made :
 - The multiplayer feature
