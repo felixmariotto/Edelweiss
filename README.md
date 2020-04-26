@@ -54,7 +54,7 @@ He made :
 - The multiplayer feature
 - The debug and live-map-editing features, that you can access by typing these commands into your browser's console while playing the game :
 ```javascript
-atlas.debug() // show the physical assets used for collision while you play
+atlas.debug() // show the physical assets used for collision while you play, and UI for editing the map
 atlas.player.showHelpers() // show a helper for the player's direction
 controler.permissions.airborne // cheat code for flying freely with the glider
 ```
