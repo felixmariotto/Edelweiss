@@ -128,6 +128,8 @@ function MapManager() {
 
 			console.error( `Impossible to load file ${ mapName }.glb` );
 
+			if ( resolve ) resolve();
+
 		});
 
 	};
@@ -140,6 +142,8 @@ function MapManager() {
 	function switchMap( newMapName ) {
 
 		return new Promise( (resolve, reject)=> {
+
+			if ( !maps[ newMapName ] ) addMapGroup( newMapName );
 
 			maps[ params.currentMap ].visible = false ;
 			maps[ newMapName ].visible = true ;

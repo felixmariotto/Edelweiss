@@ -37,11 +37,6 @@
             color: grey;
         }
 
-        button {
-            padding: 10px 20px 10px 20px;
-            border-radius: 5px;
-        }
-
         .dialogue-box {
             background-color: white;
             border-radius: 10px;
@@ -162,6 +157,7 @@
                 background-repeat: no-repeat;
                 background-position: 35% 60%;
                 outline: none !important;
+                padding: 10px 20px 10px 20px;
                 cursor: pointer;
             }
             .input input {
@@ -345,17 +341,76 @@
             position: fixed;
             bottom: 0;
             right: 0;
+            left: 0;
             display: none;
+            padding: 10px;
+            text-align: right;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        #gui button {
+            background: transparent;
+            border: 1px dotted #aaa;
+            border-radius: 0;
+            color: #bfd;
+            position: relative;
+            overflow: hidden;
+            padding: 4px 5px 1px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        #gui button:hover {
+            border-color: white;
+            color: white;
+        }
+
+        #json-load input {
+            position: absolute;
+            top: 0;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        #gui .dialog {
+            position: fixed;
+            top: 10%; left: 50%; margin-left: -130px;
+            padding: 20px 30px;
+            background-color: rgba(0,0,0,0.4); border: 1px dotted white;
+            text-align: center;
+            display: none;
+        }
+
+        #gui .dialog div {
+            text-align: left; margin-bottom: 10px;
+        }
+
+        #gui .dialog button {
+            width: 50px; margin-top: 10px;
+        }
+
+        #gui .dialog div, #gui .dialog button {
+            color: #bfd; line-height: 1.6;
+        }
+
+        #gui .dialog select, #gui .dialog input {
+            box-sizing: border-box;
+            display: block;
+            padding: 5px;
+            width: 200px;
+            color: #333;
         }
 
         #message-box {
             position: fixed;
             left: 50%;
-            top: 50%;
-            transform: translate( calc(-50% + 50px), calc(-50% + 50px) );
+            top: 25%;
+            transform: translate(-50%);
             background-color: white;
             padding: 20px;
-            margin: -50px;
             font-size: calc( 100% + 1.5vh );
             text-align: center;
             display: none;
@@ -658,6 +713,7 @@
 
 
     <script src="libs/three.js"></script>
+    <script src="libs/TransformControls.js"></script>
     <script src="libs/GLTFLoader.js"></script>
     <script src="libs/DRACOLoader.js"></script>
     <script src="libs/SkeletonUtils.js"></script>
@@ -857,6 +913,27 @@
     <!-- TEMPORARY -->
 
     <div id="gui">
+        <button id="tile-properties" title="Tile properties"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M3 3v6h2V5h4V3H3zm2 12H3v6h6v-2H5v-4zm14 4h-4v2h6v-6h-2v4zm2-16h-6v2h4v4h2V3z" fill="currentColor"/><path d="M19.44 12.99l-.01.02c.04-.33.08-.67.08-1.01 0-.34-.03-.66-.07-.99l.01.02 2.44-1.92-2.43-4.22-2.87 1.16.01.01c-.52-.4-1.09-.74-1.71-1h.01L14.44 2H9.57l-.44 3.07h.01c-.62.26-1.19.6-1.71 1l.01-.01-2.88-1.17-2.44 4.22 2.44 1.92.01-.02c-.04.33-.07.65-.07.99 0 .34.03.68.08 1.01l-.01-.02-2.1 1.65-.33.26 2.43 4.2 2.88-1.15-.02-.04c.53.41 1.1.75 1.73 1.01h-.03L9.58 22h4.85s.03-.18.06-.42l.38-2.65h-.01c.62-.26 1.2-.6 1.73-1.01l-.02.04 2.88 1.15 2.43-4.2s-.14-.12-.33-.26l-2.11-1.66zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" fill="currentColor" transform="translate(12 12) scale(0.66 0.66) translate(-12 -12)"/></svg></button>
+        &nbsp;
+        <button id="cube-add" title="Add the box"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M21 3H3v18h18V3zm-4 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" fill="currentColor"/></svg></button>
+        <button id="cube-remove" title="Remove the box"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M21 3H3v18h18V3zm-4 10H7v-2h10v2z" fill="currentColor"/></svg></button>
+        <button id="cube-properties" title="Box properties"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 3H3v18h18V3zm-1.75 9c0 .24-.02.47-.05.71l.01-.02 1.47 1.16c.14.1.23.18.23.18l-1.7 2.94-2.02-.8.02-.03c-.37.29-.77.53-1.21.71h.01l-.27 1.85c-.02.17-.04.3-.04.3h-3.4l-.31-2.15H10c-.44-.18-.84-.42-1.21-.71l.02.03-2.02.8-1.7-2.94s.1-.08.23-.18l1.47-1.16.01.02c-.03-.24-.05-.47-.05-.71s.02-.47.05-.69l-.01.01-1.7-1.34 1.7-2.95 2.01.81v.01c.37-.28.77-.52 1.2-.7h-.01L10.3 5h3.41l.3 2.15H14c.43.18.83.42 1.2.7v-.01l2.01-.81 1.7 2.95-1.71 1.34-.01-.01c.04.22.06.45.06.69z" fill="currentColor"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg></button>
+        <button id="cube-transform" title="Box transform mode"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z" fill="currentColor"/></svg></button>
+        &nbsp;
+        <button id="teleport" title="Jump to..."><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M16.49 15.5v-1.75L14 16.25l2.49 2.5V17H22v-1.5h-5.51zm3.02 4.25H14v1.5h5.51V23L22 20.5 19.51 18v1.75zM9.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM5.75 8.9L3 23h2.1l1.75-8L9 17v6h2v-7.55L8.95 13.4l.6-3C10.85 12 12.8 13 15 13v-2c-1.85 0-3.45-1-4.35-2.45l-.95-1.6C9.35 6.35 8.7 6 8 6c-.25 0-.5.05-.75.15L2 8.3V13h2V9.65l1.75-.75" fill="currentColor"/></svg></button>
+        &nbsp;
+        <button id="json-load"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 12v7H5v-7H3v9h18v-9h-2zm-6 .67l2.59-2.58z" fill="currentColor"/><path d="M15.7 10L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z" transform="translate(24 19) rotate(180)" fill="currentColor"/></svg><input type="file" title="Load JSON"></input></button>
+        <button id="json-save" title="Save JSON"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 12v7H5v-7H3v9h18v-9h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z" fill="currentColor"/></svg></button>
+        <div id="properties" class="dialog">
+            <div>Type:<select autocomplete="off"></select></div>
+            <div>Tag:<input autocomplete="off" placeholder="(optional)" type="text"></input></div>
+            <button onclick="this.parentElement.style.display='none'">OK</input>
+        </div>
+        <div id="destinations" class="dialog">
+            <div>Current JSON:<select autocomplete="off"></select></div>
+            <div>Another JSON:<select autocomplete="off"></select></div>
+            <button onclick="this.parentElement.style.display='none'">OK</input>
+        </div>
     </div>
 
 </body>

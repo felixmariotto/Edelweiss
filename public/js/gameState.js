@@ -126,7 +126,17 @@ function GameState() {
 
 	domStartMenu.style.display = 'flex';
 
-	fileLoader.load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/mountain.json', generateWorld);
+	fileLoader.load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/mountain.json', function( file ) {
+
+        var graph = parseJSON( file );
+
+        // Initialize atlas with the scene graph
+        atlas.init( graph );
+
+        // store this sceneGraph into the graphs object
+        sceneGraphs.mountain = graph ;
+
+    });
 
 
 
@@ -136,35 +146,93 @@ function GameState() {
 
 
 
+    function debugLoadGraph( graphData, graphName ) {
+
+        var sceneGraph = (typeof graphData === 'string' ) ? parseJSON( graphData ) : graphData;
+
+        console.log( `Loaded ${ graphName } graph:`, sceneGraph );
+
+        // at this point the game is already started so we
+        // want to load the json as if it was another cave
+
+        params.isGamePaused = true ;
+
+        sceneGraphs[ graphName ] = sceneGraph;
+
+        atlas.switchGraph( graphName, null, function() {
+
+            soundMixer.animEnd();
+
+            // try to place the player on the ground
+
+            var pos;
+
+            for ( let tilesGraphStage of sceneGraph.tilesGraph ) {
+
+                if ( tilesGraphStage && !pos ) {
+
+                    for ( let logicTile of tilesGraphStage ) {
+
+                        if ( /ground-s/.test( logicTile.type ) ) {
+
+                            pos = new THREE.Vector3 (
+                                (logicTile.points[0].x + logicTile.points[1].x) / 2,
+                                (logicTile.points[0].y + logicTile.points[1].y) / 2,
+                                (logicTile.points[0].z + logicTile.points[1].z) / 2
+                            );
+
+                            break;
+                        };
+                    };
+                };
+            };
+
+            resetPlayerPos( pos );
+
+            controler.setSpeedUp( 0 );
+
+            params.isCrashing = false ;
+            params.isDying = false ;
+            params.isGamePaused = false ;
+
+            domBlackScreen.classList.remove( 'show-black-screen' );
+            domBlackScreen.classList.add( 'hide-black-screen' );
+
+        } );
+    };
 
 
-	///// STARTING THE GAME
+    document.querySelector( '#json-load input' ).onchange = function( event ) {
 
-
-    function loadJSON( evt ) {
-
-        var tgt = evt.target || window.event.srcElement,
-        files = tgt.files;
+        var files = event.target.files;
     
         // FileReader support
         if (FileReader && files && files.length) {
+
+            var matches = files[0].name.match(/^(.*)\.json$/);
+
+            var graphName = matches ? matches[1] : 'unknown';
 
             var fr = new FileReader();
 
             fr.onload = function () {
 
-                generateWorld( fr.result );
-
-                startGame();
+                debugLoadGraph( fr.result, graphName );
 
             };
 
             fr.readAsText(files[0]);
 
+            files.length = 0;
+
+            document.querySelector( '#json-load input' ).blur();
         };
 
     };
 
+
+
+    ///// STARTING THE GAME
 
 
 	function startGame( isTouchScreen ) {
@@ -232,20 +300,6 @@ function GameState() {
 
 
 
-    function generateWorld( file ) {
-
-        var graph = parseJSON( file );
-
-        // Initialize atlas with the scene graph
-        atlas.init( graph );
-
-        // store this sceneGraph into the graphs object
-        sceneGraphs.mountain = graph ;
-
-    };
-
-
-
 	function parseJSON( file ) {
 
         let data = lzjs.decompress( file );
@@ -260,6 +314,35 @@ function GameState() {
         };
 
         return JSON.parse( data ) ;
+    };
+
+
+
+    document.getElementById( 'json-save' ).onclick = function() {
+
+        const curentSceneGraph = atlas.getSceneGraph();
+
+        for( let graphName in sceneGraphs ) {
+
+            if( sceneGraphs[ graphName ] == curentSceneGraph ) {
+
+                let data = JSON.stringify( curentSceneGraph );
+
+                for ( let valueToReplace of Object.keys( hashTable ) ) {
+
+                    data = data.replace( new RegExp( valueToReplace, 'g' ), hashTable[ valueToReplace ] );
+
+                };
+
+                let link = document.createElement( 'a' );
+
+                link.download = graphName + '.json';
+
+                link.href = URL.createObjectURL( new File( [lzjs.compress( data )], graphName + '.json', { type: 'text/plain;charset=utf-8' } ) );
+
+                link.dispatchEvent( new MouseEvent( 'click' ) );
+            }
+        }
     };
 
 
@@ -303,32 +386,37 @@ function GameState() {
 
         soundMixer.animStart();
 
-        setTimeout( ()=> {
+        setTimeout( function() {
 
             if ( atlas.getSceneGraph() != sceneGraphs.mountain ) {
 
-                atlas.switchGraph( 'mountain', null, true );
+                atlas.switchGraph( 'mountain', null, respawn );
+
+            } else {
+
+                setTimeout( respawn, 1300 );
 
             };
 
         }, 250 );
 
-		setTimeout( ()=> {
+    };
 
-            soundMixer.animEnd();
+	function respawn() {
 
-			atlas.player.position.copy( respawnPos );
-			cameraControl.resetCameraPos();
+        charaAnim.respawn();
+        soundMixer.animEnd();
 
-			controler.setSpeedUp( 0 );
+		atlas.player.position.copy( respawnPos );
+		cameraControl.resetCameraPos();
 
-            params.isCrashing = false ;
-            params.isDying = false ;
+		controler.setSpeedUp( 0 );
 
-			domBlackScreen.classList.remove( 'show-black-screen' );
-			domBlackScreen.classList.add( 'hide-black-screen' );
+        params.isCrashing = false ;
+        params.isDying = false ;
 
-		}, 1500);
+		domBlackScreen.classList.remove( 'show-black-screen' );
+		domBlackScreen.classList.add( 'hide-black-screen' );
 
 	};
 
@@ -709,6 +797,7 @@ function GameState() {
         gateTilePos,
         endPassGateAnim,
         setSavedPosition,
+        debugLoadGraph,
         update
 	};
 

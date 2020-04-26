@@ -13,17 +13,6 @@ function Atlas() {
 	const CUBEWIDTH = 0.4 ;
 	const INTERACTIVECUBERANGE = 0.82 ; // radius
 
-	const WATER_LEVEL = 0.5 ;
-
-	const NEEDHELPERS = true ;
-
-	const NEEDPLAYERBOX = false ; // specifically allow player box helper
-    const NEEDARROW = false ; // arrows showing player direction
-    const NEEDTILES = false ; // add the tiles helpers
-    const NEEDCUBES = false ;
-    const NEEDPLANES = false ; // show helpers for limit planes
-    const NEED_WATER_HELPER = false ;
-
     const CUBE_INTERSECTION_OFFSET = 0.001 ;
 
 
@@ -92,99 +81,6 @@ function Atlas() {
 	var wallDistance;
 
 
-    /////////////////////////
-    ///  HELPERS VARIABLES
-	/////////////////////////
-	
-
-
-	// CUBES MATERIALS
-	const INERTCUBEMAT = new THREE.MeshLambertMaterial({
-		color: 0x9d9d9e
-	});
-
-	const INTERACTIVECUBEMAT = new THREE.MeshLambertMaterial({
-		color: 0xffdebd
-	});
-
-	const TRIGGERCUBEMAT = new THREE.MeshLambertMaterial({
-		color: 0x276b00
-	});
-
-	const INVTRIGGERCUBEMAT = new THREE.MeshLambertMaterial({
-		color: 0x276b00,
-		transparent: true,
-		opacity: 0.5
-	});
-
-	const ANCHORCUBEMAT = new THREE.MeshLambertMaterial({
-		color: 0xfc0703
-	});
-
-
-
-
-    // WALLS MATERIALS
-	const SLIPWALLMAT = new THREE.MeshLambertMaterial({
-		color: 0xff9cc7,
-		side: THREE.DoubleSide
-	});
-
-	const FALLWALLMAT = new THREE.MeshLambertMaterial({
-		color: 0x9e0000,
-		side: THREE.DoubleSide
-	});
-
-	const LIMITWALLMAT = new THREE.MeshLambertMaterial({
-		color: 0x0f0aa6,
-		side: THREE.DoubleSide
-	});
-
-	const EASYWALLMAT = new THREE.MeshLambertMaterial({
-		color: 0xb0ffa8,
-		side: THREE.DoubleSide
-	});
-
-	const MEDIUMWALLMAT = new THREE.MeshLambertMaterial({
-		color: 0x17ad28,
-		side: THREE.DoubleSide
-	});
-
-	const HARDWALLMAT = new THREE.MeshLambertMaterial({
-		color: 0x057a34,
-		side: THREE.DoubleSide
-	});
-
-
-
-
-	// GROUND MATERIALS
-	const BASICGROUNDMAT = new THREE.MeshLambertMaterial({
-		color: 0x777777,
-		side: THREE.DoubleSide
-	});
-
-	const SPECIALGROUNDMAT = new THREE.MeshLambertMaterial({
-		color: 0xff9b05,
-		side: THREE.DoubleSide
-	});
-
-	const STARTGROUNDMAT = new THREE.MeshLambertMaterial({
-		color: 0x3dffff,
-		side: THREE.DoubleSide
-	});
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     //////////////////////
@@ -206,15 +102,9 @@ function Atlas() {
 	
 	function initHelpers( gateName ) {
 
-		for ( let i of Object.keys( sceneGraph.tilesGraph ) ) {
+		for ( let tilesGraphStage of sceneGraph.tilesGraph ) {
 
-			if ( !sceneGraph.tilesGraph[i] ) continue
-
-			sceneGraph.tilesGraph[i].forEach( (logicTile)=> {
-
-				if ( NEEDHELPERS && NEEDTILES ) {
-					Tile( logicTile );
-				};
+			if ( tilesGraphStage ) for ( let logicTile of tilesGraphStage ) {
 
 				if ( logicTile.type == 'ground-start' &&
 					 gameState.respawnPos.length() == 0 ) {
@@ -243,24 +133,16 @@ function Atlas() {
 
 				};
 
-			});
+			};
 
 		};
 
 
-		for ( let i of Object.keys( sceneGraph.cubesGraph ) ) {
+		for ( let cubesGraphStage of sceneGraph.cubesGraph ) {
 
-			if ( sceneGraph.cubesGraph[i] ) {
+			if ( cubesGraphStage ) for ( let logicCube of cubesGraphStage ) {
 
-				sceneGraph.cubesGraph[i].forEach( (logicCube)=> {
-
-					if ( NEEDHELPERS && NEEDCUBES ) {
-						newCube( logicCube );
-					};
-
-					dynamicItems.addCube( logicCube );
-
-				});
+				dynamicItems.addCube( logicCube );
 
 			};
 
@@ -270,7 +152,7 @@ function Atlas() {
 		// Can remove conditional later
 		if ( sceneGraph.planes ) {
 
-			sceneGraph.planes.forEach( (importedPlane)=> {
+			for ( let importedPlane of sceneGraph.planes ) {
 
 				var plane = new THREE.Plane(
 					new THREE.Vector3(
@@ -283,48 +165,11 @@ function Atlas() {
 
 				planes.push( plane );
 
-				if ( NEEDPLANES ) {
-					var helper = new THREE.PlaneHelper( plane, 1, 0xffff00 );
-					helper.isHelper = true ;
-					scene.add( helper );
-				};
-
-			});
+			};
 
 		};
 
 		if ( gateName == 'init' ) gameState.die();
-
-	};
-
-
-
-
-
-
-	/*
-	clearHelpers clear the Map of all the helpers (if any)
-	*/
-	function clearHelpers() {
-
-		return new Promise( ( resolve, reject )=> {
-
-			planes = [];
-
-			for ( let i = scene.children.length -1 ; i > -1 ; i-- ) {
-
-				if ( scene.children[ i ].isHelper ) {
-
-					scene.children[ i ].geometry.dispose();
-					scene.remove( scene.children[ i ] );
-
-				};
-
-				if ( i == 0 ) resolve();
-
-			};
-
-		});
 
 	};
 
@@ -357,21 +202,6 @@ function Atlas() {
 			};
 
 		};
-
-	};
-
-
-	if ( NEEDHELPERS && NEED_WATER_HELPER ) {
-
-
-		var geometry = new THREE.PlaneBufferGeometry( 50, 50 );
-		var material = new THREE.MeshBasicMaterial({ color: 0x2d4f5, side: THREE.DoubleSide });
-		var plane = new THREE.Mesh( geometry, material );
-
-		plane.rotation.x = Math.PI / 2 ;
-		plane.position.y = WATER_LEVEL ;
-
-		scene.add( plane );
 
 	};
 
@@ -410,24 +240,21 @@ function Atlas() {
 			
 		/// HELPER
 
-		if ( NEEDHELPERS && NEEDPLAYERBOX ) {
-
-			let mesh = new THREE.Mesh(
+			let box = new THREE.LineSegments( new THREE.EdgesGeometry(
 				new THREE.BoxBufferGeometry(
 					PLAYERWIDTH,
 					PLAYERHEIGHT,
 					PLAYERWIDTH
-					),
-				new THREE.MeshLambertMaterial({
+					) ),
+				new THREE.LineBasicMaterial({
 					transparent: true,
 					opacity: 0.5
 				})
 			);
 		
-			group.add( mesh );
-			mesh.position.y = PLAYERHEIGHT / 2 ;
-
-		};
+			group.add( box );
+			box.position.y = PLAYERHEIGHT / 2 ;
+			box.visible = false;
 
 
 		/// CHARACTER
@@ -436,18 +263,16 @@ function Atlas() {
 		group.add( charaGroup );
 
 
-		if ( NEEDARROW ) {
-
-			let mesh = new THREE.Mesh(
-				new THREE.ConeBufferGeometry( 0.2, 0.4, 10 ),
-				new THREE.MeshNormalMaterial()
+			let arrow = new THREE.Mesh(
+				new THREE.ConeBufferGeometry( 0.2, 0.4, 4, 1, true ),
+				new THREE.MeshNormalMaterial({ wireframe: true })
 			);
 
-			charaGroup.add( mesh );
-			mesh.rotation.x = Math.PI / 2 ;
-			mesh.position.y = PLAYERHEIGHT / 2 ;
+			charaGroup.add( arrow );
+			arrow.rotation.x = Math.PI / 2 ;
+			arrow.position.y = PLAYERHEIGHT / 2 ;
+			arrow.visible = false;
 
-		};
 
 
 		let { model, actions } = assetManager.createCharacter( utils.stringHash( id ) );
@@ -459,6 +284,9 @@ function Atlas() {
 			actions,
 			group,
 			charaGroup,
+			showHelpers: function() {
+				box.visible = arrow.visible = true;
+			},
 			position
 		};
 
@@ -1270,184 +1098,6 @@ function Atlas() {
 
 
 
-    /////////////////////////////
-    ///     HELPERS PART
-    ////////////////////////////
-
-
-
-    function Tile( logicTile ) {
-
-		let meshTile = MeshTile( logicTile ) ;
-		meshTile.logicTile = logicTile ;
-		scene.add( meshTile );
-
-		return meshTile ;
-
-    };
-    
-
-
-
-    function MeshTile( logicTile ) {
-
-		// get material according to logicType's type
-		let material = getMaterial( logicTile.type );
-
-		let geometry = new THREE.PlaneBufferGeometry( 1, 1, 1 );
-
-		let mesh = new THREE.Mesh( geometry, material );
-
-		mesh.isHelper = true ;
-
-		mesh.position.set(
-			( logicTile.points[0].x + logicTile.points[1].x ) / 2,
-			( logicTile.points[0].y + logicTile.points[1].y ) / 2,
-			( logicTile.points[0].z + logicTile.points[1].z ) / 2
-		);
-
-
-		if ( logicTile.isWall ) {
-
-			if ( logicTile.points[0].x == logicTile.points[1].x ) {
-				mesh.rotation.y = Math.PI / 2 ;
-			};
-
-		} else {
-
-			mesh.rotation.x = Math.PI / 2 ;
-
-		};
-
-		return mesh ;
-
-    };
-	
-	
-
-
-
-    function newCube( logicCube ) {
-
-		let meshCube = MeshCube( logicCube );
-		meshCube.logicCube = logicCube ;
-		logicCube.helper = meshCube ;
-		scene.add( meshCube );
-
-		return meshCube ;
-
-	};
-
-
-
-
-	function MeshCube( logicCube ) {
-
-		let material = getMaterial( logicCube.type );
-		let geometry = new THREE.BoxBufferGeometry(
-			CUBEWIDTH,
-			CUBEWIDTH,
-			CUBEWIDTH
-		);
-		let mesh = new THREE.Mesh( geometry, material );
-
-		mesh.position.copy( logicCube.position );
-		mesh.scale.copy( logicCube.scale );
-
-		mesh.isHelper = true ;
-
-		return mesh ;
-
-	};
-
-
-
-
-
-
-
-	function getMaterial( type ) {
-
-		switch ( type ) {
-
-			case 'ground-basic' :
-				return BASICGROUNDMAT ;
-
-			case 'ground-special' :
-				return SPECIALGROUNDMAT ;
-
-			case 'ground-start' :
-				return STARTGROUNDMAT ;
-			
-			case 'wall-limit' :
-				return LIMITWALLMAT ;
-
-			case 'wall-easy' :
-				return EASYWALLMAT ;
-
-			case 'wall-medium' :
-				return MEDIUMWALLMAT ;
-
-			case 'wall-hard' :
-				return HARDWALLMAT ;
-
-			case 'wall-fall' :
-				return FALLWALLMAT ;
-
-			case 'wall-slip' :
-				return SLIPWALLMAT ;
-
-			case 'cube-inert' :
-				return INERTCUBEMAT ;
-
-			case 'cube-interactive' :
-				return INTERACTIVECUBEMAT ;
-
-			case 'cube-trigger' :
-				return TRIGGERCUBEMAT ;
-
-			case 'cube-trigger-invisible' :
-				return INVTRIGGERCUBEMAT ;
-
-			case 'cube-anchor' :
-				return ANCHORCUBEMAT ;
-
-			default :
-				console.error('cannot get material for ' + type );
-				break;
-
-		};
-
-	};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	/////////////////////////
 	///    FUNCTIONS
 	/////////////////////////
@@ -1542,21 +1192,19 @@ function Atlas() {
 
 		mapManager.switchMap( graphName ).then( ()=> {
 
-			clearHelpers().then( ()=> {
+			planes = [];
 
 				initHelpers( gateName );
 
 				if ( respawn ) {
 
-					player.position.copy( gameState.respawnPos );
+					respawn();
 
 				} else {
 
 					gameState.endPassGateAnim();
 
 				};
-
-			});
 
 		});
 
@@ -1581,7 +1229,457 @@ function Atlas() {
 
 
 
+	function openPropertiesDialog( node, types ) {
+		const select = document.querySelector( '#properties select' );
+		select.innerHTML = types.map( function( type ) {
+			return '<option value="' + type + '"' + (( type === node.type ) ? ' selected' : '') + '>' + type + '</option>';
+		}).join( '' );
+		select.onchange = function() {
+			node.type = select.value;
+		};
+
+		const input = document.querySelector( '#properties input' );
+		input.value = node.tag || '';
+		input.onchange = function() {
+			if (input.value) {
+				node.tag = input.value;
+			} else {
+				delete node.tag;
+			}
+		};
+
+		document.getElementById( 'properties' ).style.display = 'block';
+	};
+
+	function closePropertiesDialog() {
+		document.getElementById( 'properties' ).style.display = 'none';
+	};
+
+
+	var helpers, tileGizmo, transformControls, raycaster, shouldRaycast;
+
+	function makeTileGizmo() {
+		const gizmoTexture = (new THREE.TextureLoader).load( 'assets/tile-gizmo.png' );
+
+		gizmoTexture.anisotropy = ( renderer.capabilities.getMaxAnisotropy() >> 1 );
+		gizmoTexture.magFilter = THREE.NearestFilter;
+
+		const gizmo = new THREE.Mesh( new THREE.PlaneBufferGeometry( 1, 1 ), new THREE.MeshBasicMaterial( {
+			map: gizmoTexture, side: THREE.DoubleSide, transparent: true, depthTest: false
+		} ) );
+
+		gizmo.attach = function( object ) {
+			this.position.copy( object.position );
+			this.rotation.copy( object.rotation );
+			this.object = object;
+			this.visible = true;
+
+			// with the code above tile gizmo ends up behind tile planes with depthTest already set to false, so...
+			this.position.multiplyScalar( 1 - 0.01 ).addScaledVector( camera.position, 0.01 );
+		};
+
+		gizmo.detach = function() {
+			this.object = undefined;
+			this.visible = false;
+		};
+		gizmo.detach();
+
+		return gizmo;
+	};
+
+	function debug() {
+
+		if ( !helpers ) {
+
+			scene.add( helpers = new THREE.Group() );
+			scene.add( tileGizmo = makeTileGizmo() );
+			scene.add( transformControls = new THREE.TransformControls( camera, renderer.domElement ) );
+
+			transformControls.addEventListener( 'change', function() {
+				var mesh = transformControls.object;
+				if( mesh ) {
+					// block the raycast to let the cube transform finish
+					shouldRaycast = false;
+
+					var logicCube = mesh.userData.cube;
+					if( logicCube ) {
+
+						logicCube.position.x = (( mesh.position.x *100)|0)/100 ;
+						logicCube.position.y = (( mesh.position.y *100)|0)/100 ;
+						logicCube.position.z = (( mesh.position.z *100)|0)/100 ;
+
+						logicCube.scale.x = (( mesh.scale.x *100)|0)/100 ;
+						logicCube.scale.y = (( mesh.scale.y *100)|0)/100 ;
+						logicCube.scale.z = (( mesh.scale.z *100)|0)/100 ;
+					}
+				}
+			} );
+
+			renderer.domElement.addEventListener( 'mousedown', function() {
+				shouldRaycast = true;
+			} );
+
+			raycaster = new THREE.Raycaster();
+			renderer.domElement.addEventListener( 'click', function( event ) {
+				if( shouldRaycast ) {
+					raycaster.setFromCamera( {
+						x: ( event.layerX / renderer.domElement.offsetWidth ) * 2 - 1,
+						y: ( event.layerY / renderer.domElement.offsetHeight ) * -2 + 1
+					}, camera );
+
+					var intersections = raycaster.intersectObject( helpers, true );
+					if( intersections.length ) {
+						var mesh = intersections[0].object;
+						if( mesh.name == 'cube' ) {
+							tileGizmo.detach();
+
+							if( transformControls.object == mesh ) {
+								transformControls.detach();
+							} else {
+								transformControls.attach( mesh );
+							}
+						} else {
+							transformControls.detach();
+
+							if( mesh.name == 'tile' ) {
+								if( tileGizmo.object == mesh ) {
+									tileGizmo.detach();
+								} else {
+									tileGizmo.attach( mesh );
+								}
+							}
+						}
+					} else {
+						tileGizmo.detach();
+						transformControls.detach();
+					}
+
+					closePropertiesDialog();
+				}
+			} );
+
+
+			const tileGeometry = new THREE.PlaneBufferGeometry( 1, 1 );
+			const tileTexture = (new THREE.TextureLoader).load( 'assets/matrix.gif' );
+
+			tileTexture.anisotropy = ( renderer.capabilities.getMaxAnisotropy() >> 1 );
+
+			for( let i = 0; i < 20; i++ ) {
+				let mesh = new THREE.Mesh( tileGeometry, new THREE.ShaderMaterial( {
+					vertexShader : `
+						varying vec2 textureCoordinates;
+						void main () {
+							textureCoordinates = uv;
+							gl_Position = projectionMatrix * modelViewMatrix * vec4 (position, 1.0);
+						}
+					`,
+					fragmentShader : `
+						uniform vec3 color;
+						uniform sampler2D textureMap;
+						varying vec2 textureCoordinates;
+						void main () {
+							float t = texture2D (textureMap, textureCoordinates).g;
+							gl_FragColor = vec4( color * 2.0 * t, t );
+						}
+					`,
+					uniforms: {
+						textureMap: { value: tileTexture },
+						color: { value: new THREE.Color( 0xff66 ) }
+					},
+					side: THREE.DoubleSide,
+					transparent: true,
+					depthTest: false
+				} ) );
+
+				mesh.name = 'tile' ;
+				helpers.add( mesh );
+			}
+
+
+			const cubeGeometry = new THREE.BoxBufferGeometry( CUBEWIDTH, CUBEWIDTH, CUBEWIDTH );
+			const edgeGeometry = new THREE.EdgesGeometry( cubeGeometry );
+
+			for( let i = 0; i < 10; i++ ) {
+				let mesh = new THREE.Mesh( cubeGeometry, new THREE.MeshLambertMaterial( {
+					transparent: true
+				} ) );
+
+				mesh.name = 'cube' ;
+				helpers.add( mesh );
+
+				let box = new THREE.LineSegments( edgeGeometry, new THREE.LineBasicMaterial( {
+					transparent: true,
+					depthTest: false,
+					opacity: 0.5
+				} ) );
+
+				box.raycast = function() {};
+				mesh.add( box );
+			}
+
+
+			controler.permission.gliding = true ;
+			controler.permission.airborne = true ;
+
+
+			document.getElementById( 'gui' ).style.display = 'block';
+
+
+			document.getElementById( 'tile-properties' ).onclick = function() {
+				if( tileGizmo.object && tileGizmo.object.userData.tile ) {
+					openPropertiesDialog( tileGizmo.object.userData.tile, [
+						'ground-basic', 'ground-special', 'ground-start',
+						'wall-limit', 'wall-slip', 'wall-easy', 'wall-medium', 'wall-hard', 'wall-fall'
+					] );
+				}
+			};
+
+			document.getElementById( 'cube-add' ).onclick = function() {
+				var d = Math.sqrt( 0.5 ) * ( CUBEWIDTH + PLAYERWIDTH + CUBE_INTERSECTION_OFFSET );
+				var dz = d * Math.cos( charaAnim.group.rotation.y );
+				var dx = d * Math.sin( charaAnim.group.rotation.y );
+
+				var logicCube = {
+					position: {
+						x: player.position.x + dx,
+						y: player.position.y + 0.5 * CUBEWIDTH,
+						z: player.position.z + dz
+					},
+					scale: { x: 1, y: 1, z: 1 },
+					type: 'cube-inert'
+				};
+
+				var stage = Math.floor( logicCube.position.y );
+				sceneGraph.cubesGraph[ stage ].push( logicCube );
+				debugUpdate( true, logicCube );
+			};
+
+			document.getElementById( 'cube-remove' ).onclick = function() {
+				if( transformControls.object && transformControls.object.userData.cube ) {
+					deleteCubeFromGraph( transformControls.object.userData.cube );
+					debugUpdate( true );
+				}
+			};
+
+			document.getElementById( 'cube-properties' ).onclick = function() {
+				if( transformControls.object && transformControls.object.userData.cube ) {
+					openPropertiesDialog( transformControls.object.userData.cube, [
+						'cube-inert', 'cube-interactive', 'cube-trigger', 'cube-trigger-invisible', 'cube-anchor'
+					] );
+				}
+			};
+
+			document.getElementById( 'cube-transform' ).onclick = function() {
+				if ( transformControls.mode != 'scale' ) {
+					transformControls.setMode( 'scale' );
+				} else {
+					transformControls.setMode( 'translate' );
+				}
+			};
+
+			document.getElementById( 'teleport' ).onclick = function() {
+				const selects = document.querySelectorAll( '#destinations select' );
+
+				// special places to go to
+
+				const places = [];
+				for ( let stage in sceneGraph.tilesGraph ) if ( sceneGraph.tilesGraph[ stage ] )
+				for ( let logicTile of sceneGraph.tilesGraph[ stage ] ) if ( /ground-s/.test( logicTile.type ) ) {
+					places.push( {
+						name: logicTile.tag || '(no tag)',
+						coordinates: JSON.stringify( {
+							x: ( logicTile.points[0].x + logicTile.points[1].x ) / 2,
+							y: ( logicTile.points[0].y + logicTile.points[1].y ) / 2,
+							z: ( logicTile.points[0].z + logicTile.points[1].z ) / 2
+						} )
+					} );
+				}
+				places.sort( function( a, b ) { return (( a.name > b.name ) || (
+					// try to make the sorting order prettier with some simple hack like...
+					( a.name.length > b.name.length ) && ( a.name.charAt( 0 ) == b.name.charAt( 0 ) )
+				)) ? 1 : -1 } );
+
+				selects[0].innerHTML = '<option selected disabled>pick a place:</option>' + places.map( function( place ) {
+					return '<option value="' + btoa( place.coordinates ) + '">' + place.name + '</option>';
+				}).join( '' );
+				selects[0].onchange = function() {
+					gameState.resetPlayerPos( JSON.parse( atob( selects[0].value ) ) );
+
+					document.getElementById( 'destinations' ).style.display = 'none';
+				};
+
+				// pre-defined list of graphs to load
+
+				const jsons = 'ABCDEF'.split( '' ).map( function( x ) { return 'cave-' + x } ); jsons.push( 'dev-home' );
+				for ( let key in gameState.sceneGraphs ) if ( jsons.indexOf( key ) < 0 ) jsons.push( key );
+
+				selects[1].innerHTML = jsons.map( function( key ) {
+					return '<option value="' + key + '" ' + ((
+						gameState.sceneGraphs[ key ] == sceneGraph
+					) ? 'selected' : '' ) + '>' + key + '</option>';
+				}).join( '' );
+				selects[1].onchange = function() {
+					const graphName = selects[1].value;
+
+					if ( gameState.sceneGraphs[ graphName ] ) {
+						gameState.debugLoadGraph( gameState.sceneGraphs[ graphName ], graphName );
+
+						document.getElementById( 'destinations' ).style.display = 'none';
+					} else
+
+					fileLoader.load( 'assets/map/' + graphName + '.json', function( graphText ) {
+						gameState.debugLoadGraph( graphText, graphName );
+
+						document.getElementById( 'destinations' ).style.display = 'none';
+					} );
+				};
+
+				document.getElementById( 'destinations' ).style.display = 'block';
+			};
+		}
+	}
+
+	const helperColors = {
+		'ground-basic'     : 0x00ff66, // matrix effect
+		'ground-special'   : 0xffff00,
+		'ground-start'     : 0x00ffff,
+		'wall-limit'       : 0x0000ff,
+		'wall-easy'        : 0xffffff,
+		'wall-medium'      : 0x66ff00,
+		'wall-hard'        : 0xff6600,
+		'wall-fall'        : 0xff0000,
+		'wall-slip'        : 0x00ff66, // matrix effect
+		'cube-inert'       : 0x9d9d9e,
+		'cube-interactive' : 0xffdebd,
+		'cube-trigger'     : 0x276b00,
+		'cube-trigger-invisible' : 0x276b00,
+		'cube-anchor'      : 0xfc0703
+	};
+
+	const closestTiles = [], closestCubes = [], closestCompare = function( a, b ) { return b.distance - a.distance };
+
+	function debugUpdate( mustUpdate, selectedCube ) {
+
+		if ( !mustUpdate || !helpers ) return;
+
+		// show the closest tiles
+
+		closestTiles.length = 0;
+		closestCubes.length = 0;
+
+		shiftedPlayerPos.copy( player.position );
+		shiftedPlayerPos.y += PLAYERHEIGHT / 2 ;
+
+		const cubeScaleFactor = 0.5 * CUBEWIDTH / Math.sqrt( 3 );
+
+		for ( let stage = Math.floor( player.position.y ) -2; stage <= Math.floor( player.position.y ) +2; stage++ ) {
+			if ( sceneGraph.tilesGraph[ stage ] ) for ( let logicTile of sceneGraph.tilesGraph[ stage ] ) {
+
+				tileCenter.set(
+					( logicTile.points[0].x + logicTile.points[1].x ) / 2,
+					( logicTile.points[0].y + logicTile.points[1].y ) / 2,
+					( logicTile.points[0].z + logicTile.points[1].z ) / 2
+				);
+
+				let distance = shiftedPlayerPos.distanceTo( tileCenter );
+				if ( distance < 3 ) closestTiles.push ( { distance, logicTile } );
+
+			}
+
+			if ( sceneGraph.cubesGraph[ stage ] ) for ( let logicCube of sceneGraph.cubesGraph[ stage ] ) {
+
+				let cubeScaleLength = tileCenter.copy( logicCube.scale ).length();
+
+				let distance = Math.max ( 0, shiftedPlayerPos.distanceTo( logicCube.position ) - cubeScaleLength * cubeScaleFactor );
+				if ( distance < 5 ) closestCubes.push ( { distance, logicCube } );
+
+			}
+		}
+
+		closestTiles.sort ( closestCompare );
+		closestCubes.sort ( closestCompare );
+
+		let selectedTile = tileGizmo.object ? tileGizmo.object.userData.tile : undefined ;
+
+		selectedCube = selectedCube || (
+			transformControls.object ? transformControls.object.userData.cube : undefined
+		);
+
+		for ( let mesh of helpers.children ) {
+			if ( mesh.name == 'tile' ) {
+
+				if ( mesh.visible = ( closestTiles.length > 0 ) ) {
+
+					let logicTile = closestTiles.pop ().logicTile;
+
+					mesh.material.uniforms.color.value.setHex ( helperColors[ logicTile.type ] );
+
+					mesh.position.set (
+						( logicTile.points[0].x + logicTile.points[1].x ) / 2,
+						( logicTile.points[0].y + logicTile.points[1].y ) / 2,
+						( logicTile.points[0].z + logicTile.points[1].z ) / 2
+					);
+
+					mesh.rotation.set ( 0, 0, 0 );
+
+					if ( logicTile.isWall ) {
+
+						if ( logicTile.points[0].x == logicTile.points[1].x ) {
+							mesh.rotation.y = Math.PI / 2 ;
+						};
+
+					} else {
+
+						mesh.rotation.x = -Math.PI / 2 ;
+
+					};
+
+					// unlike transformControls, tileGizmo.attach() needs up-to-date position/rotation
+
+					if ( logicTile == selectedTile ) tileGizmo.attach( mesh );
+
+					mesh.userData.tile = logicTile;
+				}
+			} else
+
+			if ( mesh.name == 'cube' ) {
+
+				if ( mesh.visible = ( closestCubes.length > 0 ) ) {
+
+					let logicCube = closestCubes.pop ().logicCube;
+
+					if ( logicCube == selectedCube ) transformControls.attach( mesh );
+
+					mesh.children[0].material.color.setHex ( helperColors[ logicCube.type ] );
+
+					mesh.material.color.setHex ( helperColors[ logicCube.type ] );
+					mesh.material.opacity = ( logicCube.type == 'cube-trigger-invisible' ) ? 0.3 : 0.6;
+
+					mesh.position.copy ( logicCube.position );
+					mesh.scale.copy ( logicCube.scale );
+
+					mesh.userData.cube = logicCube;
+				}
+			}
+		}
+
+		if ( tileGizmo.object && (
+			!tileGizmo.object.visible || ( tileGizmo.object.userData.tile != selectedTile )
+		) ) {
+			tileGizmo.detach(); closePropertiesDialog(); // detach if walked away from the tile
+		}
+
+		if ( transformControls.object && (
+			!transformControls.object.visible || ( transformControls.object.userData.cube != selectedCube )
+		) ) {
+			transformControls.detach(); closePropertiesDialog(); // detach if walked away from the cube
+		}
+	}
+
+
 	var api = {
+		debug,
+		debugUpdate,
 		getSceneGraph,
 		collidePlayerGrounds,
 		collidePlayerWalls,
@@ -1589,9 +1687,7 @@ function Atlas() {
 		intersectRay,
 		PLAYERHEIGHT,
 		PLAYERWIDTH,
-		WATER_LEVEL,
 		player,
-		deleteCubeFromGraph,
 		startPos,
 		collideCamera,
 		adjTileExists,
