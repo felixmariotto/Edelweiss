@@ -3,7 +3,7 @@ function SocketIO() {
 
 	var playerInfo;
 
-	var socket = io( 'http://edelweiss.32x.io' /* 'http://edelweiss-stage.herokuapp.com' */ );
+	var socket = io( 'https://edelweiss-g.herokuapp.com' /* 'http://edelweiss-stage.herokuapp.com' */ );
 
 	function joinGame( id, pass, name ) {
 
