@@ -26,6 +26,9 @@ function Controler( player ) {
 
     var hasCollidedCube;
 
+    var flyingStartTimestamp = null;
+    const JUMP_WHILE_FLYING_THRESHOLD = 250 ;
+
     // CUBES
     var cubeCollision;
     var interactiveTag; // will be undefined if no interactive cube in range
@@ -665,6 +668,9 @@ function Controler( player ) {
                 state.isFlying = false ;
                 player.position.y = yCollision.point ;
 
+                // Reset timestamp on contact
+                flyingStartTimestamp = null;
+
                 // The player can recover all their stamina
                 stamina.resetStamina();
 
@@ -770,6 +776,12 @@ function Controler( player ) {
         } else if ( !state.isDashing || dashTime > DASHTGRAVITY ) {
             
             state.isFlying = true ;
+
+            // only set timestamp when flying state is initially set
+            if (flyingStartTimestamp === null) {
+                flyingStartTimestamp = Date.now() ;
+            }
+            
 
             if ( state.isGliding ) {
 
@@ -1564,6 +1576,9 @@ function Controler( player ) {
                 state.isClimbing = true ;
                 state.isFlying = false ;
 
+                // Reset timestamp on contact
+                flyingStartTimestamp = null;
+
                 if ( state.isSlipping ) {
                     slipRecovering = SLIPRECOVERTIME ;
                 };
@@ -1667,11 +1682,14 @@ function Controler( player ) {
 
         // JUMP
         
-        if ( ( !state.isFlying || state.isSlipping ) &&
+        if ( (( !state.isFlying || state.isSlipping ) || (state.isFlying && !state.isSlipping && (Date.now() - flyingStartTimestamp < JUMP_WHILE_FLYING_THRESHOLD)) ) &&
              hitGroundRecovering <= 0 &&
              stamina.params.stamina > 0 &&
              !state.isClimbing ) {
 
+            // Reset timestamp
+            flyingStartTimestamp = null ;
+ 
             input.blockPressAction();
 
             // Animate the jump
