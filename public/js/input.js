@@ -233,18 +233,22 @@ function Input() {
                 // console.log('press escape');
                 break;
 
-            case 'ArrowLeft' :
+            case 'KeyA':
+            case 'ArrowLeft':
                 addMoveKey( 'left' );
                 break;
 
+            case 'KeyW':    
             case 'ArrowUp' :
                 addMoveKey( 'up' );
                 break;
 
+            case 'KeyD':
             case 'ArrowRight' :
                 addMoveKey( 'right' );
                 break;
 
+            case 'KeyS':
             case 'ArrowDown' :
                 addMoveKey( 'down' );
                 break;
@@ -272,18 +276,22 @@ function Input() {
 
         switch( e.code ) {
 
+            case 'KeyA':
             case 'ArrowLeft' :
                 removeMoveKey( 'left' );
                 break;
 
+            case 'KeyW':
             case 'ArrowUp' :
                 removeMoveKey( 'up' );
                 break;
-
+            
+            case 'KeyD':
             case 'ArrowRight' :
                 removeMoveKey( 'right' );
                 break;
 
+            case 'KeyS':
             case 'ArrowDown' :
                 removeMoveKey( 'down' );
                 break;
