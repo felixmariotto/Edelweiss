@@ -47,6 +47,7 @@ If you feel more like correcting a few bugs here and there, here is a wishlist :
 - close the tents models openings
 - add dust animation when player fall because of a fall-tile
 - fix issue of joystick position with Galaxy S9+ (chrome for android)
+- support awsd keys
 
 # Big thanks to [Makc](https://github.com/makc) for contributing !
 
