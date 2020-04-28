@@ -7,7 +7,7 @@ function init() {
 
     // a directional light is later added on the CameraControl module,
     // since this latter will follow the camera movements
-    var ambientLight = new THREE.AmbientLight( 0xffffff, 0.48 );
+    ambientLight = new THREE.AmbientLight( 0xffffff, 0.48 );
 	scene.add( ambientLight );
 
     //////////////

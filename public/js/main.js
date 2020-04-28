@@ -3,7 +3,7 @@ var scene, camera, input, atlas,
     controler, clock, charaAnim,
     gltfLoader, mixer, cameraControl, stamina, interaction,
     dynamicItems, textureLoader, fileLoader, mapManager,
-    socketIO, optimizer, uaParser, gameState,
+    socketIO, optimizer, gameState, ambientLight,
     assetManager, soundMixer, renderer, composer, fxaaPass ;
 
 var actions = [];

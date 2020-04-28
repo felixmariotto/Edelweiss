@@ -4,6 +4,11 @@ function MapManager() {
 	const CHUNK_SIZE = 12 ;
 	const LAST_CHUNK_ID = 13 ;
 
+	// LIGHTS
+
+	LIGHT_BASE_INTENS = 0.48;
+	LIGHT_CAVE_INTENS = 0.2;
+
 	// FOG
 
 	const FOG = new THREE.FogExp2( 0xd7cbb1, 0.06 );
@@ -23,8 +28,8 @@ function MapManager() {
     var reflectionCube = new THREE.CubeTextureLoader().load( urls );
     reflectionCube.format = THREE.RGBFormat;
 
-    var caveBackground = new THREE.Color( 0x3b3125 );
-    var caveBackgroundGrey = new THREE.Color( 0x262221 );
+    var caveBackground = new THREE.Color( 0x191410 );
+    var caveBackgroundGrey = new THREE.Color( 0x100e0f );
 
     scene.background = reflectionCube;
 
@@ -148,21 +153,22 @@ function MapManager() {
 	// Make current map disappear, and show a new map
 	function switchMap( newMapName ) {
 
-		console.log( newMapName )
-
 		if ( newMapName === "mountain" ) {
 
 			scene.fog = FOG;
 			scene.background = reflectionCube;
+			ambientLight.intensity = LIGHT_BASE_INTENS;
 
 		} else {
 
 			scene.fog = undefined;
 			scene.background = caveBackground;
+			ambientLight.intensity = LIGHT_CAVE_INTENS;
 
 		};
 
 		if ( newMapName === "cave-F" ) scene.background = caveBackgroundGrey;
+		if ( newMapName === "dev-home" ) ambientLight.intensity = LIGHT_BASE_INTENS;
 
 		return new Promise( (resolve, reject)=> {
 
