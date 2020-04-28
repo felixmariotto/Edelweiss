@@ -42,9 +42,6 @@ If you feel more like correcting a few bugs here and there, here is a wishlist :
 - add movement sounds (climbing, footstep...)
 - add powerup sounds
 - add tweening for the reduction of the stamina bar
-- let the player jump 0.2s after they start falling, to reduce frustration of missing the ledge
-- add a plane under the roofs of the houses, because one can see the sky from the bottom now
-- close the tents models openings
 - add dust animation when player fall because of a fall-tile
 - fix issue of joystick position with Galaxy S9+ (chrome for android)
 
