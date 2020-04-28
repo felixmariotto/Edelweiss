@@ -26,6 +26,7 @@ function Controler( player ) {
 
     var hasCollidedCube;
 
+    var hasJumped = false;
     var flyingStartTimestamp = null;
     const JUMP_WHILE_FLYING_THRESHOLD = 250 ;
 
@@ -670,6 +671,7 @@ function Controler( player ) {
 
                 // Reset timestamp on contact
                 flyingStartTimestamp = null;
+                hasJumped = false;
 
                 // The player can recover all their stamina
                 stamina.resetStamina();
@@ -1578,6 +1580,7 @@ function Controler( player ) {
 
                 // Reset timestamp on contact
                 flyingStartTimestamp = null;
+                hasJumped = false;
 
                 if ( state.isSlipping ) {
                     slipRecovering = SLIPRECOVERTIME ;
@@ -1682,13 +1685,17 @@ function Controler( player ) {
 
         // JUMP
         
-        if ( (( !state.isFlying || state.isSlipping ) || (state.isFlying && !state.isSlipping && (Date.now() - flyingStartTimestamp < JUMP_WHILE_FLYING_THRESHOLD)) ) &&
+        if ( (( !state.isFlying || state.isSlipping ) ||
+              (state.isFlying && !state.isSlipping &&
+              (Date.now() - flyingStartTimestamp < JUMP_WHILE_FLYING_THRESHOLD) &&
+              !hasJumped )) &&
              hitGroundRecovering <= 0 &&
              stamina.params.stamina > 0 &&
              !state.isClimbing ) {
 
             // Reset timestamp
             flyingStartTimestamp = null ;
+            hasJumped = true;
  
             input.blockPressAction();
 
