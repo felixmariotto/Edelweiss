@@ -6,8 +6,11 @@ function MapManager() {
 
 	// LIGHTS
 
-	LIGHT_BASE_INTENS = 0.48;
-	LIGHT_CAVE_INTENS = 0.2;
+	const LIGHT_BASE_INTENS = 0.48;
+	const LIGHT_CAVE_INTENS = 0.30;
+
+	const POINT_LIGHT_INTENS = 0.5;
+	const POINT_LIGHT_LENGTH = 9;
 
 	// FOG
 
@@ -28,8 +31,8 @@ function MapManager() {
     var reflectionCube = new THREE.CubeTextureLoader().load( urls );
     reflectionCube.format = THREE.RGBFormat;
 
-    var caveBackground = new THREE.Color( 0x191410 );
-    var caveBackgroundGrey = new THREE.Color( 0x100e0f );
+    var caveBackground = new THREE.Color( 0x251e16 );
+    var caveBackgroundGrey = new THREE.Color( 0x171614 );
 
     scene.background = reflectionCube;
 
@@ -228,7 +231,12 @@ function MapManager() {
 
 					var pos = cube.position ;
 
-					var light = new THREE.PointLight( 0xffffff, 1, 10 );
+					var light = new THREE.PointLight(
+						0xffffff,
+						POINT_LIGHT_INTENS,
+						POINT_LIGHT_LENGTH
+					);
+
 					light.position.set( pos.x, pos.y, pos.z );
 					scene.add( light );
 					caveLights.push( light );
