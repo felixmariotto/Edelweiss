@@ -29,8 +29,6 @@
   "homepage": "https://github.com/felixmariotto/Edelweiss#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "geoip-lite": "^1.4.0",
-    "pg": "^7.18.1",
     "socket.io": "^2.3.0"
   }
 }
