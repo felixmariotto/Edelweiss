@@ -161,6 +161,9 @@ function AssetManager() {
 			SCALE_EDELWEISS,
 			OFFSET_EDELWEISS,
 			edelweisses,
+			null,
+			null,
+			true
 		);
 
 	});
@@ -182,7 +185,7 @@ function AssetManager() {
 
 	// Create iterations of the same loaded asset. nasty because of skeletons.
 	// Hopefully THREE.SkeletonUtils.clone() is able to clone skeletons correctly.
-	function createMultipleModels( glb, scale, offset, modelsArr, mixers, actions ) {
+	function createMultipleModels( glb, scale, offset, modelsArr, mixers, actions, lightEmissive ) {
 
 		glb.scene.scale.set( scale, scale, scale );
 		if ( offset ) glb.scene.position.add( offset );
@@ -204,7 +207,7 @@ function AssetManager() {
 
 			};
 
-			setLambert( newModel );
+			setLambert( newModel, lightEmissive !== undefined );
 
 		};
 
@@ -413,7 +416,7 @@ function AssetManager() {
 	///////////////
 
 	// Create a new lambert material for the passed model, with the original map
-	function setLambert( model ) {
+	function setLambert( model, lightEmissive ) {
 
 		model.traverse( (obj)=> {
 
@@ -423,7 +426,8 @@ function AssetManager() {
 				obj.material = new THREE.MeshLambertMaterial({
 					map: obj.material.map,
 					side: obj.material.side,
-					skinning: obj.material.skinning
+					skinning: obj.material.skinning,
+					emissive: lightEmissive ? 0x191919 : 0x000000
 				});
 
 				// fix self-shadows on double-sided materials
