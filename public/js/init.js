@@ -2,7 +2,6 @@
 function init() {
 
     scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2( 0xd7cbb1, 0.06 );
 
     camera = new THREE.PerspectiveCamera( 60, window.innerWidth/window.innerHeight, 0.01, 23.5 );
 
@@ -10,21 +9,6 @@ function init() {
     // since this latter will follow the camera movements
     var ambientLight = new THREE.AmbientLight( 0xffffff, 0.48 );
 	scene.add( ambientLight );
-
-    // CUBEMAP
-
-    var path = 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/skybox/';
-    var format = '.jpg';
-    var urls = [
-        path + 'px' + format, path + 'nx' + format,
-        path + 'py' + format, path + 'ny' + format,
-        path + 'pz' + format, path + 'nz' + format
-    ];
-
-    var reflectionCube = new THREE.CubeTextureLoader().load( urls );
-    reflectionCube.format = THREE.RGBFormat;
-
-    scene.background = reflectionCube;
 
     //////////////
     /// RENDERER

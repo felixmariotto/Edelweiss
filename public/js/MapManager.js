@@ -4,6 +4,32 @@ function MapManager() {
 	const CHUNK_SIZE = 12 ;
 	const LAST_CHUNK_ID = 13 ;
 
+	// FOG
+
+	const FOG = new THREE.FogExp2( 0xd7cbb1, 0.06 );
+
+	scene.fog = FOG;
+
+	// CUBEMAP
+
+    var path = 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/skybox/';
+    var format = '.jpg';
+    var urls = [
+        path + 'px' + format, path + 'nx' + format,
+        path + 'py' + format, path + 'ny' + format,
+        path + 'pz' + format, path + 'nz' + format
+    ];
+
+    var reflectionCube = new THREE.CubeTextureLoader().load( urls );
+    reflectionCube.format = THREE.RGBFormat;
+
+    var caveBackground = new THREE.Color( 0x3b3125 );
+    var caveBackgroundGrey = new THREE.Color( 0x262221 );
+
+    scene.background = reflectionCube;
+
+    //
+
 	// Object that will contain a positive boolean on the index
 	// corresponding to the ID of the loaded mountain map chunks,
 	// and the name of the loaded caves (cave-A...)
@@ -121,6 +147,22 @@ function MapManager() {
 
 	// Make current map disappear, and show a new map
 	function switchMap( newMapName ) {
+
+		console.log( newMapName )
+
+		if ( newMapName === "mountain" ) {
+
+			scene.fog = FOG;
+			scene.background = reflectionCube;
+
+		} else {
+
+			scene.fog = undefined;
+			scene.background = caveBackground;
+
+		};
+
+		if ( newMapName === "cave-F" ) scene.background = caveBackgroundGrey;
 
 		return new Promise( (resolve, reject)=> {
 
