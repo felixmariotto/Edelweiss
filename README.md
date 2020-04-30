@@ -37,7 +37,6 @@ If you fancy extending the game, I'm up to merge your work, as I already did wit
 
 If you feel more like correcting a few bugs here and there, here is a wishlist :
 - fix hero climb-down-right animation
-- shade characters faces smooth
 - if the player dies, got the first edelweiss, but didn't save their progress yet, respawn them in front of the first cave instead of the starting point of the game
 - add movement sounds (climbing, footstep...)
 - add powerup sounds
