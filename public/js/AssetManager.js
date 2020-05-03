@@ -156,6 +156,14 @@ function AssetManager() {
 
 	gltfLoader.load('https://edelweiss-game.s3.eu-west-3.amazonaws.com/models/edelweiss.glb', (glb)=> {
 
+		const edelweiss = glb.scene.getObjectByName( 'edelweiss' );
+		edelweiss.receiveShadow = false;
+		edelweiss.castShadow = false;
+
+		const light = new THREE.PointLight( 0xffffff, 1, 1.5 );
+		light.position.z = -20;
+		edelweiss.add( light );
+
 		createMultipleModels(
 			glb,
 			SCALE_EDELWEISS,
