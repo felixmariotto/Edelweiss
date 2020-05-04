@@ -5,7 +5,6 @@ Open source webGL game made with three.js
 ## Play online here : http://edelweiss.32x.io
 
 ![Screenshot of Edelweiss](https://felixmariotto.s3.eu-west-3.amazonaws.com/new_teaser_github1.gif)
-![Screenshot of Edelweiss](https://felixmariotto.s3.eu-west-3.amazonaws.com/new_teaser_github2.gif)
 
 # How it works
 
