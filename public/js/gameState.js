@@ -5,6 +5,7 @@ function GameState() {
     const domStartButton = document.getElementById('start-button');
     const domStartLoaded = document.getElementById( 'start-loaded' );
     const domStartBack = document.getElementById('start-background');
+    const domHomepageLoadingIcon = document.getElementById('homepage-loading-icon');
 
     const domTitleBackground = document.getElementById('title-background');
 
@@ -100,6 +101,7 @@ function GameState() {
 	/// LAYOUT INIT
 
 	domStartMenu.style.display = 'flex';
+    domHomepageLoadingIcon.style.display = 'none';
 
 	fileLoader.load( 'https://edelweiss-game.s3.eu-west-3.amazonaws.com/mountain.json', function( file ) {
 

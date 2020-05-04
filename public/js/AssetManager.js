@@ -187,6 +187,8 @@ function AssetManager() {
 	// Hopefully THREE.SkeletonUtils.clone() is able to clone skeletons correctly.
 	function createMultipleModels( glb, scale, offset, modelsArr, mixers, actions, lightEmissive ) {
 
+		console.log(glb)
+
 		glb.scene.scale.set( scale, scale, scale );
 		if ( offset ) glb.scene.position.add( offset );
 
