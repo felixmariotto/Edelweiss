@@ -1,12 +1,10 @@
 # Edelweiss
 
-## Open source webGL game made with three.js
+Open source webGL game made with three.js
 
 ## Play online here : http://edelweiss.32x.io
 
-![Screenshot of Edelweiss](https://edelweiss-game.s3.eu-west-3.amazonaws.com/assets/teaser1.gif)
-![Screenshot of Edelweiss](https://edelweiss-game.s3.eu-west-3.amazonaws.com/assets/teaser2.gif)
-
+![Screenshot of Edelweiss](https://felixmariotto.s3.eu-west-3.amazonaws.com/new_teaser_github1.gif)
 
 # How it works
 
@@ -37,7 +35,6 @@ If you fancy extending the game, I'm up to merge your work, as I already did wit
 
 If you feel more like correcting a few bugs here and there, here is a wishlist :
 - fix hero climb-down-right animation
-- shade characters faces smooth
 - if the player dies, got the first edelweiss, but didn't save their progress yet, respawn them in front of the first cave instead of the starting point of the game
 - add movement sounds (climbing, footstep...)
 - add powerup sounds
