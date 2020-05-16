@@ -1046,8 +1046,6 @@ function Atlas() {
 				if ( (utils.vecEquals( testTileVecs[0], logicTile.points[0] ) && utils.vecEquals( testTileVecs[1], logicTile.points[1] ) ) ||
 					 (utils.vecEquals( testTileVecs[1], logicTile.points[0] ) && utils.vecEquals( testTileVecs[0], logicTile.points[1] ) ) ) {
 
-					console.log('catch')
-
 					exists = true ;
 
 				};
