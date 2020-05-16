@@ -966,6 +966,38 @@ function Atlas() {
 	///    FUNCTIONS
 	/////////////////////////
 
+	// transform [{x:0, y:1}, {x:1, y:0}] into [{x:1, y:1}, {x:0, y:0}],
+	// which is the same for the collision system, but might be needed for
+	// tiles equality check
+
+	function toggleTile( tile ) {
+
+		const newVecs = [];
+		
+		for ( let dir of Object.keys( tile[ 0 ] ) ) {
+			
+			if ( tile[ 0 ][ dir ] !== tile[ 1 ][ dir ] ) {
+
+				// copy first vector
+				const newVec = {
+					x: tile[0].x,
+					y: tile[0].y,
+					z: tile[0].z
+				};
+
+				newVec[ dir ] = tile[ 1 ][ dir ];
+
+				newVecs.push( newVec );
+
+			};
+
+		};
+
+		tile[ 0 ].copy( newVecs[ 0 ] );
+		tile[ 1 ].copy( newVecs[ 1 ] );
+
+	};
+
 	// adjTileExists is used by cameraControl to know if the tile
 	// obstructing the camera path has an adjacent tile in the
 	// specified direction.
@@ -1007,13 +1039,14 @@ function Atlas() {
 
 		if ( !exists ) {
 
-			[ testTileVecs[0].x, testTileVecs[1].x ] = [ testTileVecs[1].x, testTileVecs[0].x ];
-			[ testTileVecs[0].y, testTileVecs[1].y ] = [ testTileVecs[1].y, testTileVecs[0].y ];
+			toggleTile( testTileVecs );
 
 			sceneGraph.tilesGraph[ Math.min( testTileVecs[0].y, testTileVecs[1].y ) ].forEach( (logicTile)=> {
 
 				if ( (utils.vecEquals( testTileVecs[0], logicTile.points[0] ) && utils.vecEquals( testTileVecs[1], logicTile.points[1] ) ) ||
 					 (utils.vecEquals( testTileVecs[1], logicTile.points[0] ) && utils.vecEquals( testTileVecs[0], logicTile.points[1] ) ) ) {
+
+					console.log('catch')
 
 					exists = true ;
 
