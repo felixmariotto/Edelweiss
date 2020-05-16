@@ -979,7 +979,7 @@ function Atlas() {
 
 		let exists = false ;
 
-		// create the vector if the hypotetic tile
+		// create the vectors of the hypotetic tile
 
 		testTileVecs[ 0 ].copy( testTile.points[ 0 ] );
 		testTileVecs[ 1 ].copy( testTile.points[ 1 ] );
